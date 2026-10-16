@@ -13,6 +13,7 @@ import {
   Mail, ExternalLink
 } from "lucide-react";
 import { PLAN_FEATURES, PLAN_PRICES } from "@/lib/subscription";
+import { siInstagram, siX } from "simple-icons";
 import dynamic from "next/dynamic";
 
 const KiloagentBackground = dynamic(() => import("@/components/KiloagentBackground").then(m => ({ default: m.KiloagentBackground })), { ssr: false });
@@ -167,6 +168,79 @@ function Footer() {
   );
 }
 
+function BrandIcon({ icon, className, color }: { icon: { path: string; hex: string }, className?: string, color?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill={color ?? `#${icon.hex}`}>
+      <path d={icon.path} />
+    </svg>
+  );
+}
+
+type ContactLink =
+  | { kind: "email"; label: string; href: string; value: string }
+  | { kind: "brand"; label: string; href: string; value: string; icon: { path: string; hex: string }; color?: string }
+  | { kind: "linkedin"; label: string; href: string; value: string };
+
+function ContactSection() {
+  const contactLinks: ContactLink[] = [
+    { kind: "email", label: "Email", href: "mailto:applivoagent@gmail.com", value: "applivoagent@gmail.com" },
+    { kind: "brand", label: "X", href: "https://x.com/applivo_in", value: "x.com/applivo_in", icon: siX, color: "#f5f5f5" },
+    { kind: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/company/applivo-agent/", value: "linkedin.com/company/applivo-agent" },
+    { kind: "brand", label: "Instagram", href: "https://www.instagram.com/applivo.in/", value: "instagram.com/applivo.in", icon: siInstagram },
+  ];
+
+  return (
+    <section id="contact" className="relative overflow-hidden border-t border-white/[0.04] bg-[#080808] py-20 md:py-28">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_40%)] pointer-events-none" />
+
+      <div className="relative z-10 max-w-2xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-[20px] border border-white/[0.06] bg-[#111111] p-4 md:p-6 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.95)]"
+        >
+          <p className="text-[10px] uppercase tracking-[0.24em] text-zinc-500 font-black">Contact</p>
+          <h3 className="mt-2 text-xl md:text-2xl font-bold text-white tracking-tight">Let&apos;s talk</h3>
+          <p className="mt-2 text-sm text-[#A1A1AA] leading-6">
+            For product demos, support, feedback, or collaborations, use any of the direct channels below.
+          </p>
+
+          <div className="mt-4 space-y-3">
+            {contactLinks.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                target={item.href.startsWith("http") ? "_blank" : undefined}
+                rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-white/[0.06] bg-black/30 px-4 py-4 transition-all hover:border-white/12 hover:bg-white/[0.04]"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.04] text-white">
+                    {item.kind === "linkedin" ? (
+                      <span className="text-[11px] font-black uppercase tracking-[0.08em]">in</span>
+                    ) : item.kind === "email" ? (
+                      <Mail className="h-4 w-4" />
+                    ) : (
+                      <BrandIcon icon={item.icon} color={item.color} className="h-4 w-4" />
+                    )}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-xs uppercase tracking-[0.24em] text-zinc-500 font-black">{item.label}</p>
+                    <p className="mt-1 truncate text-sm font-medium text-white">{item.value}</p>
+                  </div>
+                </div>
+                <ExternalLink className="h-4 w-4 shrink-0 text-[#A1A1AA] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 /* ─── MAIN PAGE ───────────────────────────────────────────── */
 export default function LandingPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -272,6 +346,8 @@ export default function LandingPage() {
       <div id="pricing">
         <Pricing />
       </div>
+
+      <ContactSection />
 
       {/* ── GIANT BACKGROUND LOGO ───────────────────────────── */}
       <section className="relative w-full bg-[#080808] pt-12 pb-4 md:pt-20 md:pb-6 flex justify-center items-center overflow-hidden z-0 border-t border-white/[0.02]">
