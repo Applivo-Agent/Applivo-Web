@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
-import { HiringTicker } from "@/components/hiring-ticker";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
@@ -42,7 +41,6 @@ export default function RootLayout({
         className={`${inter.variable} ${outfit.variable} font-sans antialiased bg-background text-foreground relative`}
       >
         <Providers>{children}</Providers>
-        <HiringTicker />
       </body>
     </html>
   );
