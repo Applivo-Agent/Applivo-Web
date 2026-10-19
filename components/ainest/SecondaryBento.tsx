@@ -519,7 +519,7 @@ export function SecondaryBento() {
                 unoptimized
               />
             </div>
-            <span className="text-[#e5e5e5] font-semibold text-[15px] tracking-tight">Introducing Lumi</span>
+            <span className="text-[#e5e5e5] font-semibold text-[16px] sm:text-[17px] tracking-tight">Introducing Lumi</span>
           </div>
 
           {/* Visual Canvas with the New Lumi Graphic */}
@@ -529,10 +529,10 @@ export function SecondaryBento() {
 
           {/* Bottom Text Area */}
           <div className="px-7 pb-8 pt-3 border-t border-transparent relative z-20">
-            <h3 className="text-[18px] sm:text-[19px] font-semibold text-white tracking-tight mb-2">
+            <h3 className="text-[17px] sm:text-[18px] font-semibold text-white tracking-tight mb-2">
               Your AI job search, working in the background.
             </h3>
-            <p className="text-[13.5px] sm:text-[14px] text-zinc-400 leading-relaxed">
+            <p className="text-[14px] sm:text-[14.5px] text-zinc-400 leading-relaxed">
               Lumi helps you discover relevant opportunities, evaluate your fit, prepare tailored applications, and keep your job search organized.
             </p>
           </div>
@@ -549,7 +549,7 @@ export function SecondaryBento() {
           {/* Header Row */}
           <div className="flex items-center gap-3 px-7 py-4 border-b border-white/[0.08]">
             <Settings className="w-[18px] h-[18px] text-zinc-400" strokeWidth={1.8} />
-            <span className="text-[#e5e5e5] font-semibold text-[15px] tracking-tight">Custom Knowledge Base</span>
+            <span className="text-[#e5e5e5] font-semibold text-[16px] sm:text-[17px] tracking-tight">Custom Knowledge Base</span>
           </div>
 
           {/* Visual Canvas */}
@@ -559,10 +559,10 @@ export function SecondaryBento() {
 
           {/* Bottom Text Area */}
           <div className="px-7 pb-8 pt-3 border-t border-transparent relative z-20">
-            <h3 className="text-[18px] font-semibold text-white mb-2 tracking-tight">
+            <h3 className="text-[17px] sm:text-[18px] font-semibold text-white mb-2 tracking-tight">
               Agents that speak your language
             </h3>
-            <p className="text-[14px] text-zinc-400 leading-[1.6]">
+            <p className="text-[14px] sm:text-[14.5px] text-zinc-400 leading-[1.6]">
               Train your agents with your unique career data, documents, and preferences. Your agents provide tailored applications that reflect your expertise.
             </p>
           </div>
@@ -583,10 +583,10 @@ export function SecondaryBento() {
             <CursorsGraphic />
           </div>
           <div className="mt-auto pt-2">
-            <h3 className="text-[19px] font-semibold text-white mb-2 tracking-tight">
+            <h3 className="text-[17px] sm:text-[18px] font-semibold text-white mb-2 tracking-tight">
               Smart Application Automation
             </h3>
-            <p className="text-[14px] text-zinc-400 leading-[1.6]">
+            <p className="text-[14px] sm:text-[14.5px] text-zinc-400 leading-[1.6]">
               Applivo automatically finds relevant opportunities, fills application forms, and submits them on your behalf.
             </p>
           </div>
@@ -604,10 +604,10 @@ export function SecondaryBento() {
             <RadarGraphic />
           </div>
           <div className="mt-auto pt-2">
-            <h3 className="text-[19px] font-semibold text-white mb-2 tracking-tight">
+            <h3 className="text-[17px] sm:text-[18px] font-semibold text-white mb-2 tracking-tight">
               Real-Time Application Tracking
             </h3>
-            <p className="text-[14px] text-zinc-400 leading-[1.6]">
+            <p className="text-[14px] sm:text-[14.5px] text-zinc-400 leading-[1.6]">
               Track every application, response, and interview update in one unified dashboard with instant notifications.
             </p>
           </div>
@@ -625,10 +625,10 @@ export function SecondaryBento() {
             <LockGraphic />
           </div>
           <div className="mt-auto pt-2">
-            <h3 className="text-[19px] font-semibold text-white mb-2 tracking-tight">
+            <h3 className="text-[17px] sm:text-[18px] font-semibold text-white mb-2 tracking-tight">
               Enterprise Security
             </h3>
-            <p className="text-[14px] text-zinc-400 leading-[1.6]">
+            <p className="text-[14px] sm:text-[14.5px] text-zinc-400 leading-[1.6]">
               Enterprise-level encryption and granular permissions keep your career data safe.
             </p>
           </div>

@@ -129,12 +129,12 @@ export function IntegrationsHub() {
             </div>
 
             {/* Main Section Heading */}
-            <h2 className="k-h2 text-3xl sm:text-4xl md:text-[40px] font-bold text-white tracking-[-0.03em] leading-[1.15]">
+            <h2 className="k-h2 text-[26px] sm:text-[28px] md:text-[32px] font-semibold text-white tracking-tight leading-[1.2]">
               Works with your<br className="hidden sm:inline" /> Entire Career Stack
             </h2>
 
             {/* Supporting Paragraph */}
-            <p className="mt-3 text-sm sm:text-base text-zinc-400 font-normal leading-relaxed max-w-xl">
+            <p className="mt-3 text-[14.5px] sm:text-[15.5px] text-zinc-400 font-normal leading-relaxed max-w-xl">
               Applivo integrates natively with verified job sources, interview calendars, and communication tools — powering discovery, application tracking, and automated scheduling.
             </p>
           </div>
@@ -279,12 +279,12 @@ export function IntegrationsHub() {
                   </div>
 
                   {/* Service Name */}
-                  <h3 className="text-[16px] font-semibold text-white tracking-tight mb-1.5 group-hover:text-white transition-colors">
+                  <h3 className="text-[16px] sm:text-[17px] font-semibold text-white tracking-tight mb-1.5 group-hover:text-white transition-colors">
                     {item.name}
                   </h3>
 
                   {/* Short Description (Clean 2-line cap) */}
-                  <p className="text-[12.5px] text-zinc-400 leading-relaxed font-normal line-clamp-2">
+                  <p className="text-[13px] text-zinc-400 leading-relaxed font-normal line-clamp-2">
                     {item.description}
                   </p>
                 </div>

@@ -64,10 +64,10 @@ export function Footer({ showCta = false, className = "" }: FooterProps) {
           />
 
           <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-bold tracking-tight text-white leading-[1.12]">
+            <h2 className="k-h2 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight text-white leading-[1.2]">
               Make your next<br className="hidden sm:inline" /> career move.
             </h2>
-            <p className="mt-4 sm:mt-5 text-sm sm:text-base md:text-lg text-zinc-400 max-w-xl mx-auto leading-relaxed">
+            <p className="mt-3.5 text-[14.5px] sm:text-[15.5px] text-zinc-400 max-w-xl mx-auto leading-relaxed">
               Find relevant opportunities, prepare stronger applications, and manage your job search with Applivo.
             </p>
             <div className="mt-8 flex justify-center">

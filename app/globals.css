@@ -76,12 +76,12 @@
 }
 .k-container { max-width: var(--k-container); margin: 0 auto; padding-left: var(--k-gutter); padding-right: var(--k-gutter); width: 100%; }
 .k-section { padding-top: 128px; padding-bottom: 128px; }
-.k-h1 { font-size: var(--fs-hero); line-height: 1.1; font-weight: var(--fw-heading); letter-spacing: -0.025em; }
-.k-h2 { font-size: var(--fs-display); line-height: 1.15; font-weight: var(--fw-heading); letter-spacing: -0.02em; color: #fff; }
-.k-h3 { font-size: var(--fs-title); line-height: 1.2; font-weight: var(--fw-heading); letter-spacing: -0.015em; color: #fff; }
-.k-eyebrow { font-size: var(--fs-meta); line-height: 14px; font-weight: var(--fw-heading); letter-spacing: 0.5px; text-transform: uppercase; color: var(--k-muted); }
-.k-body { font-size: var(--fs-heading); line-height: 24px; font-weight: var(--fw-ui); color: var(--k-muted); }
-.k-card-title { font-size: var(--fs-heading); line-height: 22px; font-weight: var(--fw-heading); color: #fff; }
+.k-h1 { font-size: var(--fs-hero); line-height: 1.12; font-weight: 600; letter-spacing: -0.025em; }
+.k-h2 { font-size: var(--fs-display); line-height: 1.2; font-weight: 600; letter-spacing: -0.02em; color: #fff; }
+.k-h3 { font-size: var(--fs-title); line-height: 1.25; font-weight: 600; letter-spacing: -0.015em; color: #fff; }
+.k-eyebrow { font-size: var(--fs-meta); line-height: 14px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--k-muted); }
+.k-body { font-size: var(--fs-body); line-height: 1.6; font-weight: 400; color: #a1a1aa; }
+.k-card-title { font-size: var(--fs-card-title); line-height: 1.35; font-weight: 600; color: #fff; letter-spacing: -0.01em; }
 .k-header { background: rgba(10, 10, 10, 0.5); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
 .k-navlink { font-size: var(--fs-base); line-height: 16px; font-weight: var(--fw-ui); color: var(--k-muted); padding: 10px 16px; border-radius: 12px; transition: color .2s; }
 .k-navlink:hover { color: #fff; }
@@ -100,12 +100,13 @@
 .k-prompt-outer { background: rgba(10, 10, 10, 0.2); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); border-radius: 24px; padding: 8px; box-shadow: rgba(10, 10, 10, 0.5) 0 16px 32px 0; }
 .k-prompt-inner { background: var(--k-surface); border-radius: 18px; padding: 12px; box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.02); }
 .k-gradient-section { background-image: linear-gradient(var(--k-surface) 0%, var(--k-bg) 30%); }
-@media (max-width: 809px) {                       /* the reference's mobile scale: h1 36/44/-1px, h2 32/36/-.5px, 54px header */
+@media (max-width: 809px) {                       /* restrained mobile scale: h1 32–36px, h2 25–28px, body 14.5px */
   .k-container { padding-left: 20px; padding-right: 20px; }
   .k-section { padding-top: 96px; padding-bottom: 96px; }
-  .k-h1 { font-size: 32px; letter-spacing: -0.02em; }
-  .k-h2 { font-size: 24px; }
+  .k-h1 { font-size: clamp(32px, 5vw, 36px); letter-spacing: -0.02em; }
+  .k-h2 { font-size: clamp(25px, 4vw, 28px); }
   .k-h3 { font-size: 20px; }
+  .k-body { font-size: 14.5px; line-height: 1.55; }
 }
 
 /* ============================================
@@ -366,7 +367,9 @@ svg.animate-spin {
   --app-pad: 24px;
   --app-gap: 20px;
   --fs-title: 22px;   /* page title */
+  --fs-card-title: 17px; /* card titles (16–18px scale) */
   --fs-heading: 15px; /* card / section heading */
+  --fs-body: 15px;    /* body text & descriptions (14–16px scale) */
   --fs-metric: 24px;  /* big numbers */
   --fs-base: 13px;    /* nav, body, buttons, menus */
   --fs-meta: 12px;    /* helper text, badges */
@@ -375,9 +378,9 @@ svg.animate-spin {
   --fw-heading: 500;
   --fw-strong: 500;
   --fw-ui: 400;
-  /* Landing-only additions, derived from the same scale: hero = title x 1.8, display = title x 1.27 */
-  --fs-hero: 40px;
-  --fs-display: 28px;
+  /* Landing scale: Hero 42–44px desktop / 32–36px mobile, Display 30–32px desktop / 25–28px mobile */
+  --fs-hero: clamp(34px, 4.2vw, 44px);
+  --fs-display: clamp(26px, 2.8vw, 32px);
 }
 
 .dashboard-typography {

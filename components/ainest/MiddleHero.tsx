@@ -133,10 +133,10 @@ export function MiddleHero() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="text-center mb-8 sm:mb-10 z-20 px-6 max-w-2xl"
       >
-        <p className="text-white text-base sm:text-lg md:text-[20px] font-semibold tracking-[-0.015em] mb-1.5">
+        <p className="text-white text-[17px] sm:text-[18px] md:text-[19px] font-semibold tracking-tight mb-1.5">
           Powering ambitious job seekers worldwide.
         </p>
-        <p className="text-zinc-400 text-xs sm:text-sm md:text-[14.5px] leading-relaxed">
+        <p className="text-zinc-400 text-[13.5px] sm:text-[14.5px] leading-relaxed">
           From fresh graduates to senior executives — all in one intelligent platform.
         </p>
       </motion.div>
@@ -156,7 +156,7 @@ export function MiddleHero() {
                 <span className="flex-shrink-0 transition-opacity group-hover:opacity-100 opacity-80">
                   {platform.icon}
                 </span>
-                <span className="text-zinc-200 group-hover:text-white font-semibold text-[17px] sm:text-[19px] md:text-[20px] tracking-tight transition-colors">
+                <span className="text-zinc-200 group-hover:text-white font-semibold text-[16px] sm:text-[17px] tracking-tight transition-colors">
                   {platform.name}
                 </span>
               </div>
@@ -173,7 +173,7 @@ export function MiddleHero() {
                 <span className="flex-shrink-0 transition-opacity group-hover:opacity-100 opacity-80">
                   {platform.icon}
                 </span>
-                <span className="text-zinc-200 group-hover:text-white font-semibold text-[17px] sm:text-[19px] md:text-[20px] tracking-tight transition-colors">
+                <span className="text-zinc-200 group-hover:text-white font-semibold text-[16px] sm:text-[17px] tracking-tight transition-colors">
                   {platform.name}
                 </span>
               </div>

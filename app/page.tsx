@@ -257,10 +257,10 @@ export default function LandingPage() {
 
         <div id="workflow" className="relative z-10 pt-20 md:pt-28 pb-16 md:pb-24">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 relative z-10">
-            <h2 className="k-h2 mb-4 text-3xl sm:text-4xl md:text-[44px] font-bold tracking-[-0.03em] leading-[1.15] max-w-2xl mx-auto">
+            <h2 className="k-h2 mb-3.5 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2] max-w-2xl mx-auto text-white">
               Automate Your Job Search —<br className="hidden sm:inline" /> End to End.
             </h2>
-            <p className="k-body max-w-xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
+            <p className="k-body max-w-xl mx-auto text-[14.5px] sm:text-[15.5px] text-zinc-400 leading-relaxed">
               Connect your accounts, discover matching roles, and let AI apply to opportunities automatically — saving hours of manual effort every day.
             </p>
             <div className="mt-5 mb-8 md:mb-10 flex justify-center">
@@ -282,10 +282,10 @@ export default function LandingPage() {
 
         <div id="features" className="py-16 md:py-24 relative">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 mb-12 md:mb-14 relative z-10">
-            <h2 className="k-h2 mb-4 text-3xl sm:text-4xl md:text-[44px] font-bold tracking-[-0.03em] leading-[1.15] max-w-2xl mx-auto text-white">
+            <h2 className="k-h2 mb-3.5 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2] max-w-2xl mx-auto text-white">
               Everything you need to scale.
             </h2>
-            <p className="k-body max-w-2xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
+            <p className="k-body max-w-2xl mx-auto text-[14.5px] sm:text-[15.5px] text-zinc-400 leading-relaxed">
               A massively scalable ecosystem that natively handles deployment, tracking, synchronization, and security.
             </p>
           </div>

@@ -33,12 +33,12 @@ const testimonials = [
 
 export function TweetMarquee() {
   return (
-    <section className="bg-[#0a0a0a] py-24 relative z-10 border-b border-zinc-900/50 overflow-hidden flex flex-col items-center">
-      <div className="text-center mb-16 px-6">
-        <h2 className="text-[length:var(--fs-title)] font-medium tracking-tight text-white mb-4">
+    <section className="bg-[#0a0a0a] py-20 md:py-24 relative z-10 border-b border-zinc-900/50 overflow-hidden flex flex-col items-center">
+      <div className="text-center mb-12 sm:mb-16 px-6">
+        <h2 className="k-h2 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight text-white mb-3 leading-[1.2]">
           Our Customers
         </h2>
-        <p className="text-[#a1a1aa]">Powering the world&apos;s best professional careers.</p>
+        <p className="k-body text-[14.5px] sm:text-[15.5px] text-zinc-400">Powering the world&apos;s best professional careers.</p>
       </div>
 
       <div className="w-full relative flex items-center">
@@ -62,15 +62,15 @@ export function TweetMarquee() {
               className="w-[340px] flex-shrink-0 bg-[#0a0a09] border border-white/[0.08] rounded-2xl p-6"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-white font-medium">
+                <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-white font-medium text-sm">
                   {t.name[0]}
                 </div>
                 <div>
-                  <div className="text-white font-medium text-[length:var(--fs-base)]">{t.name}</div>
-                  <div className="text-[#a1a1aa] text-[length:var(--fs-meta)]">{t.handle}</div>
+                  <div className="text-white font-medium text-[15px]">{t.name}</div>
+                  <div className="text-zinc-500 text-[12px]">{t.handle}</div>
                 </div>
               </div>
-              <p className="text-zinc-300 text-[length:var(--fs-base)] leading-relaxed">
+              <p className="text-zinc-300 text-[14px] sm:text-[14.5px] leading-relaxed">
                 &quot;{t.text}&quot;
               </p>
             </div>

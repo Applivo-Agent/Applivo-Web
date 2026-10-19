@@ -195,11 +195,11 @@ export function SimplePricing() {
         transition={{ duration: 1, ease: [0.215, 0.61, 0.355, 1] }}
         className="text-center mb-12"
       >
-        <p className="text-white/80 text-[12px] font-semibold uppercase tracking-[0.1em] mb-3">Pricing</p>
-        <h2 className="text-3xl sm:text-4xl md:text-[44px] font-bold tracking-[-0.03em] text-white mb-4 leading-[1.15]">
+        <p className="text-zinc-400 text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.1em] mb-2.5">Pricing</p>
+        <h2 className="k-h2 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight text-white mb-3 leading-[1.2]">
           Simple, transparent plans
         </h2>
-        <p className="text-zinc-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+        <p className="k-body text-[14.5px] sm:text-[15.5px] text-zinc-400 max-w-xl mx-auto leading-relaxed">
           Tailored for every stage of your career journey. No hidden fees, cancel anytime.
         </p>
       </motion.div>
@@ -232,36 +232,36 @@ export function SimplePricing() {
               )}
               <div className="relative z-10 p-7 flex flex-col flex-1">
                 <div className="flex items-center gap-2.5 mb-1">
-                  <span className="text-white font-semibold text-[length:var(--fs-heading)]">{plan.name}</span>
+                  <span className="text-white font-semibold text-[17px] sm:text-[18px] tracking-tight">{plan.name}</span>
                 </div>
-                <p className="text-[#555] text-[length:var(--fs-base)] mb-6 leading-relaxed">{plan.description}</p>
+                <p className="text-zinc-400 text-[13.5px] sm:text-[14px] mb-6 leading-relaxed">{plan.description}</p>
 
                 {plan.trialFree ? (
                   <div className="mb-6">
                     <div className="flex items-end gap-2">
-                      <span className="text-[length:var(--fs-display)] font-semibold text-white leading-none tracking-tight">Free</span>
-                      <span className="text-[#444] line-through text-[length:var(--fs-heading)] mb-1.5">₹{price}/mo</span>
+                      <span className="text-[28px] sm:text-[32px] font-semibold text-white leading-none tracking-tight">Free</span>
+                      <span className="text-[#555] line-through text-[14px] mb-1.5">₹{price}/mo</span>
                     </div>
-                    <p className="text-[11px] text-[#555] mt-1.5">7-day free trial · then ₹{price}/mo</p>
+                    <p className="text-[11px] text-zinc-500 mt-1.5">7-day free trial · then ₹{price}/mo</p>
                   </div>
                 ) : (
                   <div className="mb-6">
                     <div className="flex items-end gap-1">
-                      <span className="text-[length:var(--fs-base)] text-[#555] mb-2">₹</span>
-                      <span className="text-[length:var(--fs-display)] font-semibold text-white leading-none tracking-tight">{price}</span>
-                      <span className="text-[#444] text-[length:var(--fs-base)] mb-1.5">/mo</span>
+                      <span className="text-[14px] text-zinc-400 mb-2">₹</span>
+                      <span className="text-[28px] sm:text-[32px] font-semibold text-white leading-none tracking-tight">{price}</span>
+                      <span className="text-zinc-500 text-[13px] mb-1.5">/mo</span>
                     </div>
-                    {yearly && <p className="text-[11px] text-[#555] mt-1.5">Billed ₹{price * 12}/year</p>}
+                    {yearly && <p className="text-[11px] text-zinc-500 mt-1.5">Billed ₹{price * 12}/year</p>}
                   </div>
                 )}
 
-                <div className="h-px bg-[#121212] mb-5" />
+                <div className="h-px bg-white/[0.06] mb-5" />
 
                 <div className="space-y-3 flex-1">
                   {plan.features.map((feat, fi) => (
                     <div key={fi} className="flex items-start gap-3">
                       <Check className={`mt-0.5 w-3.5 h-3.5 shrink-0 ${isHighlight ? "text-white" : "text-zinc-500"}`} strokeWidth={3} />
-                      <span className="text-[#777] text-[length:var(--fs-base)] leading-relaxed">{feat}</span>
+                      <span className="text-zinc-300 text-[13.5px] sm:text-[14px] leading-relaxed">{feat}</span>
                     </div>
                   ))}
                 </div>
@@ -329,8 +329,8 @@ export function SimplePricing() {
         transition={{ duration: 1, ease: [0.215, 0.61, 0.355, 1] }}
         className="w-full max-w-[1136px]"
       >
-        <h3 className="text-[length:var(--fs-title)] font-semibold text-white text-center mb-2">Compare Plans</h3>
-        <p className="text-[#555] text-[length:var(--fs-heading)] text-center mb-10">
+        <h3 className="text-[22px] sm:text-[24px] font-semibold text-white text-center mb-2 tracking-tight">Compare Plans</h3>
+        <p className="text-zinc-400 text-[14px] sm:text-[14.5px] text-center mb-10">
           Everything you need to automate your job search, compared side by side.
         </p>
 
@@ -352,7 +352,7 @@ export function SimplePricing() {
                     }`}
                   />
                 </button>
-                <span className={`text-[length:var(--fs-base)] font-medium ${yearly ? "text-white" : "text-[#555]"}`}>Yearly</span>
+                <span className={`text-[13px] font-medium ${yearly ? "text-white" : "text-zinc-400"}`}>Yearly</span>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
                   SAVE 20%
                 </span>
@@ -367,7 +367,7 @@ export function SimplePricing() {
                   className={`p-6 border-l border-white/[0.08] ${p.highlight ? "bg-white/[0.025]" : ""}`}
                 >
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-white font-bold text-[length:var(--fs-heading)]">{p.name}</span>
+                    <span className="text-white font-semibold text-[16px] sm:text-[17px] tracking-tight">{p.name}</span>
                     {p.badge && (
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/15 text-white border border-white/20">
                         {p.badge}
