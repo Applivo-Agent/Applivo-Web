@@ -501,31 +501,34 @@ export function SecondaryBento() {
       <div className="grid grid-cols-1 lg:grid-cols-[466fr_654fr] gap-4 md:gap-5 mb-4 md:mb-5 h-auto lg:h-[530px] items-stretch">
         {/* Card 1: Introducing Lumi */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
-          className="relative flex flex-col justify-between h-full p-4 sm:p-6 lg:p-7 overflow-hidden rounded-[28px]"
+          className="rounded-[28px] bg-[#121212] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.4)] hover:border-white/[0.16] transition-colors duration-300"
         >
-          {/* Subtle ambient lighting for natural visual separation without heavy borders */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-40"
-            style={{
-              background:
-                "radial-gradient(ellipse 70% 60% at 50% 45%, rgba(255, 255, 255, 0.035) 0%, transparent 75%)",
-            }}
-          />
+          {/* Header Row on Top with Lumi Logo */}
+          <div className="flex items-center gap-3 px-7 py-4 border-b border-white/[0.08]">
+            <div className="w-[20px] h-[20px] rounded-[6px] overflow-hidden border border-white/20 shrink-0 bg-[#18181B] flex items-center justify-center">
+              <Image
+                src="/lumi-logo.png"
+                alt="Lumi"
+                width={20}
+                height={20}
+                className="w-full h-full object-cover"
+                unoptimized
+              />
+            </div>
+            <span className="text-[#e5e5e5] font-semibold text-[15px] tracking-tight">Introducing Lumi</span>
+          </div>
 
-          {/* Visual Canvas */}
-          <div className="flex-1 relative flex items-center justify-center min-h-[280px]">
+          {/* Visual Canvas with the New Lumi Graphic */}
+          <div className="flex-1 relative overflow-hidden flex items-center justify-center min-h-[290px] sm:min-h-[310px]">
             <LumiAgentGraphic />
           </div>
 
-          {/* Typography & Content */}
-          <div className="mt-auto pt-4 relative z-20">
-            <p className="text-[12px] font-semibold tracking-wider uppercase text-zinc-400 mb-1.5">
-              Introducing Lumi
-            </p>
+          {/* Bottom Text Area */}
+          <div className="px-7 pb-8 pt-3 border-t border-transparent relative z-20">
             <h3 className="text-[18px] sm:text-[19px] font-semibold text-white tracking-tight mb-2">
               Your AI job search, working in the background.
             </h3>
