@@ -50,102 +50,20 @@ export default function LoginPage() {
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading) return;
-    setLoading(true);
-
-    try {
-      if (rememberMe) {
-        localStorage.setItem("applivo_remember_email", email);
-      } else {
-        localStorage.removeItem("applivo_remember_email");
-      }
-
-      await login(email.trim(), password);
-      toast.success("Security check: please check your email for the verification code.");
-      setStep("verify");
-    } catch (err: any) {
-      toast.error(getErrorMessage(err, "Authentication failed. Check your email and password."));
-    } finally {
-      setLoading(false);
-    }
+    toast.info("Applivo is currently in development. Sign-in and account access will open soon upon official launch!");
   };
 
   const handleVerifySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading || otp.length < 6) return;
-    setLoading(true);
-
-    try {
-      await verifyLoginOtp(email.trim(), otp);
-      toast.success("Welcome back!");
-      router.push(nextUrl || "/dashboard");
-    } catch (err: any) {
-      toast.error(getErrorMessage(err, "Invalid or expired verification code"));
-    } finally {
-      setLoading(false);
-    }
+    toast.info("Applivo is currently in development. Account verification will open soon!");
   };
 
   const handleGoogleClick = () => {
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-    if (!clientId) {
-      toast.error(
-        "Google Sign-In is not configured yet. Required environment variable: NEXT_PUBLIC_GOOGLE_CLIENT_ID"
-      );
-      return;
-    }
-
-    if (!window.google?.accounts?.id) {
-      toast.error("Google authentication service is loading. Please try again in a moment.");
-      return;
-    }
-
-    try {
-      setGoogleLoading(true);
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: async (response: { credential?: string }) => {
-          if (response?.credential) {
-            try {
-              await loginWithGoogle(response.credential);
-              toast.success("Welcome back to Applivo!");
-              router.push(nextUrl || "/dashboard");
-            } catch (err: any) {
-              toast.error(getErrorMessage(err, "Google sign-in failed. Please try again."));
-            } finally {
-              setGoogleLoading(false);
-            }
-          } else {
-            setGoogleLoading(false);
-          }
-        },
-      });
-
-      window.google.accounts.id.prompt((notification: any) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          setGoogleLoading(false);
-        }
-      });
-    } catch {
-      setGoogleLoading(false);
-      toast.error("Could not initialize Google authentication.");
-    }
+    toast.info("Applivo is currently in development. Google sign-in will be enabled upon official launch!");
   };
 
   const handleAppleClick = () => {
-    const appleClientId = process.env.NEXT_PUBLIC_APPLE_CLIENT_ID;
-    if (!appleClientId) {
-      toast.error(
-        "Apple Sign-In is not configured yet. Required setup: Apple Developer Service ID, APPLE_CLIENT_ID, and backend credentials."
-      );
-      return;
-    }
-
-    setAppleLoading(true);
-    toast.info("Connecting to Apple authentication...");
-    setTimeout(() => {
-      setAppleLoading(false);
-    }, 1500);
+    toast.info("Applivo is currently in development. Apple sign-in will be enabled upon official launch!");
   };
 
   const footer =

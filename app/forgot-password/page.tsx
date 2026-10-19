@@ -15,18 +15,7 @@ export default function ForgotPasswordPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading) return;
-    setLoading(true);
-
-    try {
-      await authApi.forgotPassword(email.trim());
-      setSubmitted(true);
-      toast.success("Reset link sent if the email exists in our records.");
-    } catch (err: any) {
-      toast.error(getErrorMessage(err, "An error occurred. Please try again."));
-    } finally {
-      setLoading(false);
-    }
+    toast.info("Applivo is currently in development. Password recovery will open soon upon launch!");
   };
 
   const footer = (

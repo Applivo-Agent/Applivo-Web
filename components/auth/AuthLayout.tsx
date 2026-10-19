@@ -109,11 +109,22 @@ export function AuthLayout({
         </div>
       </div>
 
+      {/* ── DEVELOPMENT BADGE ABOVE CARD ── */}
+      <div className="mb-4 relative z-10 flex items-center justify-center">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#141416]/90 border border-amber-500/30 backdrop-blur-md shadow-[0_4px_24px_rgba(245,158,11,0.15)] text-[12px] font-medium text-amber-300">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+          </span>
+          <span>Under Development &bull; Platform Launching Soon</span>
+        </div>
+      </div>
+
       {/* ── CENTERED AUTH PANEL (430px desktop width, 16px radius, #111111 surface, 24–32px padding) ── */}
       <div className="w-full max-w-[430px] relative z-10">
         <div className="rounded-2xl bg-[#111111] border border-[#232326] p-6 sm:p-8 shadow-[0_24px_60px_rgba(0,0,0,0.95)]">
           {/* Logo & Header */}
-          <div className="flex flex-col items-center text-center mb-6">
+          <div className="flex flex-col items-center text-center mb-5">
             <Link
               href="/"
               className="inline-flex items-center justify-center mb-4 group transition-transform hover:scale-[1.03] active:scale-[0.98]"
@@ -137,6 +148,14 @@ export function AuthLayout({
             <p className="text-[13.5px] text-[#a1a1aa] mt-1 leading-normal max-w-[340px]">
               {supportingText}
             </p>
+          </div>
+
+          {/* Development Status Notice Banner inside card */}
+          <div className="flex items-center justify-center gap-2 px-3.5 py-2.5 mb-5 rounded-xl bg-amber-500/[0.08] border border-amber-500/20 text-center">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shrink-0" />
+            <span className="text-[12.5px] font-medium text-amber-200/90 leading-tight">
+              Platform in Development &bull; Sign-in &amp; registration open soon
+            </span>
           </div>
 
           {/* Form Content */}

@@ -66,130 +66,29 @@ export default function RegisterPage() {
       toast.error("Please agree to the Terms of Service and Privacy Policy to continue.");
       return;
     }
-    setStep("details");
+    toast.info("Applivo is currently in development. Account registration will open soon upon official launch!");
   };
 
   /* ── STEP 2: DETAILS & REGISTRATION INITIATE ── */
   const handleDetailsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading) return;
-
-    if (!form.full_name.trim()) {
-      toast.error("Please enter your full name.");
-      return;
-    }
-    if (form.password.length < 8) {
-      toast.error("Password must be at least 8 characters.");
-      return;
-    }
-    if (form.password !== form.confirm_password) {
-      toast.error("Passwords do not match.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await register(form.email.trim(), form.password, form.full_name.trim());
-      toast.success("Account initiated! Please check your email for the verification code.");
-      setStep("verify");
-    } catch (err: any) {
-      toast.error(getErrorMessage(err, "Registration failed"));
-    } finally {
-      setLoading(false);
-    }
+    toast.info("Applivo is currently in development. Account registration will open soon upon official launch!");
   };
 
   /* ── STEP 3: OTP VERIFY & COMPLETE ── */
   const handleVerifySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading || otp.length < 6) return;
-    setLoading(true);
-
-    try {
-      await verifyRegisterOtp(form.email.trim(), otp, {
-        password: form.password,
-        full_name: form.full_name.trim(),
-      });
-      toast.success("Account verified! Let's get started.");
-
-      if (nextUrl) {
-        router.push(nextUrl);
-        return;
-      }
-
-      const onboardingUrl = planFromUrl
-        ? `/onboarding?plan=${planFromUrl}&interval=${intervalFromUrl}`
-        : "/onboarding";
-      router.push(onboardingUrl);
-    } catch (err: any) {
-      toast.error(getErrorMessage(err, "Invalid or expired verification code"));
-    } finally {
-      setLoading(false);
-    }
+    toast.info("Applivo is currently in development. Account verification will open soon!");
   };
 
   /* ── GOOGLE AUTH ── */
   const handleGoogleClick = () => {
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-    if (!clientId) {
-      toast.error(
-        "Google Sign-In is not configured yet. Required environment variable: NEXT_PUBLIC_GOOGLE_CLIENT_ID"
-      );
-      return;
-    }
-
-    if (!window.google?.accounts?.id) {
-      toast.error("Google authentication service is loading. Please try again in a moment.");
-      return;
-    }
-
-    try {
-      setGoogleLoading(true);
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: async (response: { credential?: string }) => {
-          if (response?.credential) {
-            try {
-              await loginWithGoogle(response.credential);
-              toast.success("Welcome to Applivo!");
-              router.push(nextUrl || "/onboarding");
-            } catch (err: any) {
-              toast.error(getErrorMessage(err, "Google registration failed"));
-            } finally {
-              setGoogleLoading(false);
-            }
-          } else {
-            setGoogleLoading(false);
-          }
-        },
-      });
-
-      window.google.accounts.id.prompt((notification: any) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          setGoogleLoading(false);
-        }
-      });
-    } catch {
-      setGoogleLoading(false);
-      toast.error("Could not initialize Google authentication.");
-    }
+    toast.info("Applivo is currently in development. Google sign-up will be enabled upon official launch!");
   };
 
   /* ── APPLE AUTH ── */
   const handleAppleClick = () => {
-    const appleClientId = process.env.NEXT_PUBLIC_APPLE_CLIENT_ID;
-    if (!appleClientId) {
-      toast.error(
-        "Apple Sign-In is not configured yet. Required setup: Apple Developer Service ID, APPLE_CLIENT_ID, and backend credentials."
-      );
-      return;
-    }
-
-    setAppleLoading(true);
-    toast.info("Connecting to Apple authentication...");
-    setTimeout(() => {
-      setAppleLoading(false);
-    }, 1500);
+    toast.info("Applivo is currently in development. Apple sign-up will be enabled upon official launch!");
   };
 
   const footer = (
