@@ -19,100 +19,154 @@ import {
   Sparkles
 } from "lucide-react";
 
-/* ─── CARD 1: LUMI AI AGENT ILLUSTRATION ──────────────────────────── */
+/* ─── CARD 1: LUMI AI AGENT ILLUSTRATION (MATCHING REFERENCE IMAGE 1) ─── */
 function LumiAgentGraphic() {
   const nodes = [
     {
       id: "discover",
-      label: "Discover opportunities",
+      label: "Discover Opportunities",
       icon: Search,
-      pos: "top-2 sm:top-4 left-1 sm:left-3",
+      pos: "top-3 sm:top-5 left-1 sm:left-3",
+      delay: 0,
     },
     {
       id: "analyze",
-      label: "Analyze job fit",
+      label: "Analyze Job Fit",
       icon: Target,
-      pos: "top-2 sm:top-4 right-1 sm:right-3",
+      pos: "top-3 sm:top-5 right-1 sm:right-3",
+      delay: 0.15,
     },
     {
       id: "tailor",
-      label: "Tailor resumes",
+      label: "Tailor Resume",
       icon: FileText,
-      pos: "bottom-2 sm:bottom-4 left-1 sm:left-3",
+      pos: "bottom-5 sm:bottom-7 left-1 sm:left-3",
+      delay: 0.3,
     },
     {
       id: "answers",
-      label: "Prepare application answers",
-      icon: Sparkles,
-      pos: "bottom-2 sm:bottom-4 right-1 sm:right-3",
+      label: "Prepare Answers",
+      icon: Brain,
+      pos: "bottom-5 sm:bottom-7 right-1 sm:right-3",
+      delay: 0.45,
     },
   ];
 
   return (
-    <div className="w-full h-full relative flex items-center justify-center min-h-[280px] sm:min-h-[300px] select-none pointer-events-none">
-      {/* SVG Canvas for fine, faint orbital guide and connectors */}
+    <div className="w-full h-full relative flex items-center justify-center min-h-[290px] sm:min-h-[310px] select-none pointer-events-none overflow-hidden">
+      {/* SVG Canvas for curved connection splines, glowing junction dots, and horizon */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
         viewBox="0 0 380 260"
         fill="none"
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* Subtle, faint orbital ellipse */}
+        <defs>
+          <linearGradient id="lumiHorizonGlow" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.08)" />
+            <stop offset="100%" stopColor="transparent" />
+          </linearGradient>
+          <radialGradient id="junctionGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
+            <stop offset="40%" stopColor="rgba(255,255,255,0.3)" />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+        </defs>
+
+        {/* ── 1. Curved Planetary Horizon Line at the Bottom ── */}
+        <path
+          d="M -20,248 Q 190,212 400,248"
+          stroke="rgba(255,255,255,0.22)"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        <path
+          d="M -20,248 Q 190,212 400,248 L 400,260 L -20,260 Z"
+          fill="url(#lumiHorizonGlow)"
+        />
+
+        {/* ── 2. Subtle Decorative Faint Orbital Ellipses ── */}
         <ellipse
           cx="190"
           cy="130"
-          rx="95"
-          ry="60"
-          stroke="rgba(255,255,255,0.06)"
+          rx="125"
+          ry="72"
+          stroke="rgba(255,255,255,0.035)"
           strokeWidth="1"
-          strokeDasharray="3 3"
         />
-
-        {/* Outer subtle boundary arc */}
         <ellipse
           cx="190"
           cy="130"
-          rx="145"
-          ry="92"
-          stroke="rgba(255,255,255,0.03)"
+          rx="168"
+          ry="98"
+          stroke="rgba(255,255,255,0.02)"
           strokeWidth="1"
         />
 
-        {/* Faint connector lines from center to four node zones */}
-        {/* Top-Left */}
-        <line x1="160" y1="110" x2="105" y2="65" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="2 3" />
-        <circle cx="105" cy="65" r="1.5" fill="rgba(255,255,255,0.25)" />
+        {/* ── 3. Smooth Curved Spline Connection Lines (Bézier Curves) ── */}
+        {/* Top-Left: Center -> Discover Opportunities */}
+        <path
+          d="M 160,118 C 145,102 135,88 122,76 C 112,65 92,62 65,62"
+          stroke="rgba(255,255,255,0.18)"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        {/* Glowing Junction Dot (Top-Left) */}
+        <circle cx="122" cy="76" r="6" fill="url(#junctionGlow)" />
+        <circle cx="122" cy="76" r="2.5" fill="#FFFFFF" />
 
-        {/* Top-Right */}
-        <line x1="220" y1="110" x2="275" y2="65" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="2 3" />
-        <circle cx="275" cy="65" r="1.5" fill="rgba(255,255,255,0.25)" />
+        {/* Top-Right: Center -> Analyze Job Fit */}
+        <path
+          d="M 220,118 C 235,102 245,88 258,76 C 268,65 288,62 315,62"
+          stroke="rgba(255,255,255,0.18)"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        {/* Glowing Junction Dot (Top-Right) */}
+        <circle cx="258" cy="76" r="6" fill="url(#junctionGlow)" />
+        <circle cx="258" cy="76" r="2.5" fill="#FFFFFF" />
 
-        {/* Bottom-Left */}
-        <line x1="160" y1="150" x2="105" y2="195" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="2 3" />
-        <circle cx="105" cy="195" r="1.5" fill="rgba(255,255,255,0.25)" />
+        {/* Bottom-Left: Center -> Tailor Resume */}
+        <path
+          d="M 160,142 C 145,158 132,170 118,178 C 105,186 85,188 60,188"
+          stroke="rgba(255,255,255,0.18)"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        {/* Glowing Junction Dot (Bottom-Left) */}
+        <circle cx="118" cy="178" r="6" fill="url(#junctionGlow)" />
+        <circle cx="118" cy="178" r="2.5" fill="#FFFFFF" />
 
-        {/* Bottom-Right */}
-        <line x1="220" y1="150" x2="275" y2="195" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="2 3" />
-        <circle cx="275" cy="195" r="1.5" fill="rgba(255,255,255,0.25)" />
+        {/* Bottom-Right: Center -> Prepare Answers */}
+        <path
+          d="M 220,142 C 235,158 248,170 262,178 C 275,186 295,188 320,188"
+          stroke="rgba(255,255,255,0.18)"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        {/* Glowing Junction Dot (Bottom-Right) */}
+        <circle cx="262" cy="178" r="6" fill="url(#junctionGlow)" />
+        <circle cx="262" cy="178" r="2.5" fill="#FFFFFF" />
       </svg>
 
-      {/* ── Central Focal Element: Compact Charcoal Mark with Applivo Emblem ── */}
+      {/* ── Central Focal Element: 3D Squircle Lumi App Icon with Backlight Glow ── */}
       <motion.div
-        animate={{ scale: [1, 1.02, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ scale: [1, 1.025, 1] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
         className="relative z-30 flex items-center justify-center"
       >
-        {/* Faint, restrained monochrome ambient glow */}
-        <div className="absolute w-[130px] h-[130px] rounded-full bg-white/[0.04] blur-2xl pointer-events-none" />
+        {/* Rich White Diffused Core Glow behind the Squircle */}
+        <div className="absolute w-[160px] h-[160px] sm:w-[190px] sm:h-[190px] rounded-full bg-white/[0.09] blur-2xl pointer-events-none" />
 
+        {/* 3D Beveled Squircle Tile */}
         <div className="relative flex items-center justify-center">
-          <div className="w-[58px] h-[58px] rounded-2xl bg-[#161618] border border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.08)] flex items-center justify-center p-2.5">
+          <div className="w-[72px] h-[72px] sm:w-[78px] sm:h-[78px] rounded-[20px] sm:rounded-[22px] bg-[#121214] border border-white/20 shadow-[0_16px_36px_rgba(0,0,0,0.95),0_0_30px_rgba(255,255,255,0.1),inset_0_1px_1px_rgba(255,255,255,0.2)] overflow-hidden flex items-center justify-center p-0">
             <Image
-              src="/applivo-logo.png"
-              alt="Applivo Lumi"
-              width={34}
-              height={34}
-              className="w-full h-full object-contain"
+              src="/lumi-logo.png"
+              alt="Lumi"
+              width={78}
+              height={78}
+              className="w-full h-full object-cover"
               priority
               unoptimized
             />
@@ -120,8 +174,8 @@ function LumiAgentGraphic() {
         </div>
       </motion.div>
 
-      {/* ── Four Compact Floating Feature Labels ── */}
-      {nodes.map((node, i) => {
+      {/* ── Four Floating Feature Labels (Pills matching Reference Image 1) ── */}
+      {nodes.map((node) => {
         const Icon = node.icon;
         return (
           <motion.div
@@ -129,12 +183,12 @@ function LumiAgentGraphic() {
             initial={{ opacity: 0, y: 6 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
+            transition={{ duration: 0.5, delay: node.delay, ease: "easeOut" }}
             className={`absolute ${node.pos} z-20 pointer-events-auto`}
           >
-            <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#161618]/90 border border-white/[0.08] text-[10.5px] sm:text-[11.5px] font-medium text-zinc-300 shadow-[0_4px_16px_rgba(0,0,0,0.6)] hover:border-white/20 hover:text-white transition-colors duration-200">
-              <Icon className="w-3.5 h-3.5 text-zinc-400 shrink-0" strokeWidth={1.75} />
-              <span className="whitespace-nowrap">{node.label}</span>
+            <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-[#141416]/95 border border-white/[0.14] text-[11px] sm:text-[12px] font-medium text-white shadow-[0_8px_24px_rgba(0,0,0,0.85)] hover:border-white/30 hover:scale-[1.02] transition-all duration-200">
+              <Icon className="w-3.5 h-3.5 text-zinc-300 shrink-0" strokeWidth={1.8} />
+              <span className="whitespace-nowrap tracking-tight">{node.label}</span>
             </div>
           </motion.div>
         );
