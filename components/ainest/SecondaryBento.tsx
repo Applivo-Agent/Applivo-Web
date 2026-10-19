@@ -15,103 +15,104 @@ import {
   Star,
   Bot,
   Settings,
-  MousePointer2
+  MousePointer2,
+  Sparkles
 } from "lucide-react";
 
 /* ─── CARD 1: LUMI AI AGENT ILLUSTRATION ──────────────────────────── */
-const lumiCodeBg = `{ "agent_id": "lumi_core_v2", "role": "Career Orchestrator",
-  "status": "autonomous", "memory": "active_session",
-  "workflows": [
-    { "step": "discover", "status": "stream_active" },
-    { "step": "match_score", "status": "threshold_85" },
-    { "step": "qa_generator", "status": "verified" },
-    { "step": "ats_tailor", "status": "ready" },
-    { "step": "auto_submit", "status": "background_tab" }
-  ] }
-{ "active_pipelines": 5, "verified_credentials": "vault_encrypted",
-  "autonomy_tier": "single_tab_background" }`;
-
 function LumiAgentGraphic() {
-  return (
-    <div className="w-full h-full relative flex items-center justify-center min-h-[340px] select-none pointer-events-none overflow-hidden">
-      {/* Background Code Faint Texture */}
-      <div className="absolute inset-0 p-6 overflow-hidden pointer-events-none opacity-[0.14] select-none">
-        <pre className="text-[9.5px] text-zinc-400 font-mono leading-[1.8] whitespace-pre-wrap">
-          {lumiCodeBg}
-        </pre>
-      </div>
+  const nodes = [
+    {
+      id: "discover",
+      label: "Discover opportunities",
+      icon: Search,
+      pos: "top-2 sm:top-4 left-1 sm:left-3",
+    },
+    {
+      id: "analyze",
+      label: "Analyze job fit",
+      icon: Target,
+      pos: "top-2 sm:top-4 right-1 sm:right-3",
+    },
+    {
+      id: "tailor",
+      label: "Tailor resumes",
+      icon: FileText,
+      pos: "bottom-2 sm:bottom-4 left-1 sm:left-3",
+    },
+    {
+      id: "answers",
+      label: "Prepare application answers",
+      icon: Sparkles,
+      pos: "bottom-2 sm:bottom-4 right-1 sm:right-3",
+    },
+  ];
 
-      {/* SVG Canvas for Concentric Orbital Guides and Connectors */}
+  return (
+    <div className="w-full h-full relative flex items-center justify-center min-h-[280px] sm:min-h-[300px] select-none pointer-events-none">
+      {/* SVG Canvas for fine, faint orbital guide and connectors */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
-        viewBox="0 0 420 320"
+        viewBox="0 0 380 260"
         fill="none"
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* Inner Orbital Path */}
-        <circle
-          cx="210"
-          cy="160"
-          r="78"
-          stroke="rgba(255,255,255,0.08)"
+        {/* Subtle, faint orbital ellipse */}
+        <ellipse
+          cx="190"
+          cy="130"
+          rx="95"
+          ry="60"
+          stroke="rgba(255,255,255,0.06)"
           strokeWidth="1"
           strokeDasharray="3 3"
         />
 
-        {/* Outer Orbital Path */}
-        <circle
-          cx="210"
-          cy="160"
-          r="126"
-          stroke="rgba(255,255,255,0.04)"
+        {/* Outer subtle boundary arc */}
+        <ellipse
+          cx="190"
+          cy="130"
+          rx="145"
+          ry="92"
+          stroke="rgba(255,255,255,0.03)"
           strokeWidth="1"
-          strokeDasharray="4 4"
         />
 
-        {/* Connector 1: Center -> Node 1 (Discover, Top) */}
-        <line x1="210" y1="122" x2="210" y2="60" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
-        <circle cx="210" cy="92" r="2.5" fill="#52525B" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
+        {/* Faint connector lines from center to four node zones */}
+        {/* Top-Left */}
+        <line x1="160" y1="110" x2="105" y2="65" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="2 3" />
+        <circle cx="105" cy="65" r="1.5" fill="rgba(255,255,255,0.25)" />
 
-        {/* Connector 2: Center -> Node 2 (Analyze Fit, Top-Right) */}
-        <line x1="244" y1="138" x2="295" y2="108" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
-        <circle cx="268" cy="124" r="2.5" fill="#52525B" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
+        {/* Top-Right */}
+        <line x1="220" y1="110" x2="275" y2="65" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="2 3" />
+        <circle cx="275" cy="65" r="1.5" fill="rgba(255,255,255,0.25)" />
 
-        {/* Connector 3: Center -> Node 3 (Screening QA, Bottom-Right) */}
-        <line x1="242" y1="182" x2="280" y2="220" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
-        <circle cx="261" cy="201" r="2.5" fill="#52525B" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
+        {/* Bottom-Left */}
+        <line x1="160" y1="150" x2="105" y2="195" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="2 3" />
+        <circle cx="105" cy="195" r="1.5" fill="rgba(255,255,255,0.25)" />
 
-        {/* Connector 4: Center -> Node 4 (ATS Resume, Bottom-Left) */}
-        <line x1="178" y1="182" x2="140" y2="220" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
-        <circle cx="159" cy="201" r="2.5" fill="#52525B" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
-
-        {/* Connector 5: Center -> Node 5 (Live Status, Top-Left) */}
-        <line x1="176" y1="138" x2="125" y2="108" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
-        <circle cx="152" cy="124" r="2.5" fill="#52525B" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
+        {/* Bottom-Right */}
+        <line x1="220" y1="150" x2="275" y2="195" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="2 3" />
+        <circle cx="275" cy="195" r="1.5" fill="rgba(255,255,255,0.25)" />
       </svg>
 
-      {/* ── Central Focal Element: The Lumi AI Core with Metallic Emblem ── */}
+      {/* ── Central Focal Element: Compact Charcoal Mark with Applivo Emblem ── */}
       <motion.div
-        animate={{ scale: [1, 1.03, 1] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ scale: [1, 1.02, 1] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         className="relative z-30 flex items-center justify-center"
       >
-        {/* Soft Ambient Core Glow */}
-        <div className="absolute w-[160px] h-[160px] rounded-full bg-white/[0.08] blur-2xl pointer-events-none" />
+        {/* Faint, restrained monochrome ambient glow */}
+        <div className="absolute w-[130px] h-[130px] rounded-full bg-white/[0.04] blur-2xl pointer-events-none" />
 
-        {/* 3D Metallic Lumi App Icon */}
         <div className="relative flex items-center justify-center">
-          {/* Active Status Marker (Top-right of icon) */}
-          <div className="absolute -top-1.5 -right-1.5 z-40 w-4 h-4 rounded-full bg-[#18181B] border border-white/50 flex items-center justify-center shadow-lg">
-            <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-          </div>
-
-          <div className="w-[82px] h-[82px] rounded-[22px] overflow-hidden border border-white/25 shadow-[0_0_35px_rgba(255,255,255,0.12),0_16px_32px_rgba(0,0,0,0.95)] bg-[#121214] flex items-center justify-center">
+          <div className="w-[58px] h-[58px] rounded-2xl bg-[#161618] border border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.08)] flex items-center justify-center p-2.5">
             <Image
-              src="/lumi-logo.png"
-              alt="Lumi AI Agent"
-              width={82}
-              height={82}
-              className="w-full h-full object-cover"
+              src="/applivo-logo.png"
+              alt="Applivo Lumi"
+              width={34}
+              height={34}
+              className="w-full h-full object-contain"
               priority
               unoptimized
             />
@@ -119,68 +120,29 @@ function LumiAgentGraphic() {
         </div>
       </motion.div>
 
-      {/* ── Connected Node 1: Discover Opportunities (Top Center) ── */}
-      <motion.div
-        animate={{ y: [0, -3, 0] }}
-        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
-        className="absolute top-[28px] left-1/2 -translate-x-1/2 z-20"
-      >
-        <div className="bg-[#18181B] border border-white/[0.12] rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.7)] hover:border-white/25 transition-all">
-          <Search className="w-3.5 h-3.5 text-zinc-300" />
-          <span className="text-[11px] font-medium text-zinc-300">Discover Opportunities</span>
-        </div>
-      </motion.div>
-
-      {/* ── Connected Node 2: Analyze Job Fit (Top Right) ── */}
-      <motion.div
-        animate={{ y: [0, -3, 0] }}
-        transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-        className="absolute top-[75px] right-[18px] sm:right-[32px] z-20"
-      >
-        <div className="bg-[#18181B] border border-white/[0.12] rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.7)] hover:border-white/25 transition-all">
-          <Target className="w-3.5 h-3.5 text-zinc-300" />
-          <span className="text-[11px] font-medium text-zinc-300">Analyze Fit</span>
-        </div>
-      </motion.div>
-
-      {/* ── Connected Node 3: Screening Q&A (Bottom Right) ── */}
-      <motion.div
-        animate={{ y: [0, -3, 0] }}
-        transition={{ duration: 4.1, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        className="absolute bottom-[38px] right-[28px] sm:right-[42px] z-20"
-      >
-        <div className="bg-[#18181B] border border-white/[0.12] rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.7)] hover:border-white/25 transition-all">
-          <Brain className="w-3.5 h-3.5 text-zinc-300" />
-          <span className="text-[11px] font-medium text-zinc-300">Prepare Answers</span>
-        </div>
-      </motion.div>
-
-      {/* ── Connected Node 4: Select Resume (Bottom Left) ── */}
-      <motion.div
-        animate={{ y: [0, -3, 0] }}
-        transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
-        className="absolute bottom-[38px] left-[28px] sm:left-[42px] z-20"
-      >
-        <div className="bg-[#18181B] border border-white/[0.12] rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.7)] hover:border-white/25 transition-all">
-          <FileText className="w-3.5 h-3.5 text-zinc-300" />
-          <span className="text-[11px] font-medium text-zinc-300">Tailor Resume</span>
-        </div>
-      </motion.div>
-
-      {/* ── Connected Node 5: Track Status (Top Left) ── */}
-      <motion.div
-        animate={{ y: [0, -3, 0] }}
-        transition={{ duration: 3.9, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
-        className="absolute top-[75px] left-[18px] sm:left-[32px] z-20"
-      >
-        <div className="bg-[#18181B] border border-white/[0.12] rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.7)] hover:border-white/25 transition-all">
-          <Activity className="w-3.5 h-3.5 text-zinc-300" />
-          <span className="text-[11px] font-medium text-zinc-300">Track Status</span>
-        </div>
-      </motion.div>
+      {/* ── Four Compact Floating Feature Labels ── */}
+      {nodes.map((node, i) => {
+        const Icon = node.icon;
+        return (
+          <motion.div
+            key={node.id}
+            initial={{ opacity: 0, y: 6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
+            className={`absolute ${node.pos} z-20 pointer-events-auto`}
+          >
+            <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#161618]/90 border border-white/[0.08] text-[10.5px] sm:text-[11.5px] font-medium text-zinc-300 shadow-[0_4px_16px_rgba(0,0,0,0.6)] hover:border-white/20 hover:text-white transition-colors duration-200">
+              <Icon className="w-3.5 h-3.5 text-zinc-400 shrink-0" strokeWidth={1.75} />
+              <span className="whitespace-nowrap">{node.label}</span>
+            </div>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }
+
 
 /* ─── CARD 2: CUSTOM KNOWLEDGE BASE (EXACT MATCH REFERENCE) ──────── */
 function VaultGraphic() {
@@ -485,39 +447,36 @@ export function SecondaryBento() {
       <div className="grid grid-cols-1 lg:grid-cols-[466fr_654fr] gap-4 md:gap-5 mb-4 md:mb-5 h-auto lg:h-[530px] items-stretch">
         {/* Card 1: Introducing Lumi */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
-          className="rounded-[28px] bg-[#121212] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.4)] hover:border-white/[0.16] transition-colors duration-300"
+          className="relative flex flex-col justify-between h-full p-4 sm:p-6 lg:p-7 overflow-hidden rounded-[28px]"
         >
-          {/* Header Row */}
-          <div className="flex items-center gap-3 px-7 py-4 border-b border-white/[0.08]">
-            <div className="w-[20px] h-[20px] rounded-[6px] overflow-hidden border border-white/25 shrink-0 bg-[#18181B] flex items-center justify-center">
-              <Image
-                src="/lumi-logo.png"
-                alt="Lumi"
-                width={20}
-                height={20}
-                className="w-full h-full object-cover"
-                unoptimized
-              />
-            </div>
-            <span className="text-[#e5e5e5] font-semibold text-[15px] tracking-tight">Introducing Lumi</span>
-          </div>
+          {/* Subtle ambient lighting for natural visual separation without heavy borders */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-40"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 60% at 50% 45%, rgba(255, 255, 255, 0.035) 0%, transparent 75%)",
+            }}
+          />
 
           {/* Visual Canvas */}
-          <div className="flex-1 relative overflow-hidden">
+          <div className="flex-1 relative flex items-center justify-center min-h-[280px]">
             <LumiAgentGraphic />
           </div>
 
-          {/* Bottom Text Area */}
-          <div className="px-7 pb-8 pt-3 border-t border-transparent relative z-20">
-            <h3 className="text-[18px] font-semibold text-white mb-2 tracking-tight">
-              Your AI job agent, working around the clock
+          {/* Typography & Content */}
+          <div className="mt-auto pt-4 relative z-20">
+            <p className="text-[12px] font-semibold tracking-wider uppercase text-zinc-400 mb-1.5">
+              Introducing Lumi
+            </p>
+            <h3 className="text-[18px] sm:text-[19px] font-semibold text-white tracking-tight mb-2">
+              Your AI job search, working in the background.
             </h3>
-            <p className="text-[14px] text-zinc-400 leading-[1.6]">
-              Lumi continuously searches for opportunities, optimizes your profile, and applies to matching roles — so you never miss a beat.
+            <p className="text-[13.5px] sm:text-[14px] text-zinc-400 leading-relaxed">
+              Lumi helps you discover relevant opportunities, evaluate your fit, prepare tailored applications, and keep your job search organized.
             </p>
           </div>
         </motion.div>
