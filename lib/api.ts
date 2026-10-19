@@ -1,6 +1,7 @@
 import axios from "axios";
+import { nextQuery, safeNext } from "./safe-redirect";
 
-const API_BASE =
+export const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ||
   (process.env.NODE_ENV === "production" ? "" : "http://localhost:8000");
 
@@ -27,7 +28,11 @@ api.interceptors.response.use(
       if (typeof window !== "undefined") {
         localStorage.removeItem("applivo_token");
         localStorage.removeItem("applivo_user");
-        window.location.href = "/login";
+        const path = window.location.pathname;
+        const isPublicPage = path === "/" || path === "/contact" || path === "/integrations" || path === "/pricing" || path.startsWith("/docs") || path === "/login" || path === "/register";
+        if (!isPublicPage) {
+          window.location.href = "/login" + nextQuery(safeNext(window.location.pathname + window.location.search));
+        }
       }
     }
     return Promise.reject(error);
@@ -295,4 +300,18 @@ export const schedulerApi = {
       return api.post(`/scheduler/jobs/${jobId}/pause`);
     }
   },
+};
+
+export interface ContactPayload {
+  first_name: string;
+  last_name: string;
+  email: string;
+  subject: string;
+  message: string;
+  website?: string;
+}
+
+export const contactApi = {
+  submit: (data: ContactPayload) =>
+    api.post<{ ok: boolean; message: string; id: string }>("/contact", data),
 };

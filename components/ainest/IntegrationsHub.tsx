@@ -1,342 +1,478 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { LayoutDashboard } from "lucide-react";
-
-/* ─── Integration Icons (job platforms & tools Applivo connects to) ─────── */
-const integrations = [
-  // Outer Arc
-  {
-    name: "LinkedIn",
-    bg: "#0077B5",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="white" className="w-6 h-6">
-        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-      </svg>
-    ),
-    angle: 110,
-    radius: "outer",
-    delay: 0,
-  },
-  {
-    name: "Telegram",
-    bg: "#0088CC",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="white" className="w-5 h-5 ml-0.5">
-        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.891 8.22l-1.912 9.03c-.135.6-.5.75-.991.45l-2.91-2.14-1.403 1.35c-.15.15-.3.3-.6.3l.18-2.535 4.61-4.162c.2-.18-.045-.285-.3-.12l-5.7 3.585-2.46-.773c-.54-.18-.555-.54.12-.81l9.585-3.69c.45-.165.84.105.675.87z" />
-      </svg>
-    ),
-    angle: 55,
-    radius: "outer",
-    delay: 0.4,
-  },
-  {
-    name: "Internshala",
-    bg: "#00A5EC",
-    icon: (
-      <div className="flex flex-col items-center justify-center leading-none">
-        <span className="text-white font-black text-[18px] tracking-tighter">IS</span>
-        <span className="text-white/60 text-[5px] font-bold tracking-widest uppercase mt-0.5">Official</span>
-      </div>
-    ),
-    angle: 140,
-    radius: "outer",
-    delay: 0.2,
-  },
-  {
-    name: "Gmail",
-    bg: "#EA4335",
-    icon: (
-       <svg viewBox="0 0 24 24" fill="white" className="w-5 h-5">
-         <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-       </svg>
-    ),
-    angle: 25,
-    radius: "outer",
-    delay: 0.6,
-  },
-  // Inner Arc
-  {
-    name: "Llama 3",
-    bg: "#0081fb",
-    icon: (
-      <img src="/assets/meta_logo_glossy.png" alt="Meta AI" className="w-[100%] h-[100%] object-contain" />
-    ),
-    angle: 95,
-    radius: "inner",
-    delay: 0.1,
-  },
-  {
-    name: "Resume",
-    bg: "#3b82f6",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" className="w-4 h-4">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" y1="13" x2="8" y2="13" />
-        <line x1="16" y1="17" x2="8" y2="17" />
-        <line x1="10" y1="9" x2="8" y2="9" />
-      </svg>
-    ),
-    angle: 145,
-    radius: "inner",
-    delay: 0.5,
-  },
-  {
-    name: "Ollama",
-    bg: "#8b5cf6",
-    icon: (
-      <img src="/assets/ollama_face.png" alt="Ollama" className="w-6 h-6 object-contain invert brightness-[100]" />
-    ),
-    angle: 42,
-    radius: "inner",
-    delay: 0.3,
-  },
-  {
-    name: "Submission",
-    bg: "#8b5cf6",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="white" className="w-5 h-5">
-        <path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-    angle: 80,
-    radius: "outer",
-    delay: 0.8,
-  },
-];
-
-/* ─── Helper: convert polar to cartesian, centered at bottom-center ──────── */
-function polarToCartesian(
-  angleDeg: number,
-  radiusPx: number,
-  cx: number,
-  cy: number
-) {
-  // 0° = right, 180° = left, 90° = top (we flip because SVG y is inverted)
-  const rad = ((180 - angleDeg) * Math.PI) / 180;
-  return {
-    x: cx + radiusPx * Math.cos(rad),
-    y: cy - radiusPx * Math.sin(rad),
-  };
-}
-
-const W = 900;
-const H = 440;
-const CX = W / 2;
-const CY = H + 30; // arc center below visible area — so only top half shows
-const R_OUTER = 340;
-const R_INNER = 220;
+import React, { useState, useMemo, useEffect } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Search, 
+  X, 
+  Sparkles, 
+  Send, 
+  Loader2, 
+  ArrowRight,
+  AlertCircle,
+  Puzzle
+} from "lucide-react";
+import { platformApi } from "@/lib/api";
+import { toast } from "sonner";
+import { 
+  INTEGRATION_REGISTRY, 
+  INTEGRATION_CATEGORIES, 
+  type IntegrationCategory 
+} from "@/lib/integrations/registry";
 
 export function IntegrationsHub() {
+  const [activeCategory, setActiveCategory] = useState<IntegrationCategory>("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [viewScope, setViewScope] = useState<"featured" | "all">("featured");
+
+  // Filtered catalog based on category, search, and viewScope
+  const filteredIntegrations = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+
+    return INTEGRATION_REGISTRY.filter((item) => {
+      const matchesCategory = activeCategory === "All" || item.category === activeCategory;
+      const matchesSearch =
+        !q ||
+        item.name.toLowerCase().includes(q) ||
+        item.description.toLowerCase().includes(q) ||
+        item.badge.toLowerCase().includes(q) ||
+        item.tag.toLowerCase().includes(q);
+
+      // If viewing "All" tab with no search query and "featured" scope is selected, show the 8 featured items
+      if (activeCategory === "All" && !q && viewScope === "featured") {
+        return item.featured && matchesSearch;
+      }
+
+      return matchesCategory && matchesSearch;
+    });
+  }, [activeCategory, searchQuery, viewScope]);
+
+  // Body scroll lock on request modal open
+  useEffect(() => {
+    if (showRequestModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showRequestModal]);
+
+  // Escape key handler
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setShowRequestModal(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Request form state
+  const [reqService, setReqService] = useState("");
+  const [reqUrl, setReqUrl] = useState("");
+  const [reqCategory, setReqCategory] = useState("Job Sources");
+  const [reqUseCase, setReqUseCase] = useState("");
+  const [reqEmail, setReqEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const handleRequestSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reqService.trim()) {
+      toast.error("Please enter the service name");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      await platformApi.requestIntegration({
+        service_name: reqService.trim(),
+        service_url: reqUrl.trim() || undefined,
+        category: reqCategory,
+        use_case: reqUseCase.trim() || undefined,
+        requester_email: reqEmail.trim() || undefined,
+      });
+      setSubmitSuccess(true);
+      toast.success("Integration request received. Our team will review API support.");
+      setTimeout(() => {
+        setSubmitSuccess(false);
+        setShowRequestModal(false);
+        setReqService("");
+        setReqUrl("");
+        setReqUseCase("");
+        setReqEmail("");
+      }, 1500);
+    } catch {
+      toast.error("Failed to submit request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <section className="bg-[#080808] py-24 px-6 relative z-10">
-      <div className="max-w-5xl mx-auto">
+    <section className="bg-[#0a0a0a] text-white py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 relative z-10 selection:bg-white/20">
+      <div className="max-w-[1200px] mx-auto">
 
-        {/* Section label */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <p className="text-white/80 text-[13px] font-semibold uppercase tracking-[0.1em] mb-3">Integrations</p>
-          <h2 className="text-[36px] md:text-[44px] font-bold text-white tracking-[-0.02em] leading-[1.15] mb-4">
-            Every job platform. One agent.
-          </h2>
-          <p className="text-[#666] text-[16px] max-w-[480px] mx-auto leading-[1.7]">
-            Applivo connects to all major job boards and ATS systems in seconds — no manual setup required.
-          </p>
-        </motion.div>
-
-        {/* Main card */}
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-2xl overflow-hidden border border-white/10 relative"
-          style={{
-            background: "linear-gradient(180deg, #0f0f0f 0%, #050505 100%)",
-            boxShadow: "0 20px 60px -20px rgba(255, 255, 255, 0.05)"
-          }}
-        >
-          {/* Card header */}
-          <div className="relative z-20 px-7 pt-7 pb-5">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-8 h-8 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center backdrop-blur-md">
-                <LayoutDashboard className="w-4 h-4 text-white" />
-              </div>
-              <h3 className="text-white text-[19px] font-semibold tracking-tight">Integrations and job platform hub</h3>
+        {/* ─── SECTION INTRODUCTION (MATCHING LANDING PAGE TYPOGRAPHY) ─── */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 border-b border-white/[0.06]">
+          
+          {/* Left-Aligned Header Block */}
+          <div className="max-w-2xl">
+            {/* Small uppercase category label with subtle marker */}
+            <div className="inline-flex items-center gap-2 mb-2.5 px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              Integrations &amp; Connectors
             </div>
-            <p className="text-[#888] text-[14px]">
-              Connect to any job board in minutes and trigger automated multi-platform applications automatically.
+
+            {/* Main Section Heading */}
+            <h2 className="k-h2 text-3xl sm:text-4xl md:text-[40px] font-bold text-white tracking-[-0.03em] leading-[1.15]">
+              Works with your<br className="hidden sm:inline" /> Entire Career Stack
+            </h2>
+
+            {/* Supporting Paragraph */}
+            <p className="mt-3 text-sm sm:text-base text-zinc-400 font-normal leading-relaxed max-w-xl">
+              Applivo integrates natively with verified job sources, interview calendars, and communication tools — powering discovery, application tracking, and automated scheduling.
             </p>
           </div>
 
-          {/* Stat pills */}
-          <div className="relative z-20 px-7 pb-6 grid grid-cols-2 gap-4">
-            {[
-              { label: "Connected platforms", value: "10+" },
-              { label: "Daily auto-applications", value: "+150/day" },
-            ].map((s) => (
-              <div
-                key={s.label}
-                className="rounded-xl border border-white/5 px-6 py-4 backdrop-blur-md relative overflow-hidden"
-                style={{ background: "rgba(255,255,255,0.02)" }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500" />
-                <p className="text-[#777] text-[12px] mb-1 uppercase tracking-wider">{s.label}</p>
-                <p className="text-white text-[28px] font-bold tracking-tight leading-none">{s.value}</p>
+          {/* Right-Aligned Action Buttons */}
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0">
+            {/* Request Integration Button */}
+            <button
+              onClick={() => {
+                setReqService("");
+                setShowRequestModal(true);
+              }}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-medium text-white bg-[#18181b] hover:bg-zinc-800 border border-white/10 hover:border-white/20 transition-all duration-200 active:scale-95 shadow-sm"
+            >
+              <Puzzle className="w-3.5 h-3.5 text-zinc-300" strokeWidth={2} />
+              Request integration
+            </button>
+
+            {/* Browse Catalog Button */}
+            <button
+              onClick={() => {
+                setActiveCategory("All");
+                setViewScope("all");
+                const el = document.getElementById("integration-grid-anchor");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-black bg-white hover:bg-zinc-200 transition-all duration-200 active:scale-95 shadow-sm"
+            >
+              Browse all {INTEGRATION_REGISTRY.length}
+              <ArrowRight className="w-3.5 h-3.5 text-black" />
+            </button>
+          </div>
+        </div>
+
+        {/* ─── CATALOG CONTROLS (CATEGORY TABS & SEARCH) ─── */}
+        <div id="integration-grid-anchor" className="pt-6 sm:pt-8">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 mb-5">
+            
+            {/* Category Pills */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+              {INTEGRATION_CATEGORIES.map((cat) => {
+                const count =
+                  cat === "All"
+                    ? INTEGRATION_REGISTRY.length
+                    : INTEGRATION_REGISTRY.filter((c) => c.category === cat).length;
+                const isActive = activeCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      setActiveCategory(cat);
+                      if (cat !== "All") setViewScope("all");
+                    }}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
+                      isActive 
+                        ? "bg-white text-black font-semibold shadow-sm" 
+                        : "bg-white/[0.04] text-zinc-400 hover:text-white hover:bg-white/[0.08] border border-white/[0.05]"
+                    }`}
+                  >
+                    {cat} <span className={isActive ? "text-zinc-600 ml-1 text-[11px]" : "text-zinc-500 ml-1 text-[11px]"}>{count}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Right Controls: View Scope Toggle (when All is selected) & Search */}
+            <div className="flex items-center gap-2.5">
+              {activeCategory === "All" && !searchQuery && (
+                <div className="hidden sm:inline-flex items-center p-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px]">
+                  <button
+                    onClick={() => setViewScope("featured")}
+                    className={`px-2.5 py-1 rounded-full transition-all duration-200 ${
+                      viewScope === "featured"
+                        ? "bg-white text-black font-semibold shadow-sm"
+                        : "text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Featured (8)
+                  </button>
+                  <button
+                    onClick={() => setViewScope("all")}
+                    className={`px-2.5 py-1 rounded-full transition-all duration-200 ${
+                      viewScope === "all"
+                        ? "bg-white text-black font-semibold shadow-sm"
+                        : "text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    All ({INTEGRATION_REGISTRY.length})
+                  </button>
+                </div>
+              )}
+
+              {/* Search Input */}
+              <div className="relative flex-1 sm:w-60 md:w-64">
+                <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search integrations…"
+                  className="w-full bg-[#121212] border border-white/[0.08] focus:border-white/30 rounded-full pl-9 pr-8 py-1.5 text-xs text-white placeholder-zinc-500 outline-none transition duration-200"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
+                    title="Clear search"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                )}
               </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* ─── EXACT 4-COLUMN RESPONSIVE CARD GRID ─── */}
+        {filteredIntegrations.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mt-2">
+            {filteredIntegrations.map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, delay: index * 0.02, ease: "easeOut" }}
+                className="group relative rounded-[20px] bg-[#121212] hover:bg-[#151515] border border-white/[0.08] hover:border-white/[0.2] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)]"
+              >
+                {/* Card Top: Official Logo */}
+                <div>
+                  <div className="mb-4">
+                    {/* Logo Container (Standardized 44x44 Box) */}
+                    <div className="w-11 h-11 rounded-xl bg-white/[0.04] border border-white/[0.08] group-hover:border-white/20 p-2 flex items-center justify-center shrink-0 transition-colors duration-300">
+                      <Image
+                        src={item.logo}
+                        alt={item.logoAlt}
+                        width={28}
+                        height={28}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Service Name */}
+                  <h3 className="text-[16px] font-semibold text-white tracking-tight mb-1.5 group-hover:text-white transition-colors">
+                    {item.name}
+                  </h3>
+
+                  {/* Short Description (Clean 2-line cap) */}
+                  <p className="text-[12.5px] text-zinc-400 leading-relaxed font-normal line-clamp-2">
+                    {item.description}
+                  </p>
+                </div>
+              </motion.div>
             ))}
           </div>
-
-          {/* Arc + Icons visualization */}
-          <div className="relative w-full overflow-hidden" style={{ height: H }}>
-
-            {/* Dot grid background */}
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.07) 1px, transparent 0)",
-                backgroundSize: "24px 24px",
+        ) : (
+          /* Empty Search State */
+          <div className="rounded-[20px] bg-[#121212] border border-white/[0.08] p-10 text-center my-6">
+            <AlertCircle className="w-8 h-8 text-zinc-500 mx-auto mb-2.5" />
+            <h3 className="text-base font-semibold text-white mb-1">No integrations found</h3>
+            <p className="text-xs text-zinc-400 max-w-sm mx-auto mb-5">
+              No results matching &ldquo;{searchQuery}&rdquo;. Request this integration and our team will prioritize its API connector.
+            </p>
+            <button
+              onClick={() => {
+                setReqService(searchQuery);
+                setShowRequestModal(true);
               }}
-            />
-
-            {/* Animated Radial glow bloom at center */}
-            <motion.div
-              className="absolute pointer-events-none"
-              animate={{ 
-                opacity: [0.6, 1, 0.6],
-                scale: [0.95, 1.05, 0.95]
-              }}
-              transition={{ duration: 6, ease: "easeInOut", repeat: Infinity }}
-              style={{
-                left: "50%",
-                bottom: "-80px",
-                transform: "translateX(-50%)",
-                width: 600,
-                height: 400,
-                background: "radial-gradient(ellipse at center bottom, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 45%, transparent 70%)",
-                filter: "blur(25px)",
-              }}
-            />
-            <div
-              className="absolute pointer-events-none"
-              style={{
-                left: "50%",
-                bottom: "-40px",
-                transform: "translateX(-50%)",
-                width: 300,
-                height: 200,
-                background: "radial-gradient(ellipse at center, rgba(255, 255, 255, 0.1) 0%, transparent 60%)",
-                filter: "blur(20px)",
-              }}
-            />
-
-            {/* SVG Arcs */}
-            <svg
-              className="absolute inset-0 w-full h-full"
-              viewBox={`0 0 ${W} ${H}`}
-              preserveAspectRatio="xMidYMax slice"
-              fill="none"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition"
             >
-              <defs>
-                <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="rgba(255, 255, 255, 0)" />
-                  <stop offset="50%" stopColor="rgba(255, 255, 255, 0.4)" />
-                  <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
-                </linearGradient>
-              </defs>
-              
-              {/* Outer arc */}
-              <motion.path
-                d={`M ${CX - R_OUTER} ${CY} A ${R_OUTER} ${R_OUTER} 0 0 1 ${CX + R_OUTER} ${CY}`}
-                stroke="url(#arcGrad)"
-                strokeWidth="2.5"
-                strokeDasharray="4 6"
-                animate={{ strokeDashoffset: [0, -100] }}
-                transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-              />
-              {/* Inner arc */}
-              <motion.path
-                d={`M ${CX - R_INNER} ${CY} A ${R_INNER} ${R_INNER} 0 0 1 ${CX + R_INNER} ${CY}`}
-                stroke="url(#arcGrad)"
-                strokeWidth="2"
-                strokeDasharray="3 5"
-                animate={{ strokeDashoffset: [0, 100] }}
-                transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
-              />
-            </svg>
-
-            {/* Integration Icons positioned along arcs */}
-            {integrations.map((intg, i) => {
-              const r = intg.radius === "outer" ? R_OUTER : R_INNER;
-              const iconSize = intg.radius === "outer" ? 54 : 44;
-              const pos = polarToCartesian(intg.angle, r, CX, CY);
-              const left = Math.round(pos.x);
-              const top = Math.round(pos.y);
-
-              return (
-                <motion.div
-                  key={intg.name}
-                  className="absolute"
-                  style={{
-                    left,
-                    top,
-                    transform: "translate(-50%, -50%)",
-                  }}
-                  initial={{ opacity: 0, scale: 0.6 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    delay: intg.delay + 0.3,
-                    duration: 0.5,
-                    type: "spring",
-                    stiffness: 200,
-                    damping: 18,
-                  }}
-                >
-                  <motion.div
-                    animate={{ y: [0, intg.delay % 2 === 0 ? -10 : 10, 0] }}
-                    transition={{
-                      duration: 4 + intg.delay,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      type: "tween",
-                      delay: intg.delay * 0.5,
-                    }}
-                    className="relative"
-                  >
-                    {/* Pulsing ring behind the icon */}
-                    <motion.div
-                      className="absolute inset-0 rounded-2xl pointer-events-none"
-                      style={{ border: `1px solid ${intg.bg}` }}
-                      animate={{ scale: [1, 1.3], opacity: [0.5, 0] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: intg.delay }}
-                    />
-                    
-                    <div
-                      className="relative rounded-2xl flex items-center justify-center shadow-2xl backdrop-blur-md"
-                      style={{
-                        width: iconSize,
-                        height: iconSize,
-                        background: `linear-gradient(135deg, ${intg.bg}EE, ${intg.bg}AA)`,
-                        boxShadow: `0 10px 40px ${intg.bg}88, inset 0 1px 0 rgba(255,255,255,0.2)`,
-                        border: "1px solid rgba(255,255,255,0.1)",
-                      }}
-                    >
-                      {intg.icon}
-                    </div>
-                  </motion.div>
-                </motion.div>
-              );
-            })}
+              <Puzzle className="w-3.5 h-3.5" strokeWidth={2} />
+              Request &ldquo;{searchQuery}&rdquo; integration
+            </button>
           </div>
-        </motion.div>
+        )}
+
       </div>
+
+      {/* ─── REQUEST INTEGRATION MODAL DIALOG ─── */}
+      <AnimatePresence>
+        {showRequestModal && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto"
+            onClick={() => setShowRequestModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-lg my-auto rounded-[22px] bg-[#141414] border border-white/[0.12] p-5 sm:p-6 text-white shadow-2xl max-h-[90vh] flex flex-col"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="request-modal-title"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setShowRequestModal(false)}
+                className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] transition z-10"
+                aria-label="Close dialog"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              <div className="mb-4 shrink-0 pr-8">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10 text-[10.5px] font-medium text-zinc-300 mb-1.5">
+                  <Puzzle className="w-3 h-3 text-zinc-300" strokeWidth={2} />
+                  Integration Request
+                </div>
+                <h3 id="request-modal-title" className="text-lg font-bold text-white tracking-tight">
+                  Request an integration
+                </h3>
+                <p className="text-xs text-zinc-400 mt-0.5">
+                  Tell us which job board, calendar, email provider, or AI tool you’d like Applivo to connect with.
+                </p>
+              </div>
+
+              {submitSuccess ? (
+                <div className="py-6 text-center space-y-2.5">
+                  <div className="w-10 h-10 rounded-full bg-white/[0.05] border border-white/10 text-white flex items-center justify-center mx-auto">
+                    <Sparkles className="w-5 h-5 text-zinc-200" />
+                  </div>
+                  <h4 className="text-sm font-semibold text-white">Request Received</h4>
+                  <p className="text-xs text-zinc-400 max-w-xs mx-auto">
+                    Thank you! Our engineering team logs every integration request and analyzes platform API availability.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleRequestSubmit} className="space-y-3 overflow-y-auto pr-1 -mr-1">
+                  {/* Row 1: Service Name & Category */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-zinc-300 mb-1">
+                        Service Name <span className="text-zinc-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={reqService}
+                        onChange={(e) => setReqService(e.target.value)}
+                        placeholder="e.g. Workable, USAJOBS"
+                        className="w-full bg-[#1c1c1f] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none transition"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-zinc-300 mb-1">Category</label>
+                      <select
+                        value={reqCategory}
+                        onChange={(e) => setReqCategory(e.target.value)}
+                        className="w-full bg-[#1c1c1f] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white outline-none transition cursor-pointer"
+                      >
+                        <option value="Job Sources">Job Source (Job Board / ATS)</option>
+                        <option value="Connected Services">Connected Service (Calendar / Mail / App)</option>
+                        <option value="Built-in Capabilities">AI Model / System Feature</option>
+                        <option value="Other">Other Connection</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Row 2: Website / Docs URL & Email */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-medium text-zinc-300 mb-1">
+                        Service Website / Docs <span className="text-zinc-500 font-normal">(optional)</span>
+                      </label>
+                      <input
+                        type="url"
+                        value={reqUrl}
+                        onChange={(e) => setReqUrl(e.target.value)}
+                        placeholder="https://example.com"
+                        className="w-full bg-[#1c1c1f] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none transition"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-medium text-zinc-300 mb-1">
+                        Your Email <span className="text-zinc-500 font-normal">(for launch updates)</span>
+                      </label>
+                      <input
+                        type="email"
+                        value={reqEmail}
+                        onChange={(e) => setReqEmail(e.target.value)}
+                        placeholder="you@domain.com"
+                        className="w-full bg-[#1c1c1f] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none transition"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 3: Desired Workflow or Use Case */}
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-300 mb-1">
+                      Desired Workflow or Use Case <span className="text-zinc-500 font-normal">(optional)</span>
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={reqUseCase}
+                      onChange={(e) => setReqUseCase(e.target.value)}
+                      placeholder="What should Applivo do with this integration? (e.g. sync interview rounds, import portfolio)"
+                      className="w-full bg-[#1c1c1f] border border-white/10 focus:border-white/30 rounded-xl p-2.5 text-xs text-white placeholder-zinc-500 outline-none transition resize-none"
+                    />
+                  </div>
+
+                  {/* Submit and Cancel buttons */}
+                  <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-white/[0.06] mt-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowRequestModal(false)}
+                      className="px-3.5 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] transition"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-black bg-white hover:bg-zinc-200 transition disabled:opacity-60"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          Submitting…
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-3.5 h-3.5" />
+                          Submit Request
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

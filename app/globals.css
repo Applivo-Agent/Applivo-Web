@@ -53,6 +53,61 @@
   --surface-border-hover: rgba(255, 255, 255, 0.12);
 }
 
+
+/* ============================================
+   LANDING DESIGN SYSTEM
+   Every value below was measured on the reference site (computed styles via a headless browser, 1440px viewport):
+   page #0a0a0a, surface #121212, text #fff / #a1a1a1 / #737373 / #404040, accent #0787ff, Inter 400-700,
+   h1 56/56 600 -2px, h2 48/48 600 -1.5px, h3 40/40 600 -1px, eyebrow 12/14 600 +.5px caps,
+   buttons 12px radius 12px 16px, nav 60px with blur(20px), container 1200px with 32px gutters,
+   sections 128px/96px vertical padding, cards #121212 radius 24, integration cards gradient radius 16.
+   ============================================ */
+:root {
+  --k-bg: #0a0a0a;
+  --k-surface: #121212;
+  --k-text: #ffffff;
+  --k-muted: #a1a1a1;
+  --k-dim: #737373;
+  --k-faint: #404040;
+  --k-accent: #0787ff;
+  --k-accent-glow: rgba(43, 149, 255, 0.3);
+  --k-container: 1200px;
+  --k-gutter: 32px;
+}
+.k-container { max-width: var(--k-container); margin: 0 auto; padding-left: var(--k-gutter); padding-right: var(--k-gutter); width: 100%; }
+.k-section { padding-top: 128px; padding-bottom: 128px; }
+.k-h1 { font-size: var(--fs-hero); line-height: 1.1; font-weight: var(--fw-heading); letter-spacing: -0.025em; }
+.k-h2 { font-size: var(--fs-display); line-height: 1.15; font-weight: var(--fw-heading); letter-spacing: -0.02em; color: #fff; }
+.k-h3 { font-size: var(--fs-title); line-height: 1.2; font-weight: var(--fw-heading); letter-spacing: -0.015em; color: #fff; }
+.k-eyebrow { font-size: var(--fs-meta); line-height: 14px; font-weight: var(--fw-heading); letter-spacing: 0.5px; text-transform: uppercase; color: var(--k-muted); }
+.k-body { font-size: var(--fs-heading); line-height: 24px; font-weight: var(--fw-ui); color: var(--k-muted); }
+.k-card-title { font-size: var(--fs-heading); line-height: 22px; font-weight: var(--fw-heading); color: #fff; }
+.k-header { background: rgba(10, 10, 10, 0.5); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+.k-navlink { font-size: var(--fs-base); line-height: 16px; font-weight: var(--fw-ui); color: var(--k-muted); padding: 10px 16px; border-radius: 12px; transition: color .2s; }
+.k-navlink:hover { color: #fff; }
+.k-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 16px; border-radius: 12px; font-size: var(--fs-base); line-height: 18px; font-weight: var(--fw-heading); transition: transform .15s, background-color .2s, opacity .2s; }
+.k-btn:active { transform: scale(0.97); }
+.k-btn-primary { background: var(--k-accent); color: #fff; box-shadow: rgba(255, 255, 255, 0.3) 0 1px 0 1px inset, var(--k-accent-glow) 0 6px 12px 0; }
+.k-btn-primary:hover { background: #2b95ff; }
+.k-btn-secondary { background: var(--k-surface); color: var(--k-muted); }
+.k-btn-secondary:hover { color: #fff; background: #1a1a1a; }
+.k-pill-light { display: inline-flex; align-items: center; padding: 10px 12px; border-radius: 10px; background: #e5e5e5; color: var(--k-faint); font-size: var(--fs-base); line-height: 16px; font-weight: var(--fw-heading); box-shadow: rgba(255, 255, 255, 0) 0 6px 12px 0; transition: background-color .2s; }
+.k-pill-light:hover { background: #fff; }
+.k-badge { display: inline-flex; align-items: center; gap: 12px; padding: 4px; border-radius: 99px; background: var(--k-bg); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); color: #fff; font-size: var(--fs-base); line-height: 16px; font-weight: var(--fw-ui); }
+.k-badge-tag { padding: 4px 8px; border-radius: 99px; background: rgba(7, 135, 255, 0.15); box-shadow: inset 0 0 0 1px rgba(7, 135, 255, 0.35); color: var(--k-accent); font-size: 12px; line-height: 14px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+.k-card { background: var(--k-surface); border-radius: 24px; }
+.k-card-grad { background: linear-gradient(var(--k-surface) 0%, var(--k-bg) 100%); border-radius: 16px; padding: 32px; box-shadow: rgba(10, 10, 10, 0.5) 0 16px 24px 0; }
+.k-prompt-outer { background: rgba(10, 10, 10, 0.2); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); border-radius: 24px; padding: 8px; box-shadow: rgba(10, 10, 10, 0.5) 0 16px 32px 0; }
+.k-prompt-inner { background: var(--k-surface); border-radius: 18px; padding: 12px; box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.02); }
+.k-gradient-section { background-image: linear-gradient(var(--k-surface) 0%, var(--k-bg) 30%); }
+@media (max-width: 809px) {                       /* the reference's mobile scale: h1 36/44/-1px, h2 32/36/-.5px, 54px header */
+  .k-container { padding-left: 20px; padding-right: 20px; }
+  .k-section { padding-top: 96px; padding-bottom: 96px; }
+  .k-h1 { font-size: 32px; letter-spacing: -0.02em; }
+  .k-h2 { font-size: 24px; }
+  .k-h3 { font-size: 20px; }
+}
+
 /* ============================================
    BASE
    ============================================ */
@@ -66,9 +121,9 @@ html {
 }
 
 body {
-  background: var(--surface-1);
+  background: var(--k-bg);
   color: #e5e5e5;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -225,18 +280,29 @@ svg.animate-spin {
 }
 
 .animate-marquee {
-  animation: marquee 30s linear infinite;
+  animation: marquee 32s linear infinite;
   will-change: transform;
 }
 
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none;
+  }
+}
+
 .animate-marquee-reverse {
-  animation: marquee-reverse 30s linear infinite;
+  animation: marquee-reverse 32s linear infinite;
 }
 
 .marquee-container {
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
 }
 
 /* ============================================
@@ -262,100 +328,122 @@ svg.animate-spin {
 /* ============================================
    DASHBOARD CONSISTENCY TOKENS
    ============================================ */
-.dash-page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.dash-header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.dash-title {
-  font-size: 1.5rem;
-  line-height: 1.2;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: #ffffff;
-}
-
-.dash-subtitle {
-  font-size: 0.875rem;
-  line-height: 1.4;
-  font-weight: 500;
-  color: #a1a1aa;
-}
-
-.dash-card {
-  background: #1c1c1e;
-  border: 1px solid #27272a;
-  border-radius: 0.75rem;
-  padding: 1rem;
-}
-
-.dash-stat-card {
-  background: #1c1c1e;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem;
-  padding: 0.75rem;
-}
-
-.dash-label {
-  font-size: 0.625rem;
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #a1a1aa;
-}
-
-.dash-value {
-  font-size: 1.5rem;
-  line-height: 1.2;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: #ffffff;
-}
+.dash-page { display: flex; flex-direction: column; gap: var(--app-gap); min-height: 0; }
+.dash-header { display: flex; flex-direction: column; gap: 4px; }
+.dash-title { font-size: var(--fs-title); line-height: 28px; font-weight: var(--fw-title); letter-spacing: -0.01em; color: #fff; }
+.dash-subtitle { font-size: var(--fs-base); line-height: 20px; font-weight: 400; color: var(--app-text-dim); }
+.dash-card { background: var(--app-card); border: 1px solid var(--app-border-strong); border-radius: 8px; padding: 20px; }
+.dash-stat-card { background: var(--app-card); border: 1px solid var(--app-border-strong); border-radius: 8px; padding: 16px; }
+.dash-label { font-size: var(--fs-meta); line-height: 16px; font-weight: var(--fw-ui); color: var(--app-text-dim); }
+.dash-value { font-size: var(--fs-metric); line-height: 32px; font-weight: var(--fw-heading); letter-spacing: -0.01em; color: #fff; }
 
 /* Dashboard font style alignment with sidebar navigation */
-.dashboard-typography {
-  font-family: 'Outfit', sans-serif;
+/* ============================================
+   AUTHENTICATED APP DESIGN SYSTEM
+   Colours are pixel samples from the supplied Runpod screenshots (sampled with PIL, not guessed):
+     sidebar / header / dropdown #181818   page #111111   card #181818 (hub card shade #1b1b1d)
+     card border #2d2d2f   divider #212121 / #1f1f1f   active nav row #2c2c2e   segmented control #262627 / #303030
+   Type follows the same screenshots: 13px UI text (nav "Serverless" measures ~63-68 logical px), 22px page title,
+   32px nav rows, ~52px header, 32px avatar.
+   ============================================ */
+:root {
+  --app-sidebar: #181818;
+  --app-header: #181818;
+  --app-bg: #111111;
+  --app-card: #181818;
+  --app-nested: #1b1b1d;
+  --app-inset: #1b1b1d;
+  --app-menu: #181818;
+  --app-border: #212121;
+  --app-border-strong: #2d2d2f;
+  --app-hover: #222223;
+  --app-active: #2c2c2e;
+  --app-text: #d6d6d8;
+  --app-text-dim: #8f8f94;
+  --app-sidebar-w: 232px;
+  --app-sidebar-w-collapsed: 56px;
+  --app-header-h: 52px;
+  --app-pad: 24px;
+  --app-gap: 20px;
+  --fs-title: 22px;   /* page title */
+  --fs-heading: 15px; /* card / section heading */
+  --fs-metric: 24px;  /* big numbers */
+  --fs-base: 13px;    /* nav, body, buttons, menus */
+  --fs-meta: 12px;    /* helper text, badges */
+  /* Weights follow Runpod: light headings, regular UI text, medium only for emphasis */
+  --fw-title: 400;
+  --fw-heading: 500;
+  --fw-strong: 500;
+  --fw-ui: 400;
+  /* Landing-only additions, derived from the same scale: hero = title x 1.8, display = title x 1.27 */
+  --fs-hero: 40px;
+  --fs-display: 28px;
 }
 
-.dashboard-typography h1,
+.dashboard-typography {
+  font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+  font-size: var(--fs-base);
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+}
+.dashboard-typography { font-weight: var(--fw-ui); }
+.dashboard-typography h1 { font-weight: var(--fw-title); letter-spacing: -0.01em; }
 .dashboard-typography h2,
 .dashboard-typography h3,
-.dashboard-typography h4 {
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.dashboard-typography p,
-.dashboard-typography span,
-.dashboard-typography button,
-.dashboard-typography label,
-.dashboard-typography a,
-.dashboard-typography li,
-.dashboard-typography input,
-.dashboard-typography select,
-.dashboard-typography textarea {
-  font-weight: 500;
-  letter-spacing: 0;
-}
-
+.dashboard-typography h4,
+.dashboard-typography h5 { font-weight: var(--fw-heading); letter-spacing: -0.01em; }
+/* Utility weights used by pages are mapped onto the lighter scale in one place. */
 .dashboard-typography .font-black,
+.dashboard-typography .font-extrabold,
 .dashboard-typography .font-bold,
-.dashboard-typography .font-semibold {
-  font-weight: 600 !important;
-}
+.dashboard-typography .font-semibold { font-weight: var(--fw-strong) !important; }
+.dashboard-typography .font-medium { font-weight: var(--fw-ui) !important; }
 
-.dashboard-typography .font-medium {
-  font-weight: 500 !important;
-}
+/* Type roles for new code */
+.app-title   { font-size: var(--fs-title); line-height: 28px; font-weight: var(--fw-title); color: #fff; letter-spacing: -0.01em; }
+.app-heading { font-size: var(--fs-heading); line-height: 22px; font-weight: var(--fw-heading); color: #fff; }
+.app-body    { font-size: var(--fs-base); line-height: 20px; color: var(--app-text-dim); }
+.app-meta    { font-size: var(--fs-meta); line-height: 16px; color: var(--app-text-dim); }
+.app-card    { background: var(--app-card); border: 1px solid var(--app-border-strong); border-radius: 8px; padding: 20px; }
+
+/* Page titles share one size token (h1 only; body text sizes are left to each component). */
+.dashboard-typography h1.text-2xl, .dashboard-typography h1.text-3xl, .dashboard-typography h1.text-4xl { font-size: var(--fs-title); line-height: 28px; font-weight: var(--fw-title); }
+
+/* Floor for the old micro-labels (9-10px) so nothing falls below a readable size; everything else keeps Tailwind sizes. */
+.dashboard-typography [class*="text-[9px]"],
+.dashboard-typography [class*="text-[10px]"] { font-size: var(--fs-meta); line-height: 16px; }
+.dashboard-typography .uppercase { text-transform: none; }
+.dashboard-typography [class*="tracking-widest"],
+.dashboard-typography [class*="tracking-wider"],
+.dashboard-typography [class*="tracking-tighter"],
+.dashboard-typography [class*="tracking-[0."] { letter-spacing: 0 !important; }
+.dashboard-typography [class*="rounded-[32px]"],
+.dashboard-typography [class*="rounded-[28px]"],
+.dashboard-typography [class*="rounded-[24px]"],
+.dashboard-typography [class*="rounded-[20px]"],
+.dashboard-typography .rounded-3xl,
+.dashboard-typography .rounded-2xl { border-radius: 8px; }
+.dashboard-typography .italic { font-style: normal; }
+
+/* Shared app controls */
+.app-search { display: flex; height: 32px; align-items: center; gap: 8px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--app-border-strong); background: transparent; color: var(--app-text-dim); transition: border-color .15s; }
+.app-search:focus-within { border-color: rgba(255,255,255,0.35); }
+.app-scroll { scrollbar-width: thin; scrollbar-color: #2d2d2f transparent; overscroll-behavior: contain; }
+.app-scroll::-webkit-scrollbar { width: 6px; }
+.app-scroll::-webkit-scrollbar-thumb { background: #2d2d2f; border-radius: 3px; }
+.app-icon-btn { display: inline-flex; height: 32px; width: 32px; align-items: center; justify-content: center; border-radius: 6px; color: var(--app-text-dim); transition: background-color .15s, color .15s; outline: none; }
+.app-icon-btn:hover { background: var(--app-hover); color: #fff; }
+.app-icon-btn:focus-visible, .app-btn:focus-visible, .app-menu-item:focus-visible, .app-nav-item:focus-visible { box-shadow: 0 0 0 2px rgba(255,255,255,0.35); }
+.app-btn { display: inline-flex; height: 32px; align-items: center; gap: 8px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--app-border-strong); background: transparent; color: var(--app-text); font-size: var(--fs-base); font-weight: var(--fw-ui); line-height: 20px; transition: background-color .15s, border-color .15s; outline: none; white-space: nowrap; }
+.app-btn:hover { background: var(--app-hover); }
+.app-btn-accent { background: #ececec; border-color: #ececec; color: #111; }
+.app-btn-accent:hover { background: #fff; }
+.app-menu-item { display: flex; height: 34px; align-items: center; gap: 10px; padding: 0 10px; border-radius: 6px; color: var(--app-text); font-size: var(--fs-base); font-weight: 400; cursor: pointer; outline: none; transition: background-color .12s; }
+.app-menu-item:hover, .app-menu-item:focus-visible { background: var(--app-hover); }
+.app-nav-item { position: relative; display: flex; height: 32px; align-items: center; gap: 10px; padding: 0 10px; border-radius: 6px; color: var(--app-text-dim); font-size: var(--fs-base); font-weight: 400; line-height: 20px; outline: none; transition: background-color .12s, color .12s; }
+.app-nav-item:hover { background: var(--app-hover); color: var(--app-text); }
+.app-nav-item[aria-current="page"] { background: var(--app-active); color: #fff; }
+.app-nav-label { padding: 0 10px; margin-bottom: 4px; font-size: var(--fs-meta); font-weight: 400; line-height: 16px; color: #78787d; }
 
 /* ============================================
    ANIMATIONS
@@ -567,3 +655,55 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: white !important;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+/* ============================================
+   DOCUMENTATION PORTAL (/docs)
+   Measured from the Linear Docs screenshots (scale ~1.39x): page and sidebar #080a0b, cards #161616, card border #222222,
+   dividers #242627, sidebar ~273px, header ~61px, article column ~635px, right outline at ~1090px, 36px title, 16px body.
+   ============================================ */
+.docs {
+  --docs-bg: #080809;
+  --docs-card: #111113;
+  --docs-border: rgba(255, 255, 255, 0.08);
+  --docs-border-strong: rgba(255, 255, 255, 0.16);
+  --docs-text: #f4f4f5;
+  --docs-muted: #a1a1aa;
+  --docs-sidebar-w: 240px;
+  --docs-header-h: 52px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.docs .docs-title { font-size: 34px; line-height: 42px; font-weight: 600; letter-spacing: -0.025em; color: #fff; }
+.docs .docs-lead { margin-top: 12px; font-size: 15.5px; line-height: 26px; color: var(--docs-muted); }
+.docs .docs-h2 { margin-top: 48px; margin-bottom: 12px; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.015em; color: #fff; scroll-margin-top: 72px; }
+.docs .docs-h3 { margin-top: 28px; margin-bottom: 8px; font-size: 15.5px; line-height: 24px; font-weight: 600; color: #fff; scroll-margin-top: 72px; }
+.docs .docs-p { margin-top: 12px; font-size: 14.5px; line-height: 25px; color: #d4d4d8; }
+.docs .docs-list { margin-top: 10px; padding-left: 20px; font-size: 14.5px; line-height: 24px; color: #d4d4d8; }
+.docs .docs-list li { margin-top: 5px; padding-left: 2px; }
+.docs .docs-list li::marker { color: var(--docs-dim); }
+.docs .docs-media { overflow: hidden; border-radius: 12px; border: 1px solid var(--docs-border); background: #0c0c0e; max-width: 100%; }
+.docs .docs-pn:focus-visible { outline: 2px solid rgba(255,255,255,0.4); }
+@media (max-width: 640px) {
+  .docs .docs-title { font-size: 28px; line-height: 36px; }
+  .docs .docs-h2 { font-size: 19px; line-height: 26px; }
+}
+@media (prefers-reduced-motion: reduce) { .docs * { transition: none !important; scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+
+/* ============================================
+   LANDING TYPOGRAPHY (public pages)
+   Same family, weight tokens and size tokens as the signed-in dashboard (--fs-*, --fw-*). Layout, cards, radii and
+   motion stay Kilo-derived and are not touched here.
+   ============================================ */
+.landing-typography { font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; font-size: var(--fs-base); line-height: 20px; font-weight: var(--fw-ui); -webkit-font-smoothing: antialiased; }
+.landing-typography h1 { font-weight: var(--fw-heading); letter-spacing: -0.025em; }
+.landing-typography h2,
+.landing-typography h3,
+.landing-typography h4 { font-weight: var(--fw-heading); letter-spacing: -0.015em; }
+.landing-typography .font-black,
+.landing-typography .font-extrabold,
+.landing-typography .font-bold,
+.landing-typography .font-semibold { font-weight: var(--fw-strong) !important; }
+.landing-typography .font-medium { font-weight: var(--fw-ui) !important; }

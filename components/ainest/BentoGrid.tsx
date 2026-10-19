@@ -46,9 +46,9 @@ function ResumeBuilderCard() {
   }, [activeTab]);
 
   return (
-    <div className="rounded-2xl bg-[#111111] border border-[#222222] overflow-hidden p-0 shadow-2xl">
+    <div className="rounded-[24px] bg-[#121212] border border-white/[0.08] overflow-hidden p-0 shadow-2xl">
       {/* Icon Tabs */}
-      <div className="flex items-center gap-0 border-b border-[#1e1e1e] px-4 pt-4 pb-0">
+      <div className="flex items-center gap-0 border-b border-white/[0.08] px-4 pt-4 pb-0">
         {resumeTabs.map((tab) => (
           <button
             key={tab.id}
@@ -56,11 +56,11 @@ function ResumeBuilderCard() {
             className={`flex flex-col items-center gap-2 px-4 pb-4 pt-2 transition-all border-b-2 -mb-px ${
               activeTab === tab.id
                 ? "border-[#ffffff] text-white"
-                : "border-transparent text-[#555] hover:text-[#888]"
+                : "border-transparent text-[#555] hover:text-[#a1a1a1]"
             }`}
           >
             <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors ${
-              activeTab === tab.id ? "bg-[#ffffff]/20" : "bg-[#1a1a1a]"
+              activeTab === tab.id ? "bg-[#ffffff]/20" : "bg-[#121212]"
             }`}>
               {tab.icon}
             </div>
@@ -71,12 +71,12 @@ function ResumeBuilderCard() {
 
       {/* Input Area */}
       <div className="p-5">
-        <div className="rounded-xl border border-[#2a2a2a] bg-[#0d0d0d] p-4 flex items-center gap-3 min-h-[72px]">
-          <p className="text-[#888] text-[14px] flex-1 leading-relaxed">
+        <div className="rounded-xl border border-white/[0.08] bg-[#121212] p-4 flex items-center gap-3 min-h-[72px]">
+          <p className="text-[#a1a1a1] text-[length:var(--fs-base)] flex-1 leading-relaxed">
             {displayedText}
             {isTyping && <span className="text-[#ffffff] ml-0.5 animate-pulse">|</span>}
           </p>
-          <button className="ml-auto w-9 h-9 rounded-xl bg-[#ffffff] hover:bg-[#38bdf8] flex items-center justify-center transition-colors shrink-0 opacity-100 cursor-pointer">
+          <button className="ml-auto w-9 h-9 rounded-xl bg-white hover:bg-zinc-200 flex items-center justify-center transition-colors shrink-0 opacity-100 cursor-pointer">
             <Send className="w-4 h-4 text-[#0d0d0d]" />
           </button>
         </div>
@@ -96,8 +96,8 @@ function JobMatchCard() {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <div className="rounded-2xl bg-[#111111] border border-[#222222] overflow-hidden shadow-2xl">
-      <div className="px-5 pt-5 pb-2 border-b border-[#1e1e1e]">
+    <div className="rounded-[24px] bg-[#121212] border border-white/[0.08] overflow-hidden shadow-2xl">
+      <div className="px-5 pt-5 pb-2 border-b border-white/[0.08]">
         <p className="text-[11px] uppercase tracking-[0.1em] text-[#555] font-medium">AI Job Match Score</p>
       </div>
       <div className="divide-y divide-[#1a1a1a]">
@@ -109,35 +109,35 @@ function JobMatchCard() {
             className="flex items-center gap-4 px-5 py-4 transition-colors cursor-pointer"
             animate={{ backgroundColor: hovered === i ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0)" }}
           >
-            <div className="w-9 h-9 rounded-lg bg-[#1a1a1a] border border-[#2a2a2a] flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-lg bg-[#121212] border border-white/[0.08] flex items-center justify-center shrink-0">
               <Briefcase className="w-4 h-4 text-[#666]" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-semibold text-white truncate">{job.title}</p>
+              <p className="text-[length:var(--fs-base)] font-semibold text-white truncate">{job.title}</p>
               <p className="text-[11px] text-[#555]">{job.company} · {job.salary}</p>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#555]">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#121212] border border-white/[0.08] text-[#555]">
                 {job.tag}
               </span>
               <div className="flex items-center gap-1.5">
-                <div className="w-20 h-1.5 rounded-full bg-[#1a1a1a] overflow-hidden">
+                <div className="w-20 h-1.5 rounded-full bg-[#121212] overflow-hidden">
                   <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-[#ffffff] to-[#38bdf8]"
+                    className="h-full rounded-full bg-gradient-to-r from-zinc-400 to-white"
                     initial={{ width: 0 }}
                     whileInView={{ width: `${job.match}%` }}
                     viewport={{ once: true }}
                     transition={{ duration: 1, delay: i * 0.1 }}
                   />
                 </div>
-                <span className="text-[12px] font-bold text-[#ffffff]">{job.match}%</span>
+                <span className="text-[length:var(--fs-meta)] font-bold text-[#ffffff]">{job.match}%</span>
               </div>
             </div>
           </motion.div>
         ))}
       </div>
       <div className="px-5 py-4">
-        <button className="w-full flex items-center justify-center gap-2 text-[13px] text-[#ffffff] hover:text-[#38bdf8] transition-colors py-2 rounded-xl border border-[#2a2a2a] hover:border-[#ffffff]/40">
+        <button className="w-full flex items-center justify-center gap-2 text-[length:var(--fs-base)] text-zinc-300 hover:text-white transition-colors py-2 rounded-xl border border-white/[0.08] hover:border-white/20">
           View all matches <ChevronRight className="w-3.5 h-3.5" />
         </button>
       </div>
@@ -155,8 +155,8 @@ const analyticsData = [
 
 function AnalyticsCard() {
   return (
-    <div className="rounded-2xl bg-[#111111] border border-[#222222] overflow-hidden shadow-2xl">
-      <div className="px-5 pt-5 pb-2 border-b border-[#1e1e1e] flex items-center justify-between">
+    <div className="rounded-[24px] bg-[#121212] border border-white/[0.08] overflow-hidden shadow-2xl">
+      <div className="px-5 pt-5 pb-2 border-b border-white/[0.08] flex items-center justify-between">
         <p className="text-[11px] uppercase tracking-[0.1em] text-[#555] font-medium">Campaign Analytics</p>
         <span className="text-[11px] text-[#ffffff] font-medium">Live ●</span>
       </div>
@@ -164,7 +164,7 @@ function AnalyticsCard() {
         {analyticsData.map((item, i) => (
           <div key={i} className="p-5">
             <p className="text-[11px] text-[#555] mb-1">{item.metric}</p>
-            <p className="text-[24px] font-bold text-white tracking-tight">{item.value}</p>
+            <p className="text-[length:var(--fs-title)] font-bold text-white tracking-tight">{item.value}</p>
             <div className="flex items-center gap-1 mt-1">
               <TrendingUp className="w-3 h-3 text-[#22c55e]" />
               <span className="text-[11px] text-[#22c55e] font-medium">{item.change}</span>
@@ -173,9 +173,9 @@ function AnalyticsCard() {
         ))}
       </div>
       <div className="px-5 py-4">
-        <div className="h-[3px] bg-[#1a1a1a] rounded-full overflow-hidden">
+        <div className="h-[3px] bg-[#121212] rounded-full overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-[#ffffff] to-[#38bdf8] rounded-full"
+            className="h-full bg-gradient-to-r from-zinc-500 to-white rounded-full"
             initial={{ width: "0%" }}
             whileInView={{ width: "68%" }}
             viewport={{ once: true }}
@@ -223,14 +223,14 @@ function FeatureRow({ label, title, body, card, reverse = false, delay = 0 }: Fe
         transition={{ duration: 0.7, delay: delay + 0.1, ease: [0.16, 1, 0.3, 1] }}
         className="flex-1 min-w-0"
       >
-        <p className="text-[#ffffff] text-[13px] font-semibold mb-4 tracking-wide uppercase">{label}</p>
-        <h3 className="text-[36px] md:text-[42px] font-bold text-white leading-[1.15] tracking-[-0.02em] mb-5">
+        <p className="text-[#ffffff] text-[length:var(--fs-base)] font-semibold mb-4 tracking-wide uppercase">{label}</p>
+        <h3 className="text-[length:var(--fs-title)] md:text-[length:var(--fs-title)] font-semibold text-white leading-[1.15] tracking-[-0.02em] mb-5">
           {title}
         </h3>
-        <p className="text-[16px] text-[#888] leading-[1.7] max-w-[440px]">{body}</p>
+        <p className="text-[length:var(--fs-base)] text-[#a1a1a1] leading-[1.7] max-w-[440px]">{body}</p>
         <motion.a
           href="/register"
-          className="inline-flex items-center gap-2 mt-8 text-[14px] font-medium text-white hover:text-[#ffffff] transition-colors group"
+          className="inline-flex items-center gap-2 mt-8 text-[length:var(--fs-base)] font-medium text-white hover:text-[#ffffff] transition-colors group"
           whileHover={{ x: 4 }}
           transition={{ type: "spring", stiffness: 400, damping: 25 }}
         >
@@ -245,8 +245,8 @@ function FeatureRow({ label, title, body, card, reverse = false, delay = 0 }: Fe
 /* ─── MAIN EXPORT ─────────────────────────────────────────────── */
 export function BentoGrid() {
   return (
-    <section className="bg-[#080808] px-6 relative z-10">
-      <div className="max-w-6xl mx-auto flex flex-col gap-28">
+    <section className="bg-[#0a0a0a] px-4 sm:px-6 relative z-10">
+      <div className="max-w-[1160px] mx-auto flex flex-col gap-24">
 
         <FeatureRow
           label="AI Resume Intelligence"

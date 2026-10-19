@@ -17,7 +17,7 @@ const miniFeatures = [
 
 export function AppFeaturesGrid() {
   return (
-    <section className="bg-[#050505] py-24 px-6 relative z-10 border-b border-zinc-900/50">
+    <section className="bg-[#0a0a0a] py-24 px-6 relative z-10 border-b border-zinc-900/50">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -25,7 +25,7 @@ export function AppFeaturesGrid() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl font-medium tracking-tight text-white mb-4">
+          <h2 className="text-[length:var(--fs-title)] font-medium tracking-tight text-white mb-4">
             Everything you need
           </h2>
           <p className="text-[#a1a1aa]">Powerful AI models driving your job applications</p>
@@ -39,10 +39,10 @@ export function AppFeaturesGrid() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.05 }}
-              className="flex items-center gap-4 bg-[#1c1c1e] border border-[#1a1a1a] rounded-2xl p-5 hover:bg-[#111] transition-colors cursor-default"
+              className="flex items-center gap-4 bg-[#1c1c1e] border border-white/[0.08] rounded-2xl p-5 hover:bg-[#121212] transition-colors cursor-default"
             >
               {feat.icon}
-              <span className="text-zinc-300 font-medium text-sm">{feat.text}</span>
+              <span className="text-zinc-300 font-medium text-[length:var(--fs-base)]">{feat.text}</span>
             </motion.div>
           ))}
         </div>

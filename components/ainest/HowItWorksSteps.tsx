@@ -2,485 +2,597 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import {
-  FileText, Link2, Zap,
-  BarChart2, Briefcase,
-  User, Target,
-  Clock, TrendingUp,
-  Cpu, CheckCircle2, FileSearch, Share2, Brain, ShieldCheck, Globe, Bell
+  Compass,
+  CheckCircle2,
+  FileText,
+  Layers,
+  BarChart3,
+  MapPin,
+  Briefcase,
+  Search,
+  Building2,
+  Calendar,
+  Lock,
+  Sparkles,
+  SlidersHorizontal,
+  Bot,
+  ExternalLink,
+  ChevronRight,
+  ShieldCheck,
+  TrendingUp,
 } from "lucide-react";
 
-/* ─── STEP DEFINITIONS ─────────────────────────────────────── */
-const steps = [
-  {
-    id: 1,
-    label: "Describe",
-    heading: "Set Up Your Profile",
-    body: "Tell Applivo about your career goals using plain English. Upload your resume and set your target roles — no technical knowledge needed.",
-    bullets: [
-      { icon: <FileSearch className="w-5 h-5" />, text: "Smart Resume Parsing" },
-      { icon: <Target className="w-5 h-5" />, text: "Target Role Configuration" },
-      { icon: <Cpu className="w-5 h-5" />, text: "AI Preference Learning" },
-    ],
-    mockup: <UploadMockup />,
-  },
-  {
-    id: 2,
-    label: "Connect",
-    heading: "Connect Your Tools",
-    body: "Link the apps you already use with one click. Applivo handles all the technical setup and syncs your profiles across every board automatically.",
-    bullets: [
-      { icon: <ShieldCheck className="w-5 h-5" />, text: "One-Click Authentication" },
-      { icon: <Share2 className="w-5 h-5" />, text: "5000+ Pre-Built Integrations" },
-      { icon: <Brain className="w-5 h-5" />, text: "Auto-Mapping" },
-    ],
-    mockup: <ConnectMockup />,
-  },
-  {
-    id: 3,
-    label: "Deploy",
-    heading: "Watch AI Apply For You",
-    body: "Your AI agent starts applying immediately — 24/7. Monitor every application in real-time, track responses, and let Applivo handle follow-ups automatically.",
-    bullets: [
-      { icon: <Zap className="w-5 h-5" />, text: "Instant Autonomous Applying" },
-      { icon: <BarChart2 className="w-5 h-5" />, text: "Real-Time Application Tracking" },
-      { icon: <Bell className="w-5 h-5" />, text: "Smart Follow-Up Automation" },
-    ],
-    mockup: <ApplyMockup />,
-  },
-];
+/* ─── MINI SIDEBAR FOR APPLIVO PREVIEW ────────────────────────── */
 
-/* ─── SIDEBAR LAYOUT ────────────────────────────────────────── */
-function SidebarLayout({ children, activeTab }: { children: React.ReactNode; activeTab: string }) {
+function PreviewSidebar({ activeTab }: { activeTab: string }) {
   const menuItems = [
-    { icon: <Briefcase className="w-3.5 h-3.5" />, label: "Agents" },
-    { icon: <Zap className="w-3.5 h-3.5" />, label: "Workflows" },
-    { icon: <Link2 className="w-3.5 h-3.5" />, label: "Integrations" },
-    { icon: <BarChart2 className="w-3.5 h-3.5" />, label: "Analytics" },
+    { id: "jobs", label: "Jobs", icon: Briefcase },
+    { id: "assistant", label: "Assistant", icon: Bot },
+    { id: "applications", label: "Applications", icon: Layers },
+    { id: "analytics", label: "Analytics", icon: BarChart3 },
   ];
 
   return (
-    <div className="flex h-full">
-      {/* Sidebar */}
-      <div className="w-[155px] shrink-0 border-r border-white/5 p-4 flex flex-col gap-5">
-        <div className="flex items-center gap-2 px-1 pt-1">
-          <div className="w-5 h-5 rounded bg-indigo-500/80 flex items-center justify-center text-[10px] font-bold text-white shrink-0">
-            A
+    <div className="w-[140px] sm:w-[155px] shrink-0 border-r border-white/[0.08] bg-[#0c0c0e] p-3 flex flex-col justify-between text-xs select-none">
+      <div className="space-y-3">
+        {/* Workspace Brand */}
+        <div className="flex items-center gap-2 px-1 py-1">
+          <div className="w-5 h-5 rounded-md bg-white/[0.08] border border-white/10 flex items-center justify-center p-0.5">
+            <Image
+              src="/logo.png"
+              alt="Applivo"
+              width={14}
+              height={14}
+              className="object-contain"
+            />
           </div>
-          <span className="text-white font-bold text-[12px] tracking-tight">Applivo.inc</span>
+          <span className="font-semibold text-white text-xs tracking-tight">Applivo</span>
         </div>
-        <div className="flex flex-col gap-0.5">
-          <div className="px-2 mb-1.5 text-[10px] font-bold text-[#333] uppercase tracking-widest">Menu</div>
-          {menuItems.map((item) => (
-            <div
-              key={item.label}
-              className={`flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[12px] font-medium transition-colors ${item.label === activeTab ? "bg-white/5 text-white" : "text-[#444]"
+
+        {/* Navigation list */}
+        <div className="space-y-0.5 pt-1">
+          <div className="px-1.5 mb-1 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">
+            Workspace
+          </div>
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = item.id === activeTab;
+            return (
+              <div
+                key={item.id}
+                className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-[11px] font-medium transition-colors ${
+                  isActive
+                    ? "bg-white/[0.08] text-white"
+                    : "text-zinc-400 hover:text-white"
                 }`}
+              >
+                <Icon className="w-3.5 h-3.5 shrink-0" />
+                <span>{item.label}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* User tag */}
+      <div className="pt-2 border-t border-white/[0.06] flex items-center gap-2 px-1">
+        <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center text-[9px] font-bold text-zinc-300">
+          A
+        </div>
+        <span className="text-[10px] text-zinc-400 truncate">Candidate Profile</span>
+      </div>
+    </div>
+  );
+}
+
+/* ─── STEP 1 PREVIEW: JOB DISCOVERY ──────────────────────────── */
+
+function JobDiscoveryPreview() {
+  const sampleJobs = [
+    {
+      title: "Full Stack Engineer Intern",
+      company: "Razorpay",
+      location: "Bengaluru / Remote",
+      stipend: "₹40k–50k/mo",
+      tags: ["React", "TypeScript", "Node.js"],
+      match: 94,
+    },
+    {
+      title: "Frontend Developer (Junior)",
+      company: "Zerodha",
+      location: "Remote (India)",
+      stipend: "Full-time",
+      tags: ["Next.js", "Tailwind CSS", "REST"],
+      match: 88,
+    },
+    {
+      title: "AI Software Intern",
+      company: "Swiggy",
+      location: "Bengaluru (Hybrid)",
+      stipend: "₹45k/mo",
+      tags: ["Python", "FastAPI", "LLMs"],
+      match: 83,
+    },
+    {
+      title: "Backend Engineer (Go/Python)",
+      company: "Meesho",
+      location: "Bengaluru / Remote",
+      stipend: "₹50k/mo",
+      tags: ["Golang", "PostgreSQL", "Docker"],
+      match: 81,
+    },
+  ];
+
+  return (
+    <div className="flex h-full w-full bg-[#0c0c0e] text-zinc-300 font-sans select-none overflow-hidden">
+      <PreviewSidebar activeTab="jobs" />
+
+      <div className="flex-1 flex flex-col p-3.5 sm:p-4 text-xs overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Breadcrumb + Search */}
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <div className="flex items-center gap-1.5 text-[11px] text-zinc-500">
+            <span>Jobs</span>
+            <span>›</span>
+            <span className="text-zinc-300 font-medium">Recommended Feed</span>
+          </div>
+          <span className="text-[10px] text-zinc-400 bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06]">
+            4 matches today
+          </span>
+        </div>
+
+        {/* Search & Filter row */}
+        <div className="flex items-center gap-2 mb-3">
+          <div className="flex-1 flex items-center gap-2 bg-[#141417] border border-white/[0.07] rounded-lg px-2.5 py-1.5 text-zinc-400 text-[11px]">
+            <Search className="w-3 h-3 text-zinc-500" />
+            <span className="text-zinc-500">Filter by role, skills, location...</span>
+          </div>
+          <div className="flex items-center gap-1 px-2 py-1.5 bg-[#141417] border border-white/[0.07] rounded-lg text-[10px] text-zinc-300">
+            <SlidersHorizontal className="w-2.5 h-2.5" />
+            <span>&gt; 80% Match</span>
+          </div>
+        </div>
+
+        {/* Job Cards List */}
+        <div className="space-y-2">
+          {sampleJobs.map((job, idx) => (
+            <div
+              key={idx}
+              className="p-3 rounded-xl bg-[#131316] border border-white/[0.06] hover:border-white/15 transition-all flex items-center justify-between gap-3"
             >
-              {item.icon}
-              {item.label}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className="flex-1 overflow-hidden min-w-0">{children}</div>
-    </div>
-  );
-}
-
-/* ─── BROWSER CHROME WRAPPER ─────────────────────────────────
-   Matches Kilo's top URL bar + dots exactly
-────────────────────────────────────────────────────────────── */
-function BrowserChrome({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex flex-col h-full">
-      {/* URL bar row */}
-      <div
-        className="flex items-center gap-3 px-4 shrink-0 border-b border-white/5"
-        style={{ height: "44px", background: "#0a0a0a" }}
-      >
-        {/* Globe icon */}
-        <Globe className="w-3.5 h-3.5 text-[#444] shrink-0" />
-
-        {/* URL pill */}
-        <div
-          className="flex items-center px-3 rounded-md text-[12px] text-[#555]"
-          style={{ background: "#111", height: "28px", minWidth: "200px" }}
-        >
-          app.applivo.in
-        </div>
-
-        {/* Dots */}
-        <div className="flex items-center gap-1.5 ml-2">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="w-1.5 h-1.5 rounded-full bg-[#333]" />
-          ))}
-        </div>
-      </div>
-
-      {/* App content */}
-      <div className="flex-1 overflow-hidden min-h-0">{children}</div>
-    </div>
-  );
-}
-
-/* ─── MOCKUP PANELS ─────────────────────────────────────────── */
-
-function UploadMockup() {
-  return (
-    <BrowserChrome>
-      <SidebarLayout activeTab="Agents">
-        <div className="flex flex-col gap-3.5 p-5 h-full overflow-hidden">
-          {/* Header row */}
-          <div className="flex items-center justify-between">
-            <h4 className="text-white font-bold text-[15px]">Onboarding Flow</h4>
-            <button className="bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-bold px-3 py-1.5 rounded-md transition-all">
-              Run agent
-            </button>
-          </div>
-
-          {/* Profile card */}
-          <div className="flex items-center gap-3.5 bg-[#0f0f0f] border border-white/[0.07] rounded-xl p-3.5">
-            <div className="w-10 h-10 rounded-full bg-[#1c1c1e] flex items-center justify-center shrink-0">
-              <User className="w-5 h-5 text-[#888]" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-[14px] font-semibold">Alex Johnson</p>
-              <p className="text-[#555] text-[12px]">Senior Product Manager · San Francisco</p>
-            </div>
-            <span className="text-[11px] bg-white/[0.07] text-[#aaa] border border-white/10 px-2.5 py-1 rounded-full shrink-0">
-              Active
-            </span>
-          </div>
-
-          {/* Resume upload */}
-          <div className="border border-dashed border-white/20 rounded-xl p-4 flex items-center gap-3.5 bg-white/[0.03]">
-            <div className="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center shrink-0">
-              <FileText className="w-4 h-4 text-white" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-[13px] font-medium">Alex_Johnson_PM_Resume.pdf</p>
-              <div className="flex items-center gap-2 mt-2">
-                <div className="flex-1 h-1 bg-[#1a1a1a] rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-white rounded-full"
-                    initial={{ width: "0%" }}
-                    animate={{ width: "100%" }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                  />
+              <div className="space-y-1 min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <h4 className="text-[12px] font-semibold text-white truncate">
+                    {job.title}
+                  </h4>
                 </div>
-                <span className="text-[11px] text-[#444] shrink-0">100%</span>
+                <div className="flex flex-wrap items-center gap-2 text-[10.5px] text-zinc-400">
+                  <span className="text-zinc-300 font-medium">{job.company}</span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-2.5 h-2.5 text-zinc-500" />
+                    {job.location}
+                  </span>
+                  <span>•</span>
+                  <span>{job.stipend}</span>
+                </div>
+                <div className="flex items-center gap-1 pt-0.5">
+                  {job.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="px-1.5 py-0.2 text-[9px] rounded bg-white/[0.04] border border-white/[0.05] text-zinc-400"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Match Score Badge */}
+              <div className="flex flex-col items-end gap-1.5 shrink-0">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-white font-mono text-[11px] font-semibold">
+                  <Sparkles className="w-2.5 h-2.5 text-zinc-400" />
+                  <span>{job.match}%</span>
+                </div>
+                <span className="text-[9.5px] text-zinc-400 hover:text-white flex items-center gap-0.5 cursor-pointer">
+                  Details <ChevronRight className="w-2.5 h-2.5" />
+                </span>
               </div>
             </div>
-            <CheckCircle2 className="w-4.5 h-4.5 text-white shrink-0" />
-          </div>
-
-          {/* Target roles */}
-          <div className="bg-[#0f0f0f] border border-white/[0.07] rounded-xl p-4">
-            <p className="text-[#444] text-[10px] uppercase tracking-widest mb-3">Target Roles</p>
-            <div className="flex flex-wrap gap-2">
-              {["Product Manager", "Growth PM", "Senior PM", "Head of Product"].map((role) => (
-                <span
-                  key={role}
-                  className="text-[11px] bg-[#161616] border border-white/[0.07] text-[#777] px-3 py-1.5 rounded-full"
-                >
-                  {role}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* AI parsing */}
-          <div className="flex items-center gap-3 bg-[#0f0f0f] border border-white/[0.07] rounded-xl px-4 py-3">
-            <Cpu className="w-4 h-4 text-white shrink-0" />
-            <p className="text-[#555] text-[12px]">
-              AI extracting <span className="text-white font-medium">24 skills</span> from your resume…
-            </p>
-            <div className="ml-auto flex gap-1">
-              {[0, 1, 2].map((i) => (
-                <motion.div
-                  key={i}
-                  className="w-1.5 h-1.5 bg-white rounded-full"
-                  animate={{ opacity: [0.2, 1, 0.2] }}
-                  transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-                />
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
-      </SidebarLayout>
-    </BrowserChrome>
+      </div>
+    </div>
   );
 }
 
-function ConnectMockup() {
-  const platforms = [
-    { name: "LinkedIn", status: "Connected", icon: "in", jobs: "312 jobs" },
-    { name: "Indeed", status: "Connected", icon: "id", jobs: "247 jobs" },
-    { name: "Internshala", status: "Connect", icon: "IS", jobs: null },
-    { name: "Glassdoor", status: "Connect", icon: "GD", jobs: null },
-  ];
+/* ─── STEP 2 PREVIEW: PREPARE AND APPLY ──────────────────────── */
 
+function PrepareAndApplyPreview() {
   return (
-    <BrowserChrome>
-      <SidebarLayout activeTab="Integrations">
-        <div className="flex flex-col gap-3.5 p-5 h-full overflow-hidden">
-          <h4 className="text-white font-bold text-[15px]">Connected Tools</h4>
-          <div className="bg-[#0f0f0f] border border-white/[0.07] rounded-xl overflow-hidden">
-            <div className="px-4 py-3 border-b border-white/[0.05] flex items-center justify-between">
-              <p className="text-[#444] text-[10px] uppercase tracking-widest">Job Platform Integrations</p>
-              <span className="text-[11px] text-white">4 available</span>
-            </div>
-            <div className="divide-y divide-white/[0.04]">
-              {platforms.map((p) => (
-                <div key={p.name} className="flex items-center gap-3.5 px-4 py-3.5">
-                  <div className="w-9 h-9 rounded-xl bg-[#161616] border border-white/[0.07] flex items-center justify-center text-white text-[10px] font-bold shrink-0">
-                    {p.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white text-[13px] font-semibold">{p.name}</p>
-                    {p.jobs && <p className="text-[11px] text-[#444]">Syncing {p.jobs}</p>}
-                  </div>
-                  <button
-                    className={`text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0 ${p.status === "Connected"
-                        ? "bg-white/[0.07] text-white border border-white/10"
-                        : "bg-white/10 text-white border border-white/20 hover:bg-white/15"
-                      }`}
-                  >
-                    {p.status === "Connected" ? "✓ Connected" : "Connect"}
-                  </button>
-                </div>
-              ))}
-            </div>
+    <div className="flex h-full w-full bg-[#0c0c0e] text-zinc-300 font-sans select-none overflow-hidden">
+      <PreviewSidebar activeTab="assistant" />
+
+      <div className="flex-1 flex flex-col p-3.5 sm:p-4 text-xs overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Header Breadcrumb */}
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <div className="flex items-center gap-1.5 text-[11px] text-zinc-500">
+            <span>Companion</span>
+            <span>›</span>
+            <span className="text-zinc-300 font-medium">Application Assistant</span>
           </div>
-          <div className="flex items-center gap-3 bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3">
-            <Globe className="w-4 h-4 text-white shrink-0" />
-            <p className="text-[#666] text-[12px]">
-              <span className="text-white font-medium">2 platforms</span> connected ·{" "}
-              <span className="text-white font-medium">559 jobs</span> synced and ready
-            </p>
+          <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Companion Ready
+          </span>
+        </div>
+
+        {/* Selected Job Context Card */}
+        <div className="p-3 rounded-xl bg-[#141417] border border-white/[0.07] mb-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold">
+                Target Role
+              </p>
+              <h4 className="text-xs font-bold text-white mt-0.5">
+                Software Engineer Intern • PhonePe
+              </h4>
+            </div>
+            <div className="text-right">
+              <span className="text-[10px] text-zinc-400">Selected Resume</span>
+              <p className="text-[11px] text-zinc-200 font-medium flex items-center gap-1">
+                <FileText className="w-3 h-3 text-zinc-400" />
+                Alex_Dev_2026.pdf
+              </p>
+            </div>
           </div>
         </div>
-      </SidebarLayout>
-    </BrowserChrome>
+
+        {/* Application Readiness Checklist */}
+        <div className="space-y-2 mb-3">
+          <p className="text-[10.5px] font-semibold text-zinc-400 uppercase tracking-wider pl-0.5">
+            Application Readiness Checklist
+          </p>
+
+          <div className="p-2.5 rounded-lg bg-[#121215] border border-white/[0.05] space-y-2 text-[11px]">
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-3.5 h-3.5 text-zinc-300 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-white font-medium">Profile & contact fields aligned</p>
+                <p className="text-[10px] text-zinc-500">Full name, email, GitHub, LinkedIn verified</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-3.5 h-3.5 text-zinc-300 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-white font-medium">Resume skills matching requirements</p>
+                <p className="text-[10px] text-zinc-500">Python, SQL, REST APIs highlighted for this ATS</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-3.5 h-3.5 text-zinc-300 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-white font-medium">AI-assisted response draft generated</p>
+                <p className="text-[10px] text-zinc-500">Tailored 120-word response to: &quot;Why are you a good fit?&quot;</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-3.5 h-3.5 text-zinc-300 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-white font-medium">Custom salary & eligibility expectations set</p>
+                <p className="text-[10px] text-zinc-500">Auto-configured to match employer questions</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Button */}
+        <div className="mt-auto pt-1 flex items-center justify-between gap-2 border-t border-white/[0.05]">
+          <span className="text-[10px] text-zinc-500">Supported portal: Greenhouse / Workday</span>
+          <button className="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-zinc-200 text-[11px] font-semibold transition-all">
+            Autofill with Extension
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
-function ApplyMockup() {
-  const apps = [
-    { title: "Senior Product Manager", company: "Stripe", status: "Applied", time: "2m ago" },
-    { title: "Growth PM", company: "Notion", status: "Applied", time: "4m ago" },
-    { title: "Product Lead", company: "Linear", status: "Interview 🎉", time: "1h ago" },
-    { title: "Head of Product", company: "Vercel", status: "Applied", time: "8m ago" },
+/* ─── STEP 3 PREVIEW: TRACK YOUR PROGRESS ────────────────────── */
+
+function TrackProgressPreview() {
+  const trackerItems = [
+    {
+      company: "Cred",
+      role: "Frontend Engineer Intern",
+      status: "Interview Scheduled",
+      statusColor: "text-white bg-white/10 border-white/20",
+      date: "Nov 2, 2:00 PM",
+    },
+    {
+      company: "Groww",
+      role: "SWE (Full-Time)",
+      status: "Assessment Pending",
+      statusColor: "text-zinc-300 bg-white/[0.05] border-white/10",
+      date: "Due in 2 days",
+    },
+    {
+      company: "Postman",
+      role: "API Platform Intern",
+      status: "Application Viewed",
+      statusColor: "text-zinc-400 bg-white/[0.04] border-white/[0.08]",
+      date: "3 days ago",
+    },
+    {
+      company: "Urban Company",
+      role: "Software Developer",
+      status: "Under Review",
+      statusColor: "text-zinc-400 bg-white/[0.04] border-white/[0.08]",
+      date: "5 days ago",
+    },
+    {
+      company: "Flipkart",
+      role: "Software Development Intern",
+      status: "Application Submitted",
+      statusColor: "text-zinc-500 bg-white/[0.03] border-white/[0.06]",
+      date: "1 week ago",
+    },
   ];
 
   return (
-    <BrowserChrome>
-      <SidebarLayout activeTab="Workflows">
-        <div className="flex flex-col gap-3.5 p-5 h-full overflow-hidden">
-          {/* Live status */}
-          <div className="flex items-center justify-between bg-[#0f0f0f] border border-white/[0.07] rounded-xl px-4 py-3.5">
-            <div className="flex items-center gap-2">
-              <motion.div
-                className="w-2 h-2 bg-green-400 rounded-full"
-                animate={{ opacity: [1, 0.3, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
-              <p className="text-white text-[13px] font-semibold">AI Agent Active</p>
-            </div>
-            <p className="text-[#444] text-[12px]">127 applied today</p>
-          </div>
+    <div className="flex h-full w-full bg-[#0c0c0e] text-zinc-300 font-sans select-none overflow-hidden">
+      <PreviewSidebar activeTab="applications" />
 
-          {/* Application feed */}
-          <div className="bg-[#0f0f0f] border border-white/[0.07] rounded-xl overflow-hidden">
-            <div className="px-4 py-3 border-b border-white/[0.05] flex items-center justify-between">
-              <p className="text-[#444] text-[10px] uppercase tracking-widest">Live Applications</p>
-              <p className="text-white text-[11px]">Applying…</p>
-            </div>
-            <div className="divide-y divide-white/[0.04]">
-              {apps.map((app, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex items-center gap-3.5 px-4 py-3"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-[#161616] border border-white/[0.06] flex items-center justify-center shrink-0">
-                    <Briefcase className="w-3.5 h-3.5 text-[#444]" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white text-[12px] font-medium truncate">{app.title}</p>
-                    <p className="text-[#444] text-[11px]">{app.company}</p>
-                  </div>
-                  <div className="flex flex-col items-end gap-0.5 shrink-0">
-                    <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white/[0.07] text-white border border-white/10">
-                      {app.status}
-                    </span>
-                    <span className="text-[#333] text-[10px]">{app.time}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+      <div className="flex-1 flex flex-col p-3.5 sm:p-4 text-xs overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Header Breadcrumb */}
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <div className="flex items-center gap-1.5 text-[11px] text-zinc-500">
+            <span>Applications</span>
+            <span>›</span>
+            <span className="text-zinc-300 font-medium">Tracking Overview</span>
           </div>
+          <span className="text-[10px] text-zinc-400">Last updated: Today</span>
+        </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-2.5">
-            {[
-              { label: "Response", value: "34%", icon: <TrendingUp className="w-3.5 h-3.5 text-white" /> },
-              { label: "Interviews", value: "12", icon: <CheckCircle2 className="w-3.5 h-3.5 text-white" /> },
-              { label: "Pending", value: "38", icon: <Clock className="w-3.5 h-3.5 text-[#444]" /> },
-            ].map((s) => (
+        {/* 4 Stat Cards */}
+        <div className="grid grid-cols-4 gap-2 mb-3.5">
+          {[
+            { label: "Submitted", val: "28" },
+            { label: "Under Review", val: "14" },
+            { label: "Interviews", val: "4" },
+            { label: "Avg Match", val: "86%" },
+          ].map((stat, i) => (
+            <div
+              key={i}
+              className="p-2 rounded-lg bg-[#141417] border border-white/[0.06] text-center"
+            >
+              <p className="text-white font-bold text-sm leading-tight">{stat.val}</p>
+              <p className="text-[9px] text-zinc-400 mt-0.5 truncate">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Applications pipeline list */}
+        <div className="space-y-1.5">
+          <p className="text-[10.5px] font-semibold text-zinc-400 uppercase tracking-wider pl-0.5">
+            Active Applications
+          </p>
+
+          <div className="divide-y divide-white/[0.04] rounded-lg bg-[#121215] border border-white/[0.05] overflow-hidden">
+            {trackerItems.map((item, i) => (
               <div
-                key={s.label}
-                className="bg-[#0f0f0f] border border-white/[0.07] rounded-xl p-3 flex flex-col items-center text-center"
+                key={i}
+                className="px-3 py-2 flex items-center justify-between gap-2"
               >
-                {s.icon}
-                <p className="text-white text-[17px] font-bold mt-1">{s.value}</p>
-                <p className="text-[#444] text-[10px] mt-0.5">{s.label}</p>
+                <div className="min-w-0">
+                  <p className="text-white font-medium text-[11.5px] truncate">
+                    {item.role}
+                  </p>
+                  <p className="text-[10px] text-zinc-400">{item.company}</p>
+                </div>
+
+                <div className="flex flex-col items-end gap-0.5 shrink-0">
+                  <span
+                    className={`text-[9.5px] font-medium px-2 py-0.5 rounded-full border ${item.statusColor}`}
+                  >
+                    {item.status}
+                  </span>
+                  <span className="text-[9px] text-zinc-500">{item.date}</span>
+                </div>
               </div>
             ))}
           </div>
         </div>
-      </SidebarLayout>
-    </BrowserChrome>
+      </div>
+    </div>
   );
 }
 
+/* ─── STEP DEFINITIONS ───────────────────────────────────────── */
+
+const steps = [
+  {
+    id: 1,
+    label: "Discover",
+    heading: "Find Jobs That Fit You",
+    body: "Discover jobs and internships that align with your skills, experience, and career preferences. Review relevant opportunities and understand how well they match your profile.",
+    bullets: [
+      { icon: Compass, text: "Personalized job discovery" },
+      { icon: Sparkles, text: "Profile-based match scoring" },
+      { icon: FileText, text: "Clear job and eligibility details" },
+    ],
+    mockup: <JobDiscoveryPreview />,
+  },
+  {
+    id: 2,
+    label: "Prepare",
+    heading: "Prepare Better Applications",
+    body: "Keep your career profile and resume ready, generate relevant application content, and use the Applivo Companion extension to assist with supported application forms.",
+    bullets: [
+      { icon: FileText, text: "Reusable career profile and resumes" },
+      { icon: Bot, text: "AI-assisted application answers" },
+      { icon: CheckCircle2, text: "Guided browser autofill and validation" },
+    ],
+    mockup: <PrepareAndApplyPreview />,
+  },
+  {
+    id: 3,
+    label: "Track",
+    heading: "Keep Your Job Search Organized",
+    body: "Track applications, review pending actions, and monitor your progress from one place, so you can manage your job search with greater clarity.",
+    bullets: [
+      { icon: Layers, text: "Centralized application tracking" },
+      { icon: Calendar, text: "Follow-up and interview visibility" },
+      { icon: BarChart3, text: "Job-search progress analytics" },
+    ],
+    mockup: <TrackProgressPreview />,
+  },
+];
+
 /* ─── MAIN COMPONENT ─────────────────────────────────────────── */
+
 export function HowItWorksSteps() {
   const [active, setActive] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const step = steps[active];
 
   useEffect(() => {
+    if (isHovered) return;
+
+    // Check prefers-reduced-motion
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
     const timer = window.setTimeout(() => {
       setActive((current) => (current + 1) % steps.length);
-    }, 3500);
+    }, 6000);
 
     return () => window.clearTimeout(timer);
-  }, [active]);
+  }, [active, isHovered]);
 
   return (
-    <section
-      className="relative bg-black overflow-hidden"
-      style={{ minHeight: "100vh" }}
-    >
-      {/* ── LEFT COLUMN ──────────────────────────────────────────
-          Width: ~42%, left padding: 80px, vertically centered     */}
-      <div
-        className="absolute top-0 left-0 bottom-0 flex flex-col justify-center z-10"
-        style={{ width: "42%", paddingLeft: "80px", paddingRight: "32px" }}
+    <div className="relative w-full overflow-x-clip">
+      <section
+        className="relative w-full max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Step pills */}
-        <div className="flex items-center gap-1 mb-8">
-          {steps.map((s, i) => (
-            <button
-              key={s.id}
-              onClick={() => setActive(i)}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-200 ${active === i
-                  ? "bg-white text-black"
-                  : "text-[#444] bg-transparent hover:text-[#777]"
-                }`}
-            >
-              <span className={`text-[11px] font-bold ${active === i ? "text-black" : "text-[#333]"}`}>
-                {s.id}
-              </span>
-              {s.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Animated text + bullets */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {/* Heading */}
-            <h2
-              className="font-bold text-white leading-none mb-6"
-              style={{
-                fontSize: "clamp(44px, 4.5vw, 60px)",
-                letterSpacing: "-0.03em",
-                lineHeight: 1.02,
-              }}
-            >
-              {step.heading}
-            </h2>
-
-            {/* Body */}
-            <p
-              className="mb-12"
-              style={{
-                fontSize: "16px",
-                color: "#666",
-                lineHeight: 1.6,
-                maxWidth: "320px",
-              }}
-            >
-              {step.body}
-            </p>
-
-            {/* Feature list */}
-            <div className="flex flex-col" style={{ gap: "20px" }}>
-              {step.bullets.map((b, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -6 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.07, duration: 0.25 }}
-                  className="flex items-center"
-                  style={{ gap: "14px" }}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* ── LEFT COLUMN ────────────────────────────────────────── */}
+          <div className="lg:col-span-5 flex flex-col justify-center">
+            {/* Step pills */}
+            <div className="inline-flex items-center gap-1 p-1 rounded-full bg-[#141416] border border-white/[0.08] mb-6 w-fit shadow-sm">
+              {steps.map((s, i) => (
+                <button
+                  key={s.id}
+                  onClick={() => setActive(i)}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs sm:text-[13px] font-medium transition-all duration-200 ${
+                    active === i
+                      ? "bg-white text-black font-semibold shadow-sm"
+                      : "text-zinc-400 hover:text-white"
+                  }`}
                 >
-                  <div style={{ color: "#3a3a3a", flexShrink: 0 }}>{b.icon}</div>
-                  <span style={{ fontSize: "15px", color: "#fff", fontWeight: 500 }}>
-                    {b.text}
-                  </span>
-                </motion.div>
+                  <span className="opacity-60">{s.id}</span>
+                  <span>{s.label}</span>
+                </button>
               ))}
             </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
 
-      {/* ── RIGHT PANEL ──────────────────────────────────────────
-          - Starts at top:120px (just below nav), right:0, width:65%
-          - NO left fade — left edge is crisp/sharp
-          - ONLY bottom fade gradient dissolves into black
-          - Mockup is wider than container so right side clips off viewport
-          - No border, no shadow, no card wrapper               */}
-      <div
-        className="hidden lg:block absolute right-0 bottom-0 overflow-hidden"
-        style={{ top: "120px", width: "55%" }}
-      >
-        {/* BOTTOM fade ONLY — transparent → black */}
-        <div
-          className="absolute inset-x-0 bottom-0 z-20 pointer-events-none"
-          style={{
-            height: "45%",
-            background: "linear-gradient(to top, #000000 0%, #000000 15%, transparent 100%)",
-          }}
-        />
+            {/* Animated step content */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {/* Heading: approximate desktop 28–32px */}
+                <h3 className="text-2xl sm:text-[28px] lg:text-[30px] font-semibold text-white tracking-[-0.02em] leading-[1.25] mb-3">
+                  {step.heading}
+                </h3>
 
-        {/* Mockup — wider than container so right edge clips off-screen like Kilo */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            style={{ width: "115%", minHeight: "650px" }}
-          >
-            {step.mockup}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    </section>
+                {/* Body description: 15–16px, line-height 1.5–1.65 */}
+                <p className="text-[15px] sm:text-[15.5px] text-zinc-400 leading-[1.6] mb-6 max-w-[420px]">
+                  {step.body}
+                </p>
+
+                {/* Feature list: 14–15px labels with restrained icons */}
+                <div className="flex flex-col gap-3">
+                  {step.bullets.map((b, i) => {
+                    const Icon = b.icon;
+                    return (
+                      <div
+                        key={i}
+                        className="flex items-center gap-3 text-white font-medium text-[14px] sm:text-[14.5px]"
+                      >
+                        <Icon className="w-4 h-4 text-zinc-400 shrink-0" />
+                        <span>{b.text}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* ── RIGHT COLUMN: APPLIVO PRODUCT PREVIEW ──────────────── */}
+          <div className="lg:col-span-7 w-full relative">
+            <div
+              className="w-full lg:w-[120%] lg:max-w-none rounded-2xl border border-white/[0.08] bg-[#0d0d10] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.85)] flex flex-col h-[440px] sm:h-[490px] lg:h-[570px] relative lg:-mt-12 lg:translate-x-4 overflow-hidden select-none"
+              style={{
+                maskImage: "linear-gradient(to bottom, black 0%, black 70%, transparent 98%)",
+                WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 70%, transparent 98%)",
+              }}
+            >
+              {/* Clean top chrome with Applivo URL */}
+              <div className="h-10 bg-[#121215] border-b border-white/[0.08] px-3.5 flex items-center justify-between shrink-0">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 bg-[#1b1b1f] border border-white/[0.06] rounded-md px-2.5 py-1 text-[11px] text-zinc-400 min-w-[190px]">
+                    <Lock className="w-3 h-3 text-zinc-500" />
+                    <span>https://app.applivo.in</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-white/[0.10]" />
+                  <div className="w-2 h-2 rounded-full bg-white/[0.10]" />
+                  <div className="w-2 h-2 rounded-full bg-white/[0.10]" />
+                </div>
+              </div>
+
+              {/* Inner product preview view */}
+              <div className="flex-1 relative overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={active}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.22, ease: "easeOut" }}
+                    className="h-full w-full"
+                  >
+                    {step.mockup}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Bottom dissolve overlay for rich gradual blend into page background */}
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#080808] via-[#080808]/75 to-transparent z-20"
+                aria-hidden="true"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

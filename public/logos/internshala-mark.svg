@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="100%" height="100%">
+  <rect width="48" height="48" rx="10" fill="#00A5EC"/>
+  <!-- Internshala airplane launch glyph -->
+  <g transform="translate(-138, -6) scale(2.05)">
+    <path d="M91.1885 5.48222L96.1378 9.29731L96.1213 14.5188L100.143 11.873L104.007 14.6013L112.686 1L91.1885 5.48222ZM98.4609 10.5594L97.0513 12.9309L97.0575 8.93951L109.964 2.72504L98.4609 10.5594Z" fill="#FFFFFF"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M100.139 11.873L96.1172 14.5189L98.4599 10.5625L100.139 11.873Z" fill="#E0F2FE"/>
+  </g>
+  <text x="24" y="38" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="-0.5">IS</text>
+</svg>

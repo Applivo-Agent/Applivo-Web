@@ -1,0 +1,543 @@
+import { DocArticle, h2, p, ul, ol, note, warn, limit, img, diagram, table, code } from "../types";
+
+export const dashboard: DocArticle[] = [
+  {
+    slug: "dashboard-overview",
+    group: "dashboard",
+    overview: true,
+    title: "Dashboard overview",
+    description: "Every number and control on the Dashboard.",
+    blocks: [
+      img("Dashboard overview and metrics cards", "docs-dashboard-overview.png"),
+      h2("Summary cards"),
+      table(
+        ["Card", "Shows"],
+        ["Total Jobs", "Listings collected for you"],
+        ["High Match Jobs", "Jobs with a score of 75 or higher"],
+        ["Applied jobs", "Applications submitted"],
+        ["Pending Approval", "Applications waiting for you"],
+        ["Interviews", "Interviews scheduled"],
+        ["Offers", "Offers received"],
+      ),
+      h2("Agent actions"),
+      p("Scrape collects listings, Analyze scores them, Queue stages applications and Deploy starts applying. While the agent works, the sidebar shows an active-agent card."),
+      limit("This guide does not define a calculation for each card beyond what its label says."),
+    ],
+    related: ["quota-and-usage", "analytics"],
+  },
+  {
+    slug: "quota-and-usage",
+    group: "dashboard",
+    title: "Quota and usage",
+    description: "Daily applications and AI token budgets.",
+    blocks: [
+      p("Two limits apply. The daily application quota is shown as a ring and as used/limit in the header and sidebar. The Analyze token budget has a per-run and a monthly limit."),
+      img("Daily application quota and token budgets", "docs-quota-usage.png"),
+      table(
+        ["Plan", "Daily applications", "Analyze per run", "Analyze per month"],
+        ["Starter", "50", "25k tokens", "120k tokens"],
+        ["Pro", "100", "60k tokens", "600k tokens"],
+        ["Premium", "150", "120k tokens", "1.2M tokens"],
+      ),
+      note("These are the values configured in the app. AI Chat message limits are separate."),
+    ],
+    related: ["usage-limits", "quota-errors"],
+  },
+  {
+    slug: "analytics",
+    group: "dashboard",
+    title: "Analytics",
+    description: "Trends across your search.",
+    blocks: [
+      p("The Analytics page shows basic analytics on all plans. Premium adds advanced analytics, resume performance ranking and an interview conversion funnel."),
+      img("Application analytics trends and conversion funnel", "docs-analytics-trends.png"),
+      limit("Exact metric definitions are not documented in this guide. If a number looks off, see Dashboard loading problems."),
+    ],
+    related: ["dashboard-loading"],
+  },
+];
+
+export const account: DocArticle[] = [
+  {
+    slug: "profile-and-preferences",
+    group: "account",
+    overview: true,
+    title: "Profile and preferences",
+    description: "Manage your profile and what Applivo knows about you.",
+    blocks: [
+      p("Profile in the sidebar holds your personal and career details. Changes take effect the next time Applivo scores jobs or answers questions."),
+      img("Candidate profile and career preferences", "docs-profile-settings.png"),
+    ],
+    related: ["account-settings"],
+  },
+  {
+    slug: "account-settings",
+    group: "account",
+    title: "Account settings",
+    description: "The sections of the Settings page.",
+    blocks: [
+      table(
+        ["Section", "Controls"],
+        ["General", "Theme, language, timezone, date format, dashboard layout"],
+        ["Notifications", "Channels (email, Telegram, Slack, Discord), notification types, digest frequency, test notifications"],
+        ["Job Automation", "Auto scrape, analyze, queue and apply; manual approval; schedule; limits"],
+        ["Agent Strategy", "Autonomous mode, application generation style, reasoning depth"],
+        ["AI Settings", "The AI engine"],
+        ["Platforms", "Platform connections"],
+        ["Extension", "Extension connection"],
+        ["Security", "Authentication and active sessions"],
+        ["Advanced", "Advanced options"],
+      ),
+      img("Account settings and notification channels", "docs-account-settings.png"),
+      note("Applivo's interface is dark only. The theme option does not currently switch the app to a light theme."),
+    ],
+    related: ["security-and-privacy"],
+  },
+  {
+    slug: "security-and-privacy",
+    group: "account",
+    title: "Security and privacy",
+    description: "Sessions, sign out and what is stored.",
+    blocks: [
+      ul(
+        "Settings → Security lists your active sessions, which you can terminate.",
+        "Passwords are never shown, and the extension never receives your password.",
+        "Third-party API keys are kept encrypted on the server.",
+      ),
+      img("Active sessions and two-factor authentication", "docs-security-settings.png"),
+      p("Sign out from the account menu at any time."),
+    ],
+    related: ["sign-in"],
+  },
+];
+
+export const billing: DocArticle[] = [
+  {
+    slug: "plans-overview",
+    group: "billing",
+    overview: true,
+    title: "Plans overview",
+    description: "What each plan includes, from the values configured in the app.",
+    blocks: [
+      table(
+        ["", "Starter", "Pro", "Premium"],
+        ["Price (INR / month)", "199", "399", "599"],
+        ["Daily applications", "50", "100", "150"],
+        ["AI Chat messages / month", "50", "100", "150"],
+        ["Cover letters, interviews, skill gaps, follow-ups", "No", "Yes", "Yes"],
+        ["Market insights, advanced analytics", "No", "No", "Yes"],
+        ["Chrome extension automation", "Yes", "Yes", "Yes"],
+      ),
+      img("Subscription plans and feature comparison table", "docs-plans-overview.png"),
+      warn("The older project billing document lists different prices and omits Starter. This table follows the app's current configuration. The Subscription page is the authority for what you will be charged."),
+    ],
+    related: ["usage-limits", "subscription-management"],
+  },
+  {
+    slug: "usage-limits",
+    group: "billing",
+    title: "Understanding usage limits",
+    description: "Which limits exist and when they reset.",
+    blocks: [
+      ul("Daily applications, reset each day.", "Analyze tokens, with a per-run and a monthly limit.", "AI Chat messages, per month."),
+      img("Usage limits and quota indicators", "docs-usage-limits.png"),
+      p("When a limit is reached, the related action stops until it resets or you move to a higher plan."),
+    ],
+    related: ["quota-and-usage"],
+  },
+  {
+    slug: "subscription-management",
+    group: "billing",
+    title: "Managing your subscription",
+    description: "Subscribe, change plan, and what happens on cancellation.",
+    blocks: [
+      ol(
+        "Open Subscription in the sidebar.",
+        "Choose a plan and complete payment in the Razorpay dialog.",
+        "Applivo verifies the payment signature before activating the plan.",
+      ),
+      img("Subscription management and billing portal", "docs-subscription-management.png"),
+      p("A cancelled subscription keeps working until its paid end date. A failed renewal moves the subscription out of the active state."),
+      p("Invoices are generated as PDFs and emailed after payment."),
+    ],
+    related: ["billing-faq"],
+  },
+  {
+    slug: "billing-faq",
+    group: "billing",
+    title: "Billing FAQ",
+    description: "Common billing questions.",
+    blocks: [
+      h2("Why is a page locked?"),
+      p("It needs a higher plan. The sidebar shows a crown on locked items."),
+      h2("Can I use the extension on a free account?"),
+      p("No. An active Starter, Pro or Premium subscription is needed, unless you are an administrator."),
+      h2("Is there a refund policy?"),
+      p("This guide does not state one. Contact support through your plan's channel."),
+    ],
+    related: ["plans-overview"],
+  },
+];
+
+export const integrations: DocArticle[] = [
+  {
+    slug: "integrations-overview",
+    group: "integrations",
+    overview: true,
+    title: "Integrations overview",
+    description: "What Applivo connects to.",
+    blocks: [
+      ul(
+        "Internshala, for listings and applications.",
+        "The Applivo Chrome extension.",
+        "Notification channels: email, Telegram and others listed in Settings → Notifications.",
+        "Razorpay, for payments.",
+        "Overleaf, for resume export.",
+      ),
+      diagram("Integrations ecosystem and data exchange", "docs-integrations-ecosystem.png", "21 / 9"),
+      limit("Only Internshala and the Chrome extension are covered end to end in this guide."),
+    ],
+    related: ["connect-internshala"],
+  },
+  {
+    slug: "connect-internshala",
+    group: "integrations",
+    title: "Connecting Internshala",
+    description: "Link your Internshala account on the Connections page.",
+    blocks: [
+      ol(
+        "Open Connections and choose Connect for Internshala.",
+        "A sign-in window opens. Enter your Internshala email and password there and complete any CAPTCHA.",
+        "When Applivo detects the session, the connection shows as active.",
+      ),
+      img("Internshala platform connection screen", "docs-internshala-connection.png"),
+      note("The extension works in your own browser session and does not use this connection to submit."),
+    ],
+    related: ["integrations-troubleshooting"],
+  },
+  {
+    slug: "integrations-troubleshooting",
+    group: "integrations",
+    title: "Troubleshooting connections",
+    description: "Connection problems.",
+    blocks: [
+      ul(
+        "Complete the CAPTCHA when the sign-in window shows one.",
+        "If the connection drops, connect again.",
+        "For extension problems see Troubleshooting the extension.",
+      ),
+      img("Connection diagnostics and troubleshooting", "docs-connection-diagnostics.png"),
+    ],
+    related: ["extension-troubleshooting"],
+  },
+];
+
+export const developers: DocArticle[] = [
+  {
+    slug: "developer-overview",
+    group: "developers",
+    overview: true,
+    title: "Developer overview",
+    description: "How the project is built.",
+    blocks: [
+      p("Applivo is a Next.js frontend, a FastAPI backend, PostgreSQL, Redis with Celery for background work, and a Manifest V3 Chrome extension."),
+      diagram("Applivo system architecture diagram", "docs-developer-architecture.png", "21 / 9"),
+      table(
+        ["Layer", "Technology"],
+        ["Frontend", "Next.js (App Router), React, TailwindCSS, TypeScript"],
+        ["Backend", "FastAPI, SQLAlchemy (async), Alembic, Pydantic"],
+        ["Data and queue", "PostgreSQL, Redis, Celery"],
+        ["Extension", "Chrome Manifest V3, plain JavaScript"],
+      ),
+      p("Longer notes live in the repository under docs/architecture and docs/development."),
+    ],
+    related: ["local-setup", "project-structure"],
+  },
+  {
+    slug: "local-setup",
+    group: "developers",
+    title: "Local development setup",
+    description: "Run the whole stack with Docker.",
+    blocks: [
+      code("cp .env.example .env\n./scripts/dev-setup.sh up\n./scripts/dev-setup.sh test", "bash", "Start and verify"),
+      p("The compose file in the repository starts the database, Redis, backend, workers, scheduler, Flower and the frontend. Check docker-compose.yml for the ports on your machine."),
+      img("Docker compose local stack setup", "docs-local-dev-setup.png"),
+      note("In development the one-time sign-in code is written to the backend log. Read it with docker compose logs backend."),
+      p("Requirements: Python 3.11+, Node.js 20+, Docker with Compose v2 and Chrome."),
+    ],
+    related: ["environment-configuration", "dev-troubleshooting"],
+  },
+  {
+    slug: "project-structure",
+    group: "developers",
+    title: "Project structure",
+    description: "Where things live.",
+    blocks: [
+      table(
+        ["Path", "Contents"],
+        ["app/", "FastAPI app: api/routes, models, services, schemas, tasks"],
+        ["alembic/", "Database migrations"],
+        ["frontend/", "Next.js app (app/, components/, lib/)"],
+        ["extension/", "Chrome extension source and build.py"],
+        ["scripts/", "Dev and operations scripts"],
+        ["tests/", "Backend, extension and end-to-end tests"],
+        ["docs/", "Project documentation in Markdown"],
+      ),
+      diagram("Monorepo project structure and services", "docs-project-structure.png", "16 / 9"),
+    ],
+    related: ["backend-overview", "frontend-overview"],
+  },
+  {
+    slug: "environment-configuration",
+    group: "developers",
+    title: "Environment configuration",
+    description: "Where settings come from.",
+    blocks: [
+      p("Copy .env.example to .env and fill it in. Never commit real values. Some of the variable names it defines:"),
+      ul(
+        "APP_ENV, DEBUG, LOG_LEVEL",
+        "DATABASE_URL, REDIS_URL, CELERY_BROKER_URL",
+        "ALLOWED_ORIGINS, NEXT_PUBLIC_API_URL",
+        "AI_PROVIDER and provider key variables",
+        "RAZORPAY_* for payments",
+        "SMTP_* for email",
+      ),
+      warn("Do not put secrets in documentation, screenshots or commit history."),
+      p("The full reference is docs/operations/environment-variables.md in the repository."),
+    ],
+    related: ["local-setup"],
+  },
+  {
+    slug: "backend-overview",
+    group: "developers",
+    title: "Backend overview",
+    description: "The FastAPI service.",
+    blocks: [
+      p("Routers are mounted under /api in app/main.py. Interactive OpenAPI docs are served at /api/docs."),
+      diagram("FastAPI backend service and router hierarchy", "docs-backend-architecture.png", "21 / 9"),
+      p("Business logic lives in app/services, database models in app/models, and request and response schemas in app/schemas."),
+    ],
+    related: ["api-reference"],
+  },
+  {
+    slug: "frontend-overview",
+    group: "developers",
+    title: "Frontend overview",
+    description: "The Next.js app.",
+    blocks: [
+      ul(
+        "Public pages live at the top of frontend/app. The signed-in product lives in the (dashboard) route group, wrapped by the app shell.",
+        "Auth and subscription state come from providers in frontend/lib.",
+        "The documentation portal you are reading is rendered from typed data in frontend/lib/docs.",
+      ),
+      img("Next.js App Router component structure", "docs-frontend-structure.png"),
+    ],
+    related: ["project-structure"],
+  },
+  {
+    slug: "authentication",
+    group: "developers",
+    title: "Authentication and authorization",
+    description: "How requests are authenticated.",
+    blocks: [
+      p("The API uses bearer tokens issued after the password and one-time-code steps. The website stores its token in the browser and sends it with API calls."),
+      p("The extension has its own pairing flow and token, issued under /api/ext. Entitlement and run authorization are decided on the server."),
+      p("Administrator access is a server-side flag on the user."),
+    ],
+    related: ["api-reference"],
+  },
+  {
+    slug: "api-reference",
+    group: "developers",
+    title: "API reference",
+    description: "Route groups. The OpenAPI page is the complete reference.",
+    blocks: [
+      p("Run the backend and open /api/docs for every endpoint, field and response schema."),
+      img("Interactive OpenAPI documentation explorer", "docs-openapi-explorer.png"),
+      table(
+        ["Group", "Mounted routers"],
+        ["Account", "auth, profile, security, onboarding, settings"],
+        ["Jobs and applications", "jobs, applications, scheduler, workflow, agent"],
+        ["Documents and AI", "resumes, cover letters, chat, analytics"],
+        ["Billing", "subscriptions, payments, quotas"],
+        ["Extension", "/api/ext (pairing, entitlement), /api/ext/runs"],
+        ["Admin", "admin"],
+      ),
+      limit("Request and response bodies are intentionally not copied here. They change with the code."),
+    ],
+    related: ["backend-overview"],
+  },
+  {
+    slug: "background-jobs",
+    group: "developers",
+    title: "Background jobs and queues",
+    description: "Celery, Redis and the scheduler.",
+    blocks: [
+      p("Long-running work runs in Celery workers (a standard worker and a browsing worker) with Redis as the broker. A scheduler service triggers periodic tasks and Flower provides a monitoring dashboard."),
+    ],
+    related: ["local-setup"],
+  },
+  {
+    slug: "database-and-migrations",
+    group: "developers",
+    title: "Database and migrations",
+    description: "PostgreSQL and Alembic.",
+    blocks: [
+      p("Migrations run automatically when the backend container starts. To run them by hand:"),
+      code("alembic upgrade heads", "bash"),
+    ],
+    related: ["local-setup"],
+  },
+  {
+    slug: "testing",
+    group: "developers",
+    title: "Testing",
+    description: "How to run the tests.",
+    blocks: [
+      code("python3 -m pytest -q                    # backend and policy tests\nnode tests/extension/background_audit.js   # extension service worker\npython3 tests/extension/run_submission_tests.py", "bash"),
+      note("Some backend tests expect a Docker path and fail outside the container."),
+    ],
+    related: ["dev-troubleshooting"],
+  },
+  {
+    slug: "dev-troubleshooting",
+    group: "developers",
+    title: "Troubleshooting development setup",
+    description: "Common local problems.",
+    blocks: [
+      table(
+        ["Problem", "Check"],
+        ["Port already in use", "Another process holds it. Find it with lsof -iTCP:<port> -sTCP:LISTEN."],
+        ["Login always fails locally", "The database may not contain your user. Register, then read the code from the backend log."],
+        ["Frontend shows old UI", "Rebuild the frontend image and recreate the container."],
+      ),
+    ],
+    related: ["local-setup"],
+  },
+];
+
+export const troubleshooting: DocArticle[] = [
+  {
+    slug: "faq",
+    group: "troubleshooting",
+    overview: true,
+    title: "Frequently asked questions",
+    description: "Short answers to common questions.",
+    blocks: [
+      h2("Does Applivo guarantee interviews?"),
+      p("No. Match scores describe resume overlap, not outcomes."),
+      h2("Which sites are supported?"),
+      p("Internshala only."),
+      h2("Does it need my Internshala password?"),
+      p("The Connections page asks you to sign in to Internshala in a window it opens. The extension itself uses your existing browser session."),
+      h2("Is my data used by the extension?"),
+      p("Only to fill the forms you approved."),
+    ],
+    related: ["supported-sites", "plans-overview"],
+  },
+  {
+    slug: "login-problems",
+    group: "troubleshooting",
+    title: "Login problems",
+    description: "You cannot sign in.",
+    blocks: [
+      ul(
+        "Check the email and password, then the one-time code from your email.",
+        "If the code never arrives, check spam and try again.",
+        "Use Forgot password to reset.",
+        "On a local setup, read the code from the backend log.",
+      ),
+    ],
+    related: ["sign-in"],
+  },
+  {
+    slug: "dashboard-loading",
+    group: "troubleshooting",
+    title: "Dashboard loading problems",
+    description: "Blank, stuck or wrong numbers.",
+    blocks: [
+      ul(
+        "Refresh the page and sign in again if you see Loading Applivo for a long time.",
+        "Check that the backend is reachable. The app logs the API address it uses.",
+        "Numbers update after an agent run finishes.",
+      ),
+    ],
+    related: ["dashboard-overview"],
+  },
+  {
+    slug: "missing-jobs",
+    group: "troubleshooting",
+    title: "Missing jobs and match results",
+    description: "No listings or no scores.",
+    blocks: [
+      p("See Troubleshooting job discovery. In short: run Scrape, clear filters, run Analyze, and check your token budget."),
+    ],
+    related: ["jobs-troubleshooting"],
+  },
+  {
+    slug: "extension-not-connecting",
+    group: "troubleshooting",
+    title: "Extension not connecting",
+    description: "Pairing fails.",
+    blocks: [
+      ol(
+        "Sign in to Applivo.",
+        "Open /extension/connect again.",
+        "Confirm your plan is eligible.",
+        "Reload the extension at chrome://extensions and retry.",
+      ),
+    ],
+    related: ["connect-extension", "eligibility"],
+  },
+  {
+    slug: "application-submission-failure",
+    group: "troubleshooting",
+    title: "Application submission failure",
+    description: "An application did not go through.",
+    blocks: [
+      p("Read the stage and reason on the application. See Troubleshooting failed applications for the table of causes."),
+    ],
+    related: ["applications-troubleshooting"],
+  },
+  {
+    slug: "upload-errors",
+    group: "troubleshooting",
+    title: "Upload errors",
+    description: "Resume upload fails.",
+    blocks: [
+      ul("Use a PDF.", "Keep it under 10 MB.", "Delete an old resume if you already have 3."),
+    ],
+    related: ["resume-troubleshooting"],
+  },
+  {
+    slug: "quota-errors",
+    group: "troubleshooting",
+    title: "Usage and quota errors",
+    description: "A limit was reached.",
+    blocks: [
+      p("Check the daily application ring, the Analyze token card and your AI Chat messages. Limits reset on their schedule or when you upgrade."),
+    ],
+    related: ["quota-and-usage", "usage-limits"],
+  },
+  {
+    slug: "ai-errors",
+    group: "troubleshooting",
+    title: "AI feature errors",
+    description: "AI answers are unavailable.",
+    blocks: [
+      p("The AI allowance may be used up, or the provider may be unavailable. Required questions will stop for you instead of being guessed. Try again later or answer manually."),
+    ],
+    related: ["ai-answers-and-required-fields"],
+  },
+  {
+    slug: "contact-support",
+    group: "troubleshooting",
+    title: "Contacting support",
+    description: "How to get help.",
+    blocks: [
+      p("Premium plans list dedicated support."),
+      limit("No support email or ticket system is defined in the product code, so none is listed here. Use the contact details given when you subscribed."),
+    ],
+    related: ["faq"],
+  },
+];

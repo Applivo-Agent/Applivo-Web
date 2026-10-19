@@ -1,361 +1,278 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-  Link2, Send, UploadCloud, Plus,
-  Brain, Briefcase, Mail, Globe, Bot,
-  Layers, FileText, Monitor, Target, Settings, MousePointer2, Activity
+  UploadCloud,
+  Plus,
+  Send,
+  FileText,
+  Search,
+  Target,
+  Brain,
+  Activity,
+  Lock,
+  Star,
+  Bot,
+  Settings,
+  MousePointer2
 } from "lucide-react";
 
-/* ─── CARD 1: Sync Graphic (Nodes) ─────────────────────────── */
-function AgentNode({ avatar, delay, size = 70, isMain = false }: { avatar?: string, delay: number, size?: number, isMain?: boolean }) {
-  return (
-    <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{
-        scale: 1,
-        opacity: 1,
-        y: isMain ? 0 : [0, -6, 0]
-      }}
-      transition={{
-        scale: { type: "spring", stiffness: 220, damping: 18, delay },
-        opacity: { duration: 0.4, delay },
-        y: isMain ? {} : { duration: 4 + (delay % 1.5), repeat: Infinity, ease: "easeInOut", delay }
-      }}
-      className="absolute rounded-full flex items-center justify-center z-20 overflow-hidden"
-      style={{
-        width: size,
-        height: size,
-        background: "radial-gradient(circle at top, #334155 0%, #0f172a 100%)",
-        border: "2px solid rgba(255,255,255,0.12)",
-        boxShadow: isMain
-          ? "0 0 30px rgba(148,163,184,0.3), 0 8px 32px rgba(0,0,0,0.5)"
-          : "0 8px 24px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.1)",
-      }}
-    >
-      {/* Cloud Decor at bottom - muted white */}
-      <div className="absolute bottom-0 left-0 right-0 h-1/3 opacity-20 pointer-events-none">
-        <svg viewBox="0 0 100 40" className="w-full h-full fill-white">
-          <path d="M10 40 Q 25 20 40 40 Q 55 15 70 40 Q 85 25 100 40 L 100 40 L 0 40 Z" />
-        </svg>
-      </div>
-
-      {/* Avatar Image / Icon */}
-      {avatar && (
-        <div
-          className="w-[85%] h-[85%] rounded-full bg-cover bg-center"
-          style={{ backgroundImage: `url(${avatar})`, backgroundSize: isMain ? 'cover' : '300% 200%' }}
-        />
-      )}
-
-      {/* Glossy Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
-    </motion.div>
-  );
-}
-
-function SyncGraphGraphic() {
-  const cx = 200;
-  const cy = 160; // Perfect mathematical vertical center of 320px height
-  const r = 100; // Symmetrical radius for all nodes
-
-  // Perfect hexagonal angles (even 60-degree increments)
-  // Top, Top-Right, Bottom-Right, Bottom, Bottom-Left, Top-Left
-  const angles = [270, 330, 30, 90, 150, 210];
-
-  const platforms = [
-    {
-      label: "LinkedIn",
-      icon: (
-        <svg viewBox="0 0 24 24" className="w-8 h-8 fill-white/90">
-          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-        </svg>
-      )
-    },
-    {
-      label: "Internshala",
-      icon: (
-        <div className="flex flex-col items-center justify-center leading-none">
-          <span className="text-white/90 font-black text-[18px] tracking-tighter leading-none">IS</span>
-          <span className="text-white/50 text-[6px] font-bold tracking-widest mt-0.5 uppercase">Internshala</span>
-        </div>
-      )
-    },
-    {
-      label: "Indeed",
-      icon: (
-        <svg viewBox="0 0 60 60" className="w-8 h-8 fill-white/90">
-          <circle cx="30" cy="14" r="8" />
-          <rect x="21" y="26" width="18" height="30" rx="3" />
-        </svg>
-      )
-    },
-    {
-      label: "Naukri",
-      icon: (
-        <div className="flex flex-col items-center justify-center leading-none">
-          <span className="text-white/90 font-black text-[13px] tracking-tight uppercase leading-none">naukri</span>
-          <div className="w-6 h-[2.5px] bg-white/40 rounded-full mt-1.5" />
-        </div>
-      )
-    },
-    {
-      label: "Glassdoor",
-      icon: (
-        <svg viewBox="0 0 32 32" className="w-8 h-8 fill-white/90">
-          <path d="M16 3C8.8 3 3 8.8 3 16s5.8 13 13 13 13-5.8 13-13S23.2 3 16 3zm0 3c2.8 0 5.3 1 7.2 2.7H8.8C10.7 7 13.2 6 16 6zm0 20c-2.8 0-5.3-1-7.2-2.7h14.4C21.3 25 18.8 26 16 26zm8.5-5H7.5v-2h17v2zm0-5H7.5v-2h17v2z" />
-        </svg>
-      )
-    },
-    {
-      label: "Resume",
-      icon: (
-        <svg viewBox="0 0 24 24" className="w-8 h-8 fill-none stroke-white/90" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="16" y1="13" x2="8" y2="13" />
-          <line x1="16" y1="17" x2="8" y2="17" />
-          <line x1="10" y1="9" x2="8" y2="9" />
-        </svg>
-      )
-    },
-  ];
-
-  const mainAvatarPath = "/main_ai_agent_avatar_1776344206856.png";
-
-  const toRad = (deg: number) => (deg * Math.PI) / 180;
-
-  return (
-    <div className="absolute inset-0 flex items-center justify-center">
-      {/* Faint Blurred Code Background */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none p-4 z-0 overflow-hidden blur-[0.5px]">
-        <pre className="text-[9px] text-white font-mono leading-[2.2] tracking-wider w-full h-full whitespace-pre-wrap text-center">
-          {`{  "agent_id": "agt_92xkL",  "role": "Orchestrator",  "status": "synchronized",
-  "knowledge_base": "career_vault_v2", "state": "active_learning",
+/* ─── CARD 1: LUMI AI AGENT ILLUSTRATION ──────────────────────────── */
+const lumiCodeBg = `{ "agent_id": "lumi_core_v2", "role": "Career Orchestrator",
+  "status": "autonomous", "memory": "active_session",
   "workflows": [
-    { "id": "w1", "type": "auto_apply", "nodes": 6 },
-    { "id": "w2", "type": "skill_mapping", "accuracy": "99.8%" }
-  ]
-}`}
+    { "step": "discover", "status": "stream_active" },
+    { "step": "match_score", "status": "threshold_85" },
+    { "step": "qa_generator", "status": "verified" },
+    { "step": "ats_tailor", "status": "ready" },
+    { "step": "auto_submit", "status": "background_tab" }
+  ] }
+{ "active_pipelines": 5, "verified_credentials": "vault_encrypted",
+  "autonomy_tier": "single_tab_background" }`;
+
+function LumiAgentGraphic() {
+  return (
+    <div className="w-full h-full relative flex items-center justify-center min-h-[340px] select-none pointer-events-none overflow-hidden">
+      {/* Background Code Faint Texture */}
+      <div className="absolute inset-0 p-6 overflow-hidden pointer-events-none opacity-[0.14] select-none">
+        <pre className="text-[9.5px] text-zinc-400 font-mono leading-[1.8] whitespace-pre-wrap">
+          {lumiCodeBg}
         </pre>
       </div>
 
-      <div className="flex-1 flex items-center justify-center relative z-10">
-        
-        {/* Center Lumi Orb — The "Spirit Core" (White Ethereal Version) */}
-        <motion.div
-          className="rounded-full flex items-center justify-center z-30"
-          style={{
-            width: 130,
-            height: 130,
-            background: "radial-gradient(circle at center, #ffffff 0%, #f0f0f0 20%, #000 100%)",
-          }}
-          initial={{ scale: 0, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
-          whileHover={{ scale: 1.05 }}
-          animate={{
-            y: [0, -10, 0],
-            boxShadow: [
-              "0 0 50px rgba(255, 255, 255, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.2)",
-              "0 0 100px rgba(255, 255, 255, 0.7), inset 0 0 40px rgba(255, 255, 255, 0.5)",
-              "0 0 50px rgba(255, 255, 255, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.2)",
-            ]
-          }}
-          transition={{
-            y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
-            boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-            scale: { type: "spring", stiffness: 300, damping: 20 }
-          }}
-        >
-          {/* Ethereal Smoke Layer 1 */}
-          <motion.div 
-            className="absolute inset-[-25px] rounded-full opacity-30"
-            style={{
-              background: "conic-gradient(from 0deg, transparent 0%, rgba(255,255,255,0.6) 20%, transparent 40%, rgba(255,255,255,0.3) 70%, transparent 100%)",
-              filter: "blur(18px)"
-            }}
-            animate={{ rotate: 360, scale: [1, 1.15, 1] }}
-            transition={{ 
-              rotate: { duration: 10, repeat: Infinity, ease: "linear" },
-              scale: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-            }}
-          />
-
-          {/* Ethereal Smoke Layer 2 */}
-          <motion.div 
-            className="absolute inset-[-35px] rounded-full opacity-20"
-            style={{
-              background: "conic-gradient(from 180deg, transparent 0%, rgba(255,255,255,0.4) 30%, transparent 50%, rgba(255,255,255,0.5) 80%, transparent 100%)",
-              filter: "blur(22px)"
-            }}
-            animate={{ rotate: -360, scale: [1.15, 1, 1.15] }}
-            transition={{ 
-              rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-              scale: { duration: 7, repeat: Infinity, ease: "easeInOut" }
-            }}
-          />
-
-          {/* Flare Emissions (The "tails" in the reference) */}
-          {[0, 60, 120, 180, 240, 300].map((angle, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-[2px] h-[65px] bg-gradient-to-t from-transparent via-white/50 to-white shadow-[0_0_20px_rgba(255,255,255,1)]"
-              style={{ 
-                left: '50%',
-                top: '50%',
-                transformOrigin: '0% 0%',
-                transform: `rotate(${angle}deg) translateY(-85px) translateX(-50%)`
-              }}
-              animate={{
-                opacity: [0.3, 0.8, 0.3],
-                height: [45, 80, 45],
-              }}
-              transition={{
-                duration: 2 + i * 0.4,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
-          ))}
-
-          {/* Intense Core Shine */}
-          <div className="absolute inset-[15%] rounded-full bg-white blur-xl opacity-40" />
-          <div className="absolute w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_15px_3px_white] opacity-90" />
-        </motion.div>
-      </div>
-    </div>
-  );
-}
-
-
-/* ─── CARD 2: Vault Upload ─────────────────────────────────── */
-function VaultGraphic() {
-  return (
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-
-      {/* Radial glow behind center */}
-      <div
-        className="absolute w-[500px] h-[500px] rounded-full z-0 opacity-40"
-        style={{
-          background: "radial-gradient(circle, rgba(37,99,235,0.2) 0%, transparent 70%)",
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)'
-        }}
-      />
-
-      {/* Localized glow behind card area */}
-      <div
-        className="absolute w-[300px] h-[300px] rounded-full z-0 opacity-30"
-        style={{
-          background: "radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%)",
-          left: '20%',
-          top: '40%',
-          transform: 'translate(-50%, -50%)'
-        }}
-      />
-
-      {/* 1. Background Layer: The Upload Panel */}
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative z-10"
+      {/* SVG Canvas for Concentric Orbital Guides and Connectors */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 420 320"
+        fill="none"
+        preserveAspectRatio="xMidYMid meet"
       >
-        <div
-          className="w-[360px] bg-[#111111]/90 backdrop-blur-2xl border border-white/[0.05] rounded-[24px] shadow-[0_20px_60px_-10px_rgba(0,0,0,0.9)] p-6 flex flex-col"
-          style={{ opacity: 1, transform: "scale(1)" }}
-        >
-          <p className="text-white text-[13px] font-semibold mb-5 opacity-80">Upload to knowledge base</p>
-          <div className="bg-[#0a0a0a]/50 rounded-[20px] border border-white/[0.02] p-4 flex flex-col items-center justify-center text-center gap-4 h-[180px] w-[110%] -ml-6 pr-10 shadow-[inset_0_4px_20px_rgba(0,0,0,0.5)]">
-            <div className="w-12 h-12 bg-[#1c1c1c] border border-[#2a2a2a] rounded-[14px] flex items-center justify-center opacity-80 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
-              <UploadCloud className="w-[18px] h-[18px] text-[#bbb]" />
-            </div>
-            <div>
-              <p className="text-white text-[13px] font-semibold mb-1 opacity-90">Upload files</p>
-              <p className="text-[#888] text-[11px] leading-[1.6] w-[200px] opacity-70">
-                Add docs, PDFs, or URLs to train your agent.
-              </p>
-            </div>
+        {/* Inner Orbital Path */}
+        <circle
+          cx="210"
+          cy="160"
+          r="78"
+          stroke="rgba(255,255,255,0.08)"
+          strokeWidth="1"
+          strokeDasharray="3 3"
+        />
+
+        {/* Outer Orbital Path */}
+        <circle
+          cx="210"
+          cy="160"
+          r="126"
+          stroke="rgba(255,255,255,0.04)"
+          strokeWidth="1"
+          strokeDasharray="4 4"
+        />
+
+        {/* Connector 1: Center -> Node 1 (Discover, Top) */}
+        <line x1="210" y1="122" x2="210" y2="60" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
+        <circle cx="210" cy="92" r="2.5" fill="#52525B" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
+
+        {/* Connector 2: Center -> Node 2 (Analyze Fit, Top-Right) */}
+        <line x1="244" y1="138" x2="295" y2="108" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
+        <circle cx="268" cy="124" r="2.5" fill="#52525B" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
+
+        {/* Connector 3: Center -> Node 3 (Screening QA, Bottom-Right) */}
+        <line x1="242" y1="182" x2="280" y2="220" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
+        <circle cx="261" cy="201" r="2.5" fill="#52525B" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
+
+        {/* Connector 4: Center -> Node 4 (ATS Resume, Bottom-Left) */}
+        <line x1="178" y1="182" x2="140" y2="220" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
+        <circle cx="159" cy="201" r="2.5" fill="#52525B" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
+
+        {/* Connector 5: Center -> Node 5 (Live Status, Top-Left) */}
+        <line x1="176" y1="138" x2="125" y2="108" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" strokeDasharray="3 3" />
+        <circle cx="152" cy="124" r="2.5" fill="#52525B" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8" />
+      </svg>
+
+      {/* ── Central Focal Element: The Lumi AI Core with Metallic Emblem ── */}
+      <motion.div
+        animate={{ scale: [1, 1.03, 1] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="relative z-30 flex items-center justify-center"
+      >
+        {/* Soft Ambient Core Glow */}
+        <div className="absolute w-[160px] h-[160px] rounded-full bg-white/[0.08] blur-2xl pointer-events-none" />
+
+        {/* 3D Metallic Lumi App Icon */}
+        <div className="relative flex items-center justify-center">
+          {/* Active Status Marker (Top-right of icon) */}
+          <div className="absolute -top-1.5 -right-1.5 z-40 w-4 h-4 rounded-full bg-[#18181B] border border-white/50 flex items-center justify-center shadow-lg">
+            <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+          </div>
+
+          <div className="w-[82px] h-[82px] rounded-[22px] overflow-hidden border border-white/25 shadow-[0_0_35px_rgba(255,255,255,0.12),0_16px_32px_rgba(0,0,0,0.95)] bg-[#121214] flex items-center justify-center">
+            <Image
+              src="/lumi-logo.png"
+              alt="Lumi AI Agent"
+              width={82}
+              height={82}
+              className="w-full h-full object-cover"
+              priority
+              unoptimized
+            />
           </div>
         </div>
       </motion.div>
 
-      {/* 2. Middle Layer: Floating URL Card */}
+      {/* ── Connected Node 1: Discover Opportunities (Top Center) ── */}
       <motion.div
-        initial={{ x: -20, opacity: 0 }}
-        whileInView={{ x: 0, opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-        className="absolute z-20 p-4 rounded-[20px] bg-[#0d0d0d] border border-white/[0.05] shadow-[0_30px_60px_-12px_rgba(0,0,0,0.9)] w-[260px]"
-        style={{
-          left: '10%',
-          top: '45%',
-          transform: 'translate(0, -50%)'
-        }}
+        animate={{ y: [0, -3, 0] }}
+        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
+        className="absolute top-[28px] left-1/2 -translate-x-1/2 z-20"
       >
-        <p className="text-[#888] text-[11px] mb-2.5 font-medium tracking-wide">Attach URL</p>
-        <div className="flex bg-[#121212] border border-[#2a2a2a] rounded-[12px] items-center px-3 py-1.5 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)] h-[42px]">
-          <span className="text-[#666] text-[13px] flex-1">Enter URL</span>
-          <Send className="w-4 h-4 text-[#888] ml-2" />
+        <div className="bg-[#18181B] border border-white/[0.12] rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.7)] hover:border-white/25 transition-all">
+          <Search className="w-3.5 h-3.5 text-zinc-300" />
+          <span className="text-[11px] font-medium text-zinc-300">Discover Opportunities</span>
         </div>
       </motion.div>
 
-      {/* 3. Foreground Accent: Primary Action Button */}
+      {/* ── Connected Node 2: Analyze Job Fit (Top Right) ── */}
       <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="absolute z-30"
-        style={{ right: '18%', bottom: '18%' }}
+        animate={{ y: [0, -3, 0] }}
+        transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+        className="absolute top-[75px] right-[18px] sm:right-[32px] z-20"
       >
-        <button
-          className="flex items-center justify-center gap-2 text-black px-5 py-2 rounded-[12px] text-[13px] font-bold shadow-[0_8px_24px_rgba(255,255,255,0.25)]"
-          style={{
-            background: "white",
-          }}
-        >
-          <Plus className="w-4 h-4" />
-          Select files
-        </button>
+        <div className="bg-[#18181B] border border-white/[0.12] rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.7)] hover:border-white/25 transition-all">
+          <Target className="w-3.5 h-3.5 text-zinc-300" />
+          <span className="text-[11px] font-medium text-zinc-300">Analyze Fit</span>
+        </div>
+      </motion.div>
+
+      {/* ── Connected Node 3: Screening Q&A (Bottom Right) ── */}
+      <motion.div
+        animate={{ y: [0, -3, 0] }}
+        transition={{ duration: 4.1, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        className="absolute bottom-[38px] right-[28px] sm:right-[42px] z-20"
+      >
+        <div className="bg-[#18181B] border border-white/[0.12] rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.7)] hover:border-white/25 transition-all">
+          <Brain className="w-3.5 h-3.5 text-zinc-300" />
+          <span className="text-[11px] font-medium text-zinc-300">Prepare Answers</span>
+        </div>
+      </motion.div>
+
+      {/* ── Connected Node 4: Select Resume (Bottom Left) ── */}
+      <motion.div
+        animate={{ y: [0, -3, 0] }}
+        transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
+        className="absolute bottom-[38px] left-[28px] sm:left-[42px] z-20"
+      >
+        <div className="bg-[#18181B] border border-white/[0.12] rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.7)] hover:border-white/25 transition-all">
+          <FileText className="w-3.5 h-3.5 text-zinc-300" />
+          <span className="text-[11px] font-medium text-zinc-300">Tailor Resume</span>
+        </div>
+      </motion.div>
+
+      {/* ── Connected Node 5: Track Status (Top Left) ── */}
+      <motion.div
+        animate={{ y: [0, -3, 0] }}
+        transition={{ duration: 3.9, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
+        className="absolute top-[75px] left-[18px] sm:left-[32px] z-20"
+      >
+        <div className="bg-[#18181B] border border-white/[0.12] rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.7)] hover:border-white/25 transition-all">
+          <Activity className="w-3.5 h-3.5 text-zinc-300" />
+          <span className="text-[11px] font-medium text-zinc-300">Track Status</span>
+        </div>
       </motion.div>
     </div>
   );
 }
 
-/* ─── CARD 3: Multi-Channel Cursors ────────────────────────── */
+/* ─── CARD 2: CUSTOM KNOWLEDGE BASE (EXACT MATCH REFERENCE) ──────── */
+function VaultGraphic() {
+  return (
+    <div className="w-full h-full relative flex items-center justify-center sm:justify-end pr-0 sm:pr-6 min-h-[330px] sm:min-h-[340px] select-none pointer-events-none p-2 sm:p-4 overflow-hidden">
+      {/* Background Soft Glow */}
+      <div className="absolute w-[380px] h-[240px] rounded-full bg-white/[0.04] blur-3xl pointer-events-none right-4" />
+
+      {/* Composition Wrapper that scales proportionally on mobile */}
+      <div className="relative w-full max-w-[440px] sm:max-w-none flex items-center justify-end scale-[0.88] sm:scale-100 origin-center sm:origin-right">
+        {/* 1. Main Background Card: Upload to knowledge base (Positioned on the right) */}
+        <motion.div
+          initial={{ y: 15, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-[300px] sm:w-[380px] bg-[#141416] border border-white/[0.1] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] flex flex-col relative z-10 overflow-hidden mr-0 sm:mr-3"
+        >
+          {/* Panel Header with divider */}
+          <div className="px-4 sm:px-5 py-2.5 sm:py-3 border-b border-white/[0.08] flex items-center">
+            <p className="text-white text-[12px] sm:text-[13px] font-medium tracking-tight opacity-95">
+              Upload to knowledge base
+            </p>
+          </div>
+
+          {/* Dropzone Box with Dashed Border */}
+          <div className="p-3.5 sm:p-5">
+            <div className="bg-[#0C0C0E]/90 rounded-xl border border-dashed border-white/[0.14] p-4 sm:p-5 flex flex-col items-center justify-center text-center">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 bg-[#1C1C1F] border border-white/10 rounded-xl flex items-center justify-center text-zinc-300 mb-2 sm:mb-2.5 shadow-sm">
+                <UploadCloud className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-300" strokeWidth={1.8} />
+              </div>
+
+              <p className="text-white text-[13px] sm:text-[13.5px] font-semibold mb-1 tracking-tight">Upload files</p>
+              <p className="text-zinc-400 text-[10.5px] sm:text-[11px] leading-relaxed max-w-[190px] sm:max-w-[210px] mb-3 sm:mb-3.5">
+                Add docs, PDFs, or URLs to train your agent.
+              </p>
+
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-lg bg-[#0072f5] hover:bg-[#0062d2] text-white font-medium text-[11px] sm:text-[12px] transition-all shadow-[0_4px_20px_rgba(0,114,245,0.45)]"
+              >
+                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                Select files
+              </button>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* 2. Floating Front Panel: Attach URL */}
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+          className="absolute z-20 left-0 sm:left-6 top-[44%] -translate-y-1/2 p-3 sm:p-4 rounded-2xl bg-[#18181B] border border-white/[0.14] shadow-[0_24px_55px_rgba(0,0,0,0.95)] w-[215px] sm:w-[285px]"
+        >
+          <p className="text-zinc-300 text-[10.5px] sm:text-[11px] mb-2 sm:mb-2.5 font-medium tracking-wide">Attach URL</p>
+          <div className="flex bg-[#111113] border border-white/10 rounded-xl items-center px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-inner h-[38px] sm:h-[42px]">
+            <span className="text-zinc-500 text-[11px] sm:text-xs flex-1">Enter URL</span>
+            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#222226] border border-white/10 flex items-center justify-center text-zinc-300 ml-1.5 sm:ml-2 shadow-sm">
+              <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-zinc-300 -rotate-12 translate-x-[-1px] translate-y-[0.5px]" strokeWidth={2} />
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── CARD 3: SMART AUTOMATION (CURSORS GRAPHIC) ─────────────────── */
 function CursorsGraphic() {
   return (
-    <div className="w-full flex justify-center items-center h-[180px] relative overflow-hidden">
+    <div className="w-full flex justify-center items-center h-[140px] relative overflow-hidden select-none pointer-events-none">
       {/* Background Soft Aura */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] bg-white/[0.03] rounded-full blur-[60px] z-0" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] bg-white/[0.03] rounded-full blur-2xl z-0" />
 
       <div className="relative z-10 flex flex-col items-center">
-        {/* Central Document Focus - Modern Glassy Resume */}
+        {/* Central Document Tile */}
         <motion.div
           animate={{ scale: [1, 1.02, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="w-[62px] h-[78px] rounded-[16px] bg-white/[0.05] backdrop-blur-[12px] border border-white/[0.1] shadow-[0_15px_35px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)] flex items-center justify-center z-20 relative"
+          className="w-[60px] h-[72px] rounded-[16px] bg-[#1C1C1F] border border-white/[0.12] shadow-[0_12px_28px_rgba(0,0,0,0.6)] flex items-center justify-center z-20 relative"
         >
-          <FileText className="w-8 h-8 text-white/90" strokeWidth={1.5} />
-
-          {/* Internal Pulse Line */}
-          <motion.div
-            animate={{ opacity: [0, 1, 0], x: [-10, 10] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-[1px] bg-white/20"
-          />
+          <FileText className="w-7 h-7 text-white/90" strokeWidth={1.6} />
         </motion.div>
 
-        {/* Clustered "Clicking" Cursors (Replicating exact reference interaction) */}
+        {/* Clustered Clicking Cursors */}
         {[
-          { x: 38, y: 18, rotate: 15, delay: 0.1 },
-          { x: 32, y: 48, rotate: 45, delay: 0.4 },
-          { x: 8, y: 62, rotate: 0, delay: 0.7 },
-          { x: -32, y: 42, rotate: -30, delay: 1.0 },
+          { x: 34, y: 14, rotate: 15, delay: 0.1 },
+          { x: 28, y: 44, rotate: 45, delay: 0.4 },
+          { x: 6, y: 56, rotate: 0, delay: 0.7 },
+          { x: -30, y: 38, rotate: -30, delay: 1.0 },
         ].map((cursor, i) => (
           <motion.div
             key={i}
@@ -363,8 +280,8 @@ function CursorsGraphic() {
             animate={{
               opacity: 1,
               scale: [0.8, 1, 0.9, 1],
-              x: [cursor.x + 10, cursor.x, cursor.x + 2, cursor.x],
-              y: [cursor.y + 10, cursor.y, cursor.y + 2, cursor.y]
+              x: [cursor.x + 8, cursor.x, cursor.x + 2, cursor.x],
+              y: [cursor.y + 8, cursor.y, cursor.y + 2, cursor.y]
             }}
             transition={{
               duration: 2.5,
@@ -372,16 +289,16 @@ function CursorsGraphic() {
               delay: cursor.delay,
               ease: "easeInOut"
             }}
-            className="absolute z-30 drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
+            className="absolute z-30 drop-shadow-[0_4px_8px_rgba(0,0,0,0.7)]"
             style={{
-              top: '50%',
-              left: '50%',
+              top: "50%",
+              left: "50%",
               transform: `rotate(${cursor.rotate}deg)`,
-              marginTop: cursor.y - 39,
+              marginTop: cursor.y - 34,
               marginLeft: cursor.x
             }}
           >
-            <MousePointer2 className="w-7 h-7 text-white fill-white stroke-[2px] stroke-black" />
+            <MousePointer2 className="w-6 h-6 text-white fill-white stroke-[2px] stroke-black" />
           </motion.div>
         ))}
       </div>
@@ -389,257 +306,319 @@ function CursorsGraphic() {
   );
 }
 
-/* ─── CARD 4: Radar Status ─────────────────────────────────── */
+/* ─── CARD 4: RADAR STATUS GRAPHIC (STRICTLY MONOCHROME) ─────────── */
 function RadarGraphic() {
   return (
-    <div className="w-full flex justify-center items-center h-[180px] relative overflow-hidden">
-      {/* Soft radial glow behind EVERYTHING */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-green-500/10 rounded-full blur-[80px] z-0" />
+    <div className="w-full flex justify-center items-center h-[140px] relative overflow-hidden select-none pointer-events-none">
+      {/* Soft Ambient White Aura */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] bg-white/[0.04] rounded-full blur-2xl z-0" />
 
-      {/* Central Axis Point */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
-        {/* Soft concentric radar rings */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] border border-white/[0.03] rounded-full z-0" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150px] h-[150px] border border-white/[0.04] rounded-full z-0" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70px] h-[70px] border border-white/[0.06] rounded-full z-0" />
+      {/* Concentric Radar Rings */}
+      <div className="relative w-[130px] h-[130px] rounded-full border border-white/15 flex items-center justify-center">
+        <div className="w-[85px] h-[85px] rounded-full border border-white/10 flex items-center justify-center">
+          <div className="w-[45px] h-[45px] rounded-full border border-white/20 flex items-center justify-center bg-[#18181B] shadow-inner">
+            <Activity className="w-4 h-4 text-zinc-200" strokeWidth={2} />
+          </div>
+        </div>
 
-        {/* Pulsing Detection Dot */}
-        <motion.div
-          animate={{
-            opacity: [0.4, 1, 0.4],
-            scale: [1, 1.25, 1]
-          }}
-          transition={{
-            duration: 1.2,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="absolute w-[8px] h-[8px] bg-[#4ade80] rounded-full shadow-[0_0_12px_#4ade80,0_0_24px_rgba(74,222,128,0.6)] z-20"
-          style={{ top: '-46px', left: '46px', transform: 'translate(-50%, -50%)' }}
-        />
-
-        {/* Animated Radar Sweep (2s Linear per request) */}
+        {/* Radar Sweep Needle (Monochrome White Gradient) */}
         <motion.div
           animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 w-[240px] h-[240px] rounded-full mix-blend-screen pointer-events-none z-10"
+          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 rounded-full"
           style={{
-            background: "conic-gradient(from 0deg, rgba(34,197,94,0) 0%, rgba(34,197,94,0) 65%, rgba(34,197,94,0.06) 85%, rgba(34,197,94,0.4) 100%)",
-            x: "-50%",
-            y: "-50%"
+            background: "conic-gradient(from 0deg, transparent 75%, rgba(255, 255, 255, 0.2) 100%)"
           }}
-        >
-          {/* Scanning Line Edge - Corrected 1px centering offset */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-[120px] bg-gradient-to-t from-transparent via-[#4ade80] to-[#4ade80] shadow-[0_0_15px_#4ade80]" />
-        </motion.div>
+        />
 
-        {/* Center Target Icon Container (Modern Monitoring Style) */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[52px] h-[52px] bg-[#0d0d0d] border border-white/[0.08] rounded-[14px] z-30 flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.6)] transition-colors">
-          <Activity className="w-6 h-6 text-white" strokeWidth={2} />
-        </div>
+        {/* Radar Blip / Ping Dot (Crisp White Glow) */}
+        <motion.div
+          animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.2, 0.8] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-4 right-6 w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.85)]"
+        />
       </div>
     </div>
   );
 }
 
-/* ─── CARD 5: Lock & Security ──────────────────────────────── */
+/* ─── CARD 5: SECURE CAREER DATA / ENTERPRISE SECURITY (EXACT MATCH REFERENCE) ─── */
+const lockCodeBg = `{ "agent_id": "agt_92kxL", "label":
+"Onboarding Assistant", "environment":
+"production", "triggers": [ { "type":
+"event", "source": "signup_form",
+"action": "start_onboard" } ],
+"workflow": { "steps": [ {
+"step_id": "s1", "type": "message",
+"content": "Welcome! Let's get you
+set up." } ], "limits": {
+"max_runs_per_day": 500 } } }`;
+
 function LockGraphic() {
   return (
-    <div className="w-full flex justify-center items-center h-[180px] relative overflow-hidden">
-      {/* Micro-text Faint Background Code */}
-      <div className="absolute inset-0 opacity-[0.05] pointer-events-none overflow-hidden flex items-center justify-center p-4">
-        <pre className="text-[11px] text-white font-mono leading-[2.2] tracking-wider text-center w-full">
-          {`{ "agent_id": "agt_92kxL", "label":
-"Onboarding": "triggers": "environment":
-"production": "***********************" "type":
-"event", "source": "signup_form",
-"action": [ "validate", "encrypt" ],
-"workflow": { "steps": [ {
-"step": "verify", "message": "auth",
-"content": "profile fully set up." } ] },
-"integration": "s2", "type": "oauth2"
-"security": "L4", "rotation": "daily" }`}
+    <div className="w-full flex justify-center items-center h-[160px] relative overflow-hidden select-none pointer-events-none">
+      {/* Background Code Texture - Exact JSON from Reference with Radial Mask Vignette */}
+      <div
+        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none px-4"
+        style={{
+          maskImage: "radial-gradient(circle at center, black 42%, transparent 82%)",
+          WebkitMaskImage: "radial-gradient(circle at center, black 42%, transparent 82%)",
+        }}
+      >
+        <pre className="text-[9.5px] text-zinc-400 font-mono leading-[1.65] text-center opacity-60 whitespace-pre">
+          {lockCodeBg}
         </pre>
       </div>
 
-      {/* Centered White Aura (Enhanced Atmospheric Glow) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] bg-white/[0.03] rounded-full blur-[100px] z-0" />
-
+      {/* Realistic Solid Padlock (Exact Match to Reference Screenshot) */}
       <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7 }}
-        className="relative z-10 flex flex-col items-center"
+        animate={{ y: [0, -3, 0] }}
+        transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+        className="relative z-10 flex flex-col items-center drop-shadow-[0_18px_36px_rgba(0,0,0,0.95)]"
       >
-        {/* Shackle: Significantly brighter to match silver/metal look in reference */}
-        <div className="w-[36px] h-[30px] border-[4.5px] border-[#d1d5db]/60 border-b-0 rounded-t-[18px] mb-[-3.5px] relative z-0" />
-
-        {/* 1:1 Match Glassmorphism Housing with Enhanced Lighting */}
-        <div
-          className="w-[82px] h-[68px] flex items-center justify-center relative z-10"
-          style={{
-            background: "linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.01) 100%)",
-            backdropFilter: "blur(24px)",
-            borderRadius: "12px",
-            border: "1px solid rgba(255,255,255,0.12)",
-            borderTop: "1px solid rgba(255,255,255,0.4)", // Ultra-sharp top-edge highlight
-            boxShadow: "0 20px 60px rgba(0,0,0,0.85), inset 0 1px 2px rgba(255,255,255,0.1)"
-          }}
+        <svg
+          width="114"
+          height="126"
+          viewBox="0 0 114 126"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Luminous Core localized behind the star */}
-          <div className="absolute w-10 h-10 bg-white/[0.3] blur-3xl rounded-full" />
+          <defs>
+            {/* Shackle Metallic Chrome Specular Gradient */}
+            <linearGradient id="shackleMetallicGrad" x1="26" y1="8" x2="84" y2="52" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#FFFFFF" />
+              <stop offset="16%" stopColor="#E4E4E7" />
+              <stop offset="42%" stopColor="#A1A1AA" />
+              <stop offset="75%" stopColor="#52525B" />
+              <stop offset="100%" stopColor="#27272A" />
+            </linearGradient>
 
-          {/* Sharp Pinpoint Star */}
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="white">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-          </svg>
-        </div>
+            {/* Lock Body Charcoal Solid Gradient */}
+            <linearGradient id="lockBodySolidGrad" x1="57" y1="47" x2="57" y2="120" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#45454C" />
+              <stop offset="15%" stopColor="#323237" />
+              <stop offset="55%" stopColor="#202023" />
+              <stop offset="100%" stopColor="#121214" />
+            </linearGradient>
+
+            {/* Soft Radial Bloom Behind White Star */}
+            <radialGradient id="starRadialGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="rgba(255,255,255,0.65)" />
+              <stop offset="35%" stopColor="rgba(255,255,255,0.22)" />
+              <stop offset="70%" stopColor="rgba(255,255,255,0.06)" />
+              <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+            </radialGradient>
+          </defs>
+
+          {/* Shackle Socket Recesses on Lock Body */}
+          <ellipse cx="33" cy="51" rx="8" ry="3" fill="rgba(0,0,0,0.6)" />
+          <ellipse cx="81" cy="51" rx="8" ry="3" fill="rgba(0,0,0,0.6)" />
+
+          {/* Shackle (Thick Metallic Arch) */}
+          <path
+            d="M 33 52 V 31 C 33 17.7 43.7 7 57 7 C 70.3 7 81 17.7 81 31 V 52"
+            stroke="url(#shackleMetallicGrad)"
+            strokeWidth="15"
+            strokeLinecap="round"
+          />
+
+          {/* Shackle Inner Cutout Shadow Line */}
+          <path
+            d="M 40.5 48 V 31 C 40.5 21.9 47.9 14.5 57 14.5 C 66.1 14.5 73.5 21.9 73.5 31 V 48"
+            stroke="rgba(0,0,0,0.4)"
+            strokeWidth="1.5"
+            fill="none"
+          />
+
+          {/* Lock Body (Solid Rounded Slab) */}
+          <rect
+            x="12"
+            y="47"
+            width="90"
+            height="73"
+            rx="17"
+            fill="url(#lockBodySolidGrad)"
+            stroke="rgba(255, 255, 255, 0.22)"
+            strokeWidth="1.2"
+          />
+
+          {/* Body Top Highlight Bevel */}
+          <path
+            d="M 28 48.5 H 86"
+            stroke="rgba(255,255,255,0.3)"
+            strokeWidth="1"
+            strokeLinecap="round"
+          />
+
+          {/* Inner Depth Stroke */}
+          <rect
+            x="13.5"
+            y="48.5"
+            width="87"
+            height="70"
+            rx="15.5"
+            stroke="rgba(0,0,0,0.45)"
+            strokeWidth="1"
+            fill="none"
+          />
+
+          {/* Soft Bloom Glow behind Star */}
+          <circle cx="57" cy="83.5" r="22" fill="url(#starRadialGlow)" />
+
+          {/* White Star in Center of Lock Body (Exact 5-Point Star from Reference) */}
+          <path
+            d="M 57 73 L 59.9 79.8 L 67.2 80.5 L 61.8 85.4 L 63.4 92.5 L 57 88.8 L 50.6 92.5 L 52.2 85.4 L 46.8 80.5 L 54.1 79.8 Z"
+            fill="#FFFFFF"
+            style={{ filter: "drop-shadow(0 0 6px rgba(255,255,255,0.8))" }}
+          />
+        </svg>
       </motion.div>
     </div>
   );
 }
 
-/* ─── MAIN EXPORT ──────────────────────────────────────────── */
+/* ─── MAIN EXPORTED SECONDARY BENTO COMPONENT ────────────────────── */
 export function SecondaryBento() {
   return (
-    <section className="bg-[#080808] pb-16 px-6 relative z-10">
-      <div className="max-w-[1240px] mx-auto">
-
-
-        {/* ROW 1: 2 Columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.8fr] gap-5 mb-5">
-
-          {/* Card 1: Agent Context */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7 }}
-            className="rounded-[24px] border border-[#1e1e1e] overflow-hidden flex flex-col h-[500px] shadow-[0_0_80px_rgba(0,0,0,0.3)] relative group"
-            style={{
-              background: "radial-gradient(circle at top left, rgba(255,255,255,0.03) 0%, #0d0d0d 100%)"
-            }}
-          >
-            <div className="flex items-center gap-3 px-7 py-5 border-b border-white/[0.03] relative z-20">
-              <Bot className="w-[18px] h-[18px] text-[#888]" strokeWidth={2} />
-              <span className="text-[#e5e5e5] font-semibold text-[15px] tracking-tight">Introducing Lumi</span>
+    <div className="max-w-[1160px] mx-auto px-4 sm:px-6 relative z-10">
+      {/* ── ROW 1: 2 Columns with Asymmetric Mirror Layout matching Kilo ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-[466fr_654fr] gap-4 md:gap-5 mb-4 md:mb-5 h-auto lg:h-[530px] items-stretch">
+        {/* Card 1: Introducing Lumi */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
+          className="rounded-[28px] bg-[#121212] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.4)] hover:border-white/[0.16] transition-colors duration-300"
+        >
+          {/* Header Row */}
+          <div className="flex items-center gap-3 px-7 py-4 border-b border-white/[0.08]">
+            <div className="w-[20px] h-[20px] rounded-[6px] overflow-hidden border border-white/25 shrink-0 bg-[#18181B] flex items-center justify-center">
+              <Image
+                src="/lumi-logo.png"
+                alt="Lumi"
+                width={20}
+                height={20}
+                className="w-full h-full object-cover"
+                unoptimized
+              />
             </div>
+            <span className="text-[#e5e5e5] font-semibold text-[15px] tracking-tight">Introducing Lumi</span>
+          </div>
 
-            <div className="flex-1 relative">
-              <SyncGraphGraphic />
-            </div>
+          {/* Visual Canvas */}
+          <div className="flex-1 relative overflow-hidden">
+            <LumiAgentGraphic />
+          </div>
 
-            <div className="px-8 pb-10 pt-4 border-t border-transparent relative z-20">
-              <h3 className="text-[18px] font-semibold text-white mb-2 tracking-tight">Your AI job agent, working around the clock</h3>
-              <p className="text-[15px] text-[#888] leading-[1.6]">
-                Lumi continuously searches for opportunities, optimizes your profile, and applies to matching roles — so you never miss a beat.
-              </p>
-            </div>
-          </motion.div>
+          {/* Bottom Text Area */}
+          <div className="px-7 pb-8 pt-3 border-t border-transparent relative z-20">
+            <h3 className="text-[18px] font-semibold text-white mb-2 tracking-tight">
+              Your AI job agent, working around the clock
+            </h3>
+            <p className="text-[14px] text-zinc-400 leading-[1.6]">
+              Lumi continuously searches for opportunities, optimizes your profile, and applies to matching roles — so you never miss a beat.
+            </p>
+          </div>
+        </motion.div>
 
-          {/* Card 2: Custom Knowledge Base */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="rounded-[24px] border border-[#1e1e1e] overflow-hidden flex flex-col h-[500px] shadow-[0_0_80px_rgba(0,0,0,0.3)] relative group"
-            style={{
-              background: "radial-gradient(circle at top left, rgba(255,255,255,0.03) 0%, #0d0d0d 100%)"
-            }}
-          >
-            <div className="flex items-center gap-3 px-7 py-5 border-b border-white/[0.03] relative z-20">
-              <Settings className="w-[18px] h-[18px] text-[#888]" strokeWidth={2} />
-              <span className="text-[#e5e5e5] font-semibold text-[15px] tracking-tight">Custom Knowledge Base</span>
-            </div>
+        {/* Card 2: Custom Knowledge Base */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1], delay: 0.1 }}
+          className="rounded-[28px] bg-[#121212] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.4)] hover:border-white/[0.16] transition-colors duration-300"
+        >
+          {/* Header Row */}
+          <div className="flex items-center gap-3 px-7 py-4 border-b border-white/[0.08]">
+            <Settings className="w-[18px] h-[18px] text-zinc-400" strokeWidth={1.8} />
+            <span className="text-[#e5e5e5] font-semibold text-[15px] tracking-tight">Custom Knowledge Base</span>
+          </div>
 
-            <div className="flex-1 relative">
-              <VaultGraphic />
-            </div>
+          {/* Visual Canvas */}
+          <div className="flex-1 relative overflow-hidden">
+            <VaultGraphic />
+          </div>
 
-            <div className="px-8 pb-10 pt-4 border-t border-transparent relative z-20 w-full lg:w-[65%]">
-              <h3 className="text-[18px] font-semibold text-white mb-2 tracking-tight">Your Career, Stored Once — Applied Everywhere</h3>
-              <p className="text-[15px] text-[#888] leading-[1.6]">
-                Upload your resume and preferences once. Applivo keeps your profile ready and automatically applies to relevant jobs across different platforms.
-              </p>
-            </div>
-          </motion.div>
-
-        </div>
-
-        {/* ROW 2: 3 Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-
-          {/* Card 3: Smart Automation */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6 }}
-            className="rounded-[24px] border border-[#1e1e1e] overflow-hidden flex flex-col h-[400px] p-8 shadow-[0_0_50px_rgba(0,0,0,0.2)] group"
-            style={{
-              background: "radial-gradient(circle at top left, rgba(255,255,255,0.03) 0%, #0d0d0d 100%)"
-            }}
-          >
-            <div className="flex-1 flex flex-col justify-center">
-              <CursorsGraphic />
-            </div>
-            <div className="mt-auto pt-6">
-              <h3 className="text-[18px] font-semibold text-white mb-2 tracking-tight">Smart Application Automation</h3>
-              <p className="text-[15px] text-[#888] leading-[1.6]">
-                Applivo automatically finds relevant opportunities, fills application forms, and submits them on your behalf — saving hours of manual effort.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Card 4: Tracking */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-[24px] border border-[#1e1e1e] overflow-hidden flex flex-col h-[400px] p-8 shadow-[0_0_50px_rgba(0,0,0,0.2)] group"
-            style={{
-              background: "radial-gradient(circle at top left, rgba(255,255,255,0.03) 0%, #0d0d0d 100%)"
-            }}
-          >
-            <div className="flex-1 flex flex-col justify-center">
-              <RadarGraphic />
-            </div>
-            <div className="mt-auto pt-6">
-              <h3 className="text-[18px] font-semibold text-white mb-2 tracking-tight">Real-Time Application Tracking</h3>
-              <p className="text-[15px] text-[#888] leading-[1.6]">
-                Track every application, response, and interview update in one unified dashboard with instant notifications.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Card 5: Security */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="rounded-[24px] border border-[#1e1e1e] overflow-hidden flex flex-col h-[400px] p-8 shadow-[0_0_50px_rgba(0,0,0,0.2)] relative group"
-            style={{
-              background: "radial-gradient(circle at top left, rgba(255,255,255,0.04) 0%, #0d0d0d 100%)"
-            }}
-          >
-            <div className="flex-1 flex flex-col justify-center">
-              <LockGraphic />
-            </div>
-            <div className="mt-auto pt-6 relative z-10">
-              <h3 className="text-[18px] font-semibold text-white mb-2 tracking-tight">Secure Career Data</h3>
-              <p className="text-[15px] text-[#888] leading-[1.6]">
-                Your resume, personal details, and application history are securely stored with strong encryption and privacy protection.
-              </p>
-            </div>
-          </motion.div>
-
-        </div>
-
+          {/* Bottom Text Area */}
+          <div className="px-7 pb-8 pt-3 border-t border-transparent relative z-20">
+            <h3 className="text-[18px] font-semibold text-white mb-2 tracking-tight">
+              Agents that speak your language
+            </h3>
+            <p className="text-[14px] text-zinc-400 leading-[1.6]">
+              Train your agents with your unique career data, documents, and preferences. Your agents provide tailored applications that reflect your expertise.
+            </p>
+          </div>
+        </motion.div>
       </div>
-    </section>
+
+      {/* ── ROW 2: 3 Columns with Standardized Dimensions (h-[340px], rounded-[28px], p-7 sm:p-8) ── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+        {/* Card 3: Smart Application Automation */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
+          className="rounded-[28px] bg-[#121212] border border-white/[0.08] hover:border-white/[0.16] overflow-hidden flex flex-col h-[340px] p-7 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.2)] transition-colors duration-300 justify-between group"
+        >
+          <div className="flex-1 flex flex-col justify-center">
+            <CursorsGraphic />
+          </div>
+          <div className="mt-auto pt-2">
+            <h3 className="text-[19px] font-semibold text-white mb-2 tracking-tight">
+              Smart Application Automation
+            </h3>
+            <p className="text-[14px] text-zinc-400 leading-[1.6]">
+              Applivo automatically finds relevant opportunities, fills application forms, and submits them on your behalf.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Card 4: Real-Time Application Tracking */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1], delay: 0.1 }}
+          className="rounded-[28px] bg-[#121212] border border-white/[0.08] hover:border-white/[0.16] overflow-hidden flex flex-col h-[340px] p-7 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.2)] transition-colors duration-300 justify-between group"
+        >
+          <div className="flex-1 flex flex-col justify-center">
+            <RadarGraphic />
+          </div>
+          <div className="mt-auto pt-2">
+            <h3 className="text-[19px] font-semibold text-white mb-2 tracking-tight">
+              Real-Time Application Tracking
+            </h3>
+            <p className="text-[14px] text-zinc-400 leading-[1.6]">
+              Track every application, response, and interview update in one unified dashboard with instant notifications.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Card 5: Enterprise Security */}
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1], delay: 0.2 }}
+          className="rounded-[28px] bg-[#121212] border border-white/[0.08] hover:border-white/[0.16] overflow-hidden flex flex-col h-[340px] p-7 sm:p-8 shadow-[0_0_50px_rgba(0,0,0,0.2)] transition-colors duration-300 justify-between group"
+        >
+          <div className="flex-1 flex flex-col justify-center">
+            <LockGraphic />
+          </div>
+          <div className="mt-auto pt-2">
+            <h3 className="text-[19px] font-semibold text-white mb-2 tracking-tight">
+              Enterprise Security
+            </h3>
+            <p className="text-[14px] text-zinc-400 leading-[1.6]">
+              Enterprise-level encryption and granular permissions keep your career data safe.
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </div>
   );
 }
+

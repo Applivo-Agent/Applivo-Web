@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { NavBar } from "@/components/NavBar";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence, MotionConfig } from "framer-motion";
 import { useEffect, useState, useRef, useMemo } from "react";
 import {
   Zap, Brain, ChevronRight, Check,
@@ -10,22 +10,21 @@ import {
   ArrowRight, Globe, Sparkles, Shield, Target,
   MessageSquare, Star, TrendingUp, Loader2,
   ChevronDown, Activity, ShieldCheck, Book,
-  Mail, ExternalLink
+  Mail, ExternalLink, Paperclip, Database,
 } from "lucide-react";
 import { PLAN_FEATURES, PLAN_PRICES } from "@/lib/subscription";
-import { siInstagram, siX } from "simple-icons";
 import dynamic from "next/dynamic";
 
 const KiloagentBackground = dynamic(() => import("@/components/KiloagentBackground").then(m => ({ default: m.KiloagentBackground })), { ssr: false });
 import { MiddleHero } from "@/components/ainest/MiddleHero";
 import { WorkflowBento } from "@/components/ainest/WorkflowBento";
 import { SecondaryBento } from "@/components/ainest/SecondaryBento";
-import { BentoGrid } from "@/components/ainest/BentoGrid";
 import { IntegrationsHub } from "@/components/ainest/IntegrationsHub";
 import { HowItWorksSteps } from "@/components/ainest/HowItWorksSteps";
 import { AppFeaturesGrid } from "@/components/ainest/AppFeaturesGrid";
 import { TweetMarquee } from "@/components/ainest/TweetMarquee";
 import { SimplePricing as Pricing } from "@/components/ainest/Pricing";
+import { Footer } from "@/components/Footer";
 
 
 /* ─── HERO MOCKUP ─────────────────────────────────────────── */
@@ -69,175 +68,114 @@ function HeroMockup() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      initial={{ opacity: 0, y: 40, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="relative mt-24 max-w-[1100px] mx-auto w-full px-6 lg:px-0"
+      transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      className="relative w-full"
     >
-      {/* Floating Chat Input (Kilo Style rigidly centered) */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1.2, duration: 0.5, type: "spring" }}
-        className="absolute z-30 left-0 right-0 mx-auto -top-12 w-full max-w-md px-6 md:px-0"
-      >
-        <div className="bg-[#1c1c1e]/95 backdrop-blur-xl border border-[#262626] rounded-2xl p-4 shadow-[0_40px_80px_-20px_rgba(0,0,0,1)] flex flex-col">
-          {/* Top text area */}
-          <div className="w-full text-left pl-1 min-h-[20px]">
-            <p className="text-[#f4f4f5] text-sm font-sans tracking-tight">
-              {text}<span className="inline-block w-[2px] h-[16px] bg-[#3b82f6] ml-1 align-middle animate-[pulse_0.8s_infinite]" />
-            </p>
-          </div>
-
-          {/* Bottom actions row */}
-          <div className="flex items-center justify-between mt-4">
-            <div className="flex items-center gap-1.5 bg-[#141414] rounded-xl p-1 border border-[#222]">
-              <button className="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors text-zinc-500">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg>
-              </button>
-              <button className="p-1.5 rounded-lg hover:bg-zinc-800 transition-colors text-zinc-500">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3" /><path d="M3 5V19A9 3 0 0 0 21 19V5" /><path d="M3 12A9 3 0 0 0 21 12" /></svg>
-              </button>
+      {/* Floating Chat Input (Kilo Style: tightly proportioned to Kilo ~450px width & 122px height) */}
+      <div className="absolute z-30 left-1/2 -translate-x-1/2 -top-6 sm:-top-8 md:-top-9 w-[88%] sm:w-[410px] md:w-[450px] max-w-[450px]">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full"
+        >
+          <div className="rounded-[18px] sm:rounded-[20px] bg-[#121214]/95 backdrop-blur-2xl border border-[#27272a] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.92),0_0_0_1px_rgba(255,255,255,0.06)] px-3.5 py-3 sm:px-4 sm:py-3.5 md:px-4.5 md:py-3.5 flex flex-col justify-between min-h-[112px] sm:min-h-[118px] md:min-h-[122px]">
+            {/* Top text area with ~14.5px font and cyan cursor */}
+            <div className="w-full text-left min-h-[38px] sm:min-h-[42px]">
+              <p className="text-zinc-200 text-[13.5px] sm:text-[14px] md:text-[14.5px] font-normal leading-relaxed tracking-normal select-none">
+                {text}
+                <span className="inline-block w-[2px] h-[15px] sm:h-[16px] bg-[#38bdf8] ml-1.5 align-middle animate-[pulse_0.8s_infinite]" />
+              </p>
             </div>
 
-            <button className="w-9 h-9 rounded-xl bg-[#f4f4f5] hover:bg-white flex items-center justify-center transition-all shadow-lg active:scale-95 group">
-              <Send className="w-4 h-4 text-black shrink-0 transition-transform group-hover:translate-x-0.5" strokeWidth={3} />
-            </button>
+            {/* Bottom actions row */}
+            <div className="flex items-center justify-between mt-2 pt-0.5">
+              <div className="flex items-center gap-0.5 bg-[#19191d] border border-white/[0.08] rounded-[9px] px-1.5 py-0.5 shadow-inner">
+                <button
+                  type="button"
+                  aria-label="Attach file"
+                  title="Attach file"
+                  className="p-1 rounded-[6px] text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors"
+                >
+                  <Paperclip className="w-3.5 h-3.5" strokeWidth={1.8} />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Knowledge context"
+                  title="Knowledge context"
+                  className="p-1 rounded-[6px] text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors"
+                >
+                  <Database className="w-3.5 h-3.5" strokeWidth={1.8} />
+                </button>
+              </div>
+
+              <button
+                type="button"
+                aria-label="Send prompt"
+                title="Run agent prompt"
+                className="w-[36px] h-[28px] sm:w-[38px] sm:h-[30px] rounded-[9px] sm:rounded-[10px] bg-[#f4f4f5] hover:bg-white active:scale-95 flex items-center justify-center transition-all shadow-md group"
+              >
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-zinc-900 transition-transform group-hover:scale-105"
+                >
+                  <path d="m22 2-7 20-4-9-9-4Z" />
+                  <path d="M22 2 11 13" />
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
 
-
-      {/* Browser chrome */}
-      <div className="relative w-full rounded-t-[20px] overflow-hidden border border-[#222222] bg-[#050505] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.8)] z-20 [mask-image:linear-gradient(to_bottom,black_50%,transparent_100%)]">
-        {/* Title bar tightly matched to Kiloagent */}
-        <div className="flex items-center justify-between px-4 py-3 bg-[#050505] border-b border-[#1a1a1a]">
+      {/* Browser Chrome Mockup: 1,040px Max Width matching Kilo */}
+      <div className="relative w-full rounded-t-[18px] sm:rounded-t-[24px] overflow-hidden border border-white/[0.08] bg-[#0a0a0a] shadow-[0_32px_100px_-20px_rgba(0,0,0,0.95)] z-10 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]">
+        {/* Title bar tightly matched to Kilo */}
+        <div className="flex items-center justify-between px-3.5 sm:px-5 py-2.5 sm:py-3 bg-[#121214] border-b border-white/[0.06]">
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-[#121212] border border-[#222] rounded-full pl-3 pr-4 py-1.5 min-w-[200px]">
-              <Globe className="w-3.5 h-3.5 text-[#52525b]" />
-              <div className="text-[#71717a] text-[13px] font-sans tracking-wide">
+            <div className="flex items-center gap-2 bg-[#17171a] border border-white/[0.08] rounded-full pl-3 pr-2.5 py-1 min-w-[190px] sm:min-w-[220px]">
+              <Globe className="w-3 h-3 text-zinc-500 shrink-0" />
+              <div className="text-zinc-400 text-xs sm:text-[12.5px] font-sans tracking-normal truncate">
                 https://app.applivo.in/
               </div>
-              <div className="ml-auto text-[#3f3f46]">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14" /></svg>
+              <div className="ml-auto text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer shrink-0">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14" /></svg>
               </div>
             </div>
           </div>
 
-          <div className="flex gap-2 mr-2">
-            <div className="w-[10px] h-[10px] rounded-full bg-[#262626]" />
-            <div className="w-[10px] h-[10px] rounded-full bg-[#262626]" />
-            <div className="w-[10px] h-[10px] rounded-full bg-[#262626]" />
-
+          <div className="flex items-center gap-1.5 mr-1">
+            <div className="w-2 h-2 rounded-full bg-zinc-700/60" />
+            <div className="w-2 h-2 rounded-full bg-zinc-700/60" />
+            <div className="w-2 h-2 rounded-full bg-zinc-700/60" />
           </div>
         </div>
 
         {/* Dashboard preview correctly seated */}
-        <div className="bg-[#050505] relative overflow-hidden">
+        <div className="bg-[#0a0a0a] relative overflow-hidden">
           <Image
-            src="/dashboard-screenshot.png?v=latest"
+            src="/dashboard-screenshot.png?v=3"
             alt="Applivo Dashboard"
-            width={1600}
-            height={900}
-            className="w-full h-auto mt-0 border-x border-[#222] rounded-b-xl shadow-2xl"
+            width={2560}
+            height={1455}
+            className="w-full h-auto mt-0 object-cover object-top shadow-2xl"
             priority
             unoptimized
           />
 
-
-          <div className="absolute inset-x-0 bottom-0 h-[400px] bg-gradient-to-t from-[#000] via-[#000]/90 to-transparent pointer-events-none z-20" />
+          <div className="absolute inset-x-0 bottom-0 h-[220px] sm:h-[300px] bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/85 to-transparent pointer-events-none z-20" />
         </div>
       </div>
     </motion.div>
-  );
-}
-
-/* ─── FOOTER ──────────────────────────────────────────────── */
-function Footer() {
-  return (
-    <footer className="border-t border-white/6 py-12 px-6">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <Image src="/logo.png" alt="Applivo" width={28} height={28} className="rounded-lg" />
-          <span className="text-white font-extrabold tracking-tight text-[15px]">Applivo</span>
-        </Link>
-        <span className="text-zinc-700 mx-2 hidden md:block">·</span>
-        <span className="text-zinc-600 text-sm">Built with precision © 2026</span>
-      </div>
-    </footer>
-  );
-}
-
-function BrandIcon({ icon, className, color }: { icon: { path: string; hex: string }, className?: string, color?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill={color ?? `#${icon.hex}`}>
-      <path d={icon.path} />
-    </svg>
-  );
-}
-
-type ContactLink =
-  | { kind: "email"; label: string; href: string; value: string }
-  | { kind: "brand"; label: string; href: string; value: string; icon: { path: string; hex: string }; color?: string }
-  | { kind: "linkedin"; label: string; href: string; value: string };
-
-function ContactSection() {
-  const contactLinks: ContactLink[] = [
-    { kind: "email", label: "Email", href: "mailto:applivoagent@gmail.com", value: "applivoagent@gmail.com" },
-    { kind: "brand", label: "X", href: "https://x.com/applivo_in", value: "x.com/applivo_in", icon: siX, color: "#f5f5f5" },
-    { kind: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/company/applivo-agent/", value: "linkedin.com/company/applivo-agent" },
-    { kind: "brand", label: "Instagram", href: "https://www.instagram.com/applivo.in/", value: "instagram.com/applivo.in", icon: siInstagram },
-  ];
-
-  return (
-    <section id="contact" className="relative overflow-hidden border-t border-white/[0.04] bg-[#080808] py-20 md:py-28">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_40%)] pointer-events-none" />
-
-      <div className="relative z-10 max-w-2xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-120px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-[20px] border border-white/[0.06] bg-[#111111] p-4 md:p-6 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.95)]"
-        >
-          <p className="text-[10px] uppercase tracking-[0.24em] text-zinc-500 font-black">Contact</p>
-          <h3 className="mt-2 text-xl md:text-2xl font-bold text-white tracking-tight">Let&apos;s talk</h3>
-          <p className="mt-2 text-sm text-[#A1A1AA] leading-6">
-            For product demos, support, feedback, or collaborations, use any of the direct channels below.
-          </p>
-
-          <div className="mt-4 space-y-3">
-            {contactLinks.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                target={item.href.startsWith("http") ? "_blank" : undefined}
-                rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="group flex items-center justify-between gap-4 rounded-2xl border border-white/[0.06] bg-black/30 px-4 py-4 transition-all hover:border-white/12 hover:bg-white/[0.04]"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.04] text-white">
-                    {item.kind === "linkedin" ? (
-                      <span className="text-[11px] font-black uppercase tracking-[0.08em]">in</span>
-                    ) : item.kind === "email" ? (
-                      <Mail className="h-4 w-4" />
-                    ) : (
-                      <BrandIcon icon={item.icon} color={item.color} className="h-4 w-4" />
-                    )}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs uppercase tracking-[0.24em] text-zinc-500 font-black">{item.label}</p>
-                    <p className="mt-1 truncate text-sm font-medium text-white">{item.value}</p>
-                  </div>
-                </div>
-                <ExternalLink className="h-4 w-4 shrink-0 text-[#A1A1AA] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-    </section>
   );
 }
 
@@ -250,128 +188,126 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#000000] text-white selection:bg-white/20">
-      <NavBar />
+    <MotionConfig reducedMotion="user">
+      <div className="landing-typography min-h-screen bg-[#0a0a0a] text-white selection:bg-white/20">
+        <NavBar />
 
-      {/* ── HERO ─────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center pt-16 pb-8 px-6 overflow-hidden bg-[#0a0a0a]">
-        {/* Matrix ASCII Rain Background */}
-        <KiloagentBackground />
+        {/* ── HERO ─────────────────────────────────────────── */}
+        <section className="relative min-h-screen flex flex-col items-center justify-center pt-[96px] pb-16 px-4 sm:px-6 md:px-8 overflow-hidden bg-[#0a0a0a]">
+          {/* Matrix ASCII Rain Background */}
+          <KiloagentBackground />
 
-        <div className="relative z-20 w-full max-w-5xl mx-auto text-center mt-8">
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.05] mt-4 text-center flex flex-col items-center max-w-2xl mx-auto"
-          >
-            <span className="text-[#888888] block">Land Your Dream Job</span>
-            <span className="text-white font-semibold">With AI Agents</span>
-          </motion.h1>
-
-          {/* Subtitle - Kiloagent Style */}
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-sm lg:text-base font-sans max-w-xl mx-auto mt-4 leading-relaxed text-[#919191] text-center"
-          >
-            Applivo automates the job application process by matching opportunities, generating applications, and submitting them automatically.
-          </motion.p>
-
-          {/* CTA buttons - Kiloagent Style */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-wrap justify-center items-center gap-3 mt-5"
-          >
-            <Link
-              href={isLoggedIn ? "/dashboard" : "/register"}
-              className="h-11 px-6 bg-white hover:bg-zinc-100 text-black font-extrabold text-sm rounded-2xl inline-flex items-center justify-center transition-all duration-200 shadow-[0_0_20px_rgba(255,255,255,0.3)] active:scale-95"
+          {/* Text Header Container */}
+          <div className="relative z-20 w-full max-w-4xl mx-auto text-center mt-6 sm:mt-8">
+            <div className="flex justify-center">
+              <span className="k-badge">
+                <span className="k-badge-tag">New</span>
+                <span className="pr-3">AI agents that apply for you</span>
+              </span>
+            </div>
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="k-h1 mt-6 text-center flex flex-col items-center max-w-2xl mx-auto"
             >
-              Deploy Agent
-            </Link>
-            <Link
-              href="/#features"
-              className="h-11 px-6 bg-[#1c1c1e] border border-white/5 hover:bg-[#252528] text-zinc-300 font-semibold text-sm rounded-2xl inline-flex items-center justify-center transition-all duration-200 active:scale-95 shadow-md"
+              <span className="text-[#a1a1a1] block">Land Your Dream Job</span>
+              <span className="text-white font-semibold">With AI Agents</span>
+            </motion.h1>
+
+            {/* Subtitle - Kiloagent Style */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="k-body max-w-xl mx-auto mt-6 text-center"
             >
-              Learn more
-            </Link>
-          </motion.div>
+              Applivo automates the job application process by matching opportunities, generating applications, and submitting them automatically.
+            </motion.p>
 
-          {/* Dashboard mockup (Kiloagent overlay style) */}
-          <HeroMockup />
-
-        </div>
-      </section>
-
-      <MiddleHero />
-
-      <div id="workflow" className="pt-20 md:pt-32 pb-12 md:pb-24">
-        <div className="max-w-4xl mx-auto text-center px-6 mb-10 md:mb-12 relative z-10">
-          <h2 className="text-[2.25rem] md:text-[3.25rem] font-bold text-white tracking-tighter mb-4 leading-[1.1]">Automate Your Job Search — End to End.</h2>
-          <p className="text-[17px] text-[#888888] max-w-2xl mx-auto font-medium leading-[1.6]">Connect your accounts, discover matching roles, and let AI apply to opportunities automatically — saving hours of manual effort every day.</p>
-        </div>
-        <WorkflowBento />
-
-        {/* Kiloagent UI Flow restored */}
-        <div className="mt-16 md:mt-24">
-          <HowItWorksSteps />
-        </div>
-      </div>
-
-      <div id="features" className="py-8 md:py-16 relative mt-[-20px]">
-        <div className="max-w-4xl mx-auto text-center px-6 mb-10 relative z-10">
-          <h2 className="text-[2.25rem] md:text-[3.25rem] font-bold text-white tracking-tighter mb-4 leading-[1.1]">Everything you need to scale.</h2>
-          <p className="text-[17px] text-[#888888] max-w-2xl mx-auto font-medium leading-[1.6]">A massively scalable ecosystem that natively handles deployment, tracking, synchronization, and security.</p>
-        </div>
-        <SecondaryBento />
-
-        <div className="mt-24 md:mt-32 max-w-4xl mx-auto text-center px-6 mb-12 relative z-10">
-          <h2 className="text-[2.25rem] md:text-[3.25rem] font-bold text-white tracking-tighter mb-4 leading-[1.1]">Unleash your potential.</h2>
-          <p className="text-[17px] text-[#888888] max-w-2xl mx-auto font-medium leading-[1.6]">Advanced career intelligence and analytics built directly into your workflow.</p>
-        </div>
-        <BentoGrid />
-      </div>
-
-      <div id="integrations" className="py-8 md:py-16 relative mt-[-20px]">
-        <IntegrationsHub />
-      </div>
-
-      <div className="py-4 md:py-12">
-        <TweetMarquee />
-      </div>
-
-      <div id="pricing">
-        <Pricing />
-      </div>
-
-      <ContactSection />
-
-      {/* ── GIANT BACKGROUND LOGO ───────────────────────────── */}
-      <section className="relative w-full bg-[#080808] pt-12 pb-4 md:pt-20 md:pb-6 flex justify-center items-center overflow-hidden z-0 border-t border-white/[0.02]">
-
-        {/* Massive Text & Logo Container */}
-        <div className="relative flex items-center justify-center gap-6 md:gap-8 pointer-events-none select-none opacity-90">
-
-          {/* Logo Box */}
-          <div className="w-[120px] h-[120px] md:w-[220px] md:h-[220px] bg-gradient-to-br from-[#2a2a2a] to-[#111111] rounded-[24px] md:rounded-[48px] flex items-center justify-center shadow-[inset_0_2px_10px_rgba(255,255,255,0.03)] overflow-hidden">
-            <img src="/logo.png" alt="Applivo Logo" className="w-[80px] h-[80px] md:w-[150px] md:h-[150px] object-contain opacity-50 grayscale brightness-200" />
+            {/* CTA buttons - Kiloagent Style */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-wrap justify-center items-center gap-3 mt-8"
+            >
+              <Link
+                href={isLoggedIn ? "/dashboard" : "/register"}
+                className="k-btn k-btn-primary"
+              >
+                Deploy Agent
+              </Link>
+              <Link
+                href="/#features"
+                className="k-btn k-btn-secondary"
+              >
+                Learn more
+              </Link>
+            </motion.div>
           </div>
 
-          {/* Typography */}
-          <h1 className="text-[120px] md:text-[260px] font-bold tracking-tighter leading-none bg-clip-text text-transparent bg-gradient-to-b from-[#2d2d2d] via-[#1a1a1a] to-[#080808]">Applivo</h1>
+          {/* Dashboard mockup (Kiloagent overlay style with ~1,040px width) */}
+          <div className="relative z-20 w-full max-w-[1040px] mx-auto mt-16 sm:mt-20 md:mt-22">
+            <HeroMockup />
+          </div>
+        </section>
+
+        <MiddleHero />
+
+        <div id="workflow" className="relative z-10 pt-20 md:pt-28 pb-16 md:pb-24">
+          <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 relative z-10">
+            <h2 className="k-h2 mb-4 text-3xl sm:text-4xl md:text-[44px] font-bold tracking-[-0.03em] leading-[1.15] max-w-2xl mx-auto">
+              Automate Your Job Search —<br className="hidden sm:inline" /> End to End.
+            </h2>
+            <p className="k-body max-w-xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
+              Connect your accounts, discover matching roles, and let AI apply to opportunities automatically — saving hours of manual effort every day.
+            </p>
+            <div className="mt-5 mb-8 md:mb-10 flex justify-center">
+              <Link
+                href="#features"
+                className="inline-flex items-center justify-center px-5 py-2 rounded-full bg-white hover:bg-zinc-200 text-black font-semibold text-xs sm:text-sm transition-all duration-200 shadow-[0_2px_14px_rgba(255,255,255,0.12)] hover:scale-[1.02] active:scale-[0.98]"
+              >
+                Learn more
+              </Link>
+            </div>
+          </div>
+          <WorkflowBento />
+
+          {/* Kiloagent UI Flow restored */}
+          <div className="mt-16 md:mt-24">
+            <HowItWorksSteps />
+          </div>
+        </div>
+
+        <div id="features" className="py-16 md:py-24 relative">
+          <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 mb-12 md:mb-14 relative z-10">
+            <h2 className="k-h2 mb-4 text-3xl sm:text-4xl md:text-[44px] font-bold tracking-[-0.03em] leading-[1.15] max-w-2xl mx-auto text-white">
+              Everything you need to scale.
+            </h2>
+            <p className="k-body max-w-2xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
+              A massively scalable ecosystem that natively handles deployment, tracking, synchronization, and security.
+            </p>
+          </div>
+          <SecondaryBento />
 
         </div>
 
-        {/* Fading gradients to blend it into the background seamlessly */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-[#080808] pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-transparent to-[#080808] pointer-events-none opacity-80" />
-      </section>
+        <div id="integrations" className="relative">
+          <IntegrationsHub />
+        </div>
 
-      {/* ── FOOTER ───────────────────────────────────────── */}
-      <Footer />
-    </div>
+        <div className="py-4 md:py-12">
+          <TweetMarquee />
+        </div>
+
+        <div id="pricing">
+          <Pricing />
+        </div>
+
+        {/* ── FINAL CTA & FOUR-COLUMN FOOTER ────────────────── */}
+        <Footer showCta />
+      </div>
+    </MotionConfig>
   );
 }

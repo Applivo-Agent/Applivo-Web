@@ -33,9 +33,9 @@ const testimonials = [
 
 export function TweetMarquee() {
   return (
-    <section className="bg-[#050505] py-24 relative z-10 border-b border-zinc-900/50 overflow-hidden flex flex-col items-center">
+    <section className="bg-[#0a0a0a] py-24 relative z-10 border-b border-zinc-900/50 overflow-hidden flex flex-col items-center">
       <div className="text-center mb-16 px-6">
-        <h2 className="text-3xl font-medium tracking-tight text-white mb-4">
+        <h2 className="text-[length:var(--fs-title)] font-medium tracking-tight text-white mb-4">
           Our Customers
         </h2>
         <p className="text-[#a1a1aa]">Powering the world&apos;s best professional careers.</p>
@@ -43,8 +43,8 @@ export function TweetMarquee() {
 
       <div className="w-full relative flex items-center">
         {/* Gradients to mask edges */}
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
         
         <motion.div
           className="flex gap-6 px-6"
@@ -59,18 +59,18 @@ export function TweetMarquee() {
           {[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
             <div 
               key={i} 
-              className="w-[340px] flex-shrink-0 bg-[#0a0a09] border border-[#1a1a1a] rounded-2xl p-6"
+              className="w-[340px] flex-shrink-0 bg-[#0a0a09] border border-white/[0.08] rounded-2xl p-6"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-white font-medium">
                   {t.name[0]}
                 </div>
                 <div>
-                  <div className="text-white font-medium text-sm">{t.name}</div>
-                  <div className="text-[#a1a1aa] text-xs">{t.handle}</div>
+                  <div className="text-white font-medium text-[length:var(--fs-base)]">{t.name}</div>
+                  <div className="text-[#a1a1aa] text-[length:var(--fs-meta)]">{t.handle}</div>
                 </div>
               </div>
-              <p className="text-zinc-300 text-sm leading-relaxed">
+              <p className="text-zinc-300 text-[length:var(--fs-base)] leading-relaxed">
                 &quot;{t.text}&quot;
               </p>
             </div>
