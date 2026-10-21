@@ -5,7 +5,7 @@
  * allow-listed route prefixes. Anything else (absolute URLs, protocol-relative `//host`, backslashes, schemes,
  * control characters, unknown paths) is rejected and the caller falls back to its default.
  */
-const ALLOWED_PREFIXES = ["/extension/connect", "/subscription", "/pricing", "/dashboard", "/onboarding"];
+const ALLOWED_PREFIXES = ["/connect", "/extension/connect", "/subscription", "/pricing", "/dashboard", "/onboarding"];
 
 export function safeNext(raw: string | null | undefined, fallback: string | null = null): string | null {
   if (typeof raw !== "string" || raw.length === 0 || raw.length > 300) return fallback;

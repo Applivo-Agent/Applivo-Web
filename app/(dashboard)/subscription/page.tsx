@@ -6,14 +6,16 @@ import { useAuth } from "@/lib/auth";
 import { cn, formatDate } from "@/lib/utils";
 import { CreditCard, Check, ShieldAlert, Sparkles, Crown, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { safeNext } from "@/lib/safe-redirect";
 
 function paymentStatusMeta(status: unknown): { label: string; className: string } {
   const normalized = String(status || "").toLowerCase();
   if (normalized === "captured") {
-    return { label: "Paid", className: "text-emerald-400" };
+    return { label: "Paid", className: "text-zinc-300" };
   }
   if (normalized === "failed") {
-    return { label: "Failed", className: "text-red-400" };
+    return { label: "Failed", className: "text-zinc-300" };
   }
   if (normalized === "refunded") {
     return { label: "Refunded", className: "text-white" };
@@ -37,33 +39,33 @@ function formatINRFromPaise(amount: unknown): string {
 function PaymentHistory({ payments }: { payments: any[] }) {
   if (!payments.length) {
     return (
-      <div className="bg-[#0b0b0f] border border-white/5 rounded-2xl p-6 text-sm text-zinc-500">
+      <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 text-[13px] text-zinc-400">
         No payment history yet.
       </div>
     );
   }
 
   return (
-    <div className="bg-[#0b0b0f] border border-white/5 rounded-2xl p-6">
-      <h3 className="text-sm font-medium uppercase tracking-wide text-gray-400 mb-5 px-1">Payment History</h3>
+    <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
+      <h3 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight mb-4">Payment History</h3>
       <div className="space-y-3">
         {payments.map((payment) => (
           (() => {
             const statusMeta = paymentStatusMeta(payment.status);
             return (
-          <div key={payment.id} className="flex flex-col gap-2 rounded-xl border border-white/5 bg-white/[0.02] p-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <div className="text-sm font-semibold text-white">{String(payment.plan || "plan").toUpperCase()}</div>
-              <div className="mt-1 text-[11px] text-zinc-500 break-all">
-                Transaction ID: {payment.transaction_id || payment.razorpay_payment_id || payment.razorpay_order_id || payment.id}
+              <div key={payment.id} className="flex flex-col gap-2 rounded-lg border border-[var(--app-border-strong)] bg-[var(--app-nested)] p-3.5 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <div className="text-[13px] font-semibold text-white">{String(payment.plan || "plan").toUpperCase()}</div>
+                  <div className="mt-0.5 text-[11px] text-zinc-400 break-all font-mono">
+                    Transaction ID: {payment.transaction_id || payment.razorpay_payment_id || payment.razorpay_order_id || payment.id}
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 text-[12px] text-zinc-400">
+                  <span className="font-semibold text-white">{formatINRFromPaise(payment.amount)}</span>
+                  <span className={statusMeta.className}>{statusMeta.label}</span>
+                  <span>{new Date(payment.created_at).toLocaleString()}</span>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-4 text-[11px] text-zinc-400">
-              <span className="font-semibold text-white">{formatINRFromPaise(payment.amount)}</span>
-              <span className={statusMeta.className}>{statusMeta.label}</span>
-              <span>{new Date(payment.created_at).toLocaleString()}</span>
-            </div>
-          </div>
             );
           })()
         ))}
@@ -76,6 +78,7 @@ export default function SubscriptionPage() {
   const { subscription: sub, plan: currentPlan, isActive, quota, refresh } = useSubscription();
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { data: historyData } = useQuery({
     queryKey: ["payment-history"],
@@ -121,6 +124,10 @@ export default function SubscriptionPage() {
             refresh();
             queryClient.invalidateQueries({ queryKey: ["subscription"] });
             queryClient.invalidateQueries({ queryKey: ["payment-history"] });
+            // Only reached after the server verified the payment signature (paymentsApi.verify resolved).
+            // The destination is re-validated; the extension connect page re-checks the plan server-side again.
+            const back = safeNext(new URLSearchParams(window.location.search).get("return_to"));
+            if (back) router.push(back);
           } catch (err) {
             alert("Payment verification failed. Please contact support.");
           }
@@ -185,33 +192,28 @@ export default function SubscriptionPage() {
   const isPendingPayment = sub?.status === "pending";
 
   return (
-    <div className="max-w-5xl space-y-6">
-      <div className="flex items-center gap-3">
-        <div className="p-2 bg-[#242424] border border-white/[0.08] rounded-lg">
-          <CreditCard className="w-5 h-5 text-white" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold text-white">Subscription</h1>
-          <p className="text-sm text-zinc-400 mt-1">Manage your Applivo billing loop and quotas</p>
-        </div>
+    <div className="dash-page max-w-5xl space-y-6">
+      <div>
+        <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white">Subscription</h1>
+        <p className="dash-subtitle mt-1">Manage your Applivo billing loop and quotas.</p>
       </div>
 
       {/* Pending payment — user started trial flow but didn't complete ₹5 card verification */}
       {isPendingPayment && (
-        <div className="bg-blue-950/40 border border-blue-700/50 rounded-2xl p-4 md:p-5 shadow-lg">
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-sm font-bold text-blue-100 flex items-center gap-2">
+              <p className="text-[14px] font-semibold text-white flex items-center gap-2">
                 <span>⏳</span> Complete your trial setup
               </p>
-              <p className="text-sm text-blue-200/80 mt-2">
+              <p className="text-[12px] text-zinc-400 mt-1">
                 You started the free trial flow but didn&apos;t complete the ₹5 card verification. Cancel and try again to complete the setup.
               </p>
             </div>
             <button
               onClick={handleCancel}
               disabled={cancelMut.isPending}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition whitespace-nowrap disabled:opacity-50"
+              className="h-8 px-3.5 bg-white text-black text-[13px] font-semibold rounded-lg hover:bg-zinc-200 transition-colors whitespace-nowrap disabled:opacity-50"
             >
               {cancelMut.isPending ? "..." : "Cancel & Retry"}
             </button>
@@ -221,19 +223,19 @@ export default function SubscriptionPage() {
 
       {/* Trial Banners */}
       {isOnTrial && (
-        <div className="bg-amber-950/40 border border-amber-700/50 rounded-2xl p-4 md:p-5 shadow-lg">
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-sm font-bold text-amber-100 flex items-center gap-2">
+              <p className="text-[14px] font-semibold text-white flex items-center gap-2">
                 <span>⏳</span> You are on a 7-day free trial
               </p>
-              <p className="text-sm text-amber-200/80 mt-2">
+              <p className="text-[12px] text-zinc-400 mt-1">
                 {trialDaysRemaining} {trialDaysRemaining === 1 ? "day" : "days"} remaining. Your card will be charged ₹199 when the trial ends.
               </p>
             </div>
             <button
               onClick={() => alert("Razorpay subscription management coming soon")}
-              className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg transition whitespace-nowrap"
+              className="h-8 px-3.5 bg-white text-black text-[13px] font-semibold rounded-lg hover:bg-zinc-200 transition-colors whitespace-nowrap"
             >
               Manage Autopay
             </button>
@@ -242,19 +244,19 @@ export default function SubscriptionPage() {
       )}
 
       {noAutopay && (
-        <div className="bg-orange-950/40 border border-orange-700/50 rounded-2xl p-4 md:p-5 shadow-lg">
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-sm font-bold text-orange-100 flex items-center gap-2">
+              <p className="text-[14px] font-semibold text-white flex items-center gap-2">
                 <span>⚠️</span> No payment method saved
               </p>
-              <p className="text-sm text-orange-200/80 mt-2">
+              <p className="text-[12px] text-zinc-400 mt-1">
                 Add your card to avoid losing access after your trial ends in {trialDaysRemaining} days.
               </p>
             </div>
             <button
               onClick={() => alert("Start autopay flow coming soon")}
-              className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold rounded-lg transition whitespace-nowrap"
+              className="h-8 px-3.5 bg-white text-black text-[13px] font-semibold rounded-lg hover:bg-zinc-200 transition-colors whitespace-nowrap"
             >
               Add Card
             </button>
@@ -263,19 +265,19 @@ export default function SubscriptionPage() {
       )}
 
       {isTrialExpired && (
-        <div className="bg-red-950/40 border border-red-700/50 rounded-2xl p-4 md:p-5 shadow-lg">
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-sm font-bold text-red-100 flex items-center gap-2">
+              <p className="text-[14px] font-semibold text-white flex items-center gap-2">
                 <span>❌</span> Your free trial has ended
               </p>
-              <p className="text-sm text-red-200/80 mt-2">
+              <p className="text-[12px] text-zinc-400 mt-1">
                 Subscribe to continue using Applivo. Choose a plan and start your paid subscription.
               </p>
             </div>
             <button
               onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-lg transition whitespace-nowrap"
+              className="h-8 px-3.5 bg-white text-black text-[13px] font-semibold rounded-lg hover:bg-zinc-200 transition-colors whitespace-nowrap"
             >
               Subscribe Now
             </button>
@@ -284,29 +286,29 @@ export default function SubscriptionPage() {
       )}
 
       {latestPayment && (
-        <div className="bg-[#232327] border border-white/10 rounded-2xl p-4 md:p-5 shadow-lg">
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Latest Payment</p>
-              <p className="text-sm font-semibold text-white mt-1">
+              <p className="text-[11px] font-medium text-zinc-400">Latest Payment</p>
+              <p className="text-[14px] font-semibold text-white mt-0.5">
                 {String(latestPayment.plan || "starter").toUpperCase()} • {formatINRFromPaise(latestPayment.amount)}
               </p>
-              <p className="text-[11px] text-zinc-400 mt-1 break-all">
+              <p className="text-[11px] text-zinc-400 mt-1 font-mono break-all">
                 Transaction ID: {latestPayment.transaction_id || latestPayment.razorpay_payment_id || latestPayment.razorpay_order_id || latestPayment.id}
               </p>
             </div>
             <div className="text-left md:text-right">
               <p className={cn(
-                "text-sm font-bold uppercase tracking-wider",
+                "text-[12px] font-semibold uppercase tracking-wider",
                 latestPaymentMeta.className
               )}>
                 {latestPaymentMeta.label}
               </p>
-              <p className="text-[11px] text-zinc-400 mt-1">{new Date(latestPayment.created_at).toLocaleString()}</p>
+              <p className="text-[11px] text-zinc-400 mt-0.5">{new Date(latestPayment.created_at).toLocaleString()}</p>
             </div>
           </div>
           {!isActive && String(latestPayment?.status || "").toLowerCase() === "captured" && (
-            <p className="mt-3 text-[11px] text-zinc-300 border-t border-white/10 pt-3">
+            <p className="mt-3 text-[12px] text-zinc-300 border-t border-[var(--app-border-strong)] pt-3">
               Payment is captured. Plan activation is syncing. Please refresh once or wait a moment.
             </p>
           )}
@@ -314,11 +316,11 @@ export default function SubscriptionPage() {
       )}
 
       {isActive && sub ? (
-        <div className="bg-[#161616] p-4 flex items-start justify-between border border-zinc-800 border-l-4 border-l-white rounded-2xl shadow-lg">
+        <div className="bg-[var(--app-card)] p-5 flex items-start justify-between border border-[var(--app-border-strong)] rounded-lg">
           <div>
-            <div className="flex items-center gap-2.5 mb-1.5">
-              <h2 className="text-lg font-bold capitalize text-white">{sub.plan} Plan</h2>
-              <span className="px-2 py-0.5 bg-white text-black text-[9px] font-black rounded-full uppercase tracking-wider">{sub.status === "trial" ? "Trial" : "Active"}</span>
+            <div className="flex items-center gap-2 mb-1">
+              <h2 className="text-[16px] font-semibold capitalize text-white">{sub.plan} Plan</h2>
+              <span className="px-2 py-0.5 bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-zinc-300 text-[11px] font-medium rounded">{sub.status === "trial" ? "Trial" : "Active"}</span>
             </div>
             <p className="text-[12px] text-zinc-400 max-w-lg">
               Active until {sub.end_date ? formatDate(sub.end_date) : "the end of time"}. Quota: {quota?.limit || "unlimited"}/day.
@@ -327,63 +329,63 @@ export default function SubscriptionPage() {
           <button
             onClick={handleCancel}
             disabled={cancelMut.isPending}
-            className="px-3 py-1.5 border border-red-500/20 text-red-500 hover:bg-red-500/5 rounded-lg text-xs transition-colors disabled:opacity-80 disabled:cursor-not-allowed font-bold uppercase tracking-wider"
+            className="h-8 px-3 border border-[var(--app-border-strong)] bg-[#171717] hover:bg-[var(--app-card)] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium transition-colors disabled:opacity-50"
           >
             {cancelMut.isPending ? "..." : "Cancel"}
           </button>
         </div>
       ) : (
-        <div className="flex items-center gap-3 p-4 bg-[#161616] border border-zinc-800 rounded-xl shadow-lg">
-          <ShieldAlert className="w-4 h-4 text-white shrink-0" />
-          <p className="text-[12px] font-medium text-zinc-400">Upgrade to unlock the autonomous agent.</p>
+        <div className="flex items-center gap-3 p-4 bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg">
+          <ShieldAlert className="w-4 h-4 text-zinc-400 shrink-0" />
+          <p className="text-[13px] text-zinc-300">Upgrade to unlock the autonomous agent.</p>
         </div>
       )}
 
       {/* Upgrade Grid */}
-      <div className="grid md:grid-cols-3 gap-4 pt-2">
+      <div className="grid md:grid-cols-3 gap-4 pt-1">
         {plans.map(p => (
-          <div key={p.tier} className={cn("relative bg-[#1c1c1e] p-5 flex flex-col border transition-all hover:-translate-y-0.5 duration-300 rounded-2xl shadow-lg",
-            p.popular ? "border-white/20 ring-1 ring-white/10" : "border-white/5 hover:border-white/20",
-            currentPlan === p.tier ? "opacity-70 grayscale-[0.5]" : "")}>
+          <div key={p.tier} className={cn("relative bg-[var(--app-card)] p-5 flex flex-col border border-[var(--app-border-strong)] rounded-lg transition-all",
+            p.popular ? "ring-1 ring-white/20" : "",
+            currentPlan === p.tier ? "opacity-75" : "")}>
 
             {currentPlan === p.tier && (
-              <div className="absolute -top-2.5 right-4 text-[9px] font-black px-2 py-0.5 bg-white text-black rounded-full z-10 uppercase tracking-widest shadow-xl">
+              <div className="absolute top-4 right-4 text-[10px] font-semibold px-2 py-0.5 bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-zinc-300 rounded">
                 Current
               </div>
             )}
 
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-5">
               <div className="flex-1">
                 <div className="flex items-center gap-1.5 mb-1">
-                  <h3 className="font-bold text-base text-white">{p.label}</h3>
-                  {p.tier === 'premium' && <Crown className="w-3.5 h-3.5 text-white" />}
+                  <h3 className="font-semibold text-[15px] sm:text-[16px] text-white tracking-tight">{p.label}</h3>
+                  {p.tier === 'premium' && <Crown className="w-3.5 h-3.5 text-zinc-400" />}
                 </div>
                 <div className="flex items-baseline gap-1.5">
                   {p.tier === "starter" ? (
                     <>
-                      <span className="text-[28px] font-black text-white tracking-tighter">₹0</span>
-                      <span className="text-zinc-500 line-through text-sm">{formatINRFromPaise(PLAN_PRICES[p.tier])}</span>
+                      <span className="text-[24px] leading-8 font-semibold tracking-tight text-white">₹0</span>
+                      <span className="text-zinc-500 line-through text-[13px]">{formatINRFromPaise(PLAN_PRICES[p.tier])}</span>
                     </>
                   ) : (
-                    <span className="text-[28px] font-black text-white tracking-tighter">{formatINRFromPaise(PLAN_PRICES[p.tier])}</span>
+                    <span className="text-[24px] leading-8 font-semibold tracking-tight text-white">{formatINRFromPaise(PLAN_PRICES[p.tier])}</span>
                   )}
-                  <span className="text-zinc-500 text-[9px] font-bold uppercase tracking-wider">/mo</span>
+                  <span className="text-zinc-400 text-[11px] font-medium">/mo</span>
                 </div>
               </div>
               {p.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-white text-black text-[9px] font-black uppercase tracking-widest shadow-xl flex items-center gap-1">
+                <div className="px-2 py-0.5 rounded bg-white text-black text-[10px] font-semibold flex items-center gap-1">
                   <Sparkles className="w-2.5 h-2.5" /> Popular
                 </div>
               )}
             </div>
 
-            <ul className="space-y-2 mb-8 flex-1">
+            <ul className="space-y-2.5 mb-6 flex-1">
               {PLAN_FEATURES[p.tier].map(f => (
-                <li key={f} className="flex gap-2.5 items-start">
-                  <div className="mt-0.5 w-4 h-4 rounded-full bg-white/5 flex items-center justify-center shrink-0">
-                    <Check className="w-2.5 h-2.5 text-white/50" />
+                <li key={f} className="flex gap-2 items-start">
+                  <div className="mt-0.5 w-3.5 h-3.5 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                    <Check className="w-2 h-2 text-white" />
                   </div>
-                  <span className="text-zinc-500 font-medium text-[11px] leading-snug">{f}</span>
+                  <span className="text-zinc-400 text-[12px] leading-tight">{f}</span>
                 </li>
               ))}
             </ul>
@@ -393,20 +395,20 @@ export default function SubscriptionPage() {
                 <button
                   onClick={() => startTrialMut.mutate()}
                   disabled={startTrialMut.isPending}
-                  className="w-full py-2.5 rounded-lg text-[11px] font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest bg-white text-black hover:bg-zinc-200 shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full h-9 rounded-lg text-[13px] font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-white text-black hover:bg-zinc-200"
                 >
                   {startTrialMut.isPending ? "Starting..." : "Start 7-Day Free Trial"}
                 </button>
-                <p className="text-[10px] text-zinc-500">No charge for 7 days · ₹199/mo after trial</p>
+                <p className="text-[11px] text-zinc-400">No charge for 7 days · ₹199/mo after trial</p>
               </div>
             ) : (
               <button
                 onClick={() => handleCheckout(p.tier)}
                 disabled={currentPlan === p.tier || createOrderMut.isPending}
-                className={cn("w-full py-2.5 rounded-lg text-[11px] font-black transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest",
-                  currentPlan === p.tier ? "bg-white/5 border border-white/10 text-zinc-600" : "bg-white text-black hover:bg-zinc-200 shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+                className={cn("w-full h-9 rounded-lg text-[13px] font-semibold transition-colors disabled:cursor-not-allowed",
+                  currentPlan === p.tier ? "bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-zinc-500" : "bg-white text-black hover:bg-zinc-200"
                 )}>
-                {createOrderMut.isPending ? "..." : currentPlan === p.tier ? isOnTrial ? "Trial Active" : "Current" : "Upgrade"}
+                {createOrderMut.isPending ? "..." : currentPlan === p.tier ? (isOnTrial ? "Trial Active" : "Current Plan") : "Upgrade"}
               </button>
             )}
           </div>

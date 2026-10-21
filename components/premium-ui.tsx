@@ -32,11 +32,11 @@ export function PremiumButton({
   onClick,
 }: PremiumButtonProps) {
   const variants = {
-    primary: "bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-700 hover:to-indigo-700 shadow-lg shadow-violet-500/25 border-0",
+    primary: "bg-gradient-to-r from-zinc-700 to-zinc-700 text-white hover:from-zinc-700 hover:to-zinc-700 shadow-lg shadow-zinc-700/25 border-0",
     secondary: "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 border-zinc-200",
     outline: "border-2 border-zinc-200 text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50",
     ghost: "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
-    danger: "bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/25",
+    danger: "bg-zinc-400 text-white hover:bg-zinc-500 shadow-lg shadow-black/30",
   };
 
   const sizes = {
@@ -89,9 +89,9 @@ export function AnimatedCard({
   onClick
 }: AnimatedCardProps) {
   const glowColors = {
-    purple: "hover:shadow-violet-500/20",
+    purple: "hover:shadow-zinc-700/20",
     blue: "hover:shadow-white/20",
-    green: "hover:shadow-emerald-500/20",
+    green: "hover:shadow-black/30",
     none: "",
   };
 
@@ -126,9 +126,9 @@ interface GradientBackgroundProps {
 
 export function GradientBackground({ children, variant = "subtle", className }: GradientBackgroundProps) {
   const variants = {
-    hero: "bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-100 via-white to-cyan-50/30",
+    hero: "bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-100 via-white to-zinc-700",
     subtle: "bg-gradient-to-br from-white via-zinc-50 to-zinc-100",
-    spotlight: "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-violet-100/50 via-transparent to-transparent",
+    spotlight: "bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-100/50 via-transparent to-transparent",
   };
 
   return (
@@ -151,11 +151,11 @@ interface StatusBadgeProps {
 
 export function StatusBadge({ status, children, pulse = false, className }: StatusBadgeProps) {
   const colors = {
-    success: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    warning: "bg-amber-50 text-amber-700 border-amber-200",
-    error: "bg-red-50 text-red-700 border-red-200",
-    info: "bg-blue-50 text-blue-700 border-blue-200",
-    neutral: "bg-zinc-50 text-zinc-700 border-zinc-200",
+    success: "bg-white/[0.10] text-zinc-100 border-[var(--app-border-strong)]",
+    warning: "bg-white/[0.06] text-zinc-300 border-[var(--app-border-strong)]",
+    error: "bg-transparent text-zinc-400 border-[var(--app-border-strong)]",
+    info: "bg-white/[0.06] text-zinc-300 border-[var(--app-border-strong)]",
+    neutral: "bg-white/[0.04] text-zinc-400 border-[var(--app-border)]",
   };
 
   return (
@@ -166,20 +166,8 @@ export function StatusBadge({ status, children, pulse = false, className }: Stat
     )}>
       {pulse && (
         <span className="relative flex h-2 w-2">
-          <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-75", {
-            "bg-emerald-400": status === "success",
-            "bg-amber-400": status === "warning",
-            "bg-red-400": status === "error",
-            "bg-blue-400": status === "info",
-            "bg-zinc-400": status === "neutral",
-          })} />
-          <span className={cn("relative inline-flex rounded-full h-2 w-2", {
-            "bg-emerald-500": status === "success",
-            "bg-amber-500": status === "warning",
-            "bg-red-500": status === "error",
-            "bg-blue-500": status === "info",
-            "bg-zinc-500": status === "neutral",
-          })} />
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-zinc-300 opacity-60" />
+          <span className={cn("relative inline-flex rounded-full h-2 w-2", status === "neutral" ? "bg-zinc-500" : status === "info" ? "bg-zinc-400" : "bg-zinc-200")} />
         </span>
       )}
       {children}
@@ -291,10 +279,10 @@ export function Toast({ message, type = "info", onClose }: ToastProps) {
   };
 
   const colors = {
-    success: "bg-emerald-500",
-    error: "bg-red-500",
-    info: "bg-blue-500",
-    warning: "bg-amber-500",
+    success: "bg-[var(--app-card)] border border-[var(--app-border-strong)]",
+    error: "bg-[var(--app-card)] border border-[var(--app-border-strong)]",
+    info: "bg-[var(--app-card)] border border-[var(--app-border-strong)]",
+    warning: "bg-[var(--app-card)] border border-[var(--app-border-strong)]",
   };
 
   return (
@@ -333,11 +321,11 @@ interface ProgressBarProps {
 
 export function ProgressBar({ value, max = 100, color = "purple", showLabel = false, className }: ProgressBarProps) {
   const colors = {
-    purple: "bg-gradient-to-r from-violet-500 to-indigo-500",
-    blue: "bg-gradient-to-r from-white/10 to-cyan-500",
-    green: "bg-gradient-to-r from-emerald-500 to-green-500",
-    amber: "bg-gradient-to-r from-amber-500 to-orange-500",
-    red: "bg-gradient-to-r from-red-500 to-rose-500",
+    purple: "bg-gradient-to-r from-zinc-700 to-zinc-700",
+    blue: "bg-gradient-to-r from-white/10 to-zinc-700",
+    green: "bg-gradient-to-r from-zinc-700 to-zinc-700",
+    amber: "bg-gradient-to-r from-zinc-700 to-zinc-700",
+    red: "bg-gradient-to-r from-zinc-700 to-zinc-700",
   };
 
   const percentage = Math.min((value / max) * 100, 100);
@@ -412,7 +400,7 @@ export function Avatar({ src, name, size = "md", className }: AvatarProps) {
 
   return (
     <div className={cn(
-      "rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white font-medium",
+      "rounded-full bg-gradient-to-br from-zinc-700 to-zinc-700 flex items-center justify-center text-white font-medium",
       sizes[size],
       className
     )}>
@@ -518,7 +506,7 @@ export function FloatingParticles() {
       {particles.map((p, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 bg-violet-400/30 rounded-full"
+          className="absolute w-1 h-1 bg-zinc-700/30 rounded-full"
           initial={{
             x: `${p.x}%`,
             y: `${p.y}%`,

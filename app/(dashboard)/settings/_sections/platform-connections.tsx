@@ -9,10 +9,10 @@ import { toast } from "sonner";
 import { useState } from "react";
 
 const PLATFORMS = [
-  { id: "linkedin", label: "LinkedIn", color: "text-blue-400" },
-  { id: "internshala", label: "Internshala", color: "text-amber-400" },
-  { id: "indeed", label: "Indeed", color: "text-emerald-400" },
-  { id: "naukri", label: "Naukri", color: "text-rose-400" },
+  { id: "linkedin", label: "LinkedIn", color: "text-zinc-400" },
+  { id: "internshala", label: "Internshala", color: "text-zinc-300" },
+  { id: "indeed", label: "Indeed", color: "text-zinc-300" },
+  { id: "naukri", label: "Naukri", color: "text-zinc-300" },
 ] as const;
 
 type PlatformId = typeof PLATFORMS[number]["id"];
@@ -97,23 +97,20 @@ export function PlatformConnectionsSection() {
               return (
                 <div
                   key={p.id}
-                  className={cn(
-                    "flex items-center justify-between p-4 rounded-xl border transition-all",
-                    isConnected ? "bg-[#1a1a1a] border-zinc-800" : "bg-[#161616] border-zinc-800/50"
-                  )}
+                  className="flex items-center justify-between p-3.5 rounded-lg border border-[var(--app-border-strong)] bg-[var(--app-nested)] transition-colors"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center bg-[#242424] border border-white/[0.08]", p.color)}>
-                      <span className="text-xs font-bold">{p.label.slice(0, 2)}</span>
+                  <div className="flex items-center gap-3.5">
+                    <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center bg-[var(--app-card)] border border-[var(--app-border-strong)] text-zinc-300", p.color)}>
+                      <span className="text-[12px] font-bold">{p.label.slice(0, 2)}</span>
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-white">{p.label}</p>
+                      <p className="text-[13px] sm:text-[14px] font-semibold text-white">{p.label}</p>
                       {isConnected && status.last_sync ? (
-                        <p className="text-[10px] text-[#A1A1AA] mt-0.5">
+                        <p className="text-[12px] text-zinc-400 mt-0.5">
                           Last sync: {new Date(status.last_sync).toLocaleString()}
                         </p>
                       ) : (
-                        <p className="text-[10px] text-[#A1A1AA] mt-0.5">Not connected</p>
+                        <p className="text-[12px] text-zinc-400 mt-0.5">Not connected</p>
                       )}
                     </div>
                   </div>
@@ -123,10 +120,10 @@ export function PlatformConnectionsSection() {
                       <div
                         className={cn(
                           "w-2 h-2 rounded-full",
-                          health === "healthy" && "bg-emerald-500",
-                          health === "warning" && "bg-amber-500 animate-pulse",
-                          (health === "error" || health === "disconnected") && "bg-red-500",
-                          health === "syncing" && "bg-blue-400 animate-pulse"
+                          health === "healthy" && "bg-emerald-400",
+                          health === "warning" && "bg-amber-400 animate-pulse",
+                          (health === "error" || health === "disconnected") && "bg-zinc-500",
+                          health === "syncing" && "bg-zinc-400 animate-pulse"
                         )}
                         title={`Health: ${health}`}
                       />
@@ -137,23 +134,23 @@ export function PlatformConnectionsSection() {
                         <button
                           onClick={() => handleSync(p.id)}
                           disabled={isSyncing}
-                          className="p-2 rounded-lg bg-[#242424] border border-white/[0.08] text-[#A1A1AA] hover:text-white hover:border-white/20 transition-all disabled:opacity-50"
+                          className="h-7 w-7 rounded bg-[var(--app-card)] border border-[var(--app-border-strong)] text-zinc-400 hover:text-white transition-colors flex items-center justify-center disabled:opacity-50"
                           title="Sync"
                         >
-                          <RefreshCw className={cn("w-3.5 h-3.5", isSyncing && "animate-spin")} />
+                          <RefreshCw className={cn("w-3 h-3", isSyncing && "animate-spin")} />
                         </button>
                         <button
                           onClick={() => handleDisconnect(p.id)}
-                          className="p-2 rounded-lg bg-[#242424] border border-white/[0.08] text-[#A1A1AA] hover:text-red-400 hover:border-red-500/20 transition-all"
+                          className="h-7 w-7 rounded bg-[var(--app-card)] border border-[var(--app-border-strong)] text-zinc-400 hover:text-white transition-colors flex items-center justify-center"
                           title="Disconnect"
                         >
-                          <Unlink className="w-3.5 h-3.5" />
+                          <Unlink className="w-3 h-3" />
                         </button>
                       </>
                     ) : (
                       <button
                         onClick={() => handleConnect(p.id)}
-                        className="px-4 py-2 bg-white text-black text-xs font-bold rounded-xl hover:bg-zinc-200 transition-all shadow-lg"
+                        className="h-8 px-3.5 bg-white text-black text-[13px] font-semibold rounded-lg hover:bg-zinc-200 transition-colors"
                       >
                         Connect
                       </button>

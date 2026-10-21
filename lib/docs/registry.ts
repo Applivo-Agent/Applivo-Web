@@ -3,7 +3,7 @@ import {
   BookOpen, Compass, HelpCircle, Layers, UserPlus, KeyRound, UserCheck, Zap, Target, FileSpreadsheet, Clock, SlidersHorizontal,
   GitFork, CheckCircle2, FileCheck, Download, Link2, ShieldCheck, Globe, PlayCircle, ListOrdered, FileUp, CheckCheck, AlertTriangle,
   Ban, Shield, Files, Upload, FileCode, MessageSquare, GraduationCap, BarChart3, TrendingUp, Mail, Gauge, LineChart, User, Settings,
-  Sliders, Receipt, Briefcase, Terminal, Laptop, FolderTree, Boxes, Network, Cpu, History, Lock, Scale, LucideIcon
+  Sliders, Receipt, Briefcase, Terminal, Laptop, FolderTree, Boxes, Network, Cpu, History, Lock, Scale, Send, LucideIcon
 } from "lucide-react";
 import { DocArticle, DocGroup, headingsOf } from "./types";
 import { gettingStarted } from "./content/getting-started";
@@ -114,7 +114,37 @@ export const ARTICLE_ICONS: Record<string, LucideIcon> = {
 
   // Integrations
   "integrations-overview": Plug,
+  "applivo-companion": Bot,
+  "browser-extension": Bot,
+  "internshala": Briefcase,
   "connect-internshala": Briefcase,
+  "adzuna": Search,
+  "greenhouse": Briefcase,
+  "lever": GitFork,
+  "ashby": Compass,
+  "remotive": Globe,
+  "linkedin": UserCheck,
+  "indeed": Target,
+  "glassdoor": BarChart3,
+  "google-drive": FolderTree,
+  "microsoft-onedrive": Files,
+  "ats-resume-intelligence": Target,
+  "overleaf": FileCode,
+  "gmail": Mail,
+  "microsoft-outlook": Mail,
+  "outlook-mail": Mail,
+  "google-calendar": Clock,
+  "outlook-calendar": Clock,
+  "calendly": CheckCircle2,
+  "github": Terminal,
+  "openrouter": Cpu,
+  "notion": FileSpreadsheet,
+  "slack": MessageSquare,
+  "telegram": Send,
+  "zapier": Zap,
+  "make": Boxes,
+  "n8n": Network,
+  "lumi": Sparkles,
   "integrations-troubleshooting": LifeBuoy,
 
   // Developers

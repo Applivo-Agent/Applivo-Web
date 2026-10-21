@@ -18,10 +18,10 @@ const strategies = [
       "Higher daily application cap",
     ],
     icon: Rocket,
-    color: "text-amber-400",
-    border: "border-amber-500/20",
-    bg: "bg-amber-500/5",
-    ring: "ring-amber-500/20",
+    color: "text-zinc-300",
+    border: "border-[var(--app-border-strong)]",
+    bg: "bg-white/[0.06]",
+    ring: "ring-white/20",
   },
   {
     id: "balanced" as const,
@@ -34,10 +34,10 @@ const strategies = [
       "Best for most users",
     ],
     icon: Scale,
-    color: "text-emerald-400",
-    border: "border-emerald-500/20",
-    bg: "bg-emerald-500/5",
-    ring: "ring-emerald-500/20",
+    color: "text-zinc-300",
+    border: "border-[var(--app-border-strong)]",
+    bg: "bg-white/[0.06]",
+    ring: "ring-white/20",
   },
   {
     id: "quality" as const,
@@ -50,10 +50,10 @@ const strategies = [
       "Best for senior roles",
     ],
     icon: Gem,
-    color: "text-sky-400",
-    border: "border-sky-500/20",
-    bg: "bg-sky-500/5",
-    ring: "ring-sky-500/20",
+    color: "text-zinc-400",
+    border: "border-[var(--app-border-strong)]/20",
+    bg: "bg-zinc-700/5",
+    ring: "ring-zinc-700/20",
   },
 ];
 
@@ -80,28 +80,28 @@ export function AgentStrategySection() {
                 transition={{ delay: i * 0.1 }}
                 onClick={() => saveSection("strategy", { agent_strategy: s.id })}
                 className={cn(
-                  "relative text-left p-5 rounded-2xl border transition-all duration-300",
+                  "relative text-left p-4 rounded-lg border transition-colors",
                   isActive
-                    ? cn("bg-[#1a1a1a]", s.border, "ring-1", s.ring)
-                    : "bg-[#161616] border-zinc-800 hover:border-zinc-700"
+                    ? "bg-[var(--app-card)] border-white/20 ring-1 ring-white/10"
+                    : "bg-[var(--app-nested)] border-[var(--app-border-strong)] hover:border-zinc-500"
                 )}
               >
                 {isActive && (
-                  <div className={cn("absolute top-4 right-4 text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full", s.bg, s.color, s.border, "border")}>
+                  <div className="absolute top-4 right-4 text-[11px] font-medium px-2 py-0.5 rounded bg-[var(--app-card)] border border-[var(--app-border-strong)] text-white">
                     Active
                   </div>
                 )}
-                <div className="flex items-start gap-4">
-                  <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shrink-0", s.bg, s.border, "border")}>
-                    <Icon className={cn("w-5 h-5", s.color)} />
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-[var(--app-card)] border border-[var(--app-border-strong)] text-zinc-300">
+                    <Icon className="w-4 h-4 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-bold text-white mb-1">{s.label}</h4>
-                    <p className="text-xs text-[#A1A1AA] leading-relaxed mb-3">{s.description}</p>
-                    <ul className="space-y-1.5">
+                    <h4 className="text-[14px] font-semibold text-white mb-0.5">{s.label}</h4>
+                    <p className="text-[12px] text-zinc-400 leading-relaxed mb-2.5">{s.description}</p>
+                    <ul className="space-y-1">
                       {s.details.map((d) => (
-                        <li key={d} className="flex items-center gap-2 text-xs text-[#A1A1AA]">
-                          <ChevronRight className={cn("w-3 h-3 shrink-0", s.color)} />
+                        <li key={d} className="flex items-center gap-2 text-[12px] text-zinc-400">
+                          <ChevronRight className="w-3 h-3 shrink-0 text-zinc-500" />
                           {d}
                         </li>
                       ))}

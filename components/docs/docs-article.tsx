@@ -15,13 +15,13 @@ export function DocsArticleView({ article }: { article: DocArticle }) {
     : headings;
 
   return (
-    <div className="mx-auto flex w-full max-w-[1040px] justify-between gap-10 px-6 py-10 sm:px-10 md:py-14">
+    <div className="mx-auto flex w-full max-w-[1024px] justify-between gap-12 px-6 py-10 sm:px-10 md:py-14">
       {/* Main reading column */}
-      <article className="min-w-0 max-w-[680px] flex-1">
-        <h1 className="text-[32px] font-semibold tracking-tight text-white sm:text-[36px]">
+      <article className="min-w-0 max-w-[624px] flex-1">
+        <h1 className="text-[28px] font-semibold tracking-tight text-[var(--docs-text)] sm:text-[30px]">
           {article.title}
         </h1>
-        <p className="mt-2 text-[15.5px] leading-relaxed text-zinc-400">
+        <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--docs-secondary)]">
           {article.description}
         </p>
 
@@ -30,7 +30,7 @@ export function DocsArticleView({ article }: { article: DocArticle }) {
         {/* Section overviews */}
         {article.overview && group && group.articles.length > 1 && (
           <section className="mt-12 border-t border-[var(--docs-border)] pt-8">
-            <h2 id="in-this-section" className="mb-4 text-[19px] font-semibold tracking-tight text-white">
+            <h2 id="in-this-section" className="mb-4 text-[19px] font-medium tracking-tight text-[var(--docs-text)] sm:text-[20px]">
               In this section
             </h2>
             <DocsCards
@@ -45,17 +45,17 @@ export function DocsArticleView({ article }: { article: DocArticle }) {
         {/* Previous and Next Navigation */}
         <nav
           aria-label="Previous and next articles"
-          className="mt-14 grid gap-3 border-t border-[var(--docs-border)] pt-8 sm:grid-cols-2"
+          className="mt-14 grid gap-4 border-t border-[var(--docs-border)] pt-8 sm:grid-cols-2"
         >
           {prev ? (
             <Link
               href={`/docs/${prev.slug}`}
-              className="group flex flex-col justify-between rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-4 transition-all duration-200 hover:border-white/20 hover:bg-white/[0.02]"
+              className="group flex flex-col justify-between rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-5 transition-colors hover:border-[#383838] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
             >
-              <span className="flex items-center gap-1.5 text-[12px] text-zinc-400 transition-colors group-hover:text-zinc-300">
+              <span className="flex items-center gap-1.5 text-[12px] text-[var(--docs-muted)] transition-colors group-hover:text-[var(--docs-secondary)]">
                 <ArrowLeft className="h-3.5 w-3.5" /> Previous
               </span>
-              <span className="mt-1.5 block text-[14px] font-medium text-white">
+              <span className="mt-2 block text-[15px] font-medium text-[var(--docs-text)]">
                 {prev.title}
               </span>
             </Link>
@@ -66,12 +66,12 @@ export function DocsArticleView({ article }: { article: DocArticle }) {
           {next && (
             <Link
               href={`/docs/${next.slug}`}
-              className="group flex flex-col justify-between rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-4 text-right transition-all duration-200 hover:border-white/20 hover:bg-white/[0.02]"
+              className="group flex flex-col justify-between rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-5 text-right transition-colors hover:border-[#383838] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
             >
-              <span className="flex items-center justify-end gap-1.5 text-[12px] text-zinc-400 transition-colors group-hover:text-zinc-300">
+              <span className="flex items-center justify-end gap-1.5 text-[12px] text-[var(--docs-muted)] transition-colors group-hover:text-[var(--docs-secondary)]">
                 Next <ArrowRight className="h-3.5 w-3.5" />
               </span>
-              <span className="mt-1.5 block text-[14px] font-medium text-white">
+              <span className="mt-2 block text-[15px] font-medium text-[var(--docs-text)]">
                 {next.title}
               </span>
             </Link>

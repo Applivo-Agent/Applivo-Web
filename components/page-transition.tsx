@@ -1,22 +1,6 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
 
+/** Route content swaps instantly: the shell stays put and nothing fades out and back in (that read as a reload). */
 export function PageTransition({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={pathname}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full h-full"
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
-  );
+  return <div className="w-full h-full flex-1 min-h-0 flex flex-col">{children}</div>;
 }

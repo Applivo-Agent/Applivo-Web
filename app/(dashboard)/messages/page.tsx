@@ -1,315 +1,633 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Mail, RefreshCw, Loader2, Star, AlertTriangle } from "lucide-react";
-import { platformApi } from "@/lib/api";
+
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  MessageSquare,
+  RefreshCw,
+  Loader2,
+  Star,
+  Search,
+  ExternalLink,
+  CheckCheck,
+  ArrowLeft,
+  X,
+  AlertCircle,
+  Inbox,
+  Clock,
+  Sparkles,
+} from "lucide-react";
+import { messagesApi } from "@/lib/api";
+import { useExtension } from "@/lib/extension";
 import { toast } from "sonner";
 
-interface PlatformMessage {
+interface MessageItem {
   id: string;
+  sender: "recruiter" | "candidate";
+  sender_name?: string;
+  text: string;
+  timestamp?: string | null;
+}
+
+interface Conversation {
+  id: string;
+  external_id: string;
+  sender_name: string;
   sender: string;
-  subject: string;
+  company?: string;
+  job_title?: string;
+  subject?: string;
+  preview: string;
   content: string;
+  url?: string;
   is_important: boolean;
-  importance_keywords: string | null;
-  received_at: string | null;
+  importance_keywords?: string | null;
+  status: "unread" | "read";
+  unread: boolean;
+  received_at?: string | null;
+  messages: MessageItem[];
   platform: string;
 }
 
+interface MessageStats {
+  total_conversations: number;
+  unread_count: number;
+  needs_attention_count: number;
+  last_synced_at?: string | null;
+}
+
+function formatRelativeTime(dateStr?: string | null): string {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) {
+    // Might be already a formatted time like "10:30 AM" or "Yesterday"
+    return dateStr;
+  }
+  const now = new Date();
+  const diffMs = now.getTime() - d.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24 && d.getDate() === now.getDate()) {
+    return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  }
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) {
+    return d.toLocaleDateString([], { weekday: "short" });
+  }
+  return d.toLocaleDateString([], { month: "short", day: "numeric" });
+}
+
 export default function MessagesPage() {
-  const [messages, setMessages] = useState<PlatformMessage[]>([]);
+  const extension = useExtension();
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [stats, setStats] = useState<MessageStats>({
+    total_conversations: 0,
+    unread_count: 0,
+    needs_attention_count: 0,
+    last_synced_at: null,
+  });
   const [loading, setLoading] = useState(true);
-  const [scanning, setScanning] = useState(false);
-  const [filter, setFilter] = useState<"all" | "important" | "urgent">("all");
+  const [syncing, setSyncing] = useState(false);
+  const [syncError, setSyncError] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [filter, setFilter] = useState<"all" | "unread" | "important">("all");
+  const [search, setSearch] = useState("");
+  const [mobileDetailView, setMobileDetailView] = useState(false);
 
-  useEffect(() => { loadMessages(); }, []);
-
-  const loadMessages = async () => {
-    setLoading(true);
+  const loadData = useCallback(async (isInitial = false) => {
+    if (isInitial) setLoading(true);
     try {
-      const res = await platformApi.messages("internshala", 50);
-      setMessages(res.data);
+      const res = await messagesApi.list({ platform: "internshala" });
+      const data = res.data;
+      if (data && data.conversations) {
+        setConversations(data.conversations);
+        if (data.stats) {
+          setStats(data.stats);
+        }
+      } else if (Array.isArray(data)) {
+        // Fallback for array response
+        setConversations(data);
+        const unread = data.filter((c: any) => c.status === "unread").length;
+        const important = data.filter((c: any) => c.is_important).length;
+        setStats({
+          total_conversations: data.length,
+          unread_count: unread,
+          needs_attention_count: important,
+          last_synced_at: data[0]?.received_at || null,
+        });
+      }
     } catch (err: any) {
       toast.error(err?.response?.data?.detail || "Failed to load messages");
     } finally {
-      setLoading(false);
+      if (isInitial) setLoading(false);
     }
-  };
+  }, []);
 
-  const handleScan = async () => {
-    setScanning(true); setLoading(true);
+  useEffect(() => {
+    loadData(true);
+  }, [loadData]);
+
+  // Selected conversation object
+  const selectedConversation = useMemo(() => {
+    if (!selectedId) return null;
+    return conversations.find((c) => c.id === selectedId) || null;
+  }, [conversations, selectedId]);
+
+  // Auto-select first conversation on desktop if none selected and conversations exist
+  useEffect(() => {
+    if (!selectedId && conversations.length > 0 && typeof window !== "undefined" && window.innerWidth >= 768) {
+      setSelectedId(conversations[0].id);
+    }
+  }, [conversations, selectedId]);
+
+  // Handle message sync via extension
+  const handleSync = async () => {
+    setSyncing(true);
+    setSyncError(null);
     try {
-      await platformApi.scanMessages("internshala");
-      toast.success("Sync completed");
-      loadMessages();
+      if (extension.status === "not_installed") {
+        setSyncError("extension_not_installed");
+        toast.error("Applivo extension is not detected. Please install and enable the extension.");
+        return;
+      }
+      if (extension.status === "disconnected" || extension.status === "expired") {
+        setSyncError("extension_not_connected");
+        toast.error("Please connect the Applivo extension in Settings before syncing.");
+        return;
+      }
+
+      const res = await extension.syncMessages();
+      if (!res.ok) {
+        if (res.error === "internshala_tab_missing") {
+          setSyncError("internshala_tab_missing");
+          toast.error("No active Internshala tab found. Please open Internshala in Chrome.");
+        } else if (res.error === "internshala_signed_out") {
+          setSyncError("internshala_signed_out");
+          toast.error("Your Internshala session is signed out. Please sign in to Internshala.");
+        } else {
+          setSyncError(res.error || "sync_failed");
+          toast.error(res.message || "Failed to sync messages from Internshala.");
+        }
+        return;
+      }
+
+      setSyncError(null);
+      const count = res.synced_count ?? res.count ?? 0;
+      toast.success(count > 0 ? `Synced ${count} recruiter conversation(s)` : "Sync complete. No new messages found.");
+      await loadData();
     } catch (err: any) {
-      toast.error(err?.response?.data?.detail || "Sync failed");
+      setSyncError("sync_error");
+      toast.error(err?.message || "Sync failed. Please try again.");
     } finally {
-      setScanning(false);
+      setSyncing(false);
     }
   };
 
-  const filteredMessages = messages.filter((msg) => {
-    if (filter === "important") return msg.is_important;
-    if (filter === "urgent") {
-      const c = msg.content.toLowerCase();
-      return c.includes("deadline") || c.includes("expires") || c.includes("urgent");
+  // Toggle read/unread status
+  const handleToggleStatus = async (conv: Conversation) => {
+    const nextStatus = conv.status === "unread" ? "read" : "unread";
+    try {
+      await messagesApi.updateStatus(conv.id, nextStatus);
+      setConversations((prev) =>
+        prev.map((c) => (c.id === conv.id ? { ...c, status: nextStatus, unread: nextStatus === "unread" } : c))
+      );
+      setStats((prev) => ({
+        ...prev,
+        unread_count: Math.max(0, prev.unread_count + (nextStatus === "unread" ? 1 : -1)),
+      }));
+    } catch {
+      toast.error("Failed to update message status");
     }
-    return true;
-  });
-
-  const importantCount = messages.filter(m => m.is_important).length;
-  const urgentCount = messages.filter(m => {
-    const c = m.content.toLowerCase();
-    return c.includes("deadline") || c.includes("expires") || c.includes("urgent");
-  }).length;
-
-  const formatMessage = (content: string, sender: string) => {
-    const lines = content.split('\n').map(l => l.trim()).filter(l => l);
-    
-    let company = sender && sender !== "Internshala Chat" ? sender : "";
-    let jobTitle = "";
-    let time = "";
-    let date = "";
-    let isUrgent = false;
-    
-    // If company not from sender, try to extract from content
-    if (!company) {
-      // Look for pattern like "Company | Chatting with..."
-      for (const line of lines) {
-        if (line.includes('|') && line.includes('Chatting')) {
-          company = line.split('|')[0].trim();
-          break;
-        }
-      }
-      // Or first line that's not "Internshala Chat" or "You:"
-      if (!company) {
-        for (const line of lines) {
-          if (line && !line.includes('Chat') && !line.startsWith('You:') && line.length > 2 && line.length < 40) {
-            company = line;
-            break;
-          }
-        }
-      }
-    }
-    
-    // Find job title - look for "internship" in any line
-    for (const line of lines) {
-      if (line.toLowerCase().includes('internship')) {
-        jobTitle = line.replace(/internship/gi, '').trim();
-        break;
-      }
-    }
-    
-    // Find time
-    for (const line of lines) {
-      const timeMatch = line.match(/^(\d{1,2}:\d{2}\s*(?:AM|PM)?)/i);
-      if (timeMatch) {
-        time = timeMatch[1];
-        break;
-      }
-    }
-    
-    // Find date
-    for (const line of lines) {
-      const dateMatch = line.match(/^(\d{2}\/\d{2}\/\d{4})/);
-      if (dateMatch) {
-        date = dateMatch[1];
-        break;
-      }
-    }
-    
-    // Check urgent
-    if (content.toLowerCase().includes('deadline') || content.toLowerCase().includes('expires')) {
-      isUrgent = true;
-    }
-    
-    return { company, jobTitle, time, date, isUrgent };
   };
 
-  const [selectedMessage, setSelectedMessage] = useState<PlatformMessage | null>(null);
+  // Select a conversation and mark as read if unread
+  const handleSelectConversation = (conv: Conversation) => {
+    setSelectedId(conv.id);
+    setMobileDetailView(true);
+    if (conv.status === "unread") {
+      void messagesApi.updateStatus(conv.id, "read").catch(() => {});
+      setConversations((prev) =>
+        prev.map((c) => (c.id === conv.id ? { ...c, status: "read", unread: false } : c))
+      );
+      setStats((prev) => ({
+        ...prev,
+        unread_count: Math.max(0, prev.unread_count - 1),
+      }));
+    }
+  };
+
+  // Filter and search
+  const filteredConversations = useMemo(() => {
+    return conversations.filter((c) => {
+      if (filter === "unread" && c.status !== "unread") return false;
+      if (filter === "important" && !c.is_important) return false;
+      if (search.trim()) {
+        const q = search.toLowerCase();
+        const matchSender = (c.sender_name || "").toLowerCase().includes(q);
+        const matchComp = (c.company || "").toLowerCase().includes(q);
+        const matchJob = (c.job_title || "").toLowerCase().includes(q);
+        const matchPreview = (c.preview || "").toLowerCase().includes(q);
+        if (!matchSender && !matchComp && !matchJob && !matchPreview) return false;
+      }
+      return true;
+    });
+  }, [conversations, filter, search]);
+
+  const lastSyncLabel = useMemo(() => {
+    if (!stats.last_synced_at) return "Not synced yet";
+    return `Last sync: ${formatRelativeTime(stats.last_synced_at)}`;
+  }, [stats.last_synced_at]);
 
   return (
-    <div className="dash-page p-6 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+    <div className="dash-page flex flex-col min-h-0 space-y-4">
+      {/* ── Compact Page Header ─────────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1 border-b border-[var(--app-border-strong)]">
+        <div>
+          <h1 className="text-[20px] leading-6 font-semibold tracking-tight text-white">Messages</h1>
+          <p className="text-[13px] text-zinc-400 mt-0.5">Recruiter conversations and updates from Internshala.</p>
+        </div>
+
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-[#242424] border border-white/[0.08] rounded-lg">
-            <Mail className="w-5 h-5 text-white" />
+          <div className="hidden sm:flex items-center gap-2 text-[12px] text-zinc-400">
+            <span
+              className={`w-2 h-2 rounded-full ${
+                syncing
+                  ? "bg-amber-400 animate-pulse"
+                  : stats.total_conversations > 0
+                  ? "bg-emerald-400"
+                  : "bg-zinc-500"
+              }`}
+            />
+            <span>{syncing ? "Syncing..." : lastSyncLabel}</span>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white">Platform Messages</h1>
-            <p className="text-sm text-zinc-400 mt-1">Real-time updates from Internshala recruiter chats and invites.</p>
-          </div>
+
+          <button
+            onClick={handleSync}
+            disabled={syncing}
+            className="flex h-8 items-center gap-2 px-3.5 bg-white text-black hover:bg-zinc-200 rounded-lg text-[13px] font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${syncing ? "animate-spin" : ""}`} />
+            <span>{syncing ? "Syncing..." : "Sync messages"}</span>
+          </button>
         </div>
-        <button
-          onClick={handleScan}
-          disabled={scanning}
-          className="flex items-center gap-2 px-4 py-2 bg-white text-black hover:bg-gray-200 rounded-lg disabled:opacity-80 disabled:cursor-not-allowed transition-all text-sm font-medium shadow-lg"
-        >
-          {scanning ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
-          {scanning ? "Syncing Inbox..." : "Sync Messages"}
-        </button>
       </div>
 
-      {/* Stats */}
+      {/* ── Compact Metric Cards ────────────────────────────────────────── */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="dash-stat-card bg-[#242424] border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.035)]">
-          <div className="dash-value">{messages.length}</div>
-          <div className="dash-label mt-1">Total Messages</div>
-        </div>
-        <div className="dash-stat-card bg-[#242424] border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.035)]">
-          <div className="dash-value">{importantCount}</div>
-          <div className="dash-label mt-1">Important</div>
-        </div>
-        <div className="dash-stat-card bg-[#242424] border-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.035)]">
-          <div className="dash-value">{urgentCount}</div>
-          <div className="dash-label mt-1">Urgent Action</div>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="flex gap-2">
-        <button onClick={() => setFilter("all")} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === "all" ? "bg-white text-black shadow-lg" : " hover:bg-white/5 text-zinc-400"}`}>
-          All ({messages.length})
-        </button>
-        <button onClick={() => setFilter("important")} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === "important" ? "bg-white text-black shadow-lg" : " hover:bg-white/5 text-zinc-400"}`}>
-          Important ({importantCount})
-        </button>
-        <button onClick={() => setFilter("urgent")} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${filter === "urgent" ? "bg-white text-black shadow-lg" : " hover:bg-white/5 text-zinc-400"}`}>
-          Urgent ({urgentCount})
-        </button>
-      </div>
-
-      {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-3">
-          <Loader2 className="w-10 h-10 animate-spin text-white" />
-          <p className="text-sm text-muted-foreground animate-pulse">Scanning platform inboxes...</p>
-        </div>
-      ) : filteredMessages.length === 0 ? (
-        <div className="text-center py-20 bg-[#242424] border border-white/[0.08] rounded-[20px] shadow-[inset_0_1px_0_rgba(255,255,255,0.035)] transition-all">
-          <div className="w-12 h-12 rounded-full bg-[#1d1d1d] border border-white/[0.08] flex items-center justify-center mx-auto mb-6">
-            <Mail className="w-5 h-5 text-zinc-600" />
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-3.5">
+          <p className="text-[12px] font-medium text-zinc-400 mb-0.5">Conversations</p>
+          <div className="text-[22px] leading-7 font-semibold tracking-tight text-white">
+            {stats.total_conversations}
           </div>
-          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">Inbox Deployed / No outreach detected</p>
-          <p className="text-[10px] font-bold text-zinc-700 max-w-[200px] mx-auto uppercase tracking-wider leading-relaxed italic">
-            Sync your platform credentials to scan for hidden recruiter callbacks.
-          </p>
         </div>
-      ) : (
-        <div className="grid gap-3">
-          {filteredMessages.map((msg) => {
-            const isUrgent = msg.content.toLowerCase().includes('deadline') || msg.content.toLowerCase().includes('expires');
-            const receivedDate = msg.received_at ? new Date(msg.received_at) : null;
-            const timeStr = receivedDate ? receivedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "";
-            const dateStr = receivedDate ? receivedDate.toLocaleDateString([], { month: 'short', day: 'numeric' }) : "Recently";
-            
-            let displaySender = msg.sender;
-            if (displaySender && displaySender.includes('. Accept')) displaySender = displaySender.split('. Accept')[0];
-            if (displaySender && displaySender.includes('. Get')) displaySender = displaySender.split('. Get')[0];
-            
-            if (!displaySender || displaySender === "Internshala Chat" || displaySender === "Unknown") {
-                const pat = /(?:internship|role|position|opportunity) at ([A-Z][A-Za-z0-9 &]+?)(?:\.|,|\n| Accept| Get| Please| We| I| This)/i;
-                const match = msg.content.match(pat);
-                if (match && match[1]) {
-                    displaySender = match[1].trim();
-                }
-            }
-            if (!displaySender || displaySender === "Internshala Chat" || displaySender === "Unknown") {
-                const pat = /(?:message from|team from|on behalf of) ([A-Z][A-Za-z0-9 &]+?)(?:\.|,|\n| Accept| Get| Please)/i;
-                const match = msg.content.match(pat);
-                if (match && match[1]) displaySender = match[1].trim();
-            }
-            if (!displaySender || displaySender === "Internshala Chat" || displaySender === "Unknown") {
-                const pat = /(?:We are interested in your profile for.*?at )([A-Z][A-Za-z0-9 &]+)/i;
-                const match = msg.content.match(pat);
-                if (match && match[1]) displaySender = match[1].trim();
-            }
-            
-            return (
-              <div
-                key={msg.id}
-                onClick={() => setSelectedMessage(msg)}
-                className={`p-5 rounded-2xl bg-[#242424] border border-white/[0.08] cursor-pointer hover:border-white/20 transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.035)] group`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center gap-2">
-                      {msg.is_important && <Star className="w-4 h-4 text-white fill-white" />}
-                      {isUrgent && <AlertTriangle className="w-4 h-4 text-white" />}
-                      <span className="font-bold text-lg group-hover:text-white transition-colors">{displaySender}</span>
-                    </div>
-                  <div className="text-[9px] text-muted-foreground uppercase tracking-[0.2em] font-bold bg-white/5 px-2 py-1 rounded">
-                    {msg.platform}
-                  </div>
-                </div>
-                
-                <div className="text-white font-semibold text-sm mb-3 ml-0">
-                  {msg.subject || "Platform Notification"}
-                </div>
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-3.5">
+          <p className="text-[12px] font-medium text-zinc-400 mb-0.5">Unread</p>
+          <div className="text-[22px] leading-7 font-semibold tracking-tight text-white">
+            {stats.unread_count}
+          </div>
+        </div>
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-3.5">
+          <p className="text-[12px] font-medium text-zinc-400 mb-0.5">Needs attention</p>
+          <div className="text-[22px] leading-7 font-semibold tracking-tight text-white">
+            {stats.needs_attention_count}
+          </div>
+        </div>
+      </div>
 
-                <div className="flex items-end justify-between gap-6">
-                  <div className="text-sm text-white/50 line-clamp-2 leading-relaxed flex-1 italic">
-                    "{msg.content}"
-                  </div>
-                  <div className="text-[11px] text-zinc-500 whitespace-nowrap text-right font-medium">
-                    <div className="text-white/80">{timeStr}</div>
-                    <div className="opacity-60">{dateStr}</div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+      {/* ── Error Banner (if sync or connection issue) ────────────────────── */}
+      {syncError && (
+        <div className="flex items-center justify-between gap-3 p-3 bg-red-950/30 border border-red-800/40 rounded-lg text-[13px] text-red-200">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+            <span>
+              {syncError === "internshala_tab_missing"
+                ? "No active Internshala tab detected. Please open Internshala in your Chrome browser."
+                : syncError === "internshala_signed_out"
+                ? "Your Internshala session is expired or signed out. Please sign in to Internshala in Chrome."
+                : syncError === "extension_not_installed"
+                ? "Applivo Chrome extension is not detected. Please install or enable it in Chrome."
+                : syncError === "extension_not_connected"
+                ? "Applivo extension is not linked. Please connect the extension in Settings."
+                : "Message sync failed. Check your connection and try again."}
+            </span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            {(syncError === "internshala_tab_missing" || syncError === "internshala_signed_out") && (
+              <a
+                href="https://internshala.com/chat"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1 px-2.5 py-1 bg-red-900/60 hover:bg-red-800/60 border border-red-700/50 rounded-md text-[12px] font-medium text-white transition-colors"
+              >
+                Open Internshala
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            )}
+            <button
+              onClick={() => setSyncError(null)}
+              className="text-red-400 hover:text-white p-1"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Message Detail Modal */}
-      {selectedMessage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#111118]/90 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setSelectedMessage(null)}>
-          <div className="bg-[#242424] w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col border border-white/[0.08] rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
-            <div className="p-6 border-b border-white/[0.08] bg-[#232327]">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-2xl font-bold text-white">
-                      {selectedMessage.sender.includes('. Accept') ? selectedMessage.sender.split('. Accept')[0] : 
-                       (selectedMessage.sender === 'Internshala Chat' ? (() => {
-                         const match = selectedMessage.content.match(/(?:internship|role|position|opportunity) at ([A-Z][A-Za-z0-9 &]+?)(?:\.|,|\n| Accept)/i) || selectedMessage.content.match(/(?:We are interested in your profile for.*?at )([A-Z][A-Za-z0-9 &]+)/i);
-                         return match && match[1] ? match[1].trim() : "Internshala Chat";
-                       })() : selectedMessage.sender)}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider bg-white/10 px-2 py-0.5 rounded-full font-bold">
-                      {selectedMessage.platform}
-                    </span>
-                  </div>
-                  <div className="text-white font-bold tracking-tight">
-                    {selectedMessage.subject}
-                  </div>
-                </div>
-                <button onClick={() => setSelectedMessage(null)} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                  <RefreshCw className="w-5 h-5 rotate-45" />
+      {/* ── Two-Pane Inbox ──────────────────────────────────────────────── */}
+      <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg overflow-hidden flex flex-1 h-[calc(100vh-240px)] min-h-[520px]">
+        {/* Left Pane — Conversation List */}
+        <div
+          className={`${
+            mobileDetailView ? "hidden md:flex" : "flex"
+          } w-full md:w-[340px] lg:w-[360px] flex-col border-r border-[var(--app-border-strong)] shrink-0 bg-[var(--app-card)]`}
+        >
+          {/* Search & Filter Header */}
+          <div className="p-3 border-b border-[var(--app-border-strong)] space-y-2.5">
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search conversations..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full h-8 pl-8 pr-7 bg-[#171717] border border-[var(--app-border-strong)] rounded-md text-[13px] text-white placeholder-zinc-500 focus:outline-none focus:border-white/30 transition-colors"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch("")}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+                >
+                  <X className="w-3.5 h-3.5" />
                 </button>
-              </div>
-              <div className="text-xs text-muted-foreground flex gap-4">
-                <span>Received: {selectedMessage.received_at ? new Date(selectedMessage.received_at).toLocaleString() : "Unknown"}</span>
-                {selectedMessage.is_important && (
-                  <span className="flex items-center gap-1 text-white">
-                    <Star className="w-3 h-3 fill-white" />
-                    Important
-                  </span>
-                )}
-              </div>
+              )}
             </div>
-            <div className="p-8 flex-1 overflow-y-auto bg-[#232327]">
-              <div className="text-white/90 leading-7 whitespace-pre-wrap text-base sm:text-lg font-normal tracking-wide">
-                {selectedMessage.content}
-              </div>
-            </div>
-            <div className="p-4 bg-[#232327] border-t border-white/[0.08] flex justify-end">
-              <button onClick={() => setSelectedMessage(null)} className="px-6 py-2 bg-white text-black hover:bg-gray-200 transition-colors rounded-lg font-medium shadow-lg border border-white/[0.08]">
-                Done
+
+            {/* Filter Pills */}
+            <div className="flex gap-1.5">
+              <button
+                onClick={() => setFilter("all")}
+                className={`h-7 px-2.5 rounded-md text-[12px] font-medium transition-colors border ${
+                  filter === "all"
+                    ? "bg-[var(--app-nested)] border-white/20 text-white"
+                    : "bg-transparent border-transparent text-zinc-400 hover:text-white"
+                }`}
+              >
+                All ({conversations.length})
+              </button>
+              <button
+                onClick={() => setFilter("unread")}
+                className={`h-7 px-2.5 rounded-md text-[12px] font-medium transition-colors border ${
+                  filter === "unread"
+                    ? "bg-[var(--app-nested)] border-white/20 text-white"
+                    : "bg-transparent border-transparent text-zinc-400 hover:text-white"
+                }`}
+              >
+                Unread ({stats.unread_count})
+              </button>
+              <button
+                onClick={() => setFilter("important")}
+                className={`h-7 px-2.5 rounded-md text-[12px] font-medium transition-colors border ${
+                  filter === "important"
+                    ? "bg-[var(--app-nested)] border-white/20 text-white"
+                    : "bg-transparent border-transparent text-zinc-400 hover:text-white"
+                }`}
+              >
+                Important ({stats.needs_attention_count})
               </button>
             </div>
           </div>
+
+          {/* Conversation List Scroll Area */}
+          <div className="flex-1 overflow-y-auto divide-y divide-[var(--app-border-strong)]">
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-20 gap-2">
+                <Loader2 className="w-6 h-6 animate-spin text-zinc-400" />
+                <p className="text-[12px] text-zinc-500">Loading inbox...</p>
+              </div>
+            ) : filteredConversations.length === 0 ? (
+              <div className="p-6 text-center space-y-3">
+                <div className="w-9 h-9 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center mx-auto text-zinc-500">
+                  <Inbox className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-[13px] font-medium text-white">
+                    {conversations.length === 0 ? "No conversations yet" : "No matching conversations"}
+                  </p>
+                  <p className="text-[12px] text-zinc-400 mt-1 leading-relaxed">
+                    {conversations.length === 0
+                      ? "Open Internshala and sync your recruiter messages to get started."
+                      : "Try clearing your search or selecting a different filter."}
+                  </p>
+                </div>
+                {conversations.length === 0 && (
+                  <div className="pt-2 flex flex-col gap-2">
+                    <a
+                      href="https://internshala.com/chat"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 h-8 px-3 bg-[var(--app-nested)] hover:bg-[#252528] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-white transition-colors"
+                    >
+                      <span>Open Internshala</span>
+                      <ExternalLink className="w-3 h-3 text-zinc-400" />
+                    </a>
+                    <button
+                      onClick={handleSync}
+                      disabled={syncing}
+                      className="inline-flex items-center justify-center gap-1.5 h-8 px-3 bg-white text-black hover:bg-zinc-200 rounded-md text-[12px] font-semibold transition-colors disabled:opacity-50"
+                    >
+                      <RefreshCw className={`w-3 h-3 ${syncing ? "animate-spin" : ""}`} />
+                      <span>{syncing ? "Syncing..." : "Sync messages now"}</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              filteredConversations.map((conv) => {
+                const isSelected = conv.id === selectedId;
+                const isUnread = conv.status === "unread";
+
+                return (
+                  <button
+                    key={conv.id}
+                    onClick={() => handleSelectConversation(conv)}
+                    className={`w-full text-left p-3.5 transition-colors flex flex-col gap-1 relative ${
+                      isSelected
+                        ? "bg-[var(--app-nested)] border-l-2 border-l-white"
+                        : "hover:bg-[var(--app-nested)]/50"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        {conv.is_important && (
+                          <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
+                        )}
+                        <span
+                          className={`text-[13px] truncate ${
+                            isUnread ? "font-semibold text-white" : "font-medium text-zinc-300"
+                          }`}
+                        >
+                          {conv.sender_name}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {isUnread && (
+                          <span className="w-2 h-2 rounded-full bg-blue-500" title="Unread message" />
+                        )}
+                        <span className="text-[11px] text-zinc-500">
+                          {formatRelativeTime(conv.received_at)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {(conv.company || conv.job_title) && (
+                      <div className="text-[11px] text-zinc-400 truncate">
+                        {conv.job_title && conv.company
+                          ? `${conv.job_title} • ${conv.company}`
+                          : conv.company || conv.job_title}
+                      </div>
+                    )}
+
+                    <p
+                      className={`text-[12px] line-clamp-2 mt-0.5 leading-snug ${
+                        isUnread ? "text-zinc-200" : "text-zinc-400"
+                      }`}
+                    >
+                      {conv.preview || "No message preview"}
+                    </p>
+                  </button>
+                );
+              })
+            )}
+          </div>
         </div>
-      )}
+
+        {/* Right Pane — Selected Conversation & Message History */}
+        <div
+          className={`${
+            mobileDetailView ? "flex" : "hidden md:flex"
+          } flex-1 flex-col bg-[var(--app-card)] min-w-0`}
+        >
+          {selectedConversation ? (
+            <>
+              {/* Selected Conversation Header */}
+              <div className="p-3.5 sm:p-4 border-b border-[var(--app-border-strong)] flex items-center justify-between gap-3 bg-[var(--app-card)] shrink-0">
+                <div className="flex items-center gap-3 min-w-0">
+                  <button
+                    onClick={() => setMobileDetailView(false)}
+                    className="md:hidden p-1.5 rounded-md hover:bg-[var(--app-nested)] text-zinc-400 hover:text-white"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                  </button>
+
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-[15px] font-semibold text-white truncate max-w-[130px] sm:max-w-none">
+                        {selectedConversation.sender_name}
+                      </h2>
+                      {selectedConversation.is_important && (
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-950/60 text-amber-300 border border-amber-800/50">
+                          <Star className="w-2.5 h-2.5 fill-amber-300" />
+                          Important
+                        </span>
+                      )}
+                    </div>
+                    {(selectedConversation.company || selectedConversation.job_title) && (
+                      <p className="text-[12px] text-zinc-400 truncate mt-0.5">
+                        {selectedConversation.job_title && selectedConversation.company
+                          ? `${selectedConversation.job_title} • ${selectedConversation.company}`
+                          : selectedConversation.company || selectedConversation.job_title}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => handleToggleStatus(selectedConversation)}
+                    className="h-7 px-2.5 rounded-md bg-[var(--app-nested)] hover:bg-[#252528] border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
+                    title={selectedConversation.status === "unread" ? "Mark as read" : "Mark as unread"}
+                  >
+                    <CheckCheck className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">
+                      {selectedConversation.status === "unread" ? "Mark read" : "Mark unread"}
+                    </span>
+                  </button>
+
+                  <a
+                    href={selectedConversation.url || `https://internshala.com/chat/${selectedConversation.external_id}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="h-7 px-2.5 rounded-md bg-white hover:bg-zinc-200 text-black text-[12px] font-semibold transition-colors inline-flex items-center gap-1.5 shrink-0"
+                  >
+                    <span>Open in Internshala</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Message Timeline */}
+              <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 bg-[var(--app-card)]">
+                {selectedConversation.messages && selectedConversation.messages.length > 0 ? (
+                  selectedConversation.messages.map((m, idx) => {
+                    const isCandidate = m.sender === "candidate";
+
+                    return (
+                      <div
+                        key={m.id || idx}
+                        className={`flex flex-col ${isCandidate ? "items-end" : "items-start"}`}
+                      >
+                        <div
+                          className={`max-w-[85%] sm:max-w-[75%] rounded-lg p-3 text-[13px] leading-relaxed ${
+                            isCandidate
+                              ? "bg-[#27272a] border border-white/10 text-white rounded-tr-sm"
+                              : "bg-[#1c1c1f] border border-[var(--app-border-strong)] text-zinc-200 rounded-tl-sm"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-3 mb-1.5 text-[11px]">
+                            <span className={isCandidate ? "text-zinc-300 font-medium" : "text-zinc-400 font-medium"}>
+                              {m.sender_name || (isCandidate ? "You" : selectedConversation.sender_name)}
+                            </span>
+                            {m.timestamp && (
+                              <span className="text-zinc-500 font-normal">
+                                {formatRelativeTime(m.timestamp)}
+                              </span>
+                            )}
+                          </div>
+                          <div className="whitespace-pre-wrap break-words">{m.text}</div>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-16 text-center">
+                    <p className="text-[13px] text-zinc-400">No message history available for this conversation.</p>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            /* Minimal Empty State when no conversation selected */
+            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center text-zinc-500">
+                <MessageSquare className="w-5 h-5" />
+              </div>
+              <div className="max-w-[320px]">
+                <p className="text-[14px] font-medium text-white">
+                  {conversations.length === 0 ? "No conversations yet" : "Select a conversation"}
+                </p>
+                <p className="text-[12px] text-zinc-400 mt-1 leading-relaxed">
+                  {conversations.length === 0
+                    ? "Recruiter messages from your active Internshala account will appear here in chronological order with message history."
+                    : "Select a conversation from the left to view the message history."}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

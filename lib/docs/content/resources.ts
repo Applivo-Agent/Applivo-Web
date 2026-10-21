@@ -1,4 +1,4 @@
-import { DocArticle, h2, h3, p, ul, table, note } from "../types";
+import { DocArticle, h2, h3, p, ul, table, note, warn, img, diagram } from "../types";
 
 /** Moved here from the standalone /resources pages. Text is carried over unchanged; the old URLs redirect. */
 export const resources: DocArticle[] = [
@@ -7,6 +7,7 @@ export const resources: DocArticle[] = [
     title: "Changelog",
     description: "New features, improvements and fixes to help you streamline your career growth.",
     blocks: [
+      p("This page lists Applivo's historical release notes, newest first. Each entry records what shipped in that version, so you can see how the product has evolved and when a feature first appeared."),
       note("These are historical release notes. Plan limits, prices and model availability change over time; the Plans overview reflects what the app currently enforces.", "About this page"),
 
       h2("v3.1.0 — AI Orchestration Engine (June 13, 2026)"),
@@ -58,6 +59,8 @@ export const resources: DocArticle[] = [
       p("Applied session cookies and credentials encrypted at rest with random nonces. Credentials never stored in plaintext."),
       h3("Lifecycle Machine"),
       p("Every application tracked via immutable event logs. Logic handles transitions from Pending to Offer Accepted or Failure."),
+
+      warn("Model names, provider availability and plan quotas stated in these historical entries may differ from what the app currently enforces. Treat the current in-app values, not this page, as authoritative for limits and pricing."),
     ],
     related: ["privacy-policy", "terms-of-use", "plans-overview"],
   },
@@ -66,6 +69,7 @@ export const resources: DocArticle[] = [
     title: "Privacy Policy",
     description: "How we protect your data at Applivo. Last updated: April 16, 2026.",
     blocks: [
+      note("This page reproduces Applivo's published Privacy Policy. This guide has not independently verified every statement against the code; treat it as a publication of the policy, not a technical audit. For the controls you can actually operate, see Security and privacy.", "About this policy"),
       h2("Data collection"),
       p("We collect information you provide directly to us when you create an account, upload a resume, or use our automation services. This includes your name, email address, physical address (for job forms), professional experience, and education history."),
       ul("Contact details (Email, Phone, LinkedIn profile)", "Resume and professional portfolio data", "Application history and status", "Usage statistics and platform interactions"),
@@ -80,6 +84,8 @@ export const resources: DocArticle[] = [
       ul("Right to access and export your data", "Right to rectification (correcting errors)", "Right to erasure ('Right to be Forgotten')", "Right to object to automated processing"),
       h2("Data retention"),
       p("We retain your information as long as your account is active or needed to provide you with services. You can delete your account and all associated data at any time through the security settings."),
+      h3("Where to act on this in the product"),
+      p("Session control and sign-out live under Settings → Security. See Security and privacy for what is documented and what this guide cannot confirm."),
     ],
     related: ["terms-of-use", "security-and-privacy"],
   },
@@ -88,6 +94,7 @@ export const resources: DocArticle[] = [
     title: "Terms of Use",
     description: "The rules for using the Applivo platform. Last updated: April 16, 2026.",
     blocks: [
+      note("This page reproduces Applivo's published Terms of Use. This guide has not independently verified every statement against the code; treat it as a publication of the terms, not legal advice.", "About these terms"),
       h2("Acceptance of terms"),
       p("By accessing or using the Applivo platform, you agree to be bound by these Terms of Use and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site."),
       h2("Subscription & payments"),
@@ -104,6 +111,8 @@ export const resources: DocArticle[] = [
       ul("Applivo does not guarantee job placement", "We are not liable for any third-party data breaches on external job sites", "Services are provided on an 'as is' and 'as available' basis"),
       h2("In short"),
       p("We automate applications for you, but you need to provide real info and follow the rules of the platforms we apply to. No spamming, no cheating the limits, and we don't guarantee you'll get the job."),
+      h3("How automation boundaries work in practice"),
+      p("The extension only runs on Internshala, only acts on applications you select, and only submits automatically when you choose auto-submit and acknowledge it. See Automation and extension."),
     ],
     related: ["privacy-policy", "plans-overview"],
   },

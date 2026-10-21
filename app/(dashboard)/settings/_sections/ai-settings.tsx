@@ -6,6 +6,7 @@ import { SettingSection, SettingCard } from "@/components/settings/card";
 import { Toggle } from "@/components/settings/toggle";
 import { useSettings } from "@/lib/settings-context";
 import { useSubscription } from "@/lib/subscription";
+import { settingsV2Api } from "@/lib/api";
 import { Brain, Zap, Gauge, Briefcase, Shield, Lock, Check, ChevronDown, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { PlanTier } from "@/lib/subscription";
@@ -18,6 +19,7 @@ interface ModelDef {
   key: string;
   label: string;
   provider: "groq" | "gemini" | "openrouter";
+  providers?: string[];
   description: string;
   minPlan: MinPlan;
 }
@@ -28,25 +30,16 @@ const PROVIDERS = [
   { id: "openrouter" as const, label: "OpenRouter", description: "200+ models via one API" },
 ];
 
-const MODELS: ModelDef[] = [
-  { key: "auto",              label: "Auto (Recommended)",  provider: "groq",       description: "Fastest model, auto-selected",       minPlan: "starter" },
-  { key: "llama-3.1-8b",     label: "Llama 3.1 8B",        provider: "groq",       description: "Fast, lightweight open model",       minPlan: "starter" },
-  { key: "llama-3.3-70b",    label: "Llama 3.3 70B",       provider: "groq",       description: "Powerful open-source model",         minPlan: "starter" },
-  { key: "gemini-flash",     label: "Gemini 1.5 Flash",    provider: "gemini",     description: "Google's fast multimodal model",     minPlan: "starter" },
-  { key: "deepseek-v3",      label: "DeepSeek V3",         provider: "openrouter", description: "State-of-the-art open model",        minPlan: "starter" },
-  { key: "qwen-3",           label: "Qwen 3",              provider: "openrouter", description: "Alibaba's reasoning model",          minPlan: "starter" },
-  { key: "llama-4-maverick", label: "Llama 4 Maverick",    provider: "openrouter", description: "Meta's multimodal frontier model",   minPlan: "starter" },
-  { key: "gemma-3",          label: "Gemma 3",             provider: "openrouter", description: "Google's open-weight model",         minPlan: "starter" },
-  { key: "gpt-oss",          label: "GPT-OSS",             provider: "openrouter", description: "OpenAI-compatible open model",       minPlan: "starter" },
-  { key: "claude-sonnet-4",  label: "Claude Sonnet 4",     provider: "openrouter", description: "Anthropic's fast intelligent model", minPlan: "pro" },
-  { key: "gpt-5-mini",       label: "GPT-5 Mini",          provider: "openrouter", description: "OpenAI's efficient flagship",        minPlan: "pro" },
-  { key: "gemini-2.5-pro",   label: "Gemini 2.5 Pro",      provider: "gemini",     description: "Google's top model",                 minPlan: "pro" },
-  { key: "deepseek-r1",      label: "DeepSeek R1",         provider: "openrouter", description: "Top-tier reasoning model",           minPlan: "pro" },
-  { key: "grok-fast",        label: "Grok Fast",           provider: "openrouter", description: "xAI's real-time knowledge model",    minPlan: "pro" },
-  { key: "claude-opus-4",    label: "Claude Opus 4.1",     provider: "openrouter", description: "Anthropic's most capable model",     minPlan: "premium" },
-  { key: "gpt-5",            label: "GPT-5",               provider: "openrouter", description: "OpenAI's most powerful model",       minPlan: "premium" },
-  { key: "grok-4",           label: "Grok 4",              provider: "openrouter", description: "xAI's largest model",               minPlan: "premium" },
-];
+// The model list comes from the server (GET /settings/v2/ai/models): exactly what the router can run, with
+// labels that say what actually runs. Nothing is hard-coded here, so retired labels cannot reappear.
+interface ApiModel {
+  key: string;
+  label: string;
+  description: string;
+  plan: MinPlan;
+  providers: string[];
+  available: boolean;
+}
 
 const PLAN_ORDER: Record<MinPlan, number> = { starter: 0, pro: 1, premium: 2 };
 
@@ -193,10 +186,10 @@ function ModelDropdown({
       ref={panelRef}
       style={portalStyle}
       onKeyDown={onKeyDown}
-      className="rounded-xl border border-zinc-700 bg-[#141414] shadow-2xl shadow-black/80 overflow-hidden"
+      className="rounded-xl border border-[var(--app-border-strong)] bg-[var(--app-inset)] shadow-2xl shadow-black/80 overflow-hidden"
     >
       {/* Search */}
-      <div className="flex items-center gap-2 px-3 py-2.5 border-b border-zinc-800">
+      <div className="flex items-center gap-2 px-3 py-2.5 border-b border-[var(--app-border-strong)]">
         <Search className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
         <input
           ref={searchRef}
@@ -215,7 +208,7 @@ function ModelDropdown({
         ) : (
           groupedFiltered.map((group) => (
             <div key={group.key}>
-              <div className="sticky top-0 px-3 py-1.5 bg-[#141414] border-b border-zinc-800/50">
+              <div className="sticky top-0 px-3 py-1.5 bg-[var(--app-inset)] border-b border-[var(--app-border-strong)]/50">
                 <span className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500">
                   {group.label}
                 </span>
@@ -276,7 +269,7 @@ function ModelDropdown({
         onClick={() => setOpen((o) => !o)}
         className={cn(
           "w-full flex items-center justify-between gap-3 px-3.5 py-2.5 rounded-xl border text-left transition-all",
-          "bg-[#161616] border-zinc-800 hover:border-zinc-600 focus:outline-none focus:border-zinc-500",
+          "bg-[var(--app-card)] border-[var(--app-border-strong)] hover:border-zinc-600 focus:outline-none focus:border-zinc-500",
           open && "border-zinc-600"
         )}
       >
@@ -323,57 +316,48 @@ export function AISettingsSection() {
   const { plan } = useSubscription();
   const effectivePlan = (plan === "none" ? "starter" : plan) as MinPlan;
 
-  const filteredModels = MODELS.filter((m) =>
-    settings.aiProvider === "groq"
-      ? m.provider === "groq"
-      : settings.aiProvider === "gemini"
-        ? m.provider === "gemini"
-        : true
+  const [catalogue, setCatalogue] = useState<ModelDef[]>([]);
+  useEffect(() => {
+    settingsV2Api
+      .getAIModels()
+      .then((res) => {
+        const list: ApiModel[] = res.data?.models ?? [];
+        setCatalogue(
+          list
+            .filter((m) => m.available)
+            .map((m) => ({
+              key: m.key,
+              label: m.label,
+              description: m.description,
+              provider: (m.providers[0] ?? "openrouter") as ModelDef["provider"],
+              providers: m.providers,
+              minPlan: m.plan,
+            }))
+        );
+      })
+      .catch(() => setCatalogue([]));
+  }, []);
+
+  const filteredModels = catalogue.filter(
+    (m) => !settings.aiProvider || m.providers?.includes(settings.aiProvider) || m.key === "auto"
   );
+  // A stored value that is no longer offered is shown as the default rather than as a retired name.
+  const shownModel = filteredModels.some((m) => m.key === settings.aiModel) ? settings.aiModel : "auto";
 
   const save = (data: Record<string, unknown>) => saveSection("ai", data);
 
   return (
     <SettingSection>
-      {/* Provider */}
+      {/* Engine: fixed by server policy */}
       <SettingCard
-        title="AI Provider"
-        description="Choose which AI engine powers your agent"
+        title="AI engine"
+        description="Applivo runs every request on its own managed key through OpenRouter, with one model. There is nothing to configure and no key to enter."
         icon={<Brain className="w-4 h-4 text-white" />}
       >
-        <div className="grid grid-cols-3 gap-3">
-          {PROVIDERS.map((p) => (
-            <button
-              key={p.id}
-              onClick={() => save({ ai_provider: p.id, ai_model: "auto" })}
-              className={cn(
-                "p-4 rounded-xl border text-left transition-all",
-                settings.aiProvider === p.id
-                  ? "bg-white text-black border-white shadow-lg"
-                  : "bg-[#161616] text-[#A1A1AA] border-zinc-800 hover:border-white/30"
-              )}
-            >
-              <p className="text-sm font-bold">{p.label}</p>
-              <p className={cn("text-[10px] mt-1", settings.aiProvider === p.id ? "text-black/60" : "opacity-60")}>
-                {p.description}
-              </p>
-            </button>
-          ))}
+        <div className="p-4 rounded-xl border border-[var(--app-border-strong)] bg-[var(--app-card)]">
+          <p className="text-sm font-bold text-white">OpenRouter · {catalogue[0]?.label ?? "GPT-OSS 20B"}</p>
+          <p className="text-[11px] text-zinc-500 mt-1">{catalogue[0]?.description ?? "Managed by Applivo. Your data is requested to be routed only to hosts that do not retain prompts."}</p>
         </div>
-      </SettingCard>
-
-      {/* Model */}
-      <SettingCard
-        title="Model"
-        description="Select the AI model. Locked models require a plan upgrade."
-        icon={<Zap className="w-4 h-4 text-white" />}
-      >
-        <ModelDropdown
-          value={settings.aiModel}
-          models={filteredModels}
-          effectivePlan={effectivePlan}
-          onChange={(key) => save({ ai_model: key })}
-        />
       </SettingCard>
 
       {/* Reasoning Depth */}
@@ -390,13 +374,13 @@ export function AISettingsSection() {
               className={cn(
                 "flex items-center gap-4 p-4 rounded-xl border text-left transition-all",
                 settings.reasoningDepth === opt.id
-                  ? "bg-[#1a1a1a] border-white/30 ring-1 ring-white/10"
-                  : "bg-[#161616] border-zinc-800 hover:border-zinc-700"
+                  ? "bg-[var(--app-card)] border-white/30 ring-1 ring-white/10"
+                  : "bg-[var(--app-card)] border-[var(--app-border-strong)] hover:border-[var(--app-border-strong)]"
               )}
             >
               <div className={cn(
                 "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                settings.reasoningDepth === opt.id ? "bg-white" : "bg-[#242424]"
+                settings.reasoningDepth === opt.id ? "bg-white" : "bg-[var(--app-card)]"
               )}>
                 <Zap className={cn("w-4 h-4", settings.reasoningDepth === opt.id ? "text-black" : "text-[#A1A1AA]")} />
               </div>
@@ -423,8 +407,8 @@ export function AISettingsSection() {
               className={cn(
                 "p-4 rounded-xl border text-left transition-all",
                 settings.applicationStyle === opt.id
-                  ? "bg-[#1a1a1a] border-white/30 ring-1 ring-white/10"
-                  : "bg-[#161616] border-zinc-800 hover:border-zinc-700"
+                  ? "bg-[var(--app-card)] border-white/30 ring-1 ring-white/10"
+                  : "bg-[var(--app-card)] border-[var(--app-border-strong)] hover:border-[var(--app-border-strong)]"
               )}
             >
               <p className="text-sm font-bold text-white mb-1">{opt.label}</p>
@@ -434,54 +418,6 @@ export function AISettingsSection() {
         </div>
       </SettingCard>
 
-      {/* Smart Fallback */}
-      <SettingCard
-        title="Smart Fallback"
-        description="Automatically switch to another model if your preferred model is unavailable or rate-limited"
-        icon={<Shield className="w-4 h-4 text-white" />}
-        action={
-          <Toggle
-            checked={settings.fallbackEnabled}
-            onChange={(v) => save({ fallback_enabled: v })}
-          />
-        }
-      >
-        {settings.fallbackEnabled && (
-          <div className="mt-2 space-y-2">
-            <p className="text-xs text-zinc-500 mb-3">Fallback Strategy</p>
-            {FALLBACK_STRATEGY_OPTIONS.map((opt) => (
-              <button
-                key={opt.id}
-                onClick={() => save({ fallback_strategy: opt.id })}
-                className={cn(
-                  "w-full flex items-start gap-3 p-3.5 rounded-xl border text-left transition-all",
-                  settings.fallbackStrategy === opt.id
-                    ? "bg-[#1a1a1a] border-white/20 ring-1 ring-white/10"
-                    : "bg-[#161616] border-zinc-800 hover:border-zinc-700"
-                )}
-              >
-                <div className={cn(
-                  "w-4 h-4 mt-0.5 rounded-full border-2 shrink-0 flex items-center justify-center",
-                  settings.fallbackStrategy === opt.id ? "border-white bg-white" : "border-zinc-600"
-                )}>
-                  {settings.fallbackStrategy === opt.id && <div className="w-1.5 h-1.5 rounded-full bg-black" />}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">{opt.label}</p>
-                  <p className="text-[11px] text-zinc-500 mt-0.5">{opt.description}</p>
-                </div>
-              </button>
-            ))}
-          </div>
-        )}
-        {!settings.fallbackEnabled && (
-          <div className="mt-2 p-3 bg-amber-500/5 border border-amber-500/20 rounded-xl">
-            <p className="text-xs text-amber-400">
-              Smart fallback is disabled. If your preferred model fails, the request will error instead of trying another model.
-            </p>
-          </div>
-        )}
-      </SettingCard>
     </SettingSection>
   );
 }

@@ -63,10 +63,10 @@ export function DocsSearch({ open, onClose }: DocsSearchProps) {
         aria-label="Search documentation"
         onMouseDown={(e) => e.stopPropagation()}
         onKeyDown={onKey}
-        className="w-full max-w-[560px] overflow-hidden rounded-xl border border-white/10 bg-[#111113] shadow-[0_24px_64px_rgba(0,0,0,0.8)]"
+        className="w-full max-w-[560px] overflow-hidden rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] shadow-[0_24px_64px_rgba(0,0,0,0.8)]"
       >
-        <div className="flex items-center gap-3 border-b border-white/[0.08] px-4">
-          <Search className="h-4 w-4 text-zinc-400" strokeWidth={1.75} />
+        <div className="flex items-center gap-3 border-b border-[var(--docs-border)] px-4">
+          <Search className="h-4 w-4 text-[var(--docs-muted)]" strokeWidth={1.75} />
           <input
             ref={inputRef}
             value={q}
@@ -76,21 +76,21 @@ export function DocsSearch({ open, onClose }: DocsSearchProps) {
             role="combobox"
             aria-expanded
             aria-controls="docs-search-results"
-            className="h-12 flex-1 bg-transparent text-[14.5px] text-white outline-none placeholder:text-zinc-500"
+            className="h-12 flex-1 bg-transparent text-[14.5px] text-[var(--docs-text)] outline-none placeholder:text-[var(--docs-muted)]"
           />
-          <kbd className="rounded border border-white/10 bg-white/[0.02] px-1.5 py-0.5 text-[11px] font-mono text-zinc-400">
+          <kbd className="rounded border border-[var(--docs-border)] bg-[#1c1c1c] px-1.5 py-0.5 text-[11px] font-mono text-[var(--docs-muted)]">
             Esc
           </kbd>
         </div>
 
         <ul id="docs-search-results" role="listbox" className="max-h-[50vh] overflow-y-auto p-2 [scrollbar-width:thin]">
           {q.trim() && results.length === 0 && (
-            <li className="px-3 py-8 text-center text-[13.5px] text-zinc-400">
+            <li className="px-3 py-8 text-center text-[13.5px] text-[var(--docs-secondary)]">
               No results found for “{q}”.
             </li>
           )}
           {!q.trim() && (
-            <li className="px-3 py-8 text-center text-[13.5px] text-zinc-500">
+            <li className="px-3 py-8 text-center text-[13.5px] text-[var(--docs-muted)]">
               Type to search all articles, headings, and guides.
             </li>
           )}
@@ -105,24 +105,24 @@ export function DocsSearch({ open, onClose }: DocsSearchProps) {
                   onMouseEnter={() => setSel(i)}
                   onClick={() => go(i)}
                   className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
-                    isSelected ? "bg-white/[0.08] text-white" : "text-zinc-300 hover:bg-white/[0.04]"
+                    isSelected ? "bg-[var(--docs-card-hover)] text-white" : "text-[var(--docs-secondary)] hover:bg-[var(--docs-card-hover)] hover:text-white"
                   }`}
                 >
                   {r.heading ? (
-                    <Hash className="h-4 w-4 shrink-0 text-zinc-400" strokeWidth={1.75} />
+                    <Hash className="h-4 w-4 shrink-0 text-[var(--docs-muted)]" strokeWidth={1.75} />
                   ) : (
-                    <Icon className="h-4 w-4 shrink-0 text-zinc-400" strokeWidth={1.75} />
+                    <Icon className="h-4 w-4 shrink-0 text-[var(--docs-muted)]" strokeWidth={1.75} />
                   )}
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[13.5px] font-medium text-white">
+                    <span className="block truncate text-[13.5px] font-medium text-[var(--docs-text)]">
                       {r.heading ?? r.title}
                     </span>
-                    <span className="block truncate text-[11.5px] text-zinc-400">
+                    <span className="block truncate text-[11.5px] text-[var(--docs-muted)]">
                       {r.group}
                       {r.heading ? ` › ${r.title}` : ""}
                     </span>
                   </span>
-                  {isSelected && <CornerDownLeft className="h-3.5 w-3.5 text-zinc-400" />}
+                  {isSelected && <CornerDownLeft className="h-3.5 w-3.5 text-[var(--docs-muted)]" />}
                 </button>
               </li>
             );

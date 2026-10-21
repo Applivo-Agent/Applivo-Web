@@ -12,13 +12,13 @@ const POPULAR_SLUGS = [
 
 export default function DocsHome() {
   return (
-    <div className="mx-auto w-full max-w-[1040px] px-6 py-10 sm:px-10 md:py-14">
+    <div className="mx-auto w-full max-w-[1140px] px-6 py-10 sm:px-10 md:py-14">
       {/* Linear Docs-style Header */}
-      <div className="mb-10">
-        <h1 className="text-[34px] font-semibold tracking-tight text-white sm:text-[38px]">
-          Applivo Documentation
+      <div className="mb-12">
+        <h1 className="text-[30px] font-semibold tracking-tight text-[var(--docs-text)] sm:text-[34px]">
+          Applivo Docs
         </h1>
-        <p className="mt-2 text-[15.5px] leading-relaxed text-zinc-400 max-w-[640px]">
+        <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--docs-secondary)] max-w-[640px]">
           Get an overview of Applivo&apos;s features, automated job applications, Chrome extension,
           and how to use them.
         </p>
@@ -26,7 +26,7 @@ export default function DocsHome() {
 
       {/* Popular section */}
       <section className="mb-14" aria-labelledby="section-popular">
-        <h2 id="section-popular" className="mb-4 text-[19px] font-semibold tracking-tight text-white">
+        <h2 id="section-popular" className="mb-4 text-[20px] font-medium tracking-tight text-[var(--docs-text)] sm:text-[21px]">
           Popular
         </h2>
         <DocsCards slugs={POPULAR_SLUGS} />
@@ -40,17 +40,17 @@ export default function DocsHome() {
 
           return (
             <section key={g.id} aria-labelledby={`g-${g.id}`}>
-              <div className="mb-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-1">
+              <div className="mb-4 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
                 <div>
-                  <h2 id={`g-${g.id}`} className="text-[19px] font-semibold tracking-tight text-white">
+                  <h2 id={`g-${g.id}`} className="text-[20px] font-medium tracking-tight text-[var(--docs-text)] sm:text-[21px]">
                     {g.title}
                   </h2>
-                  <p className="text-[13.5px] text-zinc-400 mt-0.5">{g.blurb}</p>
+                  {g.blurb && <p className="text-[14px] text-[var(--docs-secondary)] mt-1">{g.blurb}</p>}
                 </div>
                 {g.articles.length > 4 && (
                   <Link
                     href={`/docs/${g.articles[0]}`}
-                    className="inline-flex items-center gap-1 text-[13px] text-zinc-400 transition-colors hover:text-white"
+                    className="inline-flex items-center gap-1 text-[13.5px] text-[var(--docs-secondary)] transition-colors hover:text-white"
                   >
                     <span>View all {g.articles.length}</span>
                     <ArrowRight className="h-3.5 w-3.5" />

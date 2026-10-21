@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { useSubscription } from "@/lib/subscription";
 import type { Feature } from "@/lib/subscription";
+import { nextQuery, safeNext } from "@/lib/safe-redirect";
 
 interface GuardProps {
   children: React.ReactNode;
@@ -19,7 +20,9 @@ export function AuthGuard({ children, feature, requireAdmin }: GuardProps) {
   useEffect(() => {
     if (isLoading || subLoading) return;
     if (!isAuthenticated) {
-      router.replace("/login");
+      // Keep where the user was going through login (validated; unknown destinations are dropped).
+      const here = safeNext(window.location.pathname + window.location.search);
+      router.replace("/login" + nextQuery(here));
       return;
     }
     if (requireAdmin && !user?.is_superuser) {

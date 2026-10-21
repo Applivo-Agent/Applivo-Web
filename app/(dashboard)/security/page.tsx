@@ -126,103 +126,100 @@ export default function SecurityPage() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <div className="flex items-center gap-3">
-        <div className="p-2 bg-[#242424] border border-white/[0.08] rounded-lg">
-          <Shield className="w-5 h-5 text-white" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold text-white">Security & Privacy</h1>
-          <p className="text-sm text-zinc-400 mt-1">Manage your account security, sessions, and data privacy.</p>
-        </div>
+      <div>
+        <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white">Security & Privacy</h1>
+        <p className="text-[14px] text-zinc-400 mt-1">Manage your account security, sessions, and data privacy.</p>
       </div>
 
       <div className="grid gap-4">
         {/* Password Section */}
-        <div className="bg-[#1c1c1e] border border-[#262626] p-5 rounded-2xl shadow-lg">
-          <div className="flex items-center justify-between mb-5">
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] p-5 rounded-lg">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-black/20 border border-white/5">
+              <div className="p-2 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)]">
                 <Key className="w-4 h-4 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-sm text-white">Password</h3>
-                <p className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest">Last changed 3 months ago</p>
+                <h3 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight">Password</h3>
+                <p className="text-[12px] text-zinc-400">Last changed 3 months ago</p>
               </div>
             </div>
             <button
               onClick={() => setShowPasswordModal(true)}
-              className="px-4 py-2 bg-white text-black rounded-lg text-[11px] font-black uppercase tracking-widest hover:bg-zinc-200 transition-all shadow-lg active:scale-95"
+              className="h-8 px-3.5 bg-white text-black text-[13px] font-semibold rounded-lg hover:bg-zinc-200 transition-colors flex items-center gap-2"
             >
               Update Password
             </button>
           </div>
           
-          <div className="p-4 rounded-xl bg-[#17171a] border border-[#2a2a2e] flex gap-3.5 items-center">
-             <AlertTriangle className="w-4 h-4 text-white/50 shrink-0" />
-             <p className="text-[12px] text-zinc-400 font-medium leading-relaxed">
-                Your password is currently rated as <span className="text-white font-black">Medium Strength</span>.
+          <div className="p-3.5 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex gap-3 items-center">
+             <AlertTriangle className="w-4 h-4 text-zinc-400 shrink-0" />
+             <p className="text-[13px] text-zinc-400">
+                Your password is currently rated as <span className="text-white font-medium">Medium Strength</span>.
              </p>
           </div>
         </div>
 
         {/* Sessions Section */}
-        <div className="bg-[#1c1c1e] border border-[#262626] p-5 rounded-2xl shadow-lg">
-          <h3 className="text-sm font-bold text-white mb-5 flex items-center gap-2">
-             <Fingerprint className="w-4 h-4 text-white" />
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] p-5 rounded-lg">
+          <h3 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight mb-4 flex items-center gap-2">
+             <Fingerprint className="w-4 h-4 text-zinc-400" />
              Active Sessions
           </h3>
           {sessionsLoading ? (
             <div className="space-y-3">
               {[1, 2].map((i) => (
-                <div key={i} className="h-16 rounded-xl bg-[#17171a] border border-[#2a2a2e] animate-pulse" />
+                <div key={i} className="h-14 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] animate-pulse" />
               ))}
             </div>
           ) : (
             <>
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 {sessions.map((session) => (
-                  <div key={session.id} className="flex items-center justify-between p-3 rounded-xl bg-[#17171a] border border-[#2a2a2e]">
+                  <div key={session.id} className="flex items-center justify-between p-3.5 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)]">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-8 h-8 rounded-lg bg-[#202025] border border-[#303036] flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-[#202025] border border-[var(--app-border-strong)] flex items-center justify-center shrink-0">
                         {getDeviceIcon(session.device_type)}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-xs font-bold text-white truncate">{getSessionTitle(session)}</p>
-                        <p className="text-[11px] font-medium text-zinc-500 truncate">{getSessionSubtitle(session)}</p>
+                        <p className="text-[13px] font-medium text-white truncate">{getSessionTitle(session)}</p>
+                        <p className="text-[12px] text-zinc-400 truncate">{getSessionSubtitle(session)}</p>
                       </div>
                     </div>
 
                     {session.is_current ? (
-                      <span className="text-[9px] font-black text-white bg-white/10 px-2 py-0.5 rounded-md uppercase tracking-widest border border-white/10">
+                      <span className="text-[11px] font-medium text-zinc-300 bg-[var(--app-card)] px-2 py-0.5 rounded border border-[var(--app-border-strong)]">
                         Current
                       </span>
                     ) : (
                       <button
                         onClick={() => revokeMutation.mutate(session.id)}
                         disabled={revokeMutation.isPending}
-                        className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+                        className="p-1.5 rounded-md text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
                         title="Sign out this session"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     )}
                   </div>
                 ))}
 
                 {!sessions.length && (
-                  <div className="p-4 rounded-xl bg-[#17171a] border border-[#2a2a2e]">
-                    <p className="text-xs text-zinc-400">No active sessions found.</p>
+                  <div className="p-4 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)]">
+                    <p className="text-[13px] text-zinc-400">No active sessions found.</p>
                   </div>
                 )}
               </div>
 
-              <button
-                onClick={handleSignOutOthers}
-                disabled={revokeAllMutation.isPending}
-                className="mt-5 text-[11px] text-zinc-400 hover:text-white hover:underline font-black uppercase tracking-widest transition-colors disabled:opacity-50 disabled:no-underline disabled:cursor-not-allowed"
-              >
-                {revokeAllMutation.isPending ? "Signing out..." : "Sign out of all other sessions"}
-              </button>
+              <div className="mt-4 pt-4 border-t border-[var(--app-border-strong)]">
+                <button
+                  onClick={handleSignOutOthers}
+                  disabled={revokeAllMutation.isPending}
+                  className="h-8 px-3 bg-[#171717] hover:bg-[var(--app-card)] text-white border border-[var(--app-border-strong)] text-[13px] font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {revokeAllMutation.isPending ? "Signing out..." : "Sign out of all other sessions"}
+                </button>
+              </div>
             </>
           )}
         </div>
@@ -230,12 +227,12 @@ export default function SecurityPage() {
 
       {showPasswordModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-          <div className="w-full max-w-md rounded-2xl border border-[#262626] bg-[#1c1c1e] p-5 shadow-2xl">
+          <div className="w-full max-w-md rounded-lg border border-[var(--app-border-strong)] bg-[var(--app-card)] p-5 shadow-2xl">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-white">Update Password</h3>
+              <h3 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight">Update Password</h3>
               <button
                 onClick={() => setShowPasswordModal(false)}
-                className="rounded-lg p-2 text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
+                className="rounded-md p-1.5 text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -243,38 +240,38 @@ export default function SecurityPage() {
 
             <div className="space-y-3">
               <div>
-                <label className="mb-1 block text-[11px] font-bold uppercase tracking-widest text-zinc-500">
+                <label className="mb-1 block text-[12px] font-medium text-zinc-400">
                   Current Password
                 </label>
                 <input
                   type="password"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full rounded-xl border border-[#303036] bg-[#17171a] px-3 py-2 text-sm text-white outline-none focus:border-white/30"
+                  className="h-9 w-full rounded-lg border border-[var(--app-border-strong)] bg-[var(--app-nested)] px-3 text-[13px] text-white placeholder-zinc-500 outline-none focus:border-white/30"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-[11px] font-bold uppercase tracking-widest text-zinc-500">
+                <label className="mb-1 block text-[12px] font-medium text-zinc-400">
                   New Password
                 </label>
                 <input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full rounded-xl border border-[#303036] bg-[#17171a] px-3 py-2 text-sm text-white outline-none focus:border-white/30"
+                  className="h-9 w-full rounded-lg border border-[var(--app-border-strong)] bg-[var(--app-nested)] px-3 text-[13px] text-white placeholder-zinc-500 outline-none focus:border-white/30"
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-[11px] font-bold uppercase tracking-widest text-zinc-500">
+                <label className="mb-1 block text-[12px] font-medium text-zinc-400">
                   Confirm New Password
                 </label>
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full rounded-xl border border-[#303036] bg-[#17171a] px-3 py-2 text-sm text-white outline-none focus:border-white/30"
+                  className="h-9 w-full rounded-lg border border-[var(--app-border-strong)] bg-[var(--app-nested)] px-3 text-[13px] text-white placeholder-zinc-500 outline-none focus:border-white/30"
                 />
               </div>
             </div>
@@ -282,14 +279,14 @@ export default function SecurityPage() {
             <div className="mt-5 flex justify-end gap-2">
               <button
                 onClick={() => setShowPasswordModal(false)}
-                className="rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-widest text-zinc-400 hover:text-white"
+                className="h-8 px-3 rounded-md text-[13px] font-medium text-zinc-400 hover:text-white transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpdatePassword}
                 disabled={changePasswordMutation.isPending}
-                className="rounded-lg bg-white px-4 py-2 text-xs font-black uppercase tracking-widest text-black hover:bg-zinc-200 disabled:opacity-60"
+                className="h-8 px-3.5 bg-white text-black text-[13px] font-semibold rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-60"
               >
                 {changePasswordMutation.isPending ? "Updating..." : "Update"}
               </button>

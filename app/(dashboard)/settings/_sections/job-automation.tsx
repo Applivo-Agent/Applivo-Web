@@ -37,8 +37,8 @@ export function JobAutomationSection() {
           />
         }
       >
-        <div className="flex items-center gap-3 p-4 bg-[#161616] border border-zinc-800 rounded-xl">
-          <div className={cn("w-2 h-2 rounded-full", autonomousActive ? "bg-emerald-500 animate-pulse" : "bg-zinc-600")} />
+        <div className="flex items-center gap-3 p-4 bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-xl">
+          <div className={cn("w-2 h-2 rounded-full", autonomousActive ? "bg-zinc-400 animate-pulse" : "bg-zinc-600")} />
           <p className="text-sm text-[#A1A1AA]">
             {autonomousActive
               ? "Agent is running autonomously. All configured automations are active."
@@ -74,8 +74,8 @@ export function JobAutomationSection() {
         icon={<BarChart3 className="w-4 h-4 text-white" />}
       >
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-[#161616] border border-zinc-800 rounded-xl space-y-3">
-            <label className="text-xs font-bold uppercase tracking-widest text-[#A1A1AA]">Daily Limit</label>
+          <div className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg space-y-3">
+            <label className="text-[11px] font-medium text-zinc-400">Daily Limit</label>
             <div className="flex items-center gap-3">
               <input
                 type="number"
@@ -84,9 +84,9 @@ export function JobAutomationSection() {
                 value={localDaily}
                 onChange={(e) => setLocalDaily(Number(e.target.value))}
                 onBlur={() => save({ daily_application_limit: localDaily })}
-                className="w-20 bg-[#0B0B0F] border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white text-center focus:outline-none focus:border-white transition-all"
+                className="w-20 h-9 bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg px-2 text-[13px] text-white text-center focus:outline-none focus:border-white/30 transition-colors"
               />
-              <span className="text-xs text-[#A1A1AA]">apps / day</span>
+              <span className="text-[12px] text-zinc-400">apps / day</span>
             </div>
             <input
               type="range"
@@ -96,12 +96,12 @@ export function JobAutomationSection() {
               onChange={(e) => setLocalDaily(Number(e.target.value))}
               onMouseUp={() => save({ daily_application_limit: localDaily })}
               onTouchEnd={() => save({ daily_application_limit: localDaily })}
-              className="w-full h-1.5 bg-[#0B0B0F] rounded-full accent-white cursor-pointer"
+              className="w-full h-1.5 bg-zinc-700 rounded-full accent-white cursor-pointer"
             />
           </div>
 
-          <div className="p-4 bg-[#161616] border border-zinc-800 rounded-xl space-y-3">
-            <label className="text-xs font-bold uppercase tracking-widest text-[#A1A1AA]">Weekly Limit</label>
+          <div className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg space-y-3">
+            <label className="text-[11px] font-medium text-zinc-400">Weekly Limit</label>
             <div className="flex items-center gap-3">
               <input
                 type="number"
@@ -110,9 +110,9 @@ export function JobAutomationSection() {
                 value={localWeekly}
                 onChange={(e) => setLocalWeekly(Number(e.target.value))}
                 onBlur={() => save({ weekly_application_limit: localWeekly })}
-                className="w-20 bg-[#0B0B0F] border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white text-center focus:outline-none focus:border-white transition-all"
+                className="w-20 h-9 bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg px-2 text-[13px] text-white text-center focus:outline-none focus:border-white/30 transition-colors"
               />
-              <span className="text-xs text-[#A1A1AA]">apps / week</span>
+              <span className="text-[12px] text-zinc-400">apps / week</span>
             </div>
             <input
               type="range"
@@ -122,7 +122,7 @@ export function JobAutomationSection() {
               onChange={(e) => setLocalWeekly(Number(e.target.value))}
               onMouseUp={() => save({ weekly_application_limit: localWeekly })}
               onTouchEnd={() => save({ weekly_application_limit: localWeekly })}
-              className="w-full h-1.5 bg-[#0B0B0F] rounded-full accent-white cursor-pointer"
+              className="w-full h-1.5 bg-zinc-700 rounded-full accent-white cursor-pointer"
             />
           </div>
         </div>
@@ -138,10 +138,10 @@ export function JobAutomationSection() {
             <Toggle checked={settings.requireManualApproval} onChange={(v) => save({ require_manual_approval: v })} />
           </SettingRow>
 
-          <div className="py-4 border-b border-[#262626] last:border-0">
+          <div className="py-4 border-b border-[var(--app-border-strong)] last:border-0">
             <div className="flex justify-between items-center mb-3">
               <label className="text-sm font-medium text-white">Auto Approval Threshold</label>
-              <span className="text-sm font-bold text-white bg-[#1c1c1e] border border-zinc-800 px-2 py-0.5 rounded-lg">
+              <span className="text-sm font-bold text-white bg-[var(--app-card)] border border-[var(--app-border-strong)] px-2 py-0.5 rounded-lg">
                 {localThreshold}%
               </span>
             </div>
@@ -154,7 +154,7 @@ export function JobAutomationSection() {
               onChange={(e) => setLocalThreshold(Number(e.target.value))}
               onMouseUp={() => save({ auto_approval_threshold: localThreshold })}
               onTouchEnd={() => save({ auto_approval_threshold: localThreshold })}
-              className="w-full h-2 bg-[#0B0B0F] rounded-full accent-white cursor-pointer"
+              className="w-full h-2 bg-[var(--app-inset)] rounded-full accent-white cursor-pointer"
             />
             <div className="flex justify-between mt-2 text-[10px] text-[#A1A1AA] uppercase tracking-wider">
               <span>Any match</span>
@@ -182,7 +182,7 @@ export function JobAutomationSection() {
               className={`p-3 rounded-xl border text-center transition-all ${
                 settings.scheduleInterval === opt.value
                   ? "bg-white text-black border-white shadow-lg"
-                  : "bg-[#161616] text-[#A1A1AA] border-zinc-800 hover:border-white/30"
+                  : "bg-[var(--app-card)] text-[#A1A1AA] border-[var(--app-border-strong)] hover:border-white/30"
               }`}
             >
               <p className="text-sm font-bold">{opt.label}</p>

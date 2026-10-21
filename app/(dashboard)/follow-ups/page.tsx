@@ -13,84 +13,82 @@ const followups = [
 export default function FollowUpsPage() {
   return (
       <div className="dash-page max-w-6xl space-y-6">
-         <div className="flex items-center gap-3">
-            <div className="p-2 bg-[#242424] border border-white/[0.08] rounded-lg">
-              <Bell className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-white">Automated Follow-ups</h1>
-              <p className="text-sm text-zinc-400 mt-1">Smart reminders and automated check-ins for pending applications.</p>
-            </div>
-          </div>
+        <div>
+          <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white">Follow-ups</h1>
+          <p className="dash-subtitle mt-1">Smart reminders and automated check-ins for pending applications.</p>
+        </div>
 
-       <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
-             <div className="dash-card overflow-hidden p-0">
-                <div className="p-4 border-b border-zinc-800 bg-[#161616] flex items-center justify-between">
-                   <h3 className="text-sm font-bold flex items-center gap-2 text-white/90">
-                      <Clock className="w-4 h-4 text-white" />
-                      Pending Interactions
-                   </h3>
-                   <div className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
-                      Auto-pilot: <span className="text-white font-black">Enabled</span>
-                   </div>
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg overflow-hidden">
+              <div className="p-4 border-b border-[var(--app-border-strong)] bg-[var(--app-card)] flex items-center justify-between">
+                <h3 className="text-[15px] font-semibold text-white tracking-tight flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-zinc-400" />
+                  Pending Interactions
+                </h3>
+                <div className="text-[11px] font-medium text-zinc-400 flex items-center gap-1.5">
+                  <span>Auto-pilot:</span>
+                  <span className="text-white font-semibold">Enabled</span>
                 </div>
-                <div className="divide-y divide-white/5">
-                   {followups.map((f) => (
-                      <div key={f.id} className="p-4 hover:bg-[#161616] transition-all group flex items-center justify-between">
-                         <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-[#161616] text-white border border-zinc-800">
-                               {f.type === 'Email' ? <Mail className="w-5 h-5" /> : <Send className="w-5 h-5" />}
-                            </div>
-                            <div>
-                               <h4 className="font-bold text-sm text-white">{f.company}</h4>
-                               <p className="text-[12px] text-zinc-500 font-medium">{f.role} • {f.time}</p>
-                            </div>
-                         </div>
-                         <div className="flex flex-col items-end gap-1.5">
-                              <span className="px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-widest bg-white/5 border border-white/10 text-white">
-                                 {f.status}
-                              </span>
-                              <button className="text-[10px] font-bold text-zinc-600 hover:text-white uppercase tracking-wider transition-colors">Pause</button>
-                         </div>
+              </div>
+              <div className="divide-y divide-[var(--app-border-strong)]">
+                {followups.map((f) => (
+                  <div key={f.id} className="p-4 hover:bg-[var(--app-nested)] transition-colors flex items-center justify-between">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[var(--app-nested)] text-zinc-300 border border-[var(--app-border-strong)] shrink-0">
+                        {f.type === 'Email' ? <Mail className="w-4 h-4" /> : <Send className="w-4 h-4" />}
                       </div>
-                   ))}
-                </div>
-             </div>
+                      <div>
+                        <h4 className="text-[13px] sm:text-[14px] font-medium text-white">{f.company}</h4>
+                        <p className="text-[12px] text-zinc-400">{f.role} • {f.time}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-zinc-300">
+                        {f.status}
+                      </span>
+                      <button className="text-[12px] font-medium text-zinc-400 hover:text-white transition-colors">
+                        Pause
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="space-y-6">
-             <div className="dash-card p-4">
-                <h3 className="text-[11px] font-black uppercase tracking-widest text-zinc-500 mb-4">Smart Sequence</h3>
-                <div className="space-y-4">
-                   <div className="flex items-start gap-3">
-                      <div className="mt-1 w-5 h-5 rounded-full bg-[#161616] border border-zinc-800 flex items-center justify-center text-[10px] font-bold text-white shrink-0">1</div>
-                      <p className="text-[12px] text-zinc-400"><span className="text-white font-bold">Day 3:</span> Soft check-in on application status.</p>
-                   </div>
-                   <div className="flex items-start gap-3">
-                      <div className="mt-1 w-5 h-5 rounded-full bg-[#161616] border border-zinc-800 flex items-center justify-center text-[10px] font-bold text-white shrink-0">2</div>
-                      <p className="text-[12px] text-zinc-400"><span className="text-white font-bold">Day 7:</span> Ask about interview timelines.</p>
-                   </div>
-                   <div className="flex items-start gap-3 opacity-30">
-                      <div className="mt-1 w-5 h-5 rounded-full bg-[#161616] border border-zinc-800 flex items-center justify-center text-[10px] font-bold text-white shrink-0">3</div>
-                      <p className="text-[12px] text-zinc-500"><span className="text-white font-bold">Day 14:</span> Final follow-up and value add.</p>
-                   </div>
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
+              <h3 className="text-[15px] font-semibold text-white tracking-tight mb-4">Smart Sequence</h3>
+              <div className="space-y-3.5">
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 w-5 h-5 rounded-full bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center text-[11px] font-medium text-zinc-300 shrink-0">1</div>
+                  <p className="text-[13px] text-zinc-300"><span className="text-white font-medium">Day 3:</span> Soft check-in on application status.</p>
                 </div>
-             </div>
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 w-5 h-5 rounded-full bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center text-[11px] font-medium text-zinc-300 shrink-0">2</div>
+                  <p className="text-[13px] text-zinc-300"><span className="text-white font-medium">Day 7:</span> Ask about interview timelines.</p>
+                </div>
+                <div className="flex items-start gap-3 opacity-40">
+                  <div className="mt-0.5 w-5 h-5 rounded-full bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center text-[11px] font-medium text-zinc-400 shrink-0">3</div>
+                  <p className="text-[13px] text-zinc-400"><span className="text-zinc-300 font-medium">Day 14:</span> Final follow-up and value add.</p>
+                </div>
+              </div>
+            </div>
 
-             <div className="dash-card p-4">
-                <div className="flex items-center gap-3 mb-4">
-                   <Sparkles className="w-5 h-5 text-white" />
-                   <h3 className="text-sm font-bold text-white/90">Ghosting Rate</h3>
-                </div>
-                <div className="text-[28px] font-black mb-1 text-white tracking-tighter">12%</div>
-                <p className="text-[11px] text-zinc-400 leading-relaxed mb-4">Your current ghosting rate is below the industry average (45%).</p>
-                <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                   <div className="h-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.5)]" style={{ width: '88%' }} />
-                </div>
-             </div>
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles className="w-4 h-4 text-zinc-400" />
+                <h3 className="text-[15px] font-semibold text-white tracking-tight">Ghosting Rate</h3>
+              </div>
+              <div className="text-[24px] leading-8 font-semibold tracking-tight text-white mb-1">12%</div>
+              <p className="text-[12px] text-zinc-400 leading-relaxed mb-4">Your current ghosting rate is below the industry average (45%).</p>
+              <div className="w-full h-1.5 bg-[var(--app-nested)] rounded-full overflow-hidden border border-[var(--app-border-strong)]">
+                <div className="h-full bg-white rounded-full" style={{ width: '88%' }} />
+              </div>
+            </div>
           </div>
-       </div>
-    </div>
+        </div>
+      </div>
   );
 }

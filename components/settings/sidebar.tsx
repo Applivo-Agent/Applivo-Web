@@ -1,68 +1,179 @@
 "use client";
 
+import React from "react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
 import {
-  Settings,
+  Sliders,
   Bell,
   Zap,
   Brain,
-  Cpu,
-  Link2,
+  Sparkles,
+  Globe,
+  Puzzle,
   Shield,
-  SlidersHorizontal,
+  Terminal,
+  ChevronDown,
 } from "lucide-react";
 
-const icons: Record<string, React.ReactNode> = {
-  general: <Settings className="w-4 h-4" />,
-  notifications: <Bell className="w-4 h-4" />,
-  "job-automation": <Zap className="w-4 h-4" />,
-  "agent-strategy": <Brain className="w-4 h-4" />,
-  "ai-settings": <Cpu className="w-4 h-4" />,
-  "platform-connections": <Link2 className="w-4 h-4" />,
-  security: <Shield className="w-4 h-4" />,
-  advanced: <SlidersHorizontal className="w-4 h-4" />,
-};
-
-interface Section {
+export interface SettingsItem {
   id: string;
   label: string;
-  component: React.ComponentType;
+  icon: React.ComponentType<{ className?: string }>;
+  description: string;
 }
+
+export interface SettingsGroup {
+  name: string;
+  items: SettingsItem[];
+}
+
+export const SETTINGS_GROUPS: SettingsGroup[] = [
+  {
+    name: "Preferences",
+    items: [
+      {
+        id: "general",
+        label: "General",
+        icon: Sliders,
+        description: "Platform-wide defaults, timezone, language, and display layout.",
+      },
+      {
+        id: "notifications",
+        label: "Notifications",
+        icon: Bell,
+        description: "Alert delivery channels, telegram integration, and automated event triggers.",
+      },
+    ],
+  },
+  {
+    name: "Automation",
+    items: [
+      {
+        id: "job-automation",
+        label: "Job Automation",
+        icon: Zap,
+        description: "Autonomous agent execution mode, daily scrape frequency, and pipeline limits.",
+      },
+      {
+        id: "agent-strategy",
+        label: "Agent Strategy",
+        icon: Brain,
+        description: "Target roles, seniority levels, match score criteria, and question answer preferences.",
+      },
+    ],
+  },
+  {
+    name: "AI",
+    items: [
+      {
+        id: "ai-settings",
+        label: "AI Settings",
+        icon: Sparkles,
+        description: "Inference provider models, fallback routing, and prompt generation settings.",
+      },
+    ],
+  },
+  {
+    name: "Connections",
+    items: [
+      {
+        id: "platform-connections",
+        label: "Platforms",
+        icon: Globe,
+        description: "Status and sync health for integrated job boards and platforms.",
+      },
+      {
+        id: "extension",
+        label: "Extension",
+        icon: Puzzle,
+        description: "Manage the Applivo browser extension connection and local session pairing.",
+      },
+    ],
+  },
+  {
+    name: "Security",
+    items: [
+      {
+        id: "security",
+        label: "Security",
+        icon: Shield,
+        description: "Password updates, two-factor authentication, and active browser sessions.",
+      },
+    ],
+  },
+  {
+    name: "System",
+    items: [
+      {
+        id: "advanced",
+        label: "Advanced",
+        icon: Terminal,
+        description: "Data export, diagnostic controls, and environment configuration.",
+      },
+    ],
+  },
+];
 
 interface SettingsSidebarProps {
   activeTab: string;
   onTabChange: (id: string) => void;
-  sections: Section[];
 }
 
-export function SettingsSidebar({ activeTab, onTabChange, sections }: SettingsSidebarProps) {
+export function SettingsSidebar({ activeTab, onTabChange }: SettingsSidebarProps) {
   return (
-    <div className="lg:w-56 lg:sticky lg:top-24 shrink-0">
-      <div className="bg-[#1c1c1e] border border-[#262626] rounded-2xl p-2 space-y-1">
-        {sections.map((section) => (
-          <button
-            key={section.id}
-            onClick={() => onTabChange(section.id)}
-            className={cn(
-              "relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
-              activeTab === section.id
-                ? "text-white"
-                : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
-            )}
-          >
-            {activeTab === section.id && (
-              <motion.div
-                layoutId="activeTab"
-                className="absolute inset-0 bg-white/10 rounded-xl border border-white/10"
-                transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              />
-            )}
-            <span className="relative z-10">{icons[section.id]}</span>
-            <span className="relative z-10">{section.label}</span>
-          </button>
+    <nav className="space-y-4" aria-label="Settings navigation">
+      {SETTINGS_GROUPS.map((group) => (
+        <div key={group.name} className="space-y-1">
+          <p className="px-2.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+            {group.name}
+          </p>
+          <div className="space-y-0.5">
+            {group.items.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => onTabChange(item.id)}
+                  className={cn(
+                    "w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-[13px] font-medium transition-colors text-left",
+                    isActive
+                      ? "bg-white/[0.08] text-white font-semibold shadow-sm"
+                      : "text-zinc-400 hover:text-white hover:bg-white/[0.04]"
+                  )}
+                >
+                  <Icon className={cn("w-4 h-4 shrink-0", isActive ? "text-white" : "text-zinc-400")} />
+                  <span className="truncate">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </nav>
+  );
+}
+
+export function SettingsMobileSelect({ activeTab, onTabChange }: SettingsSidebarProps) {
+  return (
+    <div className="relative w-full">
+      <select
+        value={activeTab}
+        onChange={(e) => onTabChange(e.target.value)}
+        className="w-full h-10 px-3 pr-9 rounded-lg bg-[var(--app-card)] border border-[var(--app-border-strong)] text-[13px] font-medium text-white focus:outline-none focus:border-white/30 appearance-none cursor-pointer"
+      >
+        {SETTINGS_GROUPS.map((group) => (
+          <optgroup key={group.name} label={group.name} className="bg-[#171717] text-zinc-400">
+            {group.items.map((item) => (
+              <option key={item.id} value={item.id} className="text-white bg-[#171717]">
+                {group.name} &rsaquo; {item.label}
+              </option>
+            ))}
+          </optgroup>
         ))}
-      </div>
+      </select>
+      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
     </div>
   );
 }

@@ -12,7 +12,64 @@ export type Block =
   | { t: "table"; head: string[]; rows: string[][] }
   | { t: "img"; label: string; file: string; alt?: string; ratio?: string; src?: string; caption?: string }
   | { t: "video"; label: string; file: string; duration?: string; caption?: string }
-  | { t: "diagram"; label: string; file: string; ratio?: string; caption?: string };
+  | { t: "diagram"; label: string; file: string; ratio?: string; caption?: string; src?: string };
+
+export const KNOWN_DOC_IMAGES = new Set([
+  "docs-dashboard-overview.png",
+  "docs-applivo-pipeline.png",
+  "docs-sidebar-features.png",
+  "docs-account-setup.png",
+  "docs-auth-verification.png",
+  "docs-extension-architecture.png",
+  "docs-extension-installation.png",
+  "docs-subscription-eligibility.png",
+  "docs-supported-portals.png",
+  "docs-run-queue-stages.png",
+  "docs-ai-form-filling.png",
+  "docs-resume-attachment.png",
+  "docs-portal-confirmation.png",
+  "docs-captcha-alert.png",
+  "docs-unsupported-form.png",
+  "docs-starting-run.png",
+  // Integrations hero & flow assets
+  "integrations/adzuna.png",
+  "integrations/ashby.png",
+  "integrations/calendly.png",
+  "integrations/github.png",
+  "integrations/glassdoor.png",
+  "integrations/gmail.png",
+  "integrations/google-calendar.png",
+  "integrations/google-drive.png",
+  "integrations/indeed.png",
+  "integrations/internshala.png",
+  "integrations/internshala-flow.png",
+  "integrations/lever.png",
+  "integrations/linkedin.png",
+  "integrations/make.png",
+  "integrations/microsoft-onedrive.png",
+  "integrations/microsoft-outlook.png",
+  "integrations/outlook-calendar.png",
+  "integrations/n8n.png",
+  "integrations/notion.png",
+  "integrations/openrouter.png",
+  "integrations/overleaf.png",
+  "integrations/remotive.png",
+  "integrations/ats-resume-intelligence.png",
+  "integrations/slack.png",
+  "integrations/telegram.png",
+  "integrations/zapier.png",
+  "integrations/applivo-companion.png",
+  "integrations/extension-supported-sites.png",
+  "integrations/lumi.png",
+  "integrations/integrations-overview.png",
+  "integrations/app-run-queue.png",
+  "integrations/app-submission-flow.png",
+  "integrations/captcha-attention-flow.png",
+  "integrations/form-validation-flow.png",
+  "integrations/subscription-eligibility.png",
+  "integrations/ai-job-workflow.png",
+  "integrations/app-flow-infographic.png",
+]);
 
 export interface DocArticle {
   slug: string;
@@ -56,6 +113,14 @@ export const warn = (text: string, title?: string): Block => ({ t: "callout", to
 export const limit = (text: string): Block => ({ t: "callout", tone: "limitation", title: "Current limitation", text });
 export const code = (codeText: string, lang = "bash", label?: string): Block => ({ t: "code", lang, code: codeText, label });
 export const table = (head: string[], ...rows: string[][]): Block => ({ t: "table", head, rows });
-export const img = (label: string, file: string, ratio = "16 / 9", alt?: string): Block => ({ t: "img", label, file, ratio, alt });
+export const img = (label: string, file: string, ratio = "16 / 9", alt?: string, src?: string): Block => {
+  const isAvailable = Boolean(src || KNOWN_DOC_IMAGES.has(file) || file.startsWith("/") || file.startsWith("integrations/"));
+  const resolvedSrc = src ?? (isAvailable ? (file.startsWith("/") ? file : `/docs/images/${file}`) : undefined);
+  return { t: "img", label, file, ratio, alt, src: resolvedSrc };
+};
 export const vid = (label: string, file: string): Block => ({ t: "video", label, file });
-export const diagram = (label: string, file: string, ratio = "16 / 9", caption?: string): Block => ({ t: "diagram", label, file, ratio, caption });
+export const diagram = (label: string, file: string, ratio = "16 / 9", caption?: string, src?: string): Block => {
+  const isAvailable = Boolean(src || KNOWN_DOC_IMAGES.has(file) || file.startsWith("/") || file.startsWith("integrations/"));
+  const resolvedSrc = src ?? (isAvailable ? (file.startsWith("/") ? file : `/docs/images/${file}`) : undefined);
+  return { t: "diagram", label, file, ratio, caption, src: resolvedSrc };
+};

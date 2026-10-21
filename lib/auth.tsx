@@ -14,6 +14,7 @@ export interface User {
   email: string;
   full_name: string;
   is_active: boolean;
+  is_verified?: boolean;
   is_superuser: boolean;
   last_login_at: string | null;
   created_at: string;

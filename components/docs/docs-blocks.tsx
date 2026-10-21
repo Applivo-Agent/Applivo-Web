@@ -1,5 +1,5 @@
 import { Block, slugify, Heading } from "@/lib/docs/types";
-import { DocsCallout, DocsFigure, DocsVideoPlaceholder, DocsDiagramPlaceholder } from "./docs-media";
+import { DocsCallout, DocsFigure, DocsVideoPlaceholder, DocsDiagramPlaceholder, KNOWN_DOC_IMAGES } from "./docs-media";
 import { DocsCodeBlock } from "./docs-code";
 import Link from "next/link";
 import { getArticle } from "@/lib/docs/registry";
@@ -67,7 +67,20 @@ export function DocsBlocks({ blocks }: { blocks: Block[] }) {
                 caption={b.caption}
               />
             );
-          case "diagram":
+          case "diagram": {
+            const isAvailable = Boolean(b.file && (KNOWN_DOC_IMAGES.has(b.file) || b.file.startsWith("/")));
+            if (isAvailable) {
+              return (
+                <DocsFigure
+                  key={i}
+                  label={b.label}
+                  file={b.file}
+                  ratio={b.ratio}
+                  alt={b.label}
+                  caption={b.caption}
+                />
+              );
+            }
             return (
               <DocsDiagramPlaceholder
                 key={i}
@@ -77,6 +90,7 @@ export function DocsBlocks({ blocks }: { blocks: Block[] }) {
                 caption={b.caption}
               />
             );
+          }
           case "video":
             return (
               <DocsVideoPlaceholder
@@ -97,7 +111,7 @@ export function DocsBlocks({ blocks }: { blocks: Block[] }) {
                         <th
                           key={j}
                           scope="col"
-                          className="border-b border-[var(--docs-border)] px-4 py-2.5 font-medium text-white"
+                          className="border-b border-[var(--docs-border)] px-4 py-3 font-medium text-[var(--docs-text)]"
                         >
                           {h}
                         </th>
@@ -106,14 +120,14 @@ export function DocsBlocks({ blocks }: { blocks: Block[] }) {
                   </thead>
                   <tbody>
                     {b.rows.map((r, j) => (
-                      <tr key={j} className="border-b border-[var(--docs-border)] last:border-0 hover:bg-white/[0.02]">
+                      <tr key={j} className="border-b border-[var(--docs-border)] last:border-0 hover:bg-[var(--docs-card-hover)]">
                         {r.map((c, k) => (
                           <td
                             key={k}
                             className={
                               k === 0
-                                ? "px-4 py-2.5 align-top font-medium text-white"
-                                : "px-4 py-2.5 align-top text-zinc-300"
+                                ? "px-4 py-3 align-top font-medium text-[var(--docs-text)]"
+                                : "px-4 py-3 align-top text-[var(--docs-secondary)]"
                             }
                           >
                             {c}
@@ -137,18 +151,18 @@ export function RelatedList({ slugs }: { slugs: string[] }) {
 
   return (
     <section aria-labelledby="related" className="mt-12 border-t border-[var(--docs-border)] pt-8">
-      <h2 id="related" className="text-[17px] font-semibold tracking-tight text-white">
+      <h2 id="related" className="text-[18px] font-medium tracking-tight text-[var(--docs-text)]">
         Related articles
       </h2>
-      <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+      <ul className="mt-4 grid gap-3.5 sm:grid-cols-2">
         {items.map((a) => (
           <li key={a!.slug}>
             <Link
               href={`/docs/${a!.slug}`}
-              className="block rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-4 transition-colors hover:border-white/20 hover:bg-white/[0.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
+              className="block rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-5 transition-colors hover:border-[#383838] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
             >
-              <span className="block text-[14px] font-medium text-white">{a!.title}</span>
-              <span className="mt-1 block text-[12.5px] leading-relaxed text-zinc-400 line-clamp-2">
+              <span className="block text-[15px] font-medium text-[var(--docs-text)]">{a!.title}</span>
+              <span className="mt-1.5 block text-[13.5px] leading-relaxed text-[var(--docs-secondary)] line-clamp-2">
                 {a!.description}
               </span>
             </Link>

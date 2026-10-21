@@ -138,7 +138,8 @@ export default function RegisterPage() {
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 placeholder="Email address"
-                className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] focus:outline-none transition-colors"
+                autoComplete="email"
+                className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
             </div>
 
@@ -151,7 +152,8 @@ export default function RegisterPage() {
                   setForm({ ...form, referral_code: e.target.value })
                 }
                 placeholder="Referral Code (optional)"
-                className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] focus:outline-none transition-colors"
+                autoComplete="off"
+                className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
             </div>
 
@@ -222,7 +224,8 @@ export default function RegisterPage() {
                   setForm({ ...form, full_name: e.target.value })
                 }
                 placeholder="Full name"
-                className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] focus:outline-none transition-colors"
+                autoComplete="name"
+                className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
             </div>
 
@@ -235,7 +238,8 @@ export default function RegisterPage() {
                   setForm({ ...form, password: e.target.value })
                 }
                 placeholder="Password (min. 8 characters)"
-                className="w-full h-11 px-4 pr-11 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] focus:outline-none transition-colors"
+                autoComplete="new-password"
+                className="w-full h-11 px-4 pr-11 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
               <button
                 type="button"
@@ -260,7 +264,8 @@ export default function RegisterPage() {
                   setForm({ ...form, confirm_password: e.target.value })
                 }
                 placeholder="Confirm password"
-                className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] focus:outline-none transition-colors"
+                autoComplete="new-password"
+                className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
             </div>
 

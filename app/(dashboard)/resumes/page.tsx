@@ -92,55 +92,55 @@ export default function ResumesPage() {
     <div className="dash-page">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-[#242424] border border-white/[0.08] rounded-lg">
+        <div className="p-2 bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg">
           <FileText className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            Resumes & Templates.
-            <span className={cn("px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest uppercase", isAtLimit ? "bg-red-500/10 text-red-400 border border-red-500/20" : "bg-white/5 text-zinc-400 border border-white/10")}>
+          <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white flex items-center gap-2.5">
+            Resumes & Templates
+            <span className={cn("px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wide uppercase", isAtLimit ? "bg-white/[0.06] text-zinc-300 border border-[var(--app-border-strong)]" : "bg-white/5 text-zinc-400 border border-[var(--app-border-strong)]")}>
               {resumeCount}/3 RESUMES
             </span>
           </h1>
-          <p className="text-sm text-zinc-400 mt-1">Manage your baseline PDF files and choose AI generation templates for your automated applications.</p>
+          <p className="text-[14px] text-zinc-400 mt-1">Manage your baseline PDF files and choose AI generation templates for your automated applications.</p>
         </div>
         <button 
           onClick={() => setUploadOpen(true)} 
           disabled={isAtLimit}
-          className="px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200 transition-all flex gap-2 items-center disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-white/5"
+          className="h-8 px-3.5 bg-white text-black rounded-lg text-[13px] font-semibold hover:bg-zinc-200 transition-colors flex gap-2 items-center disabled:opacity-50 disabled:cursor-not-allowed"
         >
-           <Plus className={cn("w-5 h-5", isAtLimit ? "text-zinc-500" : "text-black")} />
+           <Plus className={cn("w-4 h-4", isAtLimit ? "text-zinc-500" : "text-black")} />
            <span>{isAtLimit ? "Limit Reached" : "Upload Baseline"}</span>
         </button>
       </div>
 
       {uploadOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm" onClick={() => !isUploading && setUploadOpen(false)}>
-           <div className="-card p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
-             <h3 className="font-semibold mb-4">Upload Base Resume</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" onClick={() => !isUploading && setUploadOpen(false)}>
+           <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 w-full max-w-md" onClick={e => e.stopPropagation()}>
+             <h3 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight mb-4">Upload Base Resume</h3>
               <div {...getRootProps()} className={cn(
-                "border rounded-2xl p-12 text-center cursor-pointer transition-all duration-300 relative overflow-hidden group",
+                "border border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors relative overflow-hidden group",
                 isDragActive 
-                  ? "border-white bg-white/5 shadow-[0_0_20px_rgba(255,255,255,0.05)]" 
-                  : "border-white/5 bg-[#0b0b0f] hover:border-white/20"
+                  ? "border-white bg-white/5" 
+                  : "border-[var(--app-border-strong)] bg-[var(--app-nested)] hover:border-white/30"
               )}>
                 <input {...getInputProps()} />
-                <div className="w-12 h-12 rounded-full bg-white/[0.02] border border-white/5 flex items-center justify-center mx-auto mb-4 group-hover:bg-white/[0.05] transition-colors">
-                  <Upload className="w-5 h-5 text-zinc-600 group-hover:text-zinc-400 transition-colors" />
+                <div className="w-10 h-10 rounded-lg bg-[var(--app-card)] border border-[var(--app-border-strong)] flex items-center justify-center mx-auto mb-3">
+                  <Upload className="w-4 h-4 text-zinc-400" />
                 </div>
                 {file ? (
-                  <p className="text-white font-black uppercase tracking-widest text-[10px]">{file.name}</p>
+                  <p className="text-white font-medium text-[13px]">{file.name}</p>
                 ) : (
                   <>
-                    <p className="text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-1">Baseline Deployment</p>
-                    <p className="text-[10px] font-bold text-zinc-700 uppercase tracking-wider italic">Drag PDF here or click to initialize</p>
+                    <p className="text-[13px] font-medium text-white mb-1">Baseline Document</p>
+                    <p className="text-[12px] text-zinc-400">Drag PDF here or click to browse</p>
                   </>
                 )}
               </div>
-             <div className="flex justify-end gap-3 mt-6">
-                <button onClick={() => setUploadOpen(false)} disabled={isUploading} className="px-4 py-2  rounded-lg text-sm">Cancel</button>
-                <button onClick={handleUpload} disabled={!file || isUploading} className="px-5 py-2 bg-white text-black rounded-lg text-sm disabled:opacity-80 disabled:cursor-not-allowed flex items-center gap-2 font-bold transition-all shadow-lg shadow-white/5">
-                     {isUploading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : "Upload Resume"}
+             <div className="flex justify-end gap-2.5 mt-5">
+                <button onClick={() => setUploadOpen(false)} disabled={isUploading} className="h-8 px-3.5 bg-[#171717] hover:bg-[var(--app-card)] text-white border border-[var(--app-border-strong)] rounded-md text-[13px] font-medium transition-colors">Cancel</button>
+                <button onClick={handleUpload} disabled={!file || isUploading} className="h-8 px-3.5 bg-white text-black rounded-lg text-[13px] font-semibold hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                     {isUploading ? <div className="w-3.5 h-3.5 border-2 border-black/30 border-t-black rounded-full animate-spin" /> : "Upload Resume"}
                 </button>
              </div>
            </div>
@@ -148,85 +148,83 @@ export default function ResumesPage() {
       )}
 
       {/* Resumes List */}
-      <div className="dash-card p-4 md:p-5">
-        <div className="flex items-center justify-between mb-5 border-b border-white/5 pb-4">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2.5">
-             <FileText className="w-5 h-5 text-serious-lavender fill-white/10 stroke-white" />
+      <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
+        <div className="flex items-center justify-between mb-5 border-b border-[var(--app-border-strong)] pb-4">
+          <h2 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight flex items-center gap-2.5">
+             <FileText className="w-4 h-4 text-zinc-400" />
              Base Documents
           </h2>
         </div>
         
         {isLoading ? (
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{[1,2].map(i => <div key={i} className="skeleton h-32 rounded-[2rem]" />)}</div>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{[1,2].map(i => <div key={i} className="skeleton h-32 rounded-lg" />)}</div>
         ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {resumes?.map((res: any) => (
-                <div key={res.id} className={cn("p-4 rounded-xl border transition-all flex flex-col group", res.is_default ? "bg-gradient-to-br from-white/10 via-white/5 to-transparent/30 border-serious-lavender" : "bg-white/5 border-white/5 hover:bg-[#1c1c1e] hover:border-white/10 shadow-sm")}>
+                <div key={res.id} className={cn("p-4 rounded-lg border transition-all flex flex-col group", res.is_default ? "bg-[var(--app-nested)] border-white/30 ring-1 ring-white/20" : "bg-[var(--app-nested)] border-[var(--app-border-strong)] hover:border-white/20")}>
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center gap-3">
-                      <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center shadow-sm", res.is_default ? "bg-white text-black" : "bg-[#1c1c1e] border border-white/5 text-zinc-400")}>
-                        <FileText className={cn("w-5 h-5", res.is_default ? "text-black" : "text-zinc-400")} />
-                          </div>
-                          <div>
-                        <p className="font-black text-sm text-white truncate pr-2 max-w-[150px] tracking-tight">{res.name}</p>
-                             <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">{formatDate(res.created_at)}</p>
-                          </div>
-                       </div>
-                    {res.is_default && <span className="bg-white text-black px-2.5 py-1 rounded-full text-[8px] font-black tracking-widest">PRIMARY</span>}
+                      <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center shrink-0", res.is_default ? "bg-white text-black" : "bg-[var(--app-card)] border border-[var(--app-border-strong)] text-zinc-400")}>
+                        <FileText className={cn("w-4 h-4", res.is_default ? "text-black" : "text-zinc-400")} />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-[14px] text-white truncate pr-2 max-w-[150px] tracking-tight">{res.name}</p>
+                        <p className="text-[11px] font-medium text-zinc-400">{formatDate(res.created_at)}</p>
+                      </div>
                     </div>
-                  <div className="flex items-center gap-2 mt-auto pt-4 border-t border-white/10/50">
-                       {!res.is_default && (
-                         <>
-                          <button onClick={() => setDefault.mutate(res.id)} className="flex-1 py-2.5 px-3 bg-[#1c1c1e] border border-white/10 rounded-xl text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:bg-white hover:text-black transition-all shadow-sm">
-                                Primary
-                             </button>
-                          <button 
-                            onClick={() => {
-                              if (confirm("Are you sure you want to delete this resume?")) {
-                                deleteMut.mutate(res.id);
-                              }
-                            }}
-                            className="p-2.5 bg-[#1c1c1e] border border-white/10 rounded-xl text-zinc-500 hover:bg-red-500 transition-all shadow-sm"
-                            title="Delete Resume"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                         </>
-                       )}
-                    <button onClick={() => downloadResume(res.id, `${res.name || 'resume'}.pdf`)} className={cn("py-2.5 px-3 bg-[#1c1c1e] border border-white/10 rounded-xl text-[9px] font-black uppercase tracking-widest text-zinc-400 hover:bg-white hover:text-black transition-all shadow-sm flex items-center justify-center gap-2", res.is_default ? "flex-1" : "")}>
-                          <Download className="w-3.5 h-3.5" /> <span>Download</span>
-                       </button>
-                    </div>
-                 </div>
+                    {res.is_default && <span className="bg-white text-black px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider uppercase">PRIMARY</span>}
+                  </div>
+                  <div className="flex items-center gap-2 mt-auto pt-3 border-t border-[var(--app-border-strong)]">
+                    {!res.is_default && (
+                      <>
+                        <button onClick={() => setDefault.mutate(res.id)} className="flex-1 h-8 px-3 bg-[#171717] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-white hover:bg-[var(--app-card)] transition-colors">
+                          Set Primary
+                        </button>
+                        <button 
+                          onClick={() => {
+                            if (confirm("Are you sure you want to delete this resume?")) {
+                              deleteMut.mutate(res.id);
+                            }
+                          }}
+                          className="h-8 w-8 flex items-center justify-center bg-[#171717] border border-[var(--app-border-strong)] rounded-md text-zinc-400 hover:text-red-400 hover:bg-[var(--app-card)] transition-colors"
+                          title="Delete Resume"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </>
+                    )}
+                    <button onClick={() => downloadResume(res.id, `${res.name || 'resume'}.pdf`)} className={cn("h-8 px-3 bg-[#171717] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-white hover:bg-[var(--app-card)] transition-colors flex items-center justify-center gap-1.5", res.is_default ? "flex-1" : "")}>
+                      <Download className="w-3.5 h-3.5" /> <span>Download</span>
+                    </button>
+                  </div>
+                </div>
               ))}
               {resumes?.length === 0 && (
-               <div className="col-span-full min-h-[200px] md:min-h-[240px] text-center bg-[#1c1c1e] border border-zinc-800 rounded-[20px] transition-all relative overflow-hidden group flex flex-col items-center justify-center px-5 py-8">
-                <div className="w-12 h-12 rounded-full bg-white/[0.02] border border-white/5 flex items-center justify-center mx-auto mb-4 group-hover:bg-white/[0.04] transition-colors">
-                  <FileText className="w-5 h-5 text-zinc-600 group-hover:text-zinc-400 transition-colors" />
+                <div className="col-span-full min-h-[180px] text-center bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg transition-all flex flex-col items-center justify-center px-5 py-8">
+                  <div className="w-10 h-10 rounded-lg bg-[var(--app-card)] border border-[var(--app-border-strong)] flex items-center justify-center mx-auto mb-3">
+                    <FileText className="w-4 h-4 text-zinc-400" />
                   </div>
-                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-2">Baseline Library / Empty</p>
-                  <p className="text-[10px] font-bold text-zinc-700 max-w-[240px] mx-auto uppercase tracking-wider leading-relaxed italic">
+                  <p className="text-[13px] font-medium text-white mb-1">No Resumes Uploaded</p>
+                  <p className="text-[12px] text-zinc-400 max-w-[260px] mx-auto leading-relaxed">
                     Upload your baseline PDF to initialize the AI generation engine.
                   </p>
                 </div>
               )}
-           </div>
+            </div>
         )}
       </div>
 
       {/* Templates List */}
-      <div className="dash-card p-4 md:p-5 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-bl-full -mr-10 -mt-10 opacity-50" />
-        
-        <div className="mb-6 relative z-10">
-           <h2 className="text-lg font-bold text-white flex items-center gap-2.5">
+      <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
+        <div className="mb-5 border-b border-[var(--app-border-strong)] pb-4">
+           <h2 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight flex items-center gap-2.5">
              Presentation Themes
-             <span className="px-2.5 py-1 bg-white text-black rounded-full text-[8px] font-black uppercase tracking-widest">AI Matrix</span>
+             <span className="px-2 py-0.5 bg-white/10 text-zinc-300 rounded text-[10px] font-medium tracking-wide uppercase border border-[var(--app-border-strong)]">AI Matrix</span>
            </h2>
-           <p className="text-zinc-400 text-sm font-medium mt-2 max-w-xl">When the agent deploys an application, it dynamically builds an ATS-optimized profile using one of these structural themes.</p>
+           <p className="text-zinc-400 text-[13px] mt-1 max-w-xl">When the agent deploys an application, it dynamically builds an ATS-optimized profile using one of these structural themes.</p>
         </div>
 
-         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {templates?.available?.map((tpl: any) => {
                const isSelected = templates.selected === tpl.name;
                const isLocked = tpl.tier !== "starter" && tpl.tier === "premium" && !isPremium || tpl.tier === "pro" && !isPro && !isPremium;
@@ -234,36 +232,36 @@ export default function ResumesPage() {
                return (
                   <motion.div 
                     key={tpl.name} 
-                    whileHover={!isLocked ? { y: -8, scale: 1.02 } : {}}
+                    whileHover={!isLocked ? { y: -2 } : {}}
                     className={cn(
-                      "relative group rounded-xl overflow-hidden border-2 transition-all cursor-pointer flex flex-col h-full bg-[#1c1c1e]", 
-                      isSelected ? "border-white/10 shadow-xl" : "border-white/5 hover:border-white/10 shadow-sm"
+                      "relative group rounded-lg overflow-hidden border transition-all cursor-pointer flex flex-col h-full bg-[var(--app-nested)]", 
+                      isSelected ? "border-white/40 ring-1 ring-white/20" : "border-[var(--app-border-strong)] hover:border-white/20"
                     )} 
                     onClick={() => !isLocked && selectTemplate.mutate(tpl.name)}
                   >
-                    <div className="aspect-[1/1.18] bg-white/5 p-3 border-b border-white/5 overflow-hidden">
+                    <div className="aspect-[1/1.18] bg-black/30 p-3 border-b border-[var(--app-border-strong)] overflow-hidden">
                         {tpl.preview_img_url ? (
-                        <img src={tpl.preview_img_url} alt={tpl.name} className={cn("w-full h-full object-contain rounded-lg shadow-lg opacity-90 group-hover:opacity-100 transition-opacity", isLocked ? "blur-[4px] opacity-40 grayscale" : "")} />
+                        <img src={tpl.preview_img_url} alt={tpl.name} className={cn("w-full h-full object-contain rounded-md opacity-90 group-hover:opacity-100 transition-opacity", isLocked ? "blur-[4px] opacity-40 grayscale" : "")} />
                         ) : (
                            <div className="w-full h-full flex items-center justify-center">
-                          <FileText className="w-14 h-14 text-zinc-200" />
+                          <FileText className="w-12 h-12 text-zinc-500" />
                            </div>
                         )}
                      </div>
                      {isLocked && (
-                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#1c1c1e]/70 backdrop-blur-[4px] z-20">
-                          <div className="bg-white text-black p-3 rounded-2xl shadow-xl text-center">
-                            <Lock className="w-5 h-5 text-serious-yellow mx-auto mb-1.5" />
-                              <span className="text-[10px] font-black text-white uppercase tracking-widest">{tpl.tier} ACCESS</span>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-[2px] z-20">
+                          <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] p-3 rounded-lg text-center">
+                            <Lock className="w-4 h-4 text-white mx-auto mb-1" />
+                            <span className="text-[10px] font-semibold text-white uppercase tracking-wider">{tpl.tier} ACCESS</span>
                            </div>
                         </div>
                      )}
-                      <div className="p-4 bg-[#1c1c1e] flex flex-col gap-1 relative z-10 mt-auto">
+                     <div className="p-3.5 bg-[var(--app-nested)] flex flex-col gap-1 relative z-10 mt-auto">
                         <div className="flex items-center justify-between">
-                          <p className="font-black text-sm text-white capitalize tracking-tight">{tpl.name.replace(/-/g, " ").replace(/_/g, " ")}</p>
-                          {isSelected && <div className="w-5 h-5 bg-white text-black rounded-full flex items-center justify-center"><Check className="w-3.5 h-3.5 text-black stroke-[3]" /></div>}
+                          <p className="font-semibold text-[13px] text-white capitalize tracking-tight">{tpl.name.replace(/-/g, " ").replace(/_/g, " ")}</p>
+                          {isSelected && <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center"><Check className="w-3 h-3 text-black stroke-[3]" /></div>}
                         </div>
-                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wide line-clamp-1">{tpl.description}</p>
+                        <p className="text-[11px] font-normal text-zinc-400 line-clamp-1">{tpl.description}</p>
                      </div>
                   </motion.div>
                );

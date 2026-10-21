@@ -1,307 +1,736 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { analyticsApi, applicationsApi } from "@/lib/api";
-import { useSubscription } from "@/lib/subscription";
+import { analyticsApi } from "@/lib/api";
 import { motion } from "framer-motion";
-import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area } from "recharts";
-import { TrendingUp, Target, ShieldAlert, Award } from "lucide-react";
+import {
+  XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, AreaChart, Area
+} from "recharts";
+import {
+  Send, Calendar, Award, TrendingUp, Activity, Filter, Download,
+  Layers, Compass, Clock, Building2, UserCheck, AlertCircle,
+  ExternalLink, ChevronRight, CheckCircle2, Briefcase, Zap, Loader2
+} from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+
+type DateRange = 7 | 30 | 90;
 
 export default function AnalyticsPage() {
   const [isMounted, setIsMounted] = useState(false);
+  const [days, setDays] = useState<DateRange>(30);
+  const [isExporting, setIsExporting] = useState(false);
+
+  // Series visibility toggles for activity chart
+  const [showApplied, setShowApplied] = useState(true);
+  const [showResponses, setShowResponses] = useState(true);
+  const [showInterviews, setShowInterviews] = useState(true);
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const { isPro, isPremium } = useSubscription();
-
-  const { data: dashboard } = useQuery({
-    queryKey: ["dashboard"],
-    queryFn: () => analyticsApi.dashboard().then((r) => r.data),
+  const {
+    data: perf,
+    isLoading,
+    isError,
+    refetch
+  } = useQuery({
+    queryKey: ["analytics-performance", days],
+    queryFn: () => analyticsApi.performance(days).then((r) => r.data),
+    staleTime: 60 * 1000,
   });
 
-  const { data: applications } = useQuery({
-    queryKey: ["applications-stats"],
-    queryFn: () => applicationsApi.stats().then((r) => r.data).catch(() => null),
-    enabled: true,
-  });
+  const handleExportCsv = async () => {
+    try {
+      setIsExporting(true);
+      const blob = await analyticsApi.downloadCsv(days);
+      const url = window.URL.createObjectURL(new Blob([blob], { type: "text/csv" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `applivo_analytics_${days}d.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      toast.success(`Exported ${days}-day analytics CSV`);
+    } catch (err) {
+      toast.error("Failed to export analytics CSV");
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
-  const { data: gaps } = useQuery({
-    queryKey: ["skill-gaps"],
-    queryFn: () => analyticsApi.skillGaps().then((r) => r.data),
-    enabled: isPro,
-  });
+  const kpi = perf?.kpi ?? {
+    total_applications: 0,
+    total_applications_prev: 0,
+    employer_responses: 0,
+    employer_responses_prev: 0,
+    interviews: 0,
+    interviews_prev: 0,
+    offers: 0,
+    offers_prev: 0,
+  };
 
-  const { data: market } = useQuery({
-    queryKey: ["market-insights"],
-    queryFn: () => analyticsApi.market().then((r) => r.data).catch(() => null),
-    enabled: isPremium,
-  });
+  const activity = Array.isArray(perf?.activity) ? perf.activity : [];
+  const funnel = perf?.funnel;
+  const breakdowns = perf?.breakdowns;
+  const insights = Array.isArray(perf?.insights) ? perf.insights : [];
+  const responseTime = perf?.response_time;
+  const totalAccountApps = perf?.total_account_applications ?? 0;
 
-  const { data: velocityData } = useQuery({
-    queryKey: ["velocity", 7],
-    queryFn: () => analyticsApi.velocity(7).then((r) => r.data),
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const totalApplications =
-    applications?.total_sent ??
-    dashboard?.total_applications ??
-    0;
-
-  const appsToday = Number(dashboard?.applications_today || 0);
-  const pendingApproval = Number(applications?.pending_approval ?? dashboard?.pending_approval ?? 0);
-  const recruiterResponses = Number(applications?.recruiter_responses ?? 0);
-
-  const timelineData = (Array.isArray(velocityData) && velocityData.length > 0)
-    ? velocityData
-    : [
-        { name: "Mon", applied: 0, interviews: 0 },
-        { name: "Tue", applied: 0, interviews: 0 },
-        { name: "Wed", applied: 0, interviews: 0 },
-        { name: "Thu", applied: 0, interviews: 0 },
-        { name: "Fri", applied: 0, interviews: 0 },
-        { name: "Sat", applied: 0, interviews: 0 },
-        { name: "Sun", applied: 0, interviews: 0 },
-      ];
-
-  const velocityTotals = timelineData.reduce(
-    (acc, d) => ({
-      applied: acc.applied + (Number(d.applied) || 0),
-      interviews: acc.interviews + (Number(d.interviews) || 0),
-    }),
-    { applied: 0, interviews: 0 }
+  // Activity timeline calculations
+  const totalAppliedInPeriod = activity.reduce((acc: number, d: any) => acc + (Number(d.applied) || 0), 0);
+  const totalResponsesInPeriod = activity.reduce((acc: number, d: any) => acc + (Number(d.responses) || 0), 0);
+  const totalInterviewsInPeriod = activity.reduce((acc: number, d: any) => acc + (Number(d.interviews) || 0), 0);
+  const activeDays = activity.filter((d: any) => (Number(d.applied) || 0) > 0).length;
+  const avgPerDay = (totalAppliedInPeriod / Math.max(activity.length, 1)).toFixed(1);
+  const peakDay = activity.reduce(
+    (best: any, d: any) => ((Number(d.applied) || 0) > (Number(best?.applied) || 0) ? d : best),
+    activity[0] || { name: "-", applied: 0 }
   );
-  const peakDay = timelineData.reduce(
-    (best, d) => ((Number(d.applied) || 0) > (Number(best.applied) || 0) ? d : best),
-    timelineData[0] || { name: "-", applied: 0, interviews: 0 }
-  );
-  const activeDays = timelineData.filter((d) => (Number(d.applied) || 0) > 0).length;
-  const avgPerDay = (velocityTotals.applied / Math.max(timelineData.length, 1)).toFixed(1);
+
+  const calculateTrend = (curr: number, prev: number) => {
+    if (prev === 0 && curr === 0) return { label: "No activity", trend: "neutral" };
+    if (prev === 0 && curr > 0) return { label: `${curr} in period`, trend: "positive" };
+    const pct = Math.round(((curr - prev) / prev) * 100);
+    if (pct > 0) return { label: `+${pct}% vs prev ${days}d`, trend: "positive" };
+    if (pct < 0) return { label: `${pct}% vs prev ${days}d`, trend: "negative" };
+    return { label: `Even vs prev ${days}d`, trend: "neutral" };
+  };
 
   return (
-    <div className="dash-page">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-2">
-        <div className="flex-1 dash-header">
-          
-          <motion.h1 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="dash-title"
-          >
-            Analytics.
-          </motion.h1>
-          <p className="dash-subtitle">
-            Real-time application and market metrics from your account data.
+    <div className="dash-page space-y-6">
+      {/* ─── Page Header ────────────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-[22px] md:text-[24px] font-semibold text-white tracking-tight">
+            Analytics
+          </h1>
+          <p className="text-[13px] md:text-[14px] text-zinc-400 mt-0.5">
+            Understand your job search performance and what to do next.
           </p>
         </div>
-      </div>
 
-      {/* Overview Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { l: "Total Applications", v: `${totalApplications}`, sub: "Pipeline", color: "text-white" },
-          { l: "Pending Approval", v: `${pendingApproval}`, sub: "Needs Review", color: "text-white" },
-          { l: "Responses", v: `${recruiterResponses}`, sub: "From Inbox Scan", color: "text-white" },
-          { l: "Applied Today", v: `${appsToday}`, sub: "Today's Volume" }
-        ].map((s, i) => (
-          <motion.div 
-            key={i} 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="dash-stat-card transition-all hover:border-white/20"
+        {/* Date Filters & Export */}
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          {/* Date range segmented buttons */}
+          <div className="flex items-center bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg p-0.5">
+            {([7, 30, 90] as DateRange[]).map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => setDays(d)}
+                className={cn(
+                  "px-2.5 py-1 text-[12px] font-medium rounded-md transition-all",
+                  days === d
+                    ? "bg-white/[0.08] text-white shadow-sm border border-white/20"
+                    : "text-zinc-400 hover:text-white"
+                )}
+                aria-pressed={days === d}
+              >
+                {d === 7 ? "Last 7d" : d === 30 ? "Last 30d" : "Last 90d"}
+              </button>
+            ))}
+          </div>
+
+          {/* Export CSV button */}
+          <button
+            type="button"
+            onClick={handleExportCsv}
+            disabled={isExporting}
+            className="h-8 px-3 rounded-lg text-[12px] font-medium transition-colors border bg-[var(--app-nested)] text-zinc-300 border-[var(--app-border-strong)] hover:text-white hover:bg-white/[0.04] flex items-center gap-1.5 disabled:opacity-50"
+            title={`Export ${days}-day applications to CSV`}
           >
-             <p className="dash-label mb-1">{s.l}</p>
-             <p className={cn("dash-value", s.color || "text-white")}>{s.v}</p>
-             <div className="flex items-center gap-1.5 mt-2 pt-2 border-t border-white/5">
-               <p className="dash-label">{s.sub}</p>
-             </div>
-          </motion.div>
-        ))}
+            {isExporting ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-zinc-400" />
+            ) : (
+              <Download className="w-3.5 h-3.5 text-zinc-400" />
+            )}
+            <span className="hidden sm:inline">Export CSV</span>
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
-        {/* Activity Timeline */}
-        <div className="bg-[#1c1c1e] p-3 rounded-xl border border-zinc-800 overflow-hidden flex flex-col">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-bold tracking-tight text-white flex items-center gap-2.5">
-              <TrendingUp className="w-4 h-4 text-white" /> 
-              Application Velocity
-            </h2>
-            <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] font-black text-white/70 uppercase tracking-widest">
-              Last 7 Days
+      {/* ─── Loading State ──────────────────────────────────────────── */}
+      {isLoading ? (
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 h-28 animate-pulse" />
+            ))}
+          </div>
+          <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 h-80 animate-pulse" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 h-64 animate-pulse" />
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 h-64 animate-pulse" />
+          </div>
+        </div>
+      ) : isError ? (
+        <div className="bg-[var(--app-card)] border border-red-500/20 rounded-lg p-8 text-center space-y-3">
+          <AlertCircle className="w-8 h-8 text-red-400 mx-auto" />
+          <p className="text-[15px] font-semibold text-white">Failed to load analytics</p>
+          <p className="text-[13px] text-zinc-400 max-w-sm mx-auto">
+            We encountered a problem fetching your application statistics. Please try again.
+          </p>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="app-btn bg-white text-black hover:bg-zinc-200 mt-2"
+          >
+            Retry
+          </button>
+        </div>
+      ) : totalAccountApps === 0 ? (
+        /* ─── Zero Account Data State ───────────────────────────────── */
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-10 text-center space-y-4">
+          <div className="w-12 h-12 rounded-full bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center mx-auto text-zinc-400">
+            <Activity className="w-6 h-6" />
+          </div>
+          <div className="max-w-md mx-auto space-y-1.5">
+            <h2 className="text-[16px] font-semibold text-white">No applications tracked yet</h2>
+            <p className="text-[13px] text-zinc-400 leading-relaxed">
+              Once you discover and queue jobs, Applivo’s Application Intelligence dashboard will track conversion funnels, employer response rates, and recommended next steps right here.
+            </p>
+          </div>
+          <div className="pt-2">
+            <Link
+              href="/jobs"
+              className="inline-flex items-center gap-2 h-9 px-4 rounded-lg bg-white text-black text-[13px] font-semibold hover:bg-zinc-200 transition-colors"
+            >
+              <Briefcase className="w-4 h-4" />
+              Explore Jobs
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* ─── B. KPI Summary Row ─────────────────────────────────── */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Card 1: Total Applications */}
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 flex flex-col justify-between">
+              <div className="flex items-center justify-between">
+                <span className="text-[12px] font-medium text-zinc-400">Total Applications</span>
+                <Send className="w-4 h-4 text-zinc-500" />
+              </div>
+              <div className="my-2">
+                <p className="text-[24px] md:text-[28px] font-semibold tracking-tight text-white tabular-nums">
+                  {kpi.total_applications}
+                </p>
+              </div>
+              <div className="pt-2 border-t border-[var(--app-border-strong)]/60 text-[11px] md:text-[12px] text-zinc-400 flex items-center justify-between">
+                <span>{calculateTrend(kpi.total_applications, kpi.total_applications_prev).label}</span>
+                <span className="text-zinc-500 text-[10px] uppercase tracking-wider">Sent</span>
+              </div>
+            </div>
+
+            {/* Card 2: Employer Responses */}
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 flex flex-col justify-between">
+              <div className="flex items-center justify-between">
+                <span className="text-[12px] font-medium text-zinc-400">Employer Responses</span>
+                <UserCheck className="w-4 h-4 text-zinc-500" />
+              </div>
+              <div className="my-2">
+                <p className="text-[24px] md:text-[28px] font-semibold tracking-tight text-white tabular-nums">
+                  {kpi.employer_responses}
+                </p>
+              </div>
+              <div className="pt-2 border-t border-[var(--app-border-strong)]/60 text-[11px] md:text-[12px] text-zinc-400 flex items-center justify-between">
+                <span>
+                  {kpi.total_applications > 0
+                    ? `${((kpi.employer_responses / kpi.total_applications) * 100).toFixed(1)}% response rate`
+                    : "Awaiting responses"}
+                </span>
+                <span className="text-zinc-500 text-[10px] uppercase tracking-wider">Responses</span>
+              </div>
+            </div>
+
+            {/* Card 3: Interviews */}
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 flex flex-col justify-between">
+              <div className="flex items-center justify-between">
+                <span className="text-[12px] font-medium text-zinc-400">Interviews</span>
+                <Calendar className="w-4 h-4 text-zinc-500" />
+              </div>
+              <div className="my-2">
+                <p className="text-[24px] md:text-[28px] font-semibold tracking-tight text-white tabular-nums">
+                  {kpi.interviews}
+                </p>
+              </div>
+              <div className="pt-2 border-t border-[var(--app-border-strong)]/60 text-[11px] md:text-[12px] text-zinc-400 flex items-center justify-between">
+                <span>
+                  {kpi.employer_responses > 0
+                    ? `${((kpi.interviews / kpi.employer_responses) * 100).toFixed(1)}% interview rate`
+                    : calculateTrend(kpi.interviews, kpi.interviews_prev).label}
+                </span>
+                <span className="text-zinc-500 text-[10px] uppercase tracking-wider">Scheduled</span>
+              </div>
+            </div>
+
+            {/* Card 4: Offers */}
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 flex flex-col justify-between">
+              <div className="flex items-center justify-between">
+                <span className="text-[12px] font-medium text-zinc-400">Offers</span>
+                <Award className="w-4 h-4 text-zinc-500" />
+              </div>
+              <div className="my-2">
+                <p className="text-[24px] md:text-[28px] font-semibold tracking-tight text-white tabular-nums">
+                  {kpi.offers}
+                </p>
+              </div>
+              <div className="pt-2 border-t border-[var(--app-border-strong)]/60 text-[11px] md:text-[12px] text-zinc-400 flex items-center justify-between">
+                <span>
+                  {kpi.interviews > 0
+                    ? `${((kpi.offers / kpi.interviews) * 100).toFixed(1)}% offer rate`
+                    : kpi.offers > 0 ? "Milestone achieved" : "Pipeline goal"}
+                </span>
+                <span className="text-zinc-500 text-[10px] uppercase tracking-wider">Offers</span>
+              </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-3">
-            <div className="bg-[#161616] border border-zinc-800 rounded-lg p-2">
-              <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Total Applied</p>
-              <p className="text-xl font-black text-white mt-1">{velocityTotals.applied}</p>
+
+          {/* ─── C. Application Activity Chart ────────────────────────── */}
+          <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <Activity className="w-4 h-4 text-zinc-400" />
+                <h2 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight">
+                  Application Activity
+                </h2>
+                <span className="text-[11px] text-zinc-500">
+                  ({days} days)
+                </span>
+              </div>
+
+              {/* Series toggles */}
+              <div className="flex items-center gap-2 text-[11px] font-medium">
+                <button
+                  type="button"
+                  onClick={() => setShowApplied(!showApplied)}
+                  className={cn(
+                    "flex items-center gap-1.5 px-2 py-0.5 rounded border transition-colors",
+                    showApplied
+                      ? "bg-white/[0.08] text-white border-white/20"
+                      : "text-zinc-500 border-transparent hover:text-zinc-300"
+                  )}
+                >
+                  <span className="w-2 h-2 rounded-full bg-white" />
+                  Applications ({totalAppliedInPeriod})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowResponses(!showResponses)}
+                  className={cn(
+                    "flex items-center gap-1.5 px-2 py-0.5 rounded border transition-colors",
+                    showResponses
+                      ? "bg-white/[0.08] text-white border-white/20"
+                      : "text-zinc-500 border-transparent hover:text-zinc-300"
+                  )}
+                >
+                  <span className="w-2 h-2 rounded-full bg-zinc-400" />
+                  Responses ({totalResponsesInPeriod})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowInterviews(!showInterviews)}
+                  className={cn(
+                    "flex items-center gap-1.5 px-2 py-0.5 rounded border transition-colors",
+                    showInterviews
+                      ? "bg-white/[0.08] text-white border-white/20"
+                      : "text-zinc-500 border-transparent hover:text-zinc-300"
+                  )}
+                >
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  Interviews ({totalInterviewsInPeriod})
+                </button>
+              </div>
             </div>
-            <div className="bg-[#161616] border border-zinc-800 rounded-lg p-2">
-              <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Avg / Day</p>
-              <p className="text-xl font-black text-white mt-1">{avgPerDay}</p>
-              <p className="text-[10px] text-zinc-500 mt-1">Across {timelineData.length} days</p>
+
+            {/* Quick Summary Badges */}
+            <div className="grid grid-cols-3 gap-3">
+              <div className="bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg p-3">
+                <p className="text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Total Applied</p>
+                <p className="text-[18px] font-semibold text-white mt-0.5 tabular-nums">{totalAppliedInPeriod}</p>
+              </div>
+              <div className="bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg p-3">
+                <p className="text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Avg / Day</p>
+                <p className="text-[18px] font-semibold text-white mt-0.5 tabular-nums">{avgPerDay}</p>
+              </div>
+              <div className="bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg p-3">
+                <p className="text-[10px] font-medium text-zinc-500 uppercase tracking-wider">Active Days</p>
+                <p className="text-[18px] font-semibold text-white mt-0.5 tabular-nums">
+                  {activeDays}/{activity.length}
+                </p>
+              </div>
             </div>
-            <div className="bg-[#161616] border border-zinc-800 rounded-lg p-2">
-              <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Active Days</p>
-              <p className="text-xl font-black text-white mt-1">{activeDays}/{timelineData.length}</p>
-              <p className="text-[10px] text-zinc-500 mt-1">Peak: {peakDay?.name || "-"} ({Number(peakDay?.applied) || 0})</p>
+
+            {/* Activity Chart Canvas */}
+            <div className="h-[220px] md:h-[260px] w-full pt-2">
+              {isMounted && activity.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={activity} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="gradientApplied" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#ffffff" stopOpacity={0.15} />
+                        <stop offset="95%" stopColor="#ffffff" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="gradientResponses" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#a1a1aa" stopOpacity={0.15} />
+                        <stop offset="95%" stopColor="#a1a1aa" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="gradientInterviews" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#34d399" stopOpacity={0.2} />
+                        <stop offset="95%" stopColor="#34d399" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" vertical={false} />
+                    <XAxis
+                      dataKey="name"
+                      stroke="#71717a"
+                      fontSize={10}
+                      fontWeight={500}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <YAxis
+                      stroke="#71717a"
+                      fontSize={10}
+                      fontWeight={500}
+                      tickLine={false}
+                      axisLine={false}
+                      allowDecimals={false}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#18181b",
+                        border: "1px solid #27272a",
+                        borderRadius: "8px",
+                        fontSize: "12px",
+                        color: "#ffffff",
+                        padding: "8px 12px",
+                      }}
+                      labelStyle={{ color: "#a1a1aa", fontWeight: 600, marginBottom: "4px" }}
+                      formatter={(val: any, name: any) => {
+                        const v = Number(val ?? 0);
+                        const n = String(name ?? "");
+                        if (n === "applied") return [v, "Applications"];
+                        if (n === "responses") return [v, "Responses"];
+                        if (n === "interviews") return [v, "Interviews"];
+                        return [v, n];
+                      }}
+                    />
+                    {showApplied && (
+                      <Area
+                        type="monotone"
+                        dataKey="applied"
+                        stroke="#ffffff"
+                        strokeWidth={1.75}
+                        fillOpacity={1}
+                        fill="url(#gradientApplied)"
+                        dot={{ r: 1.5 }}
+                        activeDot={{ r: 4 }}
+                      />
+                    )}
+                    {showResponses && (
+                      <Area
+                        type="monotone"
+                        dataKey="responses"
+                        stroke="#a1a1aa"
+                        strokeWidth={1.5}
+                        fillOpacity={1}
+                        fill="url(#gradientResponses)"
+                        dot={{ r: 1.5 }}
+                        activeDot={{ r: 3.5 }}
+                      />
+                    )}
+                    {showInterviews && (
+                      <Area
+                        type="monotone"
+                        dataKey="interviews"
+                        stroke="#34d399"
+                        strokeWidth={1.5}
+                        fillOpacity={1}
+                        fill="url(#gradientInterviews)"
+                        dot={{ r: 1.5 }}
+                        activeDot={{ r: 3.5 }}
+                      />
+                    )}
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="w-full h-full bg-[var(--app-nested)] rounded-lg flex items-center justify-center text-zinc-500 text-[12px]">
+                  No daily records for this date range
+                </div>
+              )}
             </div>
           </div>
-          <div className="h-[220px] md:h-[250px] w-full">
-            {isMounted ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={timelineData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorApplied" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ffffff" stopOpacity={0.1}/>
-                      <stop offset="95%" stopColor="#ffffff" stopOpacity={0}/>
-                    </linearGradient>
-                    <linearGradient id="colorInterviews" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#a1a1aa" stopOpacity={0.12}/>
-                      <stop offset="95%" stopColor="#a1a1aa" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
-                  <XAxis dataKey="name" stroke="#a1a1aa" fontSize={10} fontWeight="bold" tickLine={false} axisLine={false} />
-                  <YAxis stroke="#a1a1aa" fontSize={10} fontWeight="bold" tickLine={false} axisLine={false} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#1c1c1e', border: '1px solid #27272a', borderRadius: '0.75rem', fontSize: '11px', fontWeight: 'bold', color: '#ffffff' }}
-                    formatter={(value, name) => {
-                      const v = Number(value ?? 0);
-                      const n = String(name ?? "");
-                      if (n === "applied") return [v, "Applied"];
-                      if (n === "interviews") return [v, "Interviews"];
-                      return [v, n];
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="applied"
-                    stroke="#ffffff"
-                    strokeWidth={3}
-                    fillOpacity={1}
-                    fill="url(#colorApplied)"
-                    dot={{ r: 2 }}
-                    activeDot={{ r: 5 }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="interviews"
-                    stroke="#a1a1aa"
-                    strokeWidth={2}
-                    fillOpacity={1}
-                    fill="url(#colorInterviews)"
-                    dot={{ r: 2 }}
-                    activeDot={{ r: 4 }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="w-full h-full bg-[#161616] animate-pulse rounded-lg border border-zinc-800" />
+
+          {/* ─── D. Application Funnel ─────────────────────────────────── */}
+          <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4 text-zinc-400" />
+                <h2 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight">
+                  Application Funnel
+                </h2>
+              </div>
+              <p className="text-[12px] text-zinc-400">
+                Click any stage to filter matching applications
+              </p>
+            </div>
+
+            {/* Funnel Stage Bars */}
+            <div className="space-y-3 pt-1">
+              {funnel?.stages?.map((stage: any, idx: number) => {
+                const maxCount = Math.max(...(funnel.stages.map((s: any) => s.count)), 1);
+                const barWidth = Math.max((stage.count / maxCount) * 100, 3);
+
+                return (
+                  <div key={stage.key} className="space-y-1">
+                    <div className="flex items-center justify-between text-[12px]">
+                      <Link
+                        href={`/applications?status=${stage.filter_status}`}
+                        className="font-medium text-zinc-200 hover:text-white flex items-center gap-1.5 transition-colors"
+                      >
+                        <span>{stage.name}</span>
+                        <ChevronRight className="w-3 h-3 text-zinc-500" />
+                      </Link>
+                      <div className="flex items-center gap-3">
+                        {stage.conversion_rate !== null && stage.conversion_rate !== undefined && (
+                          <span className="text-[11px] text-zinc-400 bg-[var(--app-nested)] px-2 py-0.5 rounded border border-[var(--app-border-strong)]">
+                            {stage.conversion_rate}% conversion
+                          </span>
+                        )}
+                        <span className="font-semibold text-white tabular-nums">
+                          {stage.count}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Progress Bar Container */}
+                    <Link
+                      href={`/applications?status=${stage.filter_status}`}
+                      className="block h-2.5 bg-[var(--app-nested)] rounded-full overflow-hidden border border-[var(--app-border-strong)] hover:border-white/20 transition-all cursor-pointer"
+                      title={`View ${stage.count} ${stage.name} applications`}
+                    >
+                      <div
+                        className="h-full bg-white/90 rounded-full transition-all duration-500"
+                        style={{ width: `${barWidth}%` }}
+                      />
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Complete Status Breakdown Chips */}
+            {funnel?.statuses && funnel.statuses.length > 0 && (
+              <div className="pt-3 border-t border-[var(--app-border-strong)]">
+                <p className="text-[11px] font-medium text-zinc-500 uppercase tracking-wider mb-2">
+                  Complete Status Breakdown
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {funnel.statuses.map((s: any) => (
+                    <Link
+                      key={s.status}
+                      href={`/applications?status=${s.status.toLowerCase()}`}
+                      className="flex items-center gap-1.5 px-2.5 py-1 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-md text-[11px] text-zinc-300 hover:text-white hover:border-white/20 transition-colors"
+                    >
+                      <span>{s.label}</span>
+                      <span className="font-semibold text-white tabular-nums bg-white/[0.08] px-1.5 py-0.2 rounded text-[10px]">
+                        {s.count}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* Pro/Premium Section */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Skill Gaps */}
-        <div className={cn("bg-[#1c1c1e] p-4 rounded-xl border border-zinc-800 relative overflow-hidden", !isPro && "grayscale opacity-70")}>
-           {!isPro && (
-              <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/55 backdrop-blur-sm p-6">
-                <div className="w-full max-w-xs bg-[#1c1c1e] border border-zinc-800 rounded-2xl p-6 text-center shadow-2xl">
-                  <ShieldAlert className="w-8 h-8 text-zinc-100 mx-auto mb-4" />
-                  <p className="text-lg font-bold text-white tracking-tight mb-2">Pro Matrix Required</p>
-                  <p className="text-zinc-400 text-sm font-bold uppercase tracking-widest mb-6">Upgrade to Unlock Insights</p>
-                    <Link href="/subscription" className="block w-full py-3 bg-white text-black rounded-xl text-xs font-black uppercase tracking-widest hover:bg-zinc-200 transition-colors">Upgrade Now</Link>
-                 </div>
+          {/* ─── E. Job Search Performance (2-Column Grid) ───────────── */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Top Roles */}
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Briefcase className="w-4 h-4 text-zinc-400" />
+                  <h3 className="text-[14px] sm:text-[15px] font-semibold text-white tracking-tight">
+                    Frequently Targeted Roles
+                  </h3>
+                </div>
+                <span className="text-[11px] text-zinc-500">Top 5</span>
               </div>
-           )}
-           <h2 className="text-lg font-bold tracking-tight text-white flex items-center gap-2.5 mb-2">
-             <Target className="w-5 h-5 text-white/80" /> 
-             Skill Gap Matrix
-           </h2>
-            <p className="text-zinc-400 text-xs font-medium mb-6">Critical missing skills detected in your target job market.</p>
-             <div className="space-y-4">
-                {(gaps && gaps.length > 0) ? gaps.map((sg: any, i: number) => (
-                   <div key={i} className="flex items-center justify-between p-3 bg-[#1c1c1e] rounded-xl border border-zinc-800 group hover:bg-[#2a2a2a] transition-all">
-                      <span className="font-black text-white tracking-tight uppercase">{sg.skill_name || sg.skill}</span>
-                      <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{sg.demand_count || 0}% Market Demand</span>
-                   </div>
-                )) : (
-                   <div className="p-3 bg-[#1c1c1e] rounded-xl border border-zinc-800 text-center">
-                      <span className="font-black text-zinc-400 tracking-tight tracking-widest uppercase">Waiting for Data...</span>
-                   </div>
-                )}
-             </div>
-        </div>
 
-        {/* Market Insights */}
-        <div className={cn("bg-[#1c1c1e] p-4 rounded-xl border border-zinc-800 relative overflow-hidden", !isPremium && "grayscale opacity-70")}>
-           {!isPremium && (
-              <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/55 backdrop-blur-sm p-6">
-                <div className="w-full max-w-xs bg-[#1c1c1e] border border-zinc-800 rounded-2xl p-6 text-center shadow-2xl">
-                  <Award className="w-8 h-8 text-zinc-100 mx-auto mb-4" />
-                  <p className="text-lg font-bold text-white tracking-tight mb-2">Premium Intel Only</p>
-                  <p className="text-zinc-400 text-sm font-bold uppercase tracking-widest mb-6">Exclusive Market Data</p>
-                    <Link href="/subscription" className="block w-full py-3 bg-white text-black rounded-xl text-xs font-black uppercase tracking-widest hover:bg-zinc-200 transition-colors">Get Premium</Link>
-                 </div>
-              </div>
-           )}
-           <h2 className="text-lg font-bold tracking-tight text-white flex items-center gap-2.5 mb-2">
-             <TrendingUp className="w-5 h-5 text-white/80" /> 
-             Market Value
-           </h2>
-           <div className="space-y-6">
-              {market?.salary_data ? (
-                 <div className="p-3 bg-[#1c1c1e] text-white rounded-xl border border-white/5 shadow-xl">
-                    <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-2">Estimated Salary Band</p>
-                    {(market.salary_data.min_salary && market.salary_data.max_salary) ? (
-                     <>
-                      <p className="text-[22px] font-bold text-white tracking-tighter">
-                        {`₹${Math.round(market.salary_data.min_salary / 100000)}L - ₹${Math.round(market.salary_data.max_salary / 100000)}L`}
-                      </p>
-                      <p className="text-[10px] font-bold text-zinc-500 uppercase mt-4 tracking-widest">Calculated from {market.total_jobs_analyzed} data points</p>
-                     </>
-                    ) : (
-                     <p className="text-[12px] font-bold text-zinc-500 uppercase tracking-widest">No salary data available yet</p>
-                    )}
-                 </div>
-              ) : (
-                 <div className="p-3 bg-[#1c1c1e] text-white rounded-xl border border-white/5 shadow-xl">
-                    <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-2">Estimated Salary Band</p>
-                    <p className="text-[12px] font-bold text-zinc-500 uppercase tracking-widest">No market data available yet</p>
-                 </div>
-              )}
-              {market?.by_work_mode ? (
-                <div className="p-4 bg-muted/30 rounded-lg border border-border/50">
-                   <p className="text-xs text-muted-foreground mb-2">Jobs by Work Mode</p>
-                    <div className="space-y-2">
-                       {Object.entries(market.by_work_mode as Record<string, number>).map(([mode, count]) => (
-                          <div key={mode}>
-                             <div className="flex justify-between text-[10px] mb-1">
-                                <span className="capitalize">{mode}</span>
-                                <span>{count} jobs</span>
-                             </div>
-                             <div className="h-1.5 bg-muted rounded-full">
-                                <div className="h-full bg-white text-black rounded-full" style={{ width: `${(count / (market.total_jobs_analyzed || 1)) * 100}%` }} />
-                             </div>
-                          </div>
-                       ))}
+              {breakdowns?.roles && breakdowns.roles.length > 0 ? (
+                <div className="space-y-2.5">
+                  {breakdowns.roles.map((item: any, idx: number) => (
+                    <div key={idx} className="space-y-1">
+                      <div className="flex justify-between text-[12px]">
+                        <span className="text-zinc-200 truncate pr-2" title={item.name}>
+                          {item.name}
+                        </span>
+                        <span className="text-zinc-400 shrink-0 tabular-nums">
+                          {item.count} ({item.percentage}%)
+                        </span>
+                      </div>
+                      <div className="h-1.5 bg-[var(--app-nested)] rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-white/80 rounded-full"
+                          style={{ width: `${Math.min(item.percentage, 100)}%` }}
+                        />
+                      </div>
                     </div>
+                  ))}
                 </div>
               ) : (
-                <div className="p-4 bg-muted/30 rounded-lg border border-border/50">
-                   <p className="text-xs text-muted-foreground">No work mode distribution data yet.</p>
-                </div>
+                <p className="text-[12px] text-zinc-500 py-4 text-center">
+                  No role data available in this period
+                </p>
               )}
-           </div>
-        </div>
-      </div>
+            </div>
+
+            {/* Top Companies */}
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-zinc-400" />
+                  <h3 className="text-[14px] sm:text-[15px] font-semibold text-white tracking-tight">
+                    Top Companies Applied
+                  </h3>
+                </div>
+                <span className="text-[11px] text-zinc-500">Top 5</span>
+              </div>
+
+              {breakdowns?.companies && breakdowns.companies.length > 0 ? (
+                <div className="space-y-2.5">
+                  {breakdowns.companies.map((item: any, idx: number) => (
+                    <div key={idx} className="space-y-1">
+                      <div className="flex justify-between text-[12px]">
+                        <span className="text-zinc-200 truncate pr-2" title={item.name}>
+                          {item.name}
+                        </span>
+                        <span className="text-zinc-400 shrink-0 tabular-nums">
+                          {item.count} ({item.percentage}%)
+                        </span>
+                      </div>
+                      <div className="h-1.5 bg-[var(--app-nested)] rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-zinc-300 rounded-full"
+                          style={{ width: `${Math.min(item.percentage, 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-[12px] text-zinc-500 py-4 text-center">
+                  No company records available in this period
+                </p>
+              )}
+            </div>
+
+            {/* Job Sources */}
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-zinc-400" />
+                  <h3 className="text-[14px] sm:text-[15px] font-semibold text-white tracking-tight">
+                    Job Sources
+                  </h3>
+                </div>
+                <span className="text-[11px] text-zinc-500">Platforms</span>
+              </div>
+
+              {breakdowns?.sources && breakdowns.sources.length > 0 ? (
+                <div className="space-y-2.5">
+                  {breakdowns.sources.map((item: any, idx: number) => (
+                    <div key={idx} className="space-y-1">
+                      <div className="flex justify-between text-[12px]">
+                        <span className="text-zinc-200 capitalize">{item.name}</span>
+                        <span className="text-zinc-400 tabular-nums">
+                          {item.count} ({item.percentage}%)
+                        </span>
+                      </div>
+                      <div className="h-1.5 bg-[var(--app-nested)] rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-zinc-400 rounded-full"
+                          style={{ width: `${Math.min(item.percentage, 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-[12px] text-zinc-500 py-4 text-center">
+                  No source data available
+                </p>
+              )}
+            </div>
+
+            {/* Work Mode & Response Time Metrics */}
+            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-zinc-400" />
+                  <h3 className="text-[14px] sm:text-[15px] font-semibold text-white tracking-tight">
+                    Work Mode & Response Velocity
+                  </h3>
+                </div>
+              </div>
+
+              {/* Work modes distribution */}
+              {breakdowns?.work_modes && breakdowns.work_modes.length > 0 ? (
+                <div className="space-y-2">
+                  <p className="text-[11px] font-medium text-zinc-500 uppercase tracking-wider">
+                    Work Arrangement
+                  </p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {breakdowns.work_modes.map((wm: any, i: number) => (
+                      <div
+                        key={i}
+                        className="bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg p-2.5 text-center"
+                      >
+                        <p className="text-[11px] text-zinc-400">{wm.name}</p>
+                        <p className="text-[15px] font-semibold text-white mt-0.5 tabular-nums">
+                          {wm.count}
+                        </p>
+                        <p className="text-[10px] text-zinc-500">{wm.percentage}%</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Response Time Metric */}
+              <div className="pt-2 border-t border-[var(--app-border-strong)]">
+                <p className="text-[11px] font-medium text-zinc-500 uppercase tracking-wider mb-2">
+                  Time to Employer Response
+                </p>
+                {responseTime?.median_days !== null && responseTime?.median_days !== undefined ? (
+                  <div className="flex items-baseline justify-between bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg p-3">
+                    <div>
+                      <span className="text-[20px] font-semibold text-white tabular-nums">
+                        {responseTime.median_days}
+                      </span>
+                      <span className="text-[12px] text-zinc-400 ml-1.5">days median</span>
+                    </div>
+                    <span className="text-[11px] text-zinc-500">
+                      Based on {responseTime.total_responded} response{responseTime.total_responded > 1 ? "s" : ""}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg p-3 text-center">
+                    <p className="text-[12px] text-zinc-400">
+                      Awaiting first employer response to compute median turnaround
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

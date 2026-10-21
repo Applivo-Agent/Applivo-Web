@@ -83,21 +83,21 @@ export function AdvancedSection() {
           <button
             onClick={() => handleExport(["settings", "applications", "jobs"], "json")}
             disabled={exporting}
-            className="p-4 bg-[#161616] border border-zinc-800 rounded-xl text-left hover:border-white/20 transition-all disabled:opacity-50"
+            className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg text-left hover:border-zinc-500 transition-colors disabled:opacity-50"
           >
             <Download className="w-4 h-4 text-white mb-2" />
-            <p className="text-sm font-bold text-white">Export All Data</p>
-            <p className="text-xs text-[#A1A1AA] mt-0.5">JSON format</p>
+            <p className="text-[13px] sm:text-[14px] font-semibold text-white">Export All Data</p>
+            <p className="text-[12px] text-zinc-400 mt-0.5">JSON format</p>
           </button>
 
           <button
             onClick={() => handleExport(["settings"], "json")}
             disabled={exporting}
-            className="p-4 bg-[#161616] border border-zinc-800 rounded-xl text-left hover:border-white/20 transition-all disabled:opacity-50"
+            className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg text-left hover:border-zinc-500 transition-colors disabled:opacity-50"
           >
             <Bug className="w-4 h-4 text-white mb-2" />
-            <p className="text-sm font-bold text-white">Export Settings</p>
-            <p className="text-xs text-[#A1A1AA] mt-0.5">Configuration only</p>
+            <p className="text-[13px] sm:text-[14px] font-semibold text-white">Export Settings</p>
+            <p className="text-[12px] text-zinc-400 mt-0.5">Configuration only</p>
           </button>
         </div>
       </SettingCard>
@@ -107,18 +107,18 @@ export function AdvancedSection() {
         description="Integrate Applivo with external systems"
         icon={<Key className="w-4 h-4 text-white" />}
       >
-        <div className="p-4 bg-[#161616] border border-zinc-800 rounded-xl">
+        <div className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg">
           <div className="flex items-center gap-2 mb-3">
-            <AlertTriangle className="w-4 h-4 text-amber-400" />
-            <p className="text-xs text-amber-400 font-medium">Enterprise feature — contact support to enable</p>
+            <AlertTriangle className="w-4 h-4 text-zinc-400" />
+            <p className="text-[12px] text-zinc-400 font-medium">Enterprise feature — contact support to enable</p>
           </div>
           <div className="space-y-3 opacity-40">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Key className="w-4 h-4 text-[#A1A1AA]" />
-                <span className="text-sm text-[#A1A1AA]">API Key</span>
+                <Key className="w-4 h-4 text-zinc-400" />
+                <span className="text-[13px] text-zinc-400">API Key</span>
               </div>
-              <span className="text-xs font-mono text-[#A1A1AA] bg-[#0B0B0F] px-2 py-1 rounded-lg">••••••••••••</span>
+              <span className="text-[11px] font-mono text-zinc-400 bg-[var(--app-card)] border border-[var(--app-border-strong)] px-2 py-0.5 rounded">••••••••••••</span>
             </div>
           </div>
         </div>
@@ -127,24 +127,24 @@ export function AdvancedSection() {
       <SettingCard
         title="Reset System"
         description="Reset all settings to factory defaults"
-        icon={<Trash2 className="w-4 h-4 text-red-400" />}
+        icon={<Trash2 className="w-4 h-4 text-zinc-400" />}
       >
-        <div className="p-4 bg-red-500/5 border border-red-500/20 rounded-xl space-y-3">
+        <div className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg space-y-3">
           <div className="flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
-            <p className="text-xs text-red-400">This will permanently reset ALL settings to defaults. This cannot be undone.</p>
+            <AlertTriangle className="w-4 h-4 text-zinc-400 shrink-0" />
+            <p className="text-[12px] text-zinc-400">This will permanently reset ALL settings to defaults. This cannot be undone.</p>
           </div>
           <input
             type="text"
             placeholder='Type "RESET" to confirm'
             value={resetConfirm}
             onChange={(e) => setResetConfirm(e.target.value)}
-            className="w-full bg-[#0B0B0F] border border-red-500/30 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-red-500 transition-all"
+            className="w-full h-9 px-3 bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg text-[13px] text-white placeholder-zinc-500 focus:outline-none focus:border-white/30 transition-colors"
           />
           <button
             onClick={handleReset}
             disabled={resetConfirm !== "RESET" || resetting}
-            className="w-full py-2.5 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl text-sm font-bold hover:bg-red-500/20 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-full h-8 bg-transparent hover:bg-white/5 border border-[var(--app-border-strong)] text-zinc-300 rounded-lg text-[13px] font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {resetting ? "Resetting..." : "Reset All Settings"}
           </button>

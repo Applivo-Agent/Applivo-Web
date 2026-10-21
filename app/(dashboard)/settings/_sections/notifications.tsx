@@ -3,14 +3,15 @@
 import { SettingSection, SettingCard, SettingRow } from "@/components/settings/card";
 import { Toggle } from "@/components/settings/toggle";
 import { useSettings } from "@/lib/settings-context";
-import { Bell, Radio, Hash, TestTube } from "lucide-react";
+import { Radio, Bell, Clock, Send, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { settingsV2Api } from "@/lib/api";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export function NotificationsSection() {
   const { settings, saveSection } = useSettings();
-  const [testing, setTesting] = useState(false);
+  const [testingChannel, setTestingChannel] = useState<string | null>(null);
 
   const saveChannels = (key: string, value: boolean) => {
     saveSection("notifications", {
@@ -41,114 +42,205 @@ export function NotificationsSection() {
   };
 
   const sendTest = async (channel: string) => {
-    setTesting(true);
+    setTestingChannel(channel);
     try {
       const res = await settingsV2Api.testNotification(channel);
-      toast.success(res.data.message ?? "Test sent!");
-    } catch {
-      toast.error("Failed to send test notification");
+      toast.success(res.data.message ?? `Test notification sent via ${channel}!`);
+    } catch (err: any) {
+      const detail = err?.response?.data?.detail || "Failed to send test notification";
+      toast.error(detail);
     } finally {
-      setTesting(false);
+      setTestingChannel(null);
     }
   };
 
   return (
     <SettingSection>
+      {/* 1. Delivery Channels */}
       <SettingCard
-        title="Notification Channels"
-        description="Choose how you want to receive alerts from your AI agent"
+        title="Delivery Channels"
+        description="Choose where you want to receive alerts from your Applivo workspace"
         icon={<Radio className="w-4 h-4 text-white" />}
       >
         <div className="space-y-1">
-          <SettingRow label="Email Notifications" description="Receive daily summaries and critical alerts via email">
-            <Toggle checked={settings.channels.email} onChange={(v) => saveChannels("email", v)} />
+          <SettingRow
+            label="Email Notifications"
+            description="Receive daily activity digests, critical platform alerts, and interview invites at your primary email."
+          >
+            <Toggle
+              checked={settings.channels.email}
+              onChange={(v) => saveChannels("email", v)}
+            />
           </SettingRow>
-          <SettingRow label="Telegram Notifications" description="Real-time alerts delivered to your Telegram">
-            <Toggle checked={settings.channels.telegram} onChange={(v) => saveChannels("telegram", v)} />
+
+          <SettingRow
+            label="Telegram Alerts"
+            description="Real-time instant application status and interview alerts delivered to your connected Telegram."
+          >
+            <Toggle
+              checked={settings.channels.telegram}
+              onChange={(v) => saveChannels("telegram", v)}
+            />
           </SettingRow>
-          <SettingRow label="Discord" description="Send notifications to a Discord channel (coming soon)">
-            <Toggle checked={settings.channels.discord} onChange={(v) => saveChannels("discord", v)} disabled />
-          </SettingRow>
-          <SettingRow label="Slack" description="Integrate with your Slack workspace (coming soon)">
-            <Toggle checked={settings.channels.slack} onChange={(v) => saveChannels("slack", v)} disabled />
+
+          <SettingRow
+            label="Send Test Alert"
+            description="Dispatch a verification alert right now to confirm your delivery channel is reachable."
+          >
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => sendTest("email")}
+                disabled={testingChannel !== null}
+                className="h-8 px-3 rounded-md bg-[#171717] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors flex items-center gap-1.5 disabled:opacity-50"
+              >
+                {testingChannel === "email" ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Send className="w-3.5 h-3.5 text-zinc-400" />
+                )}
+                <span>Test Email</span>
+              </button>
+
+              {settings.channels.telegram && (
+                <button
+                  type="button"
+                  onClick={() => sendTest("telegram")}
+                  disabled={testingChannel !== null}
+                  className="h-8 px-3 rounded-md bg-[#171717] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors flex items-center gap-1.5 disabled:opacity-50"
+                >
+                  {testingChannel === "telegram" ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Send className="w-3.5 h-3.5 text-zinc-400" />
+                  )}
+                  <span>Test Telegram</span>
+                </button>
+              )}
+            </div>
           </SettingRow>
         </div>
       </SettingCard>
 
+      {/* 2. Notification Triggers */}
       <SettingCard
-        title="Notification Types"
-        description="Fine-tune which events trigger notifications"
+        title="Event Triggers"
+        description="Fine-tune which events generate automated alerts"
         icon={<Bell className="w-4 h-4 text-white" />}
       >
         <div className="space-y-1">
-          <SettingRow label="Jobs Found" description="Alert when new matching jobs are discovered">
-            <Toggle checked={settings.types.jobsFound} onChange={(v) => saveTypes("jobsFound", v)} />
+          <SettingRow
+            label="Matching Jobs Discovered"
+            description="Alert when new job openings matching your target roles and skills are detected."
+          >
+            <Toggle
+              checked={settings.types.jobsFound}
+              onChange={(v) => saveTypes("jobsFound", v)}
+            />
           </SettingRow>
-          <SettingRow label="Application Submitted" description="Confirmations when your agent submits applications">
-            <Toggle checked={settings.types.applicationSubmitted} onChange={(v) => saveTypes("applicationSubmitted", v)} />
+
+          <SettingRow
+            label="Application Confirmations"
+            description="Confirmation receipt each time an application is successfully dispatched."
+          >
+            <Toggle
+              checked={settings.types.applicationSubmitted}
+              onChange={(v) => saveTypes("applicationSubmitted", v)}
+            />
           </SettingRow>
-          <SettingRow label="Interview Invitation" description="Instant alert when you receive an interview request">
-            <Toggle checked={settings.types.interviewInvitation} onChange={(v) => saveTypes("interviewInvitation", v)} />
+
+          <SettingRow
+            label="Interview Requests"
+            description="High-priority instant alert when a recruiter messages or requests an interview."
+          >
+            <Toggle
+              checked={settings.types.interviewInvitation}
+              onChange={(v) => saveTypes("interviewInvitation", v)}
+            />
           </SettingRow>
-          <SettingRow label="Resume Analysis Completed" description="Notify when AI finishes analyzing your resume">
-            <Toggle checked={settings.types.resumeAnalysisCompleted} onChange={(v) => saveTypes("resumeAnalysisCompleted", v)} />
+
+          <SettingRow
+            label="Resume ATS Tailoring"
+            description="Notify when ATS analysis or LaTeX resume compilation completes."
+          >
+            <Toggle
+              checked={settings.types.resumeAnalysisCompleted}
+              onChange={(v) => saveTypes("resumeAnalysisCompleted", v)}
+            />
           </SettingRow>
-          <SettingRow label="Weekly Summary" description="Digest of all activity from the past week">
-            <Toggle checked={settings.types.weeklySummary} onChange={(v) => saveTypes("weeklySummary", v)} />
+
+          <SettingRow
+            label="Weekly Activity Summary"
+            description="Consolidated digest of sent applications, recruiter view rates, and match trends."
+          >
+            <Toggle
+              checked={settings.types.weeklySummary}
+              onChange={(v) => saveTypes("weeklySummary", v)}
+            />
           </SettingRow>
-          <SettingRow label="AI Agent Alerts" description="Warnings when the agent needs your attention">
-            <Toggle checked={settings.types.aiAgentAlerts} onChange={(v) => saveTypes("aiAgentAlerts", v)} />
+
+          <SettingRow
+            label="Agent Alerts & Warnings"
+            description="Warnings when an automation run requires captcha resolution or profile review."
+          >
+            <Toggle
+              checked={settings.types.aiAgentAlerts}
+              onChange={(v) => saveTypes("aiAgentAlerts", v)}
+            />
           </SettingRow>
-          <SettingRow label="Workflow Failures" description="Critical errors that require immediate action">
-            <Toggle checked={settings.types.workflowFailures} onChange={(v) => saveTypes("workflowFailures", v)} />
+
+          <SettingRow
+            label="Execution Failures"
+            description="Immediate notification when submission failures or API errors occur."
+          >
+            <Toggle
+              checked={settings.types.workflowFailures}
+              onChange={(v) => saveTypes("workflowFailures", v)}
+            />
           </SettingRow>
         </div>
       </SettingCard>
 
+      {/* 3. Digest Frequency */}
       <SettingCard
-        title="Digest Frequency"
-        description="How often non-urgent notifications are batched"
-        icon={<Hash className="w-4 h-4 text-white" />}
+        title="Delivery Frequency"
+        description="Choose how often non-urgent notifications are batched and delivered"
+        icon={<Clock className="w-4 h-4 text-white" />}
       >
-        <div className="flex gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
           {(["instant", "hourly", "daily"] as const).map((freq) => (
             <button
               key={freq}
+              type="button"
               onClick={() => saveFrequency(freq)}
-              className={`flex-1 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${
+              className={cn(
+                "py-2.5 px-3 rounded-lg text-[12px] font-medium transition-colors border text-center flex flex-col items-center justify-center gap-0.5",
                 settings.frequency === freq
-                  ? "bg-white text-black border-white shadow-lg"
-                  : "bg-[#161616] text-[#A1A1AA] border-zinc-800 hover:border-white/30"
-              }`}
+                  ? "bg-white text-black border-white font-semibold shadow-sm"
+                  : "bg-[var(--app-nested)] text-zinc-400 border-[var(--app-border-strong)] hover:text-white hover:border-zinc-700"
+              )}
             >
-              {freq === "instant" ? "Instant" : freq === "hourly" ? "Hourly Digest" : "Daily Digest"}
+              <span>
+                {freq === "instant"
+                  ? "Instant"
+                  : freq === "hourly"
+                  ? "Hourly Digest"
+                  : "Daily Digest"}
+              </span>
+              <span
+                className={cn(
+                  "text-[10px]",
+                  settings.frequency === freq ? "text-zinc-700" : "text-zinc-500"
+                )}
+              >
+                {freq === "instant"
+                  ? "Real-time alerts"
+                  : freq === "hourly"
+                  ? "Batched top of hour"
+                  : "Once per day at 9 AM"}
+              </span>
             </button>
           ))}
-        </div>
-      </SettingCard>
-
-      <SettingCard
-        title="Test Notifications"
-        description="Send a test notification to verify your channels are working"
-        icon={<TestTube className="w-4 h-4 text-white" />}
-      >
-        <div className="flex gap-2">
-          <button
-            onClick={() => sendTest("email")}
-            disabled={testing}
-            className="flex-1 py-2.5 bg-[#161616] border border-zinc-800 rounded-xl text-sm font-medium text-white hover:bg-[#242424] hover:border-white/20 transition-all disabled:opacity-50"
-          >
-            Test Email
-          </button>
-          {settings.channels.telegram && (
-            <button
-              onClick={() => sendTest("telegram")}
-              disabled={testing}
-              className="flex-1 py-2.5 bg-[#161616] border border-zinc-800 rounded-xl text-sm font-medium text-white hover:bg-[#242424] hover:border-white/20 transition-all disabled:opacity-50"
-            >
-              Test Telegram
-            </button>
-          )}
         </div>
       </SettingCard>
     </SettingSection>

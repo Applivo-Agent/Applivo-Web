@@ -1,10 +1,14 @@
 "use client";
+import { IconTile } from "@/components/app-cards";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { analyticsApi, agentApi, applicationsApi, jobsApi, quotasApi } from "@/lib/api";
 import { useSubscription } from "@/lib/subscription";
 import { getPlanAnalyzeBudget } from "@/lib/subscription";
 import { useAuth } from "@/lib/auth";
 import { useAgentStatus } from "@/lib/agent-status";
+import { useExtension } from "@/lib/extension";
+import { DeployDialog } from "@/components/deploy-dialog";
+import { RunPanel } from "@/components/run-panel";
 import { motion, useSpring } from "framer-motion";
 import { cn, formatDate, getStatusClass, getStatusLabel, getMatchBadgeClass, timeAgo } from "@/lib/utils";
 import {
@@ -59,16 +63,16 @@ function ActionButton({
       disabled={isWorking}
       whileTap={!isWorking ? { scale: 0.97 } : {}}
       className={cn(
-        "relative flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all",
+        "relative flex h-8 items-center gap-2 px-3 rounded-md text-[13px] font-medium transition-all",
         "border disabled:cursor-not-allowed",
         isActive && [
-          "bg-[#222222] border-white/20 text-white",
+          "bg-[var(--app-card)] border-white/20 text-white",
         ],
         !isActive && !isDisabled && [
-          "bg-[#171717] hover:bg-[#222222] text-white border-[#262626]",
+          "bg-[#171717] hover:bg-[var(--app-card)] text-white border-[var(--app-border-strong)]",
         ],
         isDisabled && [
-          "bg-[#171717]/60 text-zinc-500 border-[#262626]/50 opacity-50",
+          "bg-[#171717]/60 text-zinc-500 border-[var(--app-border-strong)]/50 opacity-50",
         ]
       )}
     >
@@ -90,17 +94,15 @@ function StatCard({ icon: Icon, label, value, sub, color, delay = 0, isLocked = 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
-      whileHover={isLocked ? {} : { y: -4, scale: 1.01 }}
+      
       className={cn(
-        "bg-[#1c1c1e] border border-zinc-800 rounded-2xl p-5 group cursor-default relative overflow-hidden transition-all",
-        !isLocked && "hover:border-white/25 hover:shadow-[0_0_0_1px_rgba(255,255,255,0.14),0_20px_40px_rgba(0,0,0,0.45)]"
+        "bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 group cursor-default relative overflow-hidden transition-all",
+        !isLocked && "hover:border-[var(--app-border-strong)]"
       )}
     >
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/10 via-white/5 to-transparent rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-500" />
-
       {isLocked && (
-        <div className="absolute inset-0 bg-[#1c1c1e]/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center p-4 text-center">
-          <div className="bg-white/10 p-2 rounded-full mb-2 border border-white/10">
+        <div className="absolute inset-0 bg-[var(--app-card)]/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center p-4 text-center">
+          <div className="bg-white/10 p-2 rounded-full mb-2 border border-[var(--app-border-strong)]">
             <Lock className="w-3.5 h-3.5 text-white" />
           </div>
           <p className="text-[10px] font-black uppercase tracking-widest text-white mb-2">Upgrade to Pro</p>
@@ -112,21 +114,14 @@ function StatCard({ icon: Icon, label, value, sub, color, delay = 0, isLocked = 
 
       <div className={cn("flex flex-col h-full justify-between relative z-10", isLocked && "opacity-20 grayscale")}>
         <div className="flex items-center justify-between mb-3">
-          <div className="w-10 h-10 rounded-xl bg-[#222222] flex items-center justify-center transition-all group-hover:scale-110">
-            <Icon className="w-5 h-5 text-zinc-400 group-hover:text-white transition-colors" />
-          </div>
-          {sub && (
-            <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 bg-[#1c1c1e] px-2 py-0.5 rounded-md">
-              {sub.split(' ')[1]}
-            </span>
-          )}
+          <IconTile icon={Icon} size="md" />
         </div>
         <div>
-          <p className="text-[11px] font-medium text-zinc-400 mb-1">{label}</p>
-          <h4 className="text-3xl font-bold tracking-tighter text-white">
+          <p className="text-[12px] font-medium text-zinc-400 mb-1">{label}</p>
+          <h4 className="text-[24px] leading-8 font-semibold tracking-tight text-white">
             <AnimatedNumber value={value ?? 0} />
           </h4>
-          {sub && <p className="text-[10px] text-zinc-400 mt-2 font-medium">{sub.split(' ')[0]}</p>}
+          {sub && <p className="mt-1 text-[12px] text-zinc-400">{sub}</p>}
         </div>
       </div>
     </motion.div>
@@ -142,7 +137,7 @@ function QuotaRing({ used, limit }: { used: number; limit: number }) {
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-[#1c1c1e] border border-white/10 rounded-2xl p-6 flex flex-col items-center justify-center relative overflow-hidden group"
+      className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 flex flex-col items-center justify-center relative overflow-hidden group"
     >
       <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-4 relative z-10">Daily Quota</p>
       <div className="relative z-10">
@@ -191,7 +186,7 @@ function AnalyzeTokenCard({ budget }: { budget: any }) {
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="bg-[#1c1c1e] border border-white/10 rounded-2xl p-6 relative overflow-hidden"
+      className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 relative overflow-hidden"
     >
       <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Analyze Tokens</p>
       <div className="space-y-2">
@@ -281,7 +276,7 @@ export default function DashboardPage() {
     { icon: TrendingUp, label: "High Match Jobs", value: safeDashboard.high_match_jobs, sub: "≥75% match score", href: "/jobs?min_match_score=75" },
     { icon: Send, label: "Applied jobs", value: safeDashboard.total_applications, sub: `${safeDashboard.applications_today} today`, href: "/applications?status=applied" },
     { icon: FileText, label: "Pending Approval", value: safeDashboard.pending_approval, sub: "awaiting your review", href: "/applications?status=pending_approval" },
-    { icon: Star, label: "Interviews", value: safeDashboard.interviews_scheduled, sub: "scheduled missions", href: "/interviews", isLocked: !canAccess("interviews") },
+    { icon: Star, label: "Interviews", value: safeDashboard.interviews_scheduled, sub: "scheduled", href: "/interviews", isLocked: !canAccess("interviews") },
     { icon: CheckCircle, label: "Offers", value: safeDashboard.offers_received, sub: "received", href: "/applications?status=offer_received", isLocked: !canAccess("interviews") },
   ];
 
@@ -343,29 +338,50 @@ export default function DashboardPage() {
     }
   };
 
+  // Deploy applies through the Applivo browser extension, in background tabs
+  // of the user's existing Chrome window. The run's progress shows in <RunPanel />.
+  const ext = useExtension();
+  const [deployOpen, setDeployOpen] = useState(false);
+  const runActive = Boolean(ext.run?.active);
+
   const handleApplyQueued = async () => {
-    try {
-      await runTask("apply_queued");
-    } catch (err) {
-      toast.error("Failed to start deployment task");
+    if (ext.status === "connected") {
+      setDeployOpen(true);
+      return;
     }
+    toast.error(
+      ext.status === "not_installed"
+        ? "Install the Applivo browser extension first (Connect page)."
+        : "Connect the Applivo browser extension first (Connect page).",
+      { action: { label: "Open Connect", onClick: () => { window.location.href = "/connect"; } } }
+    );
   };
 
+  // Refresh the dashboard numbers as the background run finishes each job.
+  const finishedCount = (ext.run?.items ?? []).filter((i) => i.status === "submitted" || i.status === "failed" || i.status === "skipped").length;
+  useEffect(() => {
+    if (!ext.run?.hasRun) return;
+    queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    queryClient.invalidateQueries({ queryKey: ["queue-status"] });
+    queryClient.invalidateQueries({ queryKey: ["applications"] });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finishedCount]);
+
   return (
-    <div className="max-w-[1600px] mx-auto space-y-8 p-1 md:p-4 min-h-[90vh]">
+    <div className="mx-auto space-y-6">
 
       {/* Header Actions - Only for active subscriptions */}
       {isActive && (
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-          <h2 className="text-xl font-bold tracking-tight text-white/90 hidden md:block">System Overview</h2>
-          <div className="flex flex-wrap items-center justify-end gap-3 w-full md:w-auto">
+          <h2 className="text-[22px] leading-7 font-medium tracking-tight text-white hidden md:block">System Overview</h2>
+          <div className="flex flex-wrap items-center justify-end gap-2 w-full md:w-auto">
             <ActionButton
               label="Scrape"
               activeLabel="Scraping…"
               icon={Play}
               taskKey="scrape_jobs"
               currentTask={currentTask}
-              isWorking={isWorking}
+              isWorking={isWorking || runActive}
               onClick={handleScrapeJobs}
             />
             <ActionButton
@@ -374,7 +390,7 @@ export default function DashboardPage() {
               icon={Zap}
               taskKey="analyze_jobs"
               currentTask={currentTask}
-              isWorking={isWorking}
+              isWorking={isWorking || runActive}
               onClick={handleAnalyzeJobs}
             />
             <ActionButton
@@ -383,7 +399,7 @@ export default function DashboardPage() {
               icon={Activity}
               taskKey="queue_jobs"
               currentTask={currentTask}
-              isWorking={isWorking}
+              isWorking={isWorking || runActive}
               onClick={handleQueueJobs}
             />
             <ActionButton
@@ -391,24 +407,27 @@ export default function DashboardPage() {
               activeLabel="Deploying…"
               icon={Send}
               taskKey="apply_queued"
-              currentTask={currentTask}
-              isWorking={isWorking}
+              currentTask={runActive ? "apply_queued" : currentTask}
+              isWorking={isWorking || runActive}
               onClick={handleApplyQueued}
             />
           </div>
         </div>
       )}
 
+      <RunPanel />
+      <DeployDialog open={deployOpen} onClose={() => setDeployOpen(false)} />
+
       {/* Pending approval banner */}
       {(queueStatus?.pendingApproval ?? 0) > 0 && (
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-3 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl">
-          <AlertCircle className="w-5 h-5 text-indigo-400 shrink-0" />
+          className="flex items-center gap-3 p-4 bg-zinc-700/10 border border-[var(--app-border-strong)]/30 rounded-xl">
+          <AlertCircle className="w-5 h-5 text-zinc-400 shrink-0" />
           <div className="flex-1">
-            <p className="text-sm font-medium text-indigo-400">
+            <p className="text-sm font-medium text-zinc-400">
               {queueStatus.pendingApproval} application{queueStatus.pendingApproval > 1 ? "s" : ""} awaiting your approval
             </p>
-            <p className="text-xs text-indigo-400/70">Review and approve before the bot applies</p>
+            <p className="text-xs text-zinc-400/70">Review and approve before the bot applies</p>
           </div>
           <Link href="/applications?status=pending_approval"
             className="px-4 py-1.5 bg-white text-black text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-zinc-200 transition-colors whitespace-nowrap">
@@ -460,7 +479,7 @@ export default function DashboardPage() {
 
       {/* Quota + Agent status row - Only for active subscriptions */}
       {isActive ? (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Quota ring */}
           <QuotaRing used={safeQuota.used} limit={safeQuota.limit} />
 
@@ -472,14 +491,14 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-[#242424] border border-white/[0.08] rounded-2xl p-5 md:col-span-2 shadow-sm hover:shadow-md transition-shadow"
+            className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 md:col-span-2 shadow-sm hover:shadow-md transition-shadow"
           >
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className={cn("w-3 h-3 rounded-full", agentStatus?.is_running ? "bg-emerald-400" : "bg-zinc-300")}>
+                <div className={cn("w-3 h-3 rounded-full", agentStatus?.is_running ? "bg-zinc-300" : "bg-zinc-300")}>
                   {agentStatus?.is_running && (
                     <motion.div
-                      className="w-full h-full rounded-full bg-emerald-400"
+                      className="w-full h-full rounded-full bg-zinc-300"
                       animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
@@ -487,25 +506,25 @@ export default function DashboardPage() {
                 </div>
                 <h3 className="font-bold text-sm text-white">Automation Agent</h3>
                 <div className={cn("flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-medium",
-                  agentStatus?.is_running ? "bg-emerald-500/15 text-emerald-600" : "bg-white/10 text-zinc-400")}>
+                  agentStatus?.is_running ? "bg-white/[0.06] text-zinc-500" : "bg-white/10 text-zinc-400")}>
                   {agentStatus?.is_running ? "Active" : "Idle"}
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <motion.div whileHover={{ scale: 1.02 }} className="p-3 bg-[#1d1d1d] rounded-xl border border-white/[0.08]">
+              <motion.div whileHover={{ scale: 1.02 }} className="p-4 bg-[var(--app-nested)] rounded-lg border border-[var(--app-border-strong)]">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Last Run</p>
                 <p className="text-sm font-semibold text-white">{agentStatus?.last_run ? timeAgo(agentStatus.last_run) : "Never"}</p>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} className="p-3 bg-[#1d1d1d] rounded-xl border border-white/[0.08]">
+              <motion.div whileHover={{ scale: 1.02 }} className="p-4 bg-[var(--app-nested)] rounded-lg border border-[var(--app-border-strong)]">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Jobs Found</p>
                 <p className="text-sm font-semibold text-white"><AnimatedNumber value={agentStatus?.jobs_found_today ?? 0} /></p>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} className="p-3 bg-[#1d1d1d] rounded-xl border border-white/[0.08]">
+              <motion.div whileHover={{ scale: 1.02 }} className="p-4 bg-[var(--app-nested)] rounded-lg border border-[var(--app-border-strong)]">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Applied</p>
                 <p className="text-sm font-semibold text-white"><AnimatedNumber value={agentStatus?.applications_today ?? 0} /></p>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} className="p-3 bg-[#1d1d1d] rounded-xl border border-white/[0.08]">
+              <motion.div whileHover={{ scale: 1.02 }} className="p-4 bg-[var(--app-nested)] rounded-lg border border-[var(--app-border-strong)]">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Match Rate</p>
                 <p className="text-sm font-semibold text-white">{(dashboard?.response_rate ?? 0).toFixed(1)}%</p>
               </motion.div>
@@ -517,10 +536,10 @@ export default function DashboardPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="flex items-center justify-between gap-4 p-5 rounded-2xl border border-white/10 bg-[#111]"
+          className="flex items-center justify-between gap-4 p-4 rounded-lg border border-[var(--app-border)] bg-[var(--app-inset)]"
         >
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-white/10 border border-[var(--app-border-strong)] flex items-center justify-center shrink-0">
               <Crown className="w-4 h-4 text-white" />
             </div>
             <div>
@@ -539,7 +558,7 @@ export default function DashboardPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-[#242424] border border-white/[0.08] rounded-2xl p-6"
+        className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5"
       >
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-bold text-lg tracking-tight">Top Job Matches</h3>
@@ -554,9 +573,9 @@ export default function DashboardPage() {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 + (i * 0.05) }}
-              className="flex items-center gap-4 p-4 bg-[#1d1d1d] border border-white/[0.08] rounded-2xl hover:border-white/20 hover:bg-[#252525] transition-all group"
+              className="flex items-center gap-4 p-4 bg-[var(--app-card)] border border-white/[0.08] rounded-2xl hover:border-white/20 hover:bg-[var(--app-card)] transition-all group"
             >
-              <div className="w-12 h-12 rounded-xl bg-[#1c1c1c] shadow-sm flex items-center justify-center shrink-0 border border-white/[0.08] group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-xl bg-[var(--app-card)] shadow-sm flex items-center justify-center shrink-0 border border-white/[0.08] group-hover:scale-110 transition-transform">
                 <Briefcase className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1 min-w-0">
@@ -586,8 +605,8 @@ export default function DashboardPage() {
             </motion.div>
           ))}
           {(!topJobs?.items || topJobs.items.length === 0) && (
-            <div className="text-center py-20 bg-[#1d1d1d] border border-white/[0.08] rounded-[20px] shadow-[inset_0_1px_0_rgba(255,255,255,0.035)] transition-all">
-              <div className="w-12 h-12 rounded-full bg-[#1c1c1c] border border-white/[0.08] flex items-center justify-center mx-auto mb-6">
+            <div className="text-center py-20 bg-[var(--app-card)] border border-white/[0.08] rounded-[20px] shadow-[inset_0_1px_0_rgba(255,255,255,0.035)] transition-all">
+              <div className="w-12 h-12 rounded-full bg-[var(--app-card)] border border-white/[0.08] flex items-center justify-center mx-auto mb-6">
                 <Target className="w-5 h-5 text-zinc-600" />
               </div>
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-2">No Matches Deployed</p>

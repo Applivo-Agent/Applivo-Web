@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Search, 
@@ -25,9 +26,9 @@ export function IntegrationsHub() {
   const [activeCategory, setActiveCategory] = useState<IntegrationCategory>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [showRequestModal, setShowRequestModal] = useState(false);
-  const [viewScope, setViewScope] = useState<"featured" | "all">("featured");
+  const [showAll, setShowAll] = useState(false);
 
-  // Filtered catalog based on category, search, and viewScope
+  // Filtered catalog based on category, search query, and showAll
   const filteredIntegrations = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
 
@@ -40,14 +41,14 @@ export function IntegrationsHub() {
         item.badge.toLowerCase().includes(q) ||
         item.tag.toLowerCase().includes(q);
 
-      // If viewing "All" tab with no search query and "featured" scope is selected, show the 8 featured items
-      if (activeCategory === "All" && !q && viewScope === "featured") {
+      // On "All" with no search, show only the 8 featured items until "Browse all" is clicked
+      if (activeCategory === "All" && !q && !showAll) {
         return item.featured && matchesSearch;
       }
 
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, searchQuery, viewScope]);
+  }, [activeCategory, searchQuery, showAll]);
 
   // Body scroll lock on request modal open
   useEffect(() => {
@@ -118,16 +119,9 @@ export function IntegrationsHub() {
       <div className="max-w-[1200px] mx-auto">
 
         {/* ─── SECTION INTRODUCTION (MATCHING LANDING PAGE TYPOGRAPHY) ─── */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 sm:pb-10 border-b border-white/[0.06]">
-          
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 sm:pb-8 border-b border-white/[0.06]">
           {/* Left-Aligned Header Block */}
           <div className="max-w-2xl">
-            {/* Small uppercase category label with subtle marker */}
-            <div className="inline-flex items-center gap-2 mb-2.5 px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-              Integrations &amp; Connectors
-            </div>
-
             {/* Main Section Heading */}
             <h2 className="k-h2 text-[26px] sm:text-[28px] md:text-[32px] font-semibold text-white tracking-tight leading-[1.2]">
               Works with your<br className="hidden sm:inline" /> Entire Career Stack
@@ -147,7 +141,7 @@ export function IntegrationsHub() {
                 setReqService("");
                 setShowRequestModal(true);
               }}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-medium text-white bg-[#18181b] hover:bg-zinc-800 border border-white/10 hover:border-white/20 transition-all duration-200 active:scale-95 shadow-sm"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-white bg-[#18181b] hover:bg-zinc-800 border border-white/10 hover:border-white/20 transition-all duration-200 active:scale-95 shadow-sm"
             >
               <Puzzle className="w-3.5 h-3.5 text-zinc-300" strokeWidth={2} />
               Request integration
@@ -157,21 +151,27 @@ export function IntegrationsHub() {
             <button
               onClick={() => {
                 setActiveCategory("All");
-                setViewScope("all");
+                setShowAll((prev) => !prev);
                 const el = document.getElementById("integration-grid-anchor");
                 if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-black bg-white hover:bg-zinc-200 transition-all duration-200 active:scale-95 shadow-sm"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-black bg-white hover:bg-zinc-200 transition-all duration-200 active:scale-95 shadow-sm"
             >
-              Browse all {INTEGRATION_REGISTRY.length}
-              <ArrowRight className="w-3.5 h-3.5 text-black" />
+              {showAll && activeCategory === "All" ? (
+                <>Show featured (8)</>
+              ) : (
+                <>
+                  Browse all {INTEGRATION_REGISTRY.length}
+                  <ArrowRight className="w-3.5 h-3.5 text-black" />
+                </>
+              )}
             </button>
           </div>
         </div>
 
         {/* ─── CATALOG CONTROLS (CATEGORY TABS & SEARCH) ─── */}
         <div id="integration-grid-anchor" className="pt-6 sm:pt-8">
-          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 mb-5">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mb-6">
             
             {/* Category Pills */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
@@ -186,7 +186,9 @@ export function IntegrationsHub() {
                     key={cat}
                     onClick={() => {
                       setActiveCategory(cat);
-                      if (cat !== "All") setViewScope("all");
+                      if (cat === "All") {
+                        setShowAll(true);
+                      }
                     }}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 ${
                       isActive 
@@ -200,53 +202,25 @@ export function IntegrationsHub() {
               })}
             </div>
 
-            {/* Right Controls: View Scope Toggle (when All is selected) & Search */}
-            <div className="flex items-center gap-2.5">
-              {activeCategory === "All" && !searchQuery && (
-                <div className="hidden sm:inline-flex items-center p-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px]">
-                  <button
-                    onClick={() => setViewScope("featured")}
-                    className={`px-2.5 py-1 rounded-full transition-all duration-200 ${
-                      viewScope === "featured"
-                        ? "bg-white text-black font-semibold shadow-sm"
-                        : "text-zinc-400 hover:text-white"
-                    }`}
-                  >
-                    Featured (8)
-                  </button>
-                  <button
-                    onClick={() => setViewScope("all")}
-                    className={`px-2.5 py-1 rounded-full transition-all duration-200 ${
-                      viewScope === "all"
-                        ? "bg-white text-black font-semibold shadow-sm"
-                        : "text-zinc-400 hover:text-white"
-                    }`}
-                  >
-                    All ({INTEGRATION_REGISTRY.length})
-                  </button>
-                </div>
+            {/* Right Controls: Search Input */}
+            <div className="relative w-full sm:w-64 md:w-72">
+              <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search integrations…"
+                className="w-full bg-[#121212] border border-white/[0.08] focus:border-white/30 rounded-full pl-9 pr-8 py-1.5 text-xs text-white placeholder-zinc-500 outline-none transition duration-200"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
+                  title="Clear search"
+                >
+                  <X className="w-3 h-3" />
+                </button>
               )}
-
-              {/* Search Input */}
-              <div className="relative flex-1 sm:w-60 md:w-64">
-                <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search integrations…"
-                  className="w-full bg-[#121212] border border-white/[0.08] focus:border-white/30 rounded-full pl-9 pr-8 py-1.5 text-xs text-white placeholder-zinc-500 outline-none transition duration-200"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
-                    title="Clear search"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                )}
-              </div>
             </div>
 
           </div>
@@ -254,42 +228,80 @@ export function IntegrationsHub() {
 
         {/* ─── EXACT 4-COLUMN RESPONSIVE CARD GRID ─── */}
         {filteredIntegrations.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mt-2">
-            {filteredIntegrations.map((item, index) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2, delay: index * 0.02, ease: "easeOut" }}
-                className="group relative rounded-[20px] bg-[#121212] hover:bg-[#151515] border border-white/[0.08] hover:border-white/[0.2] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.6)]"
-              >
-                {/* Card Top: Official Logo */}
-                <div>
-                  <div className="mb-4">
-                    {/* Logo Container (Standardized 44x44 Box) */}
-                    <div className="w-11 h-11 rounded-xl bg-white/[0.04] border border-white/[0.08] group-hover:border-white/20 p-2 flex items-center justify-center shrink-0 transition-colors duration-300">
-                      <Image
-                        src={item.logo}
-                        alt={item.logoAlt}
-                        width={28}
-                        height={28}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  </div>
+          <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4.5 sm:gap-5 lg:gap-6 mt-3 sm:mt-4">
+              {filteredIntegrations.map((item, index) => {
+                const docTarget = `/docs/${item.docSlug || item.id}`;
+                return (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2, delay: index * 0.02, ease: "easeOut" }}
+                  >
+                    <Link
+                      href={docTarget}
+                      className="group relative h-full rounded-[16px] sm:rounded-[18px] bg-[#121212] hover:bg-[#151515] border border-white/[0.08] hover:border-white/[0.2] p-5 sm:p-5.5 flex flex-col justify-between transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.35)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.55)] cursor-pointer block hover:-translate-y-0.5"
+                    >
+                      {/* Card Content: Official Logo, Link Badge, Title & Description */}
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          {/* Logo Container (Standardized 42x42 Box) */}
+                          <div className="w-10 h-10 sm:w-10.5 sm:h-10.5 rounded-[11px] bg-white/[0.04] border border-white/[0.08] group-hover:border-white/20 p-2 flex items-center justify-center shrink-0 transition-colors duration-300">
+                            <Image
+                              src={item.logo}
+                              alt={item.logoAlt}
+                              width={24}
+                              height={24}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <span className="text-[11.5px] font-medium text-zinc-500 group-hover:text-zinc-300 transition-colors flex items-center gap-1">
+                            Docs <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+                          </span>
+                        </div>
 
-                  {/* Service Name */}
-                  <h3 className="text-[16px] sm:text-[17px] font-semibold text-white tracking-tight mb-1.5 group-hover:text-white transition-colors">
-                    {item.name}
-                  </h3>
+                        {/* Service Name */}
+                        <h3 className="text-[15px] sm:text-[15.5px] font-semibold text-white tracking-tight mb-1.5 group-hover:text-white transition-colors">
+                          {item.name}
+                        </h3>
 
-                  {/* Short Description (Clean 2-line cap) */}
-                  <p className="text-[13px] text-zinc-400 leading-relaxed font-normal line-clamp-2">
-                    {item.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
+                        {/* Short Description */}
+                        <p className="text-[12.5px] sm:text-[13px] text-zinc-400 leading-relaxed font-normal line-clamp-2 min-h-[36px] sm:min-h-[38px]">
+                          {item.description}
+                        </p>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Expand / Collapse Action below Grid */}
+            {activeCategory === "All" && !searchQuery && (
+              <div className="flex justify-center mt-8">
+                {!showAll ? (
+                  <button
+                    onClick={() => setShowAll(true)}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 hover:border-white/20 transition-all duration-200 shadow-sm active:scale-95"
+                  >
+                    Browse all {INTEGRATION_REGISTRY.length} integrations
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setShowAll(false);
+                      const el = document.getElementById("integration-grid-anchor");
+                      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium text-zinc-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 transition-all duration-200 active:scale-95"
+                  >
+                    Show featured (8)
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         ) : (
           /* Empty Search State */

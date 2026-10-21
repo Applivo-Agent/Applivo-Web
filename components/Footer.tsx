@@ -9,7 +9,12 @@ interface FooterProps {
   className?: string;
 }
 
-const FOOTER_COLUMNS = [
+interface FooterColumn {
+  title: string;
+  links: { label: string; href: string; external?: boolean }[];
+}
+
+const FOOTER_COLUMNS: FooterColumn[] = [
   {
     title: "Product",
     links: [

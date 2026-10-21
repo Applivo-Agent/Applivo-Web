@@ -1,4 +1,4 @@
-import { DocArticle, h2, p, ul, ol, note, warn, limit, img, diagram, table, code } from "../types";
+import { DocArticle, h2, h3, p, ul, ol, note, warn, limit, img, diagram, table, code } from "../types";
 
 export const dashboard: DocArticle[] = [
   {
@@ -8,19 +8,32 @@ export const dashboard: DocArticle[] = [
     title: "Dashboard overview",
     description: "Every number and control on the Dashboard.",
     blocks: [
+      p("The Dashboard is the control centre of Applivo. It summarises your pipeline at a glance, shows your daily quota, and is where the agent actions begin."),
       img("Dashboard overview and metrics cards", "docs-dashboard-overview.png"),
       h2("Summary cards"),
       table(
         ["Card", "Shows"],
         ["Total Jobs", "Listings collected for you"],
-        ["High Match Jobs", "Jobs with a score of 75 or higher"],
-        ["Applied jobs", "Applications submitted"],
-        ["Pending Approval", "Applications waiting for you"],
+        ["High Match Jobs", "Jobs with a match score of 75 or higher"],
+        ["Applied jobs", "Applications that were submitted"],
+        ["Pending Approval", "Applications waiting for you to approve"],
         ["Interviews", "Interviews scheduled"],
         ["Offers", "Offers received"],
       ),
       h2("Agent actions"),
-      p("Scrape collects listings, Analyze scores them, Queue stages applications and Deploy starts applying. While the agent works, the sidebar shows an active-agent card."),
+      p("Four buttons drive the pipeline:"),
+      ol(
+        "Scrape collects new listings from Internshala.",
+        "Analyze scores the collected listings against your resume.",
+        "Queue stages selected applications to be applied to.",
+        "Deploy starts an application run through the extension.",
+      ),
+      p("While an action is running, the sidebar shows an active-agent card and the affected cards update as results come in."),
+      h2("What updates when"),
+      ul(
+        "Cards update after a run finishes, not instantly per job.",
+        "High Match Jobs counts listings at or above the 75 threshold set in the product.",
+      ),
       limit("This guide does not define a calculation for each card beyond what its label says."),
     ],
     related: ["quota-and-usage", "analytics"],
@@ -31,15 +44,23 @@ export const dashboard: DocArticle[] = [
     title: "Quota and usage",
     description: "Daily applications and AI token budgets.",
     blocks: [
-      p("Two limits apply. The daily application quota is shown as a ring and as used/limit in the header and sidebar. The Analyze token budget has a per-run and a monthly limit."),
+      p("Two separate budgets apply to your account: the daily application quota, which limits how many applications the extension may submit each day, and the Analyze token budget, which limits how much AI analysis you can run. They reset on different schedules and are shown in different places."),
+      h2("Where to see them"),
+      ul(
+        "The daily application quota appears as a ring and as used/limit in the header and sidebar.",
+        "The Analyze token budget appears as a per-run and a monthly figure on the usage views.",
+      ),
       img("Daily application quota and token budgets", "docs-quota-usage.png"),
+      h2("Limits by plan"),
       table(
         ["Plan", "Daily applications", "Analyze per run", "Analyze per month"],
         ["Starter", "50", "25k tokens", "120k tokens"],
         ["Pro", "100", "60k tokens", "600k tokens"],
         ["Premium", "150", "120k tokens", "1.2M tokens"],
       ),
-      note("These are the values configured in the app. AI Chat message limits are separate."),
+      note("These are the values configured in the app. AI Chat message limits are separate and are covered under Plans overview."),
+      h3("When a limit is reached"),
+      p("The related action stops until the limit resets or you move to a higher plan. The header shows which limit was hit."),
     ],
     related: ["usage-limits", "quota-errors"],
   },
@@ -49,8 +70,14 @@ export const dashboard: DocArticle[] = [
     title: "Analytics",
     description: "Trends across your search.",
     blocks: [
-      p("The Analytics page shows basic analytics on all plans. Premium adds advanced analytics, resume performance ranking and an interview conversion funnel."),
+      p("The Analytics page shows basic analytics on all plans, so you can see how your search is trending over time rather than only at this moment."),
       img("Application analytics trends and conversion funnel", "docs-analytics-trends.png"),
+      h2("What Premium adds"),
+      ul(
+        "Advanced analytics.",
+        "Resume performance ranking.",
+        "An interview conversion funnel.",
+      ),
       limit("Exact metric definitions are not documented in this guide. If a number looks off, see Dashboard loading problems."),
     ],
     related: ["dashboard-loading"],
@@ -65,8 +92,18 @@ export const account: DocArticle[] = [
     title: "Profile and preferences",
     description: "Manage your profile and what Applivo knows about you.",
     blocks: [
-      p("Profile in the sidebar holds your personal and career details. Changes take effect the next time Applivo scores jobs or answers questions."),
+      p("Your profile is the foundation the rest of Applivo builds on. It holds your personal, education and career details, and it is what scoring, AI answers, cover letters and resume tailoring all read from."),
       img("Candidate profile and career preferences", "docs-profile-settings.png"),
+      h2("What to keep current"),
+      ul(
+        "Personal details and contact information.",
+        "Education and experience.",
+        "Skills, projects and links.",
+        "Career preferences that shape which jobs are surfaced.",
+      ),
+      h3("Why it matters"),
+      p("Changes take effect the next time Applivo scores jobs or answers questions. Stale or thin profile data produces misleading match scores and weaker generated content."),
+      note("Never claim skills or experience you do not have. Inaccurate data misleads employers and makes your match scores meaningless."),
     ],
     related: ["account-settings"],
   },
@@ -76,6 +113,7 @@ export const account: DocArticle[] = [
     title: "Account settings",
     description: "The sections of the Settings page.",
     blocks: [
+      p("Settings is organised into sections. Each controls a different part of how Applivo behaves."),
       table(
         ["Section", "Controls"],
         ["General", "Theme, language, timezone, date format, dashboard layout"],
@@ -90,6 +128,8 @@ export const account: DocArticle[] = [
       ),
       img("Account settings and notification channels", "docs-account-settings.png"),
       note("Applivo's interface is dark only. The theme option does not currently switch the app to a light theme."),
+      h3("Job Automation and approval"),
+      p("Job Automation lets the agent scrape, analyze, queue and apply on a schedule. Manual approval keeps you in the loop between staging and submitting. Review these settings carefully before enabling unattended applying."),
     ],
     related: ["security-and-privacy"],
   },
@@ -99,13 +139,18 @@ export const account: DocArticle[] = [
     title: "Security and privacy",
     description: "Sessions, sign out and what is stored.",
     blocks: [
+      p("Your account security controls live under Settings and the account menu. Use them to review where you are signed in and to end sessions you do not recognise."),
       ul(
         "Settings → Security lists your active sessions, which you can terminate.",
         "Passwords are never shown, and the extension never receives your password.",
         "Third-party API keys are kept encrypted on the server.",
       ),
       img("Active sessions and two-factor authentication", "docs-security-settings.png"),
-      p("Sign out from the account menu at any time."),
+      h2("Signing out"),
+      p("Sign out from the account menu at any time. Find a full walkthrough in Signing in and out."),
+      h2("How the extension fits in"),
+      p("The extension pairs with a scoped token instead of your password, and that token can be revoked server-side at any time. See Extension permissions and privacy for what it can access."),
+      note("For account-level data handling, see the Privacy policy. Where this guide cannot verify a claim from the code, it says so rather than asserting it."),
     ],
     related: ["sign-in"],
   },
@@ -119,6 +164,7 @@ export const billing: DocArticle[] = [
     title: "Plans overview",
     description: "What each plan includes, from the values configured in the app.",
     blocks: [
+      p("Applivo has three monthly plans. The table below follows the app's current configuration."),
       table(
         ["", "Starter", "Pro", "Premium"],
         ["Price (INR / month)", "199", "399", "599"],
@@ -129,6 +175,12 @@ export const billing: DocArticle[] = [
         ["Chrome extension automation", "Yes", "Yes", "Yes"],
       ),
       img("Subscription plans and feature comparison table", "docs-plans-overview.png"),
+      h2("Choose a plan by what you need"),
+      ul(
+        "Starter: run the extension and use basic AI chat and analytics.",
+        "Pro: add cover letters, interview preparation, skill gaps and follow-ups.",
+        "Premium: add market insights and advanced analytics.",
+      ),
       warn("The older project billing document lists different prices and omits Starter. This table follows the app's current configuration. The Subscription page is the authority for what you will be charged."),
     ],
     related: ["usage-limits", "subscription-management"],
@@ -139,9 +191,22 @@ export const billing: DocArticle[] = [
     title: "Understanding usage limits",
     description: "Which limits exist and when they reset.",
     blocks: [
-      ul("Daily applications, reset each day.", "Analyze tokens, with a per-run and a monthly limit.", "AI Chat messages, per month."),
+      p("Several limits keep usage fair and predictable. Knowing which one you hit explains most \"it stopped working\" moments."),
+      ul(
+        "Daily applications, reset each day.",
+        "Analyze tokens, with a per-run and a monthly limit.",
+        "AI Chat messages, per month.",
+      ),
       img("Usage limits and quota indicators", "docs-usage-limits.png"),
-      p("When a limit is reached, the related action stops until it resets or you move to a higher plan."),
+      h2("What happens at a limit"),
+      p("When a limit is reached, the related action stops until it resets or you move to a higher plan. Other actions are not affected, so hitting the Analyze budget does not stop you applying."),
+      h3("Where the numbers come from"),
+      table(
+        ["Limit", "Where shown", "Reset"],
+        ["Daily applications", "Header and sidebar ring", "Each day"],
+        ["Analyze tokens", "Usage views (per run and monthly)", "Per run / monthly"],
+        ["AI Chat messages", "AI Chat", "Monthly"],
+      ),
     ],
     related: ["quota-and-usage"],
   },
@@ -151,14 +216,19 @@ export const billing: DocArticle[] = [
     title: "Managing your subscription",
     description: "Subscribe, change plan, and what happens on cancellation.",
     blocks: [
+      p("Subscriptions are handled through the Subscription page and Razorpay's payment dialog. Applivo verifies the payment server-side before activating a plan."),
       ol(
         "Open Subscription in the sidebar.",
         "Choose a plan and complete payment in the Razorpay dialog.",
         "Applivo verifies the payment signature before activating the plan.",
       ),
       img("Subscription management and billing portal", "docs-subscription-management.png"),
-      p("A cancelled subscription keeps working until its paid end date. A failed renewal moves the subscription out of the active state."),
+      h2("Changing and cancelling"),
+      p("A cancelled subscription keeps working until its paid end date. A failed renewal moves the subscription out of the active state, and the extension stops working while the plan is inactive."),
+      h2("Invoices"),
       p("Invoices are generated as PDFs and emailed after payment."),
+      h3("Renewing after a lapse"),
+      p("If your plan lapsed, the extension returns a subscription-required response on each call. Renew from the Subscription page, then reconnect if the extension reports it is no longer connected."),
     ],
     related: ["billing-faq"],
   },
@@ -169,68 +239,24 @@ export const billing: DocArticle[] = [
     description: "Common billing questions.",
     blocks: [
       h2("Why is a page locked?"),
-      p("It needs a higher plan. The sidebar shows a crown on locked items."),
+      p("It needs a higher plan. The sidebar shows a crown on locked items. Locked pages send you to Subscription."),
       h2("Can I use the extension on a free account?"),
-      p("No. An active Starter, Pro or Premium subscription is needed, unless you are an administrator."),
+      p("No. An active Starter, Pro or Premium subscription is needed, unless you are an administrator. See Eligibility and plans."),
+      h2("When does a cancelled plan stop working?"),
+      p("At the end of the paid period. It stays active until the paid-through end date."),
+      h2("What happens if a payment fails?"),
+      p("The subscription leaves the active state and extension calls are blocked until the plan is active again."),
       h2("Is there a refund policy?"),
       p("This guide does not state one. Contact support through your plan's channel."),
+      h2("Do unused quotas carry over?"),
+      p("Daily and monthly limits reset on their schedule; unused amounts do not accumulate."),
     ],
     related: ["plans-overview"],
   },
 ];
 
-export const integrations: DocArticle[] = [
-  {
-    slug: "integrations-overview",
-    group: "integrations",
-    overview: true,
-    title: "Integrations overview",
-    description: "What Applivo connects to.",
-    blocks: [
-      ul(
-        "Internshala, for listings and applications.",
-        "The Applivo Chrome extension.",
-        "Notification channels: email, Telegram and others listed in Settings → Notifications.",
-        "Razorpay, for payments.",
-        "Overleaf, for resume export.",
-      ),
-      diagram("Integrations ecosystem and data exchange", "docs-integrations-ecosystem.png", "21 / 9"),
-      limit("Only Internshala and the Chrome extension are covered end to end in this guide."),
-    ],
-    related: ["connect-internshala"],
-  },
-  {
-    slug: "connect-internshala",
-    group: "integrations",
-    title: "Connecting Internshala",
-    description: "Link your Internshala account on the Connections page.",
-    blocks: [
-      ol(
-        "Open Connections and choose Connect for Internshala.",
-        "A sign-in window opens. Enter your Internshala email and password there and complete any CAPTCHA.",
-        "When Applivo detects the session, the connection shows as active.",
-      ),
-      img("Internshala platform connection screen", "docs-internshala-connection.png"),
-      note("The extension works in your own browser session and does not use this connection to submit."),
-    ],
-    related: ["integrations-troubleshooting"],
-  },
-  {
-    slug: "integrations-troubleshooting",
-    group: "integrations",
-    title: "Troubleshooting connections",
-    description: "Connection problems.",
-    blocks: [
-      ul(
-        "Complete the CAPTCHA when the sign-in window shows one.",
-        "If the connection drops, connect again.",
-        "For extension problems see Troubleshooting the extension.",
-      ),
-      img("Connection diagnostics and troubleshooting", "docs-connection-diagnostics.png"),
-    ],
-    related: ["extension-troubleshooting"],
-  },
-];
+import { integrations } from "./integrations";
+export { integrations };
 
 export const developers: DocArticle[] = [
   {
@@ -259,11 +285,20 @@ export const developers: DocArticle[] = [
     title: "Local development setup",
     description: "Run the whole stack with Docker.",
     blocks: [
+      p("The fastest way to a working environment is the repository's Docker setup, which brings up every service the product needs."),
       code("cp .env.example .env\n./scripts/dev-setup.sh up\n./scripts/dev-setup.sh test", "bash", "Start and verify"),
       p("The compose file in the repository starts the database, Redis, backend, workers, scheduler, Flower and the frontend. Check docker-compose.yml for the ports on your machine."),
       img("Docker compose local stack setup", "docs-local-dev-setup.png"),
       note("In development the one-time sign-in code is written to the backend log. Read it with docker compose logs backend."),
-      p("Requirements: Python 3.11+, Node.js 20+, Docker with Compose v2 and Chrome."),
+      h2("Requirements"),
+      ul(
+        "Python 3.11+",
+        "Node.js 20+",
+        "Docker with Compose v2",
+        "Chrome (for the extension)",
+      ),
+      h3("Next steps"),
+      p("With the stack running, see Project structure to orient yourself, and Environment configuration for the settings you can change."),
     ],
     related: ["environment-configuration", "dev-troubleshooting"],
   },
@@ -273,6 +308,7 @@ export const developers: DocArticle[] = [
     title: "Project structure",
     description: "Where things live.",
     blocks: [
+      p("Applivo is a monorepo. The table maps the top-level folders to their contents."),
       table(
         ["Path", "Contents"],
         ["app/", "FastAPI app: api/routes, models, services, schemas, tasks"],
@@ -315,7 +351,15 @@ export const developers: DocArticle[] = [
     blocks: [
       p("Routers are mounted under /api in app/main.py. Interactive OpenAPI docs are served at /api/docs."),
       diagram("FastAPI backend service and router hierarchy", "docs-backend-architecture.png", "21 / 9"),
-      p("Business logic lives in app/services, database models in app/models, and request and response schemas in app/schemas."),
+      h2("How the code is organised"),
+      ul(
+        "Business logic lives in app/services.",
+        "Database models live in app/models.",
+        "Request and response schemas live in app/schemas.",
+        "Background tasks live in app/tasks and are executed by Celery.",
+      ),
+      h3("Data access"),
+      p("The backend uses SQLAlchemy's async engine, and schema changes are applied with Alembic migrations. See Database and migrations."),
     ],
     related: ["api-reference"],
   },
@@ -325,12 +369,15 @@ export const developers: DocArticle[] = [
     title: "Frontend overview",
     description: "The Next.js app.",
     blocks: [
+      p("The frontend is a Next.js App Router application written in TypeScript."),
       ul(
         "Public pages live at the top of frontend/app. The signed-in product lives in the (dashboard) route group, wrapped by the app shell.",
         "Auth and subscription state come from providers in frontend/lib.",
         "The documentation portal you are reading is rendered from typed data in frontend/lib/docs.",
       ),
       img("Next.js App Router component structure", "docs-frontend-structure.png"),
+      h3("Why the docs are typed data"),
+      p("Articles are objects, not loose Markdown, so the build can validate that every link and every referenced block type is valid. See API reference for the backend side."),
     ],
     related: ["project-structure"],
   },
@@ -343,6 +390,13 @@ export const developers: DocArticle[] = [
       p("The API uses bearer tokens issued after the password and one-time-code steps. The website stores its token in the browser and sends it with API calls."),
       p("The extension has its own pairing flow and token, issued under /api/ext. Entitlement and run authorization are decided on the server."),
       p("Administrator access is a server-side flag on the user."),
+      h2("Design principles"),
+      ul(
+        "Authentication (who you are) is separate from authorization (what you may do).",
+        "Nothing security-relevant is trusted from the client; entitlement and submit authorization are re-checked server-side.",
+        "Tokens can be revoked, which invalidates them immediately.",
+      ),
+      note("For the extension's token specifically, see Connecting the extension."),
     ],
     related: ["api-reference"],
   },
@@ -352,7 +406,7 @@ export const developers: DocArticle[] = [
     title: "API reference",
     description: "Route groups. The OpenAPI page is the complete reference.",
     blocks: [
-      p("Run the backend and open /api/docs for every endpoint, field and response schema."),
+      p("Run the backend and open /api/docs for every endpoint, field and response schema. That page is generated from the code, so it is always current."),
       img("Interactive OpenAPI documentation explorer", "docs-openapi-explorer.png"),
       table(
         ["Group", "Mounted routers"],
@@ -374,6 +428,10 @@ export const developers: DocArticle[] = [
     description: "Celery, Redis and the scheduler.",
     blocks: [
       p("Long-running work runs in Celery workers (a standard worker and a browsing worker) with Redis as the broker. A scheduler service triggers periodic tasks and Flower provides a monitoring dashboard."),
+      h2("Why it is split out"),
+      p("Scraping, analysis and other slow work must not block API responses. Putting them on a queue keeps the API responsive and lets workers retry independently."),
+      h3("Local development"),
+      p("All of these services are started by the compose file. See Local development setup."),
     ],
     related: ["local-setup"],
   },
@@ -383,8 +441,11 @@ export const developers: DocArticle[] = [
     title: "Database and migrations",
     description: "PostgreSQL and Alembic.",
     blocks: [
+      p("Applivo stores data in PostgreSQL and manages schema changes with Alembic."),
       p("Migrations run automatically when the backend container starts. To run them by hand:"),
       code("alembic upgrade heads", "bash"),
+      h3("Adding a migration"),
+      p("Create a migration alongside any model change, review the generated file, and apply it. Never edit an already-applied migration."),
     ],
     related: ["local-setup"],
   },
@@ -394,8 +455,15 @@ export const developers: DocArticle[] = [
     title: "Testing",
     description: "How to run the tests.",
     blocks: [
+      p("Tests cover the backend, policy checks and the extension. Run them before opening a change."),
       code("python3 -m pytest -q                    # backend and policy tests\nnode tests/extension/background_audit.js   # extension service worker\npython3 tests/extension/run_submission_tests.py", "bash"),
       note("Some backend tests expect a Docker path and fail outside the container."),
+      h3("What the suites cover"),
+      ul(
+        "Backend and policy tests: API behaviour and entitlement/authorization rules.",
+        "Extension service worker audit: the background worker's static behaviour.",
+        "Submission tests: the run and submission gates.",
+      ),
     ],
     related: ["dev-troubleshooting"],
   },
@@ -410,6 +478,12 @@ export const developers: DocArticle[] = [
         ["Port already in use", "Another process holds it. Find it with lsof -iTCP:<port> -sTCP:LISTEN."],
         ["Login always fails locally", "The database may not contain your user. Register, then read the code from the backend log."],
         ["Frontend shows old UI", "Rebuild the frontend image and recreate the container."],
+      ),
+      h3("Getting more detail"),
+      ul(
+        "Read service logs from the compose stack for errors.",
+        "Open Flower for queue activity if background jobs seem stuck.",
+        "Confirm your .env matches the ports and URLs your browser uses.",
       ),
     ],
     related: ["local-setup"],
@@ -432,6 +506,10 @@ export const troubleshooting: DocArticle[] = [
       p("The Connections page asks you to sign in to Internshala in a window it opens. The extension itself uses your existing browser session."),
       h2("Is my data used by the extension?"),
       p("Only to fill the forms you approved."),
+      h2("Can Applivo submit without me?"),
+      p("Only if you start a run in auto-submit mode and acknowledge it. Review mode always stops before submitting."),
+      h2("Where do I go when something is stuck?"),
+      p("Start with the troubleshooting articles: Login problems, Dashboard loading problems, Missing jobs, Extension not connecting, Application submission failure, Upload errors, Usage and quota errors and AI feature errors."),
     ],
     related: ["supported-sites", "plans-overview"],
   },
@@ -441,12 +519,15 @@ export const troubleshooting: DocArticle[] = [
     title: "Login problems",
     description: "You cannot sign in.",
     blocks: [
+      p("Signing in has two steps: your password, then a one-time code sent to your email. Most problems are with the second step."),
       ul(
         "Check the email and password, then the one-time code from your email.",
         "If the code never arrives, check spam and try again.",
         "Use Forgot password to reset.",
         "On a local setup, read the code from the backend log.",
       ),
+      h3("If you are locked out"),
+      p("Reset your password, then sign in again. If you still cannot get in, contact support through your plan's channel."),
     ],
     related: ["sign-in"],
   },
@@ -456,11 +537,14 @@ export const troubleshooting: DocArticle[] = [
     title: "Dashboard loading problems",
     description: "Blank, stuck or wrong numbers.",
     blocks: [
+      p("A dashboard that will not load usually means the API is unreachable, the session expired, or a run is still in progress."),
       ul(
         "Refresh the page and sign in again if you see Loading Applivo for a long time.",
         "Check that the backend is reachable. The app logs the API address it uses.",
         "Numbers update after an agent run finishes.",
       ),
+      h3("If numbers look wrong"),
+      p("Confirm the underlying run completed and refresh. See Dashboard overview for what each card counts."),
     ],
     related: ["dashboard-overview"],
   },
@@ -471,6 +555,13 @@ export const troubleshooting: DocArticle[] = [
     description: "No listings or no scores.",
     blocks: [
       p("See Troubleshooting job discovery. In short: run Scrape, clear filters, run Analyze, and check your token budget."),
+      h3("Quick checklist"),
+      ol(
+        "Run Scrape to collect new listings.",
+        "Clear any active filters that may hide results.",
+        "Run Analyze to score listings against your resume.",
+        "Check your Analyze token budget if scoring stops early.",
+      ),
     ],
     related: ["jobs-troubleshooting"],
   },
@@ -480,12 +571,15 @@ export const troubleshooting: DocArticle[] = [
     title: "Extension not connecting",
     description: "Pairing fails.",
     blocks: [
+      p("Pairing fails for one of a few reasons: you are signed out of Applivo, your plan is not eligible, or the extension needs a reload."),
       ol(
         "Sign in to Applivo.",
         "Open /extension/connect again.",
         "Confirm your plan is eligible.",
         "Reload the extension at chrome://extensions and retry.",
       ),
+      h3("If it still will not connect"),
+      p("Check that the build matches the site you are using (production vs development). See Troubleshooting the extension."),
     ],
     related: ["connect-extension", "eligibility"],
   },
@@ -496,6 +590,13 @@ export const troubleshooting: DocArticle[] = [
     description: "An application did not go through.",
     blocks: [
       p("Read the stage and reason on the application. See Troubleshooting failed applications for the table of causes."),
+      h3("Common causes"),
+      ul(
+        "A required question had no safe answer.",
+        "A CAPTCHA or sign-out interrupted the run.",
+        "No confirmation was detected, so the outcome is unknown.",
+      ),
+      note("An unknown outcome is not a success. Check Internshala before retrying to avoid duplicates."),
     ],
     related: ["applications-troubleshooting"],
   },
@@ -505,7 +606,10 @@ export const troubleshooting: DocArticle[] = [
     title: "Upload errors",
     description: "Resume upload fails.",
     blocks: [
+      p("Resume uploads accept PDF only, up to 10 MB, with a maximum of 3 active resumes."),
       ul("Use a PDF.", "Keep it under 10 MB.", "Delete an old resume if you already have 3."),
+      h3("If it still fails"),
+      p("Re-export the file as a fresh PDF and try again. See Resume troubleshooting for more."),
     ],
     related: ["resume-troubleshooting"],
   },
@@ -516,6 +620,12 @@ export const troubleshooting: DocArticle[] = [
     description: "A limit was reached.",
     blocks: [
       p("Check the daily application ring, the Analyze token card and your AI Chat messages. Limits reset on their schedule or when you upgrade."),
+      table(
+        ["Error", "Limit", "What to do"],
+        ["Daily application quota reached", "Applications per day", "Wait for the daily reset or upgrade"],
+        ["Analyze budget exhausted", "Tokens per run or per month", "Wait for the reset or upgrade"],
+        ["AI chat limit reached", "Messages per month", "Wait for the monthly reset or upgrade"],
+      ),
     ],
     related: ["quota-and-usage", "usage-limits"],
   },
@@ -526,6 +636,12 @@ export const troubleshooting: DocArticle[] = [
     description: "AI answers are unavailable.",
     blocks: [
       p("The AI allowance may be used up, or the provider may be unavailable. Required questions will stop for you instead of being guessed. Try again later or answer manually."),
+      h3("While AI is unavailable"),
+      ul(
+        "Answer required questions yourself, then retry the application.",
+        "Use review mode so you can complete forms by hand.",
+        "Check your AI Chat message allowance under Plans overview.",
+      ),
     ],
     related: ["ai-answers-and-required-fields"],
   },
@@ -536,6 +652,13 @@ export const troubleshooting: DocArticle[] = [
     description: "How to get help.",
     blocks: [
       p("Premium plans list dedicated support."),
+      h3("What to include"),
+      ul(
+        "What you were doing and what you expected.",
+        "The exact message or stage you saw.",
+        "Whether you were signed in, and whether a CAPTCHA appeared.",
+      ),
+      warn("Never send your password, session cookies, the extension token or full API keys."),
       limit("No support email or ticket system is defined in the product code, so none is listed here. Use the contact details given when you subscribed."),
     ],
     related: ["faq"],

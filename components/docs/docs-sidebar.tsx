@@ -101,8 +101,38 @@ const SIDEBAR_LABELS: Record<string, string> = {
   "billing-faq": "Billing FAQ",
 
   // Integrations
-  "integrations-overview": "Integrations overview",
+  "integrations-overview": "Overview & ecosystem",
+  "applivo-companion": "Applivo Companion",
+  "browser-extension": "Browser extension",
+  "internshala": "Internshala",
   "connect-internshala": "Connect Internshala",
+  "adzuna": "Adzuna",
+  "greenhouse": "Greenhouse",
+  "lever": "Lever",
+  "ashby": "Ashby",
+  "remotive": "Remotive",
+  "linkedin": "LinkedIn",
+  "indeed": "Indeed",
+  "glassdoor": "Glassdoor",
+  "google-drive": "Google Drive",
+  "microsoft-onedrive": "Microsoft OneDrive",
+  "ats-resume-intelligence": "ATS Intelligence",
+  "overleaf": "Overleaf LaTeX",
+  "gmail": "Gmail",
+  "microsoft-outlook": "Microsoft Outlook",
+  "outlook-mail": "Outlook Mail",
+  "google-calendar": "Google Calendar",
+  "outlook-calendar": "Outlook Calendar",
+  "calendly": "Calendly",
+  "github": "GitHub",
+  "openrouter": "OpenRouter AI",
+  "notion": "Notion",
+  "slack": "Slack",
+  "telegram": "Telegram",
+  "zapier": "Zapier",
+  "make": "Make",
+  "n8n": "n8n",
+  "lumi": "Lumi AI Assistant",
   "integrations-troubleshooting": "Troubleshooting",
 
   // Developers
@@ -176,10 +206,10 @@ export function DocsSidebar({ slug, onNavigate, onSearch, inDrawer = false }: Do
   };
 
   return (
-    <div className="flex h-full flex-col select-none bg-[var(--docs-bg)] overflow-hidden">
+    <div className="flex h-full flex-col select-none bg-[var(--docs-sidebar-bg)] overflow-hidden">
       {/* Linear Docs-style compact sidebar header */}
       <div
-        className={`flex h-[var(--docs-header-h)] shrink-0 items-center justify-between border-b border-[var(--docs-border)] px-3.5 ${
+        className={`flex h-[var(--docs-header-h)] shrink-0 items-center justify-between border-b border-[var(--docs-border)] px-4 ${
           inDrawer ? "pr-12" : ""
         }`}
       >
@@ -193,16 +223,16 @@ export function DocsSidebar({ slug, onNavigate, onSearch, inDrawer = false }: Do
             <Image
               src="/logo.png"
               alt="Applivo"
-              width={26}
-              height={26}
-              className="h-6.5 w-6.5 rounded-md object-contain transition-transform group-hover:scale-105"
+              width={22}
+              height={22}
+              className="h-5.5 w-5.5 rounded-md object-contain transition-transform group-hover:scale-105"
             />
           </Link>
-          <span aria-hidden className="h-3.5 w-px bg-white/15" />
+          <span aria-hidden className="h-3.5 w-px bg-[var(--docs-border)]" />
           <Link
             href="/docs"
             onClick={onNavigate}
-            className="text-[13.5px] font-semibold tracking-tight text-white hover:text-zinc-200 transition-colors"
+            className="text-[14px] font-medium tracking-tight text-[var(--docs-text)] hover:text-white transition-colors"
           >
             Docs
           </Link>
@@ -213,16 +243,16 @@ export function DocsSidebar({ slug, onNavigate, onSearch, inDrawer = false }: Do
           onClick={onSearch}
           aria-label="Search documentation (⌘K)"
           title="Search documentation (⌘K)"
-          className="flex h-7 w-7 items-center justify-center rounded-md text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
+          className="flex h-8 w-8 items-center justify-center rounded-md text-[var(--docs-secondary)] hover:text-white hover:bg-[var(--docs-card-hover)] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
         >
-          <Search className="h-3.5 w-3.5" strokeWidth={1.6} />
+          <Search className="h-4 w-4" strokeWidth={1.5} />
         </button>
       </div>
 
       {/* Independently scrolling navigation region */}
       <nav
         aria-label="Documentation navigation"
-        className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-2 py-2.5 pb-4 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.08)_transparent]"
+        className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-2.5 py-3 pb-4 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.08)_transparent]"
       >
         {groups.map((g) => {
           const isOpen = !!open[g.id];
@@ -239,25 +269,25 @@ export function DocsSidebar({ slug, onNavigate, onSearch, inDrawer = false }: Do
               : g.articles;
 
           return (
-            <div key={g.id} className="mb-1">
+            <div key={g.id} className="mb-0.5">
               <button
                 type="button"
                 aria-expanded={isOpen}
                 onClick={() => toggleGroup(g.id)}
-                className={`group flex h-8 w-full items-center justify-between rounded-md px-2.5 text-left text-[13px] font-medium transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40 ${
-                  isCurrentGroup ? "text-zinc-200" : "text-zinc-300"
+                className={`group flex h-[38px] w-full items-center justify-between rounded-md px-3 text-left text-[14px] font-medium transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40 ${
+                  isCurrentGroup || isOpen ? "text-[var(--docs-text)]" : "text-[var(--docs-secondary)]"
                 }`}
               >
                 <span className="truncate">{g.title}</span>
                 {isOpen ? (
                   <ChevronDown
-                    className="h-3.5 w-3.5 text-zinc-500 transition-colors group-hover:text-zinc-300"
-                    strokeWidth={1.6}
+                    className="h-3.5 w-3.5 text-[var(--docs-muted)] transition-colors group-hover:text-zinc-200"
+                    strokeWidth={1.5}
                   />
                 ) : (
                   <ChevronRight
-                    className="h-3.5 w-3.5 text-zinc-500 transition-colors group-hover:text-zinc-300"
-                    strokeWidth={1.6}
+                    className="h-3.5 w-3.5 text-[var(--docs-muted)] transition-colors group-hover:text-zinc-200"
+                    strokeWidth={1.5}
                   />
                 )}
               </button>
@@ -279,17 +309,17 @@ export function DocsSidebar({ slug, onNavigate, onSearch, inDrawer = false }: Do
                           onClick={onNavigate}
                           title={article.title}
                           aria-current={isActive ? "page" : undefined}
-                          className={`group flex h-7 items-center gap-2.5 rounded-md px-2.5 text-[13px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40 ${
+                          className={`group flex h-[34px] items-center gap-2.5 rounded-md pl-6 pr-2.5 text-[14px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40 ${
                             isActive
-                              ? "bg-white/[0.08] font-medium text-white shadow-none"
-                              : "text-zinc-400 hover:bg-white/[0.04] hover:text-zinc-100"
+                              ? "bg-[var(--docs-card-hover)] font-medium text-[var(--docs-text)] shadow-none"
+                              : "text-[var(--docs-secondary)] hover:bg-[var(--docs-card-hover)] hover:text-white"
                           }`}
                         >
                           <Icon
-                            className={`h-3.5 w-3.5 shrink-0 ${
-                              isActive ? "text-white" : "text-zinc-400 group-hover:text-zinc-200"
+                            className={`h-4 w-4 shrink-0 ${
+                              isActive ? "text-[var(--docs-text)]" : "text-[var(--docs-muted)] group-hover:text-zinc-300"
                             }`}
-                            strokeWidth={1.6}
+                            strokeWidth={1.5}
                             aria-hidden
                           />
                           <span className="truncate whitespace-nowrap">{label}</span>
@@ -304,9 +334,9 @@ export function DocsSidebar({ slug, onNavigate, onSearch, inDrawer = false }: Do
                       <button
                         type="button"
                         onClick={() => setExpandedGettingStarted(true)}
-                        className="group flex h-7 w-full items-center gap-2.5 rounded-md px-2.5 text-[12px] font-medium text-zinc-500 hover:bg-white/[0.04] hover:text-zinc-300 transition-colors"
+                        className="group flex h-7 w-full items-center gap-2 rounded-md pl-6 pr-2.5 text-[13px] font-medium text-[var(--docs-muted)] hover:bg-[var(--docs-card-hover)] hover:text-zinc-300 transition-colors"
                       >
-                        <Plus className="h-3.5 w-3.5 shrink-0 text-zinc-500 group-hover:text-zinc-300" strokeWidth={1.6} />
+                        <Plus className="h-3.5 w-3.5 shrink-0 text-[var(--docs-muted)] group-hover:text-zinc-300" strokeWidth={1.5} />
                         <span>{g.articles.length - PRIMARY_GETTING_STARTED.length} more guides</span>
                       </button>
                     </li>
@@ -317,9 +347,9 @@ export function DocsSidebar({ slug, onNavigate, onSearch, inDrawer = false }: Do
                       <button
                         type="button"
                         onClick={() => setExpandedGettingStarted(false)}
-                        className="group flex h-7 w-full items-center gap-2.5 rounded-md px-2.5 text-[12px] font-medium text-zinc-500 hover:bg-white/[0.04] hover:text-zinc-300 transition-colors"
+                        className="group flex h-7 w-full items-center gap-2 rounded-md pl-6 pr-2.5 text-[13px] font-medium text-[var(--docs-muted)] hover:bg-[var(--docs-card-hover)] hover:text-zinc-300 transition-colors"
                       >
-                        <ChevronUp className="h-3.5 w-3.5 shrink-0 text-zinc-500 group-hover:text-zinc-300" strokeWidth={1.6} />
+                        <ChevronUp className="h-3.5 w-3.5 shrink-0 text-[var(--docs-muted)] group-hover:text-zinc-300" strokeWidth={1.5} />
                         <span>Show fewer</span>
                       </button>
                     </li>
@@ -332,7 +362,7 @@ export function DocsSidebar({ slug, onNavigate, onSearch, inDrawer = false }: Do
       </nav>
 
       {/* Pinned bottom resource links matching Linear Docs */}
-      <div className="shrink-0 border-t border-[var(--docs-border)] p-2 space-y-0.5 bg-[var(--docs-bg)]">
+      <div className="shrink-0 border-t border-[var(--docs-border)] p-2.5 space-y-0.5 bg-[var(--docs-sidebar-bg)]">
         {[
           { href: "/docs", label: "Docs", icon: BookOpen },
           { href: "/docs/developer-api", label: "Developers", icon: Terminal },
@@ -347,17 +377,17 @@ export function DocsSidebar({ slug, onNavigate, onSearch, inDrawer = false }: Do
               href={href}
               onClick={onNavigate}
               aria-current={isActive ? "page" : undefined}
-              className={`group flex h-7 items-center gap-2.5 rounded-md px-2.5 text-[13px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40 ${
+              className={`group flex h-[34px] items-center gap-2.5 rounded-md px-3 text-[14px] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40 ${
                 isActive
-                  ? "bg-white/[0.08] font-medium text-white shadow-none"
-                  : "text-zinc-400 hover:bg-white/[0.04] hover:text-zinc-100"
+                  ? "bg-[var(--docs-card-hover)] font-medium text-[var(--docs-text)] shadow-none"
+                  : "text-[var(--docs-secondary)] hover:bg-[var(--docs-card-hover)] hover:text-white"
               }`}
             >
               <Icon
-                className={`h-3.5 w-3.5 shrink-0 ${
-                  isActive ? "text-white" : "text-zinc-400 group-hover:text-zinc-200"
+                className={`h-4 w-4 shrink-0 ${
+                  isActive ? "text-[var(--docs-text)]" : "text-[var(--docs-muted)] group-hover:text-zinc-300"
                 }`}
-                strokeWidth={1.6}
+                strokeWidth={1.5}
               />
               <span className="truncate">{label}</span>
             </Link>

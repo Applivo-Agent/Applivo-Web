@@ -29,9 +29,9 @@ export function DocsToc({ headings }: { headings: Heading[] }) {
   return (
     <nav
       aria-label="On this page"
-      className="sticky top-[calc(var(--docs-header-h)+36px)] hidden max-h-[calc(100vh-var(--docs-header-h)-64px)] w-[220px] shrink-0 overflow-y-auto border-l border-white/[0.08] pl-4 xl:block [scrollbar-width:none]"
+      className="sticky top-[calc(var(--docs-header-h)+36px)] hidden max-h-[calc(100vh-var(--docs-header-h)-64px)] w-[220px] shrink-0 overflow-y-auto border-l border-[var(--docs-border)] pl-4 xl:block [scrollbar-width:none]"
     >
-      <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+      <p className="mb-3 text-[12px] font-medium uppercase tracking-wider text-[var(--docs-muted)]">
         On this page
       </p>
       <ul className="space-y-1.5 text-[13px]">
@@ -53,7 +53,7 @@ export function DocsToc({ headings }: { headings: Heading[] }) {
                 }}
                 className={`block py-0.5 leading-snug transition-colors hover:text-white ${
                   h.level === 3 ? "pl-3 text-[12.5px]" : ""
-                } ${isActive ? "font-medium text-white" : "text-zinc-400"}`}
+                } ${isActive ? "font-medium text-[var(--docs-text)]" : "text-[var(--docs-secondary)]"}`}
               >
                 {h.text}
               </a>

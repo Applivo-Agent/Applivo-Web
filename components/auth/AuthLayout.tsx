@@ -113,7 +113,7 @@ export function AuthLayout({
       <div className="w-full max-w-[430px] relative z-10">
         <div className="rounded-2xl bg-[#111111] border border-[#232326] p-6 sm:p-8 shadow-[0_24px_60px_rgba(0,0,0,0.95)]">
           {/* Logo & Header */}
-          <div className="flex flex-col items-center text-center mb-5">
+          <div className="flex flex-col items-center text-center mb-6">
             <Link
               href="/"
               className="inline-flex items-center justify-center mb-4 group transition-transform hover:scale-[1.03] active:scale-[0.98]"

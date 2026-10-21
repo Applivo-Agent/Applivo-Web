@@ -61,7 +61,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         target = target[keys[i]] as Record<string, unknown>;
       }
       target[keys[keys.length - 1]] = value;
-      return next as SettingsState;
+      return next as unknown as SettingsState;
     });
     setSaveStatus("idle");
   }, []);
