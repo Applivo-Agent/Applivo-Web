@@ -107,32 +107,32 @@ export function Testimonials() {
               <div
                 key={idx}
                 style={CARD_GRADIENT_STYLE}
-                className="rounded-[24px] border border-[#2A2A2A] p-5 sm:p-[21px] hover:border-[#383838] transition-all duration-200 flex flex-col justify-between flex-1"
+                className="rounded-[24px] border border-[#2A2A2A] p-[18px] hover:border-[#383838] transition-all duration-200 flex flex-col justify-between flex-1"
               >
-                <p className="text-[#E4E4E4] text-[14px] leading-[1.55] font-normal">
+                <p className="text-[#E4E4E4] text-[13px] leading-[1.5] font-normal">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="flex items-center gap-3.5 mt-auto pt-4 sm:pt-5">
-                  <div className="w-[50px] h-[50px] sm:w-[52px] sm:h-[52px] rounded-[10px] bg-[#1E1E20] border border-[#2A2A2A] overflow-hidden flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3 mt-auto pt-3.5 sm:pt-4">
+                  <div className="w-[44px] h-[44px] rounded-[10px] bg-[#1E1E20] border border-[#2A2A2A] overflow-hidden flex items-center justify-center shrink-0">
                     {t.avatar ? (
                       <Image
                         src={t.avatar}
                         alt={t.name}
-                        width={104}
-                        height={104}
+                        width={88}
+                        height={88}
                         className="w-full h-full object-cover object-center"
                       />
                     ) : (
-                      <span className="text-[#F5F5F5] font-semibold text-[14px] tracking-tight">
+                      <span className="text-[#F5F5F5] font-medium text-[12px] tracking-tight">
                         {t.initials}
                       </span>
                     )}
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-[#F5F5F5] font-medium text-[14px] leading-[1.4] tracking-tight truncate">
+                    <h3 className="text-[#F5F5F5] font-medium text-[13px] leading-[1.4] tracking-tight truncate">
                       {t.name}
                     </h3>
-                    <p className="text-[#999999] text-[12px] leading-[1.45] truncate mt-0.5">
+                    <p className="text-[#999999] text-[11px] leading-[1.4] truncate mt-0.5">
                       {t.role} <span className="text-[#52525B]">/</span> {t.context}
                     </p>
                   </div>
@@ -141,36 +141,36 @@ export function Testimonials() {
             ))}
           </div>
 
-          {/* Center Column (Featured Card: Matches 2 side cards + gap, compact 19px quote) */}
+          {/* Center Column (Featured Card: Matches 2 side cards + gap, compact 17px quote) */}
           <div className="order-2 md:order-1 lg:order-2 md:col-span-2 lg:col-span-1 flex flex-col h-full">
             <div
               style={CARD_GRADIENT_STYLE}
-              className="rounded-[24px] border border-[#2A2A2A] p-6 hover:border-[#383838] transition-all duration-200 flex flex-col justify-between h-full"
+              className="rounded-[24px] border border-[#2A2A2A] p-[22px] hover:border-[#383838] transition-all duration-200 flex flex-col justify-between h-full"
             >
-              <p className="text-[#F5F5F5] text-[18px] sm:text-[19px] font-medium leading-[1.45]">
+              <p className="text-[#F5F5F5] text-[15px] sm:text-[16px] lg:text-[17px] font-[450] leading-[1.5]">
                 &ldquo;{featuredTestimonial.quote}&rdquo;
               </p>
-              <div className="flex items-center gap-4 mt-auto pt-6">
-                <div className="w-[96px] h-[96px] sm:w-[104px] sm:h-[104px] rounded-[12px] bg-[#1E1E20] border border-[#2A2A2A] overflow-hidden flex items-center justify-center shrink-0">
+              <div className="flex items-center gap-3.5 mt-auto pt-5">
+                <div className="w-[88px] h-[88px] rounded-[12px] bg-[#1E1E20] border border-[#2A2A2A] overflow-hidden flex items-center justify-center shrink-0">
                   {featuredTestimonial.avatar ? (
                     <Image
                       src={featuredTestimonial.avatar}
                       alt={featuredTestimonial.name}
-                      width={208}
-                      height={208}
+                      width={176}
+                      height={176}
                       className="w-full h-full object-cover object-center"
                     />
                   ) : (
-                    <span className="text-[#F5F5F5] font-semibold text-[18px] tracking-tight">
+                    <span className="text-[#F5F5F5] font-semibold text-[15px] tracking-tight">
                       {featuredTestimonial.initials}
                     </span>
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-[#F5F5F5] font-medium text-[15px] leading-[1.4] tracking-tight">
+                  <h3 className="text-[#F5F5F5] font-medium text-[14px] leading-[1.4] tracking-tight">
                     {featuredTestimonial.name}
                   </h3>
-                  <p className="text-[#999999] text-[12.5px] leading-[1.45] mt-1">
+                  <p className="text-[#999999] text-[11px] leading-[1.4] mt-0.5">
                     {featuredTestimonial.role} <span className="text-[#52525B]">/</span> {featuredTestimonial.context}
                   </p>
                 </div>
@@ -184,32 +184,32 @@ export function Testimonials() {
               <div
                 key={idx}
                 style={CARD_GRADIENT_STYLE}
-                className="rounded-[24px] border border-[#2A2A2A] p-5 sm:p-[21px] hover:border-[#383838] transition-all duration-200 flex flex-col justify-between flex-1"
+                className="rounded-[24px] border border-[#2A2A2A] p-[18px] hover:border-[#383838] transition-all duration-200 flex flex-col justify-between flex-1"
               >
-                <p className="text-[#E4E4E4] text-[14px] leading-[1.55] font-normal">
+                <p className="text-[#E4E4E4] text-[13px] leading-[1.5] font-normal">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="flex items-center gap-3.5 mt-auto pt-4 sm:pt-5">
-                  <div className="w-[50px] h-[50px] sm:w-[52px] sm:h-[52px] rounded-[10px] bg-[#1E1E20] border border-[#2A2A2A] overflow-hidden flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3 mt-auto pt-3.5 sm:pt-4">
+                  <div className="w-[44px] h-[44px] rounded-[10px] bg-[#1E1E20] border border-[#2A2A2A] overflow-hidden flex items-center justify-center shrink-0">
                     {t.avatar ? (
                       <Image
                         src={t.avatar}
                         alt={t.name}
-                        width={104}
-                        height={104}
+                        width={88}
+                        height={88}
                         className="w-full h-full object-cover object-center"
                       />
                     ) : (
-                      <span className="text-[#F5F5F5] font-semibold text-[14px] tracking-tight">
+                      <span className="text-[#F5F5F5] font-medium text-[12px] tracking-tight">
                         {t.initials}
                       </span>
                     )}
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-[#F5F5F5] font-medium text-[14px] leading-[1.4] tracking-tight truncate">
+                    <h3 className="text-[#F5F5F5] font-medium text-[13px] leading-[1.4] tracking-tight truncate">
                       {t.name}
                     </h3>
-                    <p className="text-[#999999] text-[12px] leading-[1.45] truncate mt-0.5">
+                    <p className="text-[#999999] text-[11px] leading-[1.4] truncate mt-0.5">
                       {t.role} <span className="text-[#52525B]">/</span> {t.context}
                     </p>
                   </div>
