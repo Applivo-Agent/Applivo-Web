@@ -12,6 +12,10 @@ interface Testimonial {
   initials: string;
 }
 
+const CARD_GRADIENT_STYLE = {
+  background: "linear-gradient(180deg, #1D1D1D 0%, #181818 55%, #131313 100%)",
+};
+
 const leftTestimonials: Testimonial[] = [
   {
     quote:
@@ -24,10 +28,11 @@ const leftTestimonials: Testimonial[] = [
   {
     quote:
       "I tracked over 80 applications across Internshala and LinkedIn in my first two weeks. The Kanban tracker and status sync keep my search completely organized.",
-    name: "Arjun Mehta",
-    role: "Software Engineer",
-    context: "Scale Applications",
-    initials: "AM",
+    name: "Sudharsan",
+    role: "AI Engineer",
+    context: "Times Media, Malaysia",
+    avatar: "/testimonials/sudharsan.png",
+    initials: "S",
   },
 ];
 
@@ -100,7 +105,8 @@ export function Testimonials() {
             {leftTestimonials.map((t, idx) => (
               <div
                 key={idx}
-                className="rounded-[18px] sm:rounded-[20px] bg-[#151515] border border-[#252525] p-4 sm:p-[18px] hover:border-[#333333] hover:bg-[#181818] transition-all duration-200 flex flex-col justify-between"
+                style={CARD_GRADIENT_STYLE}
+                className="rounded-[24px] border border-[#292929] p-4 sm:p-[18px] hover:border-[#383838] transition-all duration-200 flex flex-col justify-between"
               >
                 <p className="text-[#E5E5E5] text-[13px] sm:text-[13.5px] leading-[1.55] font-normal">
                   &ldquo;{t.quote}&rdquo;
@@ -113,7 +119,7 @@ export function Testimonials() {
                         alt={t.name}
                         width={80}
                         height={80}
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-cover object-center"
                       />
                     ) : (
                       <span className="text-[#F5F5F5] font-semibold text-[12px] sm:text-[12.5px] tracking-tight">
@@ -136,7 +142,10 @@ export function Testimonials() {
 
           {/* Center Column (Featured Card: ~350–390px tall) */}
           <div className="flex flex-col">
-            <div className="rounded-[18px] sm:rounded-[20px] bg-[#151515] border border-[#252525] p-5 sm:p-[20px] hover:border-[#333333] hover:bg-[#181818] transition-all duration-200 flex flex-col justify-between min-h-[350px] md:min-h-[370px]">
+            <div
+              style={CARD_GRADIENT_STYLE}
+              className="rounded-[24px] border border-[#303030] p-5 sm:p-[20px] hover:border-[#3E3E3E] transition-all duration-200 flex flex-col justify-between min-h-[350px] md:min-h-[370px]"
+            >
               <p className="text-[#F5F5F5] text-[15px] sm:text-[16px] font-medium leading-[1.55]">
                 &ldquo;{featuredTestimonial.quote}&rdquo;
               </p>
@@ -173,7 +182,8 @@ export function Testimonials() {
             {rightTestimonials.map((t, idx) => (
               <div
                 key={idx}
-                className="rounded-[18px] sm:rounded-[20px] bg-[#151515] border border-[#252525] p-4 sm:p-[18px] hover:border-[#333333] hover:bg-[#181818] transition-all duration-200 flex flex-col justify-between"
+                style={CARD_GRADIENT_STYLE}
+                className="rounded-[24px] border border-[#292929] p-4 sm:p-[18px] hover:border-[#383838] transition-all duration-200 flex flex-col justify-between"
               >
                 <p className="text-[#E5E5E5] text-[13px] sm:text-[13.5px] leading-[1.55] font-normal">
                   &ldquo;{t.quote}&rdquo;
