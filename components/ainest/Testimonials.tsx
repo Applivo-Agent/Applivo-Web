@@ -1,12 +1,14 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 interface Testimonial {
   quote: string;
   name: string;
   role: string;
   context: string;
+  avatar?: string;
   initials: string;
 }
 
@@ -31,11 +33,12 @@ const leftTestimonials: Testimonial[] = [
 
 const featuredTestimonial: Testimonial = {
   quote:
-    "Applivo auto-resolves tedious application questions with accurate resume context. Candidates get consistent submissions without burnout, and my interview pipeline finally breathes.",
-  name: "Priya Sharma",
-  role: "Frontend Engineer",
-  context: "Career Transition",
-  initials: "PS",
+    "Applivo auto-resolves tedious application questions with accurate resume context. I was able to automate targeted applications with high precision, and my interview pipeline finally breathes.",
+  name: "Shree Harish V",
+  role: "Quant Developer",
+  context: "Finflock Systems Pvt Ltd",
+  avatar: "/testimonials/shree-harish.png",
+  initials: "SH",
 };
 
 const rightTestimonials: Testimonial[] = [
@@ -103,10 +106,20 @@ export function Testimonials() {
                   &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-2.5 sm:gap-3 mt-4 sm:mt-[18px]">
-                  <div className="w-[38px] h-[38px] sm:w-[40px] sm:h-[40px] rounded-[10px] bg-[#202022] border border-[#2D2D30] flex items-center justify-center shrink-0">
-                    <span className="text-[#F5F5F5] font-semibold text-[12px] sm:text-[12.5px] tracking-tight">
-                      {t.initials}
-                    </span>
+                  <div className="w-[38px] h-[38px] sm:w-[40px] sm:h-[40px] rounded-[10px] bg-[#202022] border border-[#2D2D30] overflow-hidden flex items-center justify-center shrink-0">
+                    {t.avatar ? (
+                      <Image
+                        src={t.avatar}
+                        alt={t.name}
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      <span className="text-[#F5F5F5] font-semibold text-[12px] sm:text-[12.5px] tracking-tight">
+                        {t.initials}
+                      </span>
+                    )}
                   </div>
                   <div className="min-w-0">
                     <h3 className="text-[#F5F5F5] font-medium text-[13px] tracking-tight truncate">
@@ -128,10 +141,20 @@ export function Testimonials() {
                 &ldquo;{featuredTestimonial.quote}&rdquo;
               </p>
               <div className="flex items-center gap-3.5 sm:gap-4 mt-6 sm:mt-8">
-                <div className="w-[54px] h-[54px] sm:w-[58px] sm:h-[58px] rounded-[12px] bg-[#202022] border border-[#2D2D30] flex items-center justify-center shrink-0">
-                  <span className="text-[#F5F5F5] font-semibold text-[15px] sm:text-[16px] tracking-tight">
-                    {featuredTestimonial.initials}
-                  </span>
+                <div className="w-[54px] h-[54px] sm:w-[58px] sm:h-[58px] rounded-[12px] bg-[#202022] border border-[#2D2D30] overflow-hidden flex items-center justify-center shrink-0">
+                  {featuredTestimonial.avatar ? (
+                    <Image
+                      src={featuredTestimonial.avatar}
+                      alt={featuredTestimonial.name}
+                      width={116}
+                      height={116}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  ) : (
+                    <span className="text-[#F5F5F5] font-semibold text-[15px] sm:text-[16px] tracking-tight">
+                      {featuredTestimonial.initials}
+                    </span>
+                  )}
                 </div>
                 <div className="min-w-0">
                   <h3 className="text-[#F5F5F5] font-medium text-[13.5px] sm:text-[14px] tracking-tight truncate">
@@ -156,10 +179,20 @@ export function Testimonials() {
                   &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-2.5 sm:gap-3 mt-4 sm:mt-[18px]">
-                  <div className="w-[38px] h-[38px] sm:w-[40px] sm:h-[40px] rounded-[10px] bg-[#202022] border border-[#2D2D30] flex items-center justify-center shrink-0">
-                    <span className="text-[#F5F5F5] font-semibold text-[12px] sm:text-[12.5px] tracking-tight">
-                      {t.initials}
-                    </span>
+                  <div className="w-[38px] h-[38px] sm:w-[40px] sm:h-[40px] rounded-[10px] bg-[#202022] border border-[#2D2D30] overflow-hidden flex items-center justify-center shrink-0">
+                    {t.avatar ? (
+                      <Image
+                        src={t.avatar}
+                        alt={t.name}
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-cover object-top"
+                      />
+                    ) : (
+                      <span className="text-[#F5F5F5] font-semibold text-[12px] sm:text-[12.5px] tracking-tight">
+                        {t.initials}
+                      </span>
+                    )}
                   </div>
                   <div className="min-w-0">
                     <h3 className="text-[#F5F5F5] font-medium text-[13px] tracking-tight truncate">
