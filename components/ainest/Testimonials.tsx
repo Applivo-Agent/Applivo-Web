@@ -13,7 +13,7 @@ interface Testimonial {
 }
 
 const CARD_GRADIENT_STYLE = {
-  background: "linear-gradient(180deg, #1D1D1D 0%, #181818 55%, #131313 100%)",
+  background: "linear-gradient(180deg, #202020 0%, #191919 48%, #121212 100%)",
 };
 
 const leftTestimonials: Testimonial[] = [
@@ -31,7 +31,7 @@ const leftTestimonials: Testimonial[] = [
     name: "Shree Harish V",
     role: "Quant Developer",
     context: "Finflock Systems Pvt Ltd",
-    avatar: "/testimonials/shree-harish.png",
+    avatar: "/testimonials/shree-harish-portrait.png",
     initials: "SH",
   },
 ];
@@ -76,7 +76,7 @@ export function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative z-10 w-full py-14 sm:py-16 md:py-16 px-4 sm:px-6 md:px-8 bg-[#0A0A0A] overflow-hidden"
+      className="relative z-10 w-full py-14 sm:py-16 md:py-16 px-4 sm:px-6 md:px-8 bg-[#090909] overflow-hidden"
       aria-label="Customer Testimonials"
     >
       {/* ─── Centered Section Heading (Compact SaaS Two-Tone Typography) ─── */}
@@ -97,41 +97,41 @@ export function Testimonials() {
         </p>
       </div>
 
-      {/* ─── 3-Column Masonry Layout (Max Width: 1,180px) ─── */}
+      {/* ─── 3-Column Masonry Layout (Matching Kilo Reference Proportions) ─── */}
       <div className="w-full max-w-[1180px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[14px] md:gap-[16px] items-start">
-          {/* Left Column (2 cards) */}
-          <div className="flex flex-col gap-[14px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-[18px] items-stretch">
+          {/* Left Column (2 cards stacked vertically) */}
+          <div className="order-1 md:order-2 lg:order-1 md:col-span-1 flex flex-col gap-4 h-full">
             {leftTestimonials.map((t, idx) => (
               <div
                 key={idx}
                 style={CARD_GRADIENT_STYLE}
-                className="rounded-[24px] border border-[#292929] p-4 sm:p-[18px] hover:border-[#383838] transition-all duration-200 flex flex-col justify-between"
+                className="rounded-[28px] border border-[#2A2A2A] p-6 hover:border-[#383838] transition-all duration-200 flex flex-col justify-between flex-1"
               >
-                <p className="text-[#E5E5E5] text-[13px] sm:text-[13.5px] leading-[1.55] font-normal">
+                <p className="text-[#E4E4E4] text-[15px] sm:text-[15.5px] leading-[1.58] font-normal">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="flex items-center gap-2.5 sm:gap-3 mt-4 sm:mt-[18px]">
-                  <div className="w-[38px] h-[38px] sm:w-[40px] sm:h-[40px] rounded-[10px] bg-[#202022] border border-[#2D2D30] overflow-hidden flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3.5 sm:gap-4 mt-auto pt-6">
+                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-[12px] bg-[#1E1E20] border border-[#2A2A2A] overflow-hidden flex items-center justify-center shrink-0">
                     {t.avatar ? (
                       <Image
                         src={t.avatar}
                         alt={t.name}
-                        width={80}
-                        height={80}
+                        width={124}
+                        height={124}
                         className="w-full h-full object-cover object-center"
                       />
                     ) : (
-                      <span className="text-[#F5F5F5] font-semibold text-[12px] sm:text-[12.5px] tracking-tight">
+                      <span className="text-[#F5F5F5] font-semibold text-[15px] tracking-tight">
                         {t.initials}
                       </span>
                     )}
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-[#F5F5F5] font-medium text-[13px] tracking-tight truncate">
+                    <h3 className="text-[#F5F5F5] font-medium text-[15px] sm:text-[15.5px] tracking-tight truncate">
                       {t.name}
                     </h3>
-                    <p className="text-[#A1A1AA] text-[11.5px] sm:text-[12px] truncate mt-0.5">
+                    <p className="text-[#999999] text-[13px] sm:text-[13.5px] truncate mt-0.5">
                       {t.role} <span className="text-[#52525B]">/</span> {t.context}
                     </p>
                   </div>
@@ -140,36 +140,36 @@ export function Testimonials() {
             ))}
           </div>
 
-          {/* Center Column (Featured Card: ~350–390px tall) */}
-          <div className="flex flex-col">
+          {/* Center Column (Featured Card: Spans full height of side cards + gap) */}
+          <div className="order-2 md:order-1 lg:order-2 md:col-span-2 lg:col-span-1 flex flex-col h-full">
             <div
               style={CARD_GRADIENT_STYLE}
-              className="rounded-[24px] border border-[#303030] p-5 sm:p-[20px] hover:border-[#3E3E3E] transition-all duration-200 flex flex-col justify-between min-h-[350px] md:min-h-[370px]"
+              className="rounded-[28px] border border-[#2A2A2A] p-7 sm:p-8 lg:p-[32px] hover:border-[#383838] transition-all duration-200 flex flex-col justify-between h-full"
             >
-              <p className="text-[#F5F5F5] text-[15px] sm:text-[16px] font-medium leading-[1.55]">
+              <p className="text-[#F5F5F5] text-[18px] sm:text-[20px] lg:text-[22px] font-medium leading-[1.45]">
                 &ldquo;{featuredTestimonial.quote}&rdquo;
               </p>
-              <div className="flex items-center gap-3.5 sm:gap-4 mt-6 sm:mt-8">
-                <div className="w-[54px] h-[54px] sm:w-[58px] sm:h-[58px] rounded-[12px] bg-[#202022] border border-[#2D2D30] overflow-hidden flex items-center justify-center shrink-0">
+              <div className="flex items-center gap-4 sm:gap-5 mt-auto pt-8">
+                <div className="w-[110px] h-[110px] sm:w-[125px] sm:h-[125px] lg:w-[135px] lg:h-[135px] rounded-[14px] bg-[#1E1E20] border border-[#2A2A2A] overflow-hidden flex items-center justify-center shrink-0">
                   {featuredTestimonial.avatar ? (
                     <Image
                       src={featuredTestimonial.avatar}
                       alt={featuredTestimonial.name}
-                      width={116}
-                      height={116}
+                      width={270}
+                      height={270}
                       className="w-full h-full object-cover object-center"
                     />
                   ) : (
-                    <span className="text-[#F5F5F5] font-semibold text-[15px] sm:text-[16px] tracking-tight">
+                    <span className="text-[#F5F5F5] font-semibold text-[20px] tracking-tight">
                       {featuredTestimonial.initials}
                     </span>
                   )}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-[#F5F5F5] font-medium text-[13.5px] sm:text-[14px] tracking-tight truncate">
+                  <h3 className="text-[#F5F5F5] font-medium text-[16.5px] sm:text-[17.5px] tracking-tight">
                     {featuredTestimonial.name}
                   </h3>
-                  <p className="text-[#A1A1AA] text-[11.5px] sm:text-[12px] truncate mt-0.5">
+                  <p className="text-[#999999] text-[13.5px] sm:text-[14.5px] mt-1 leading-snug">
                     {featuredTestimonial.role} <span className="text-[#52525B]">/</span> {featuredTestimonial.context}
                   </p>
                 </div>
@@ -177,38 +177,38 @@ export function Testimonials() {
             </div>
           </div>
 
-          {/* Right Column (2 cards) */}
-          <div className="flex flex-col gap-[14px]">
+          {/* Right Column (2 cards stacked vertically) */}
+          <div className="order-3 md:order-3 lg:order-3 md:col-span-1 flex flex-col gap-4 h-full">
             {rightTestimonials.map((t, idx) => (
               <div
                 key={idx}
                 style={CARD_GRADIENT_STYLE}
-                className="rounded-[24px] border border-[#292929] p-4 sm:p-[18px] hover:border-[#383838] transition-all duration-200 flex flex-col justify-between"
+                className="rounded-[28px] border border-[#2A2A2A] p-6 hover:border-[#383838] transition-all duration-200 flex flex-col justify-between flex-1"
               >
-                <p className="text-[#E5E5E5] text-[13px] sm:text-[13.5px] leading-[1.55] font-normal">
+                <p className="text-[#E4E4E4] text-[15px] sm:text-[15.5px] leading-[1.58] font-normal">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="flex items-center gap-2.5 sm:gap-3 mt-4 sm:mt-[18px]">
-                  <div className="w-[38px] h-[38px] sm:w-[40px] sm:h-[40px] rounded-[10px] bg-[#202022] border border-[#2D2D30] overflow-hidden flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3.5 sm:gap-4 mt-auto pt-6">
+                  <div className="w-[58px] h-[58px] sm:w-[62px] sm:h-[62px] rounded-[12px] bg-[#1E1E20] border border-[#2A2A2A] overflow-hidden flex items-center justify-center shrink-0">
                     {t.avatar ? (
                       <Image
                         src={t.avatar}
                         alt={t.name}
-                        width={80}
-                        height={80}
-                        className="w-full h-full object-cover object-top"
+                        width={124}
+                        height={124}
+                        className="w-full h-full object-cover object-center"
                       />
                     ) : (
-                      <span className="text-[#F5F5F5] font-semibold text-[12px] sm:text-[12.5px] tracking-tight">
+                      <span className="text-[#F5F5F5] font-semibold text-[15px] tracking-tight">
                         {t.initials}
                       </span>
                     )}
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-[#F5F5F5] font-medium text-[13px] tracking-tight truncate">
+                    <h3 className="text-[#F5F5F5] font-medium text-[15px] sm:text-[15.5px] tracking-tight">
                       {t.name}
                     </h3>
-                    <p className="text-[#A1A1AA] text-[11.5px] sm:text-[12px] truncate mt-0.5">
+                    <p className="text-[#999999] text-[13px] sm:text-[13.5px] truncate mt-0.5">
                       {t.role} <span className="text-[#52525B]">/</span> {t.context}
                     </p>
                   </div>
