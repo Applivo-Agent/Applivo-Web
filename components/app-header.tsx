@@ -94,7 +94,7 @@ export function AppHeader() {
   };
 
   return (
-    <header className="app-header sticky top-0 z-20 flex h-[var(--app-header-h)] shrink-0 items-center justify-between gap-3 bg-[var(--app-header)] border-b border-[var(--app-border)] px-4 md:px-5">
+    <header className="app-header sticky top-0 z-20 flex h-[var(--app-header-h)] shrink-0 items-center justify-between gap-3 bg-[var(--app-header)] border-b border-[var(--app-border)] px-4 md:px-6">
       <div className="flex min-w-0 items-center gap-3">
         <button
           type="button"
@@ -135,11 +135,6 @@ export function AppHeader() {
           title={quota ? `${quota.used} of ${quota.limit} applications used today` : undefined}
         >
           <span className="text-[var(--app-text-dim)]">{planLabel}</span>
-          {quota && (
-            <span className="hidden sm:inline text-white">
-              {quota.used}/{quota.limit}
-            </span>
-          )}
         </Link>
 
         {canUpgrade && (

@@ -85,7 +85,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
-  const { plan, quota } = useSubscription();
+  const { plan } = useSubscription();
   const { collapsed, mobileOpen, toggle, expand } = useShell();
   const [query, setQuery] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
@@ -112,7 +112,6 @@ export function Sidebar() {
   const planLabel = isSuper
     ? "Admin"
     : plan === "starter" ? "Starter" : plan === "pro" ? "Pro" : plan === "premium" ? "Premium" : "Free";
-  const pct = quota && quota.limit > 0 ? Math.min((quota.used / quota.limit) * 100, 100) : 0;
 
   const q = query.trim().toLowerCase();
   const groups = navGroups
@@ -185,13 +184,13 @@ export function Sidebar() {
 
       {/* 3. Scrollable navigation (own scroll container, clears the footer when scrolled to the end) */}
       <nav aria-label="Main" className="app-scroll min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-3 pb-6 pt-2">
-        <div className="space-y-5">
+        <div className="space-y-3.5">
           {groups.map((group) => (
             <div key={group.label}>
-              <p className={cn("app-nav-label flex items-center gap-1.5", collapsed && "md:hidden")}>
+              <p className={cn("app-nav-label flex items-center gap-1.5 text-[11px] font-medium text-zinc-500 tracking-wider uppercase mb-1 px-2.5", collapsed && "md:hidden")}>
                 {group.label}
-                {group.pro && <span className="rounded px-1 text-[10px] font-medium leading-4 text-[#9a9aa0] bg-white/[0.06]">PRO</span>}
-                {group.premium && <span className="rounded px-1 text-[10px] font-medium leading-4 text-[#9a9aa0] bg-white/[0.06]">PREMIUM</span>}
+                {group.pro && <span className="rounded px-1 text-[9px] font-medium leading-3 text-zinc-500 bg-white/[0.04] border border-white/[0.05]">PRO</span>}
+                {group.premium && <span className="rounded px-1 text-[9px] font-medium leading-3 text-zinc-500 bg-white/[0.04] border border-white/[0.05]">PREMIUM</span>}
               </p>
               {collapsed && <div className="mx-2 mb-1.5 hidden border-t border-[var(--app-border)] md:block" />}
               <ul className="space-y-0.5">
@@ -207,7 +206,7 @@ export function Sidebar() {
                         className={cn("app-nav-item", collapsed && "md:justify-center md:px-0", locked && "opacity-60")}
                       >
                         <item.icon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-                        <span className={cn("flex-1 truncate", collapsed && "md:hidden")}>{item.label}</span>
+                        <span className={cn("flex-1 truncate text-[13px] leading-5", collapsed && "md:hidden")}>{item.label}</span>
                         {locked && <Crown className={cn("h-3 w-3 text-zinc-500", collapsed && "md:hidden")} strokeWidth={1.75} />}
                       </Link>
                     </li>
@@ -244,17 +243,6 @@ export function Sidebar() {
 
       {/* 4. Fixed bottom area: usage + account */}
       <div className={cn("shrink-0 border-t border-[var(--app-border)] p-3", collapsed && "md:px-1.5")}>
-        {quota && !collapsed && (
-          <div className="mb-2.5 px-1">
-            <div className="flex items-center justify-between text-[length:var(--fs-meta)] text-[var(--app-text-dim)]">
-              <span>Daily applications</span>
-              <span className="tabular-nums text-[var(--app-text)]">{quota.used}/{quota.limit}</span>
-            </div>
-            <div className="mt-1.5 h-[3px] overflow-hidden rounded-full bg-white/[0.08]">
-              <div className="h-full rounded-full bg-white/50 transition-[width] duration-700" style={{ width: `${pct}%` }} />
-            </div>
-          </div>
-        )}
         <div className={cn("flex items-center gap-2.5 px-1", collapsed && "md:flex-col md:px-0")}>
           <Link href="/profile" title={collapsed ? `${user?.full_name ?? "Account"} · ${planLabel}` : undefined}
             className={cn("flex min-w-0 flex-1 items-center gap-2.5 rounded-md", collapsed && "md:flex-none")}>

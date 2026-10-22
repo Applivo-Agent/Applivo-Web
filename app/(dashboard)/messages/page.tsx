@@ -2,19 +2,14 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  MessageSquare,
   RefreshCw,
   Loader2,
-  Star,
   Search,
   ExternalLink,
   CheckCheck,
   ArrowLeft,
   X,
   AlertCircle,
-  Inbox,
-  Clock,
-  Sparkles,
 } from "lucide-react";
 import { messagesApi } from "@/lib/api";
 import { useExtension } from "@/lib/extension";
@@ -59,7 +54,6 @@ function formatRelativeTime(dateStr?: string | null): string {
   if (!dateStr) return "";
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) {
-    // Might be already a formatted time like "10:30 AM" or "Yesterday"
     return dateStr;
   }
   const now = new Date();
@@ -71,13 +65,36 @@ function formatRelativeTime(dateStr?: string | null): string {
   if (diffMins < 1) return "Just now";
   if (diffMins < 60) return `${diffMins}m ago`;
   if (diffHours < 24 && d.getDate() === now.getDate()) {
-    return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    return `${diffHours}h ago`;
   }
   if (diffDays === 1) return "Yesterday";
   if (diffDays < 7) {
     return d.toLocaleDateString([], { weekday: "short" });
   }
   return d.toLocaleDateString([], { month: "short", day: "numeric" });
+}
+
+function renderMessageContent(text: string) {
+  if (!text) return null;
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const parts = text.split(urlRegex);
+
+  return parts.map((part, i) => {
+    if (part.match(urlRegex)) {
+      return (
+        <a
+          key={i}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#EDEDED] underline decoration-[#525252] underline-offset-2 hover:decoration-[#EDEDED] transition-colors break-all"
+        >
+          {part}
+        </a>
+      );
+    }
+    return <React.Fragment key={i}>{part}</React.Fragment>;
+  });
 }
 
 export default function MessagesPage() {
@@ -93,7 +110,7 @@ export default function MessagesPage() {
   const [syncing, setSyncing] = useState(false);
   const [syncError, setSyncError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [filter, setFilter] = useState<"all" | "unread" | "important">("all");
+  const [filter, setFilter] = useState<"all" | "unread">("all");
   const [search, setSearch] = useState("");
   const [mobileDetailView, setMobileDetailView] = useState(false);
 
@@ -102,22 +119,40 @@ export default function MessagesPage() {
     try {
       const res = await messagesApi.list({ platform: "internshala" });
       const data = res.data;
+      let rawList: Conversation[] = [];
       if (data && data.conversations) {
-        setConversations(data.conversations);
+        rawList = data.conversations;
         if (data.stats) {
           setStats(data.stats);
         }
       } else if (Array.isArray(data)) {
-        // Fallback for array response
-        setConversations(data);
+        rawList = data;
         const unread = data.filter((c: any) => c.status === "unread").length;
-        const important = data.filter((c: any) => c.is_important).length;
         setStats({
           total_conversations: data.length,
           unread_count: unread,
-          needs_attention_count: important,
+          needs_attention_count: 0,
           last_synced_at: data[0]?.received_at || null,
         });
+      }
+
+      // Deduplicate by external_id or id
+      const seen = new Set<string>();
+      const dedupedList: Conversation[] = [];
+      for (const conv of rawList) {
+        const key = conv.external_id || conv.id;
+        if (!key || seen.has(key)) continue;
+        seen.add(key);
+        dedupedList.push(conv);
+      }
+
+      setConversations(dedupedList);
+      if (!data?.stats) {
+        setStats((prev) => ({
+          ...prev,
+          total_conversations: dedupedList.length,
+          unread_count: dedupedList.filter((c) => c.status === "unread").length,
+        }));
       }
     } catch (err: any) {
       toast.error(err?.response?.data?.detail || "Failed to load messages");
@@ -136,7 +171,7 @@ export default function MessagesPage() {
     return conversations.find((c) => c.id === selectedId) || null;
   }, [conversations, selectedId]);
 
-  // Auto-select first conversation on desktop if none selected and conversations exist
+  // Auto-select first conversation on desktop if none selected
   useEffect(() => {
     if (!selectedId && conversations.length > 0 && typeof window !== "undefined" && window.innerWidth >= 768) {
       setSelectedId(conversations[0].id);
@@ -150,7 +185,7 @@ export default function MessagesPage() {
     try {
       if (extension.status === "not_installed") {
         setSyncError("extension_not_installed");
-        toast.error("Applivo extension is not detected. Please install and enable the extension.");
+        toast.error("Applivo Chrome extension is not detected. Please install and enable the extension.");
         return;
       }
       if (extension.status === "disconnected" || extension.status === "expired") {
@@ -223,7 +258,6 @@ export default function MessagesPage() {
   const filteredConversations = useMemo(() => {
     return conversations.filter((c) => {
       if (filter === "unread" && c.status !== "unread") return false;
-      if (filter === "important" && !c.is_important) return false;
       if (search.trim()) {
         const q = search.toLowerCase();
         const matchSender = (c.sender_name || "").toLowerCase().includes(q);
@@ -236,72 +270,46 @@ export default function MessagesPage() {
     });
   }, [conversations, filter, search]);
 
-  const lastSyncLabel = useMemo(() => {
+  const syncStatusLabel = useMemo(() => {
+    if (syncing) return "Syncing messages...";
     if (!stats.last_synced_at) return "Not synced yet";
-    return `Last sync: ${formatRelativeTime(stats.last_synced_at)}`;
-  }, [stats.last_synced_at]);
+    return `Last synced ${formatRelativeTime(stats.last_synced_at)}`;
+  }, [syncing, stats.last_synced_at]);
 
   return (
-    <div className="dash-page flex flex-col min-h-0 space-y-4">
-      {/* ── Compact Page Header ─────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1 border-b border-[var(--app-border-strong)]">
+    <div className="flex flex-col min-h-0 space-y-4">
+      {/* ── Page Header ─────────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#262626]">
         <div>
-          <h1 className="text-[20px] leading-6 font-semibold tracking-tight text-white">Messages</h1>
-          <p className="text-[13px] text-zinc-400 mt-0.5">Recruiter conversations and updates from Internshala.</p>
+          <h1 className="text-[22px] font-semibold text-[#EDEDED] tracking-tight leading-none">
+            Messages
+          </h1>
+          <p className="text-[13px] text-[#929292] mt-1.5">
+            Recruiter conversations and updates from your connected job platforms.
+          </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 text-[12px] text-zinc-400">
-            <span
-              className={`w-2 h-2 rounded-full ${
-                syncing
-                  ? "bg-amber-400 animate-pulse"
-                  : stats.total_conversations > 0
-                  ? "bg-emerald-400"
-                  : "bg-zinc-500"
-              }`}
-            />
-            <span>{syncing ? "Syncing..." : lastSyncLabel}</span>
-          </div>
+          <span className="text-[12px] text-[#929292]">
+            {syncStatusLabel}
+          </span>
 
           <button
             onClick={handleSync}
             disabled={syncing}
-            className="flex h-8 items-center gap-2 px-3.5 bg-white text-black hover:bg-zinc-200 rounded-lg text-[13px] font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+            className="h-7 px-3 bg-[#181818] hover:bg-[#202020] border border-[#262626] text-[#EDEDED] rounded text-[12px] font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-1.5 shrink-0"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${syncing ? "animate-spin" : ""}`} />
+            <RefreshCw className={`w-3 h-3 text-[#929292] ${syncing ? "animate-spin" : ""}`} />
             <span>{syncing ? "Syncing..." : "Sync messages"}</span>
           </button>
         </div>
       </div>
 
-      {/* ── Compact Metric Cards ────────────────────────────────────────── */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-3.5">
-          <p className="text-[12px] font-medium text-zinc-400 mb-0.5">Conversations</p>
-          <div className="text-[22px] leading-7 font-semibold tracking-tight text-white">
-            {stats.total_conversations}
-          </div>
-        </div>
-        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-3.5">
-          <p className="text-[12px] font-medium text-zinc-400 mb-0.5">Unread</p>
-          <div className="text-[22px] leading-7 font-semibold tracking-tight text-white">
-            {stats.unread_count}
-          </div>
-        </div>
-        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-3.5">
-          <p className="text-[12px] font-medium text-zinc-400 mb-0.5">Needs attention</p>
-          <div className="text-[22px] leading-7 font-semibold tracking-tight text-white">
-            {stats.needs_attention_count}
-          </div>
-        </div>
-      </div>
-
       {/* ── Error Banner (if sync or connection issue) ────────────────────── */}
       {syncError && (
-        <div className="flex items-center justify-between gap-3 p-3 bg-red-950/30 border border-red-800/40 rounded-lg text-[13px] text-red-200">
+        <div className="flex items-center justify-between gap-3 p-3 bg-[#151111] border border-[#332222] rounded text-[12px] text-[#D4A5A5]">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+            <AlertCircle className="w-3.5 h-3.5 text-[#D4A5A5] shrink-0" />
             <span>
               {syncError === "internshala_tab_missing"
                 ? "No active Internshala tab detected. Please open Internshala in your Chrome browser."
@@ -319,16 +327,17 @@ export default function MessagesPage() {
               <a
                 href="https://internshala.com/chat"
                 target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1 px-2.5 py-1 bg-red-900/60 hover:bg-red-800/60 border border-red-700/50 rounded-md text-[12px] font-medium text-white transition-colors"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 px-2 py-0.5 bg-[#241717] hover:bg-[#2F1D1D] border border-[#3D2626] rounded text-[11px] font-medium text-[#EDEDED] transition-colors"
               >
-                Open Internshala
-                <ExternalLink className="w-3 h-3" />
+                <span>Open Internshala</span>
+                <ExternalLink className="w-2.5 h-2.5" />
               </a>
             )}
             <button
               onClick={() => setSyncError(null)}
-              className="text-red-400 hover:text-white p-1"
+              className="text-[#929292] hover:text-[#EDEDED] p-1"
+              aria-label="Dismiss message"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -336,110 +345,87 @@ export default function MessagesPage() {
         </div>
       )}
 
-      {/* ── Two-Pane Inbox ──────────────────────────────────────────────── */}
-      <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg overflow-hidden flex flex-1 h-[calc(100vh-240px)] min-h-[520px]">
-        {/* Left Pane — Conversation List */}
+      {/* ── Two-Column Inbox ────────────────────────────────────────────── */}
+      <div className="bg-[#111111] border border-[#262626] rounded-lg overflow-hidden flex flex-1 h-[calc(100vh-200px)] min-h-[560px]">
+        {/* Left Panel — Conversation List */}
         <div
           className={`${
             mobileDetailView ? "hidden md:flex" : "flex"
-          } w-full md:w-[340px] lg:w-[360px] flex-col border-r border-[var(--app-border-strong)] shrink-0 bg-[var(--app-card)]`}
+          } w-full md:w-[350px] lg:w-[360px] flex-col border-r border-[#262626] shrink-0 bg-[#111111]`}
         >
-          {/* Search & Filter Header */}
-          <div className="p-3 border-b border-[var(--app-border-strong)] space-y-2.5">
+          {/* Search & Filters */}
+          <div className="p-3 border-b border-[#262626] space-y-2.5 bg-[#111111]">
             <div className="relative">
-              <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Search className="w-3.5 h-3.5 text-[#737373] absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search conversations..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full h-8 pl-8 pr-7 bg-[#171717] border border-[var(--app-border-strong)] rounded-md text-[13px] text-white placeholder-zinc-500 focus:outline-none focus:border-white/30 transition-colors"
+                className="w-full h-8 pl-8 pr-7 bg-[#151515] border border-[#262626] rounded text-[12px] text-[#EDEDED] placeholder-[#737373] focus:outline-none focus:border-[#404040] transition-colors"
               />
               {search && (
                 <button
                   onClick={() => setSearch("")}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#737373] hover:text-[#EDEDED]"
+                  aria-label="Clear search"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-3 h-3" />
                 </button>
               )}
             </div>
 
-            {/* Filter Pills */}
-            <div className="flex gap-1.5">
+            {/* Simple Text Filters: All and Unread */}
+            <div className="flex items-center gap-1">
               <button
                 onClick={() => setFilter("all")}
-                className={`h-7 px-2.5 rounded-md text-[12px] font-medium transition-colors border ${
+                className={`px-2.5 py-1 text-[12px] font-medium rounded transition-colors ${
                   filter === "all"
-                    ? "bg-[var(--app-nested)] border-white/20 text-white"
-                    : "bg-transparent border-transparent text-zinc-400 hover:text-white"
+                    ? "bg-[#1F1F1F] text-[#EDEDED]"
+                    : "text-[#929292] hover:text-[#EDEDED]"
                 }`}
               >
-                All ({conversations.length})
+                All {conversations.length > 0 && <span className="ml-1 text-[11px] text-[#737373]">{conversations.length}</span>}
               </button>
               <button
                 onClick={() => setFilter("unread")}
-                className={`h-7 px-2.5 rounded-md text-[12px] font-medium transition-colors border ${
+                className={`px-2.5 py-1 text-[12px] font-medium rounded transition-colors ${
                   filter === "unread"
-                    ? "bg-[var(--app-nested)] border-white/20 text-white"
-                    : "bg-transparent border-transparent text-zinc-400 hover:text-white"
+                    ? "bg-[#1F1F1F] text-[#EDEDED]"
+                    : "text-[#929292] hover:text-[#EDEDED]"
                 }`}
               >
-                Unread ({stats.unread_count})
-              </button>
-              <button
-                onClick={() => setFilter("important")}
-                className={`h-7 px-2.5 rounded-md text-[12px] font-medium transition-colors border ${
-                  filter === "important"
-                    ? "bg-[var(--app-nested)] border-white/20 text-white"
-                    : "bg-transparent border-transparent text-zinc-400 hover:text-white"
-                }`}
-              >
-                Important ({stats.needs_attention_count})
+                Unread {stats.unread_count > 0 && <span className="ml-1 text-[11px] text-[#737373]">{stats.unread_count}</span>}
               </button>
             </div>
           </div>
 
-          {/* Conversation List Scroll Area */}
-          <div className="flex-1 overflow-y-auto divide-y divide-[var(--app-border-strong)]">
+          {/* Vertically Scrollable Real Conversation List */}
+          <div className="flex-1 overflow-y-auto divide-y divide-[#1C1C1C]">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-20 gap-2">
-                <Loader2 className="w-6 h-6 animate-spin text-zinc-400" />
-                <p className="text-[12px] text-zinc-500">Loading inbox...</p>
+                <Loader2 className="w-5 h-5 animate-spin text-[#737373]" />
+                <p className="text-[12px] text-[#737373]">Loading conversations...</p>
               </div>
             ) : filteredConversations.length === 0 ? (
-              <div className="p-6 text-center space-y-3">
-                <div className="w-9 h-9 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center mx-auto text-zinc-500">
-                  <Inbox className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-[13px] font-medium text-white">
-                    {conversations.length === 0 ? "No conversations yet" : "No matching conversations"}
-                  </p>
-                  <p className="text-[12px] text-zinc-400 mt-1 leading-relaxed">
-                    {conversations.length === 0
-                      ? "Open Internshala and sync your recruiter messages to get started."
-                      : "Try clearing your search or selecting a different filter."}
-                  </p>
-                </div>
+              <div className="p-6 text-center space-y-2.5">
+                <p className="text-[13px] font-medium text-[#EDEDED]">
+                  {conversations.length === 0 ? "No conversations yet" : "No matching conversations"}
+                </p>
+                <p className="text-[12px] text-[#737373] leading-relaxed">
+                  {conversations.length === 0
+                    ? "Connect your account and sync recruiter messages to get started."
+                    : "Try adjusting your search query or switching filters."}
+                </p>
                 {conversations.length === 0 && (
                   <div className="pt-2 flex flex-col gap-2">
-                    <a
-                      href="https://internshala.com/chat"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center justify-center gap-1.5 h-8 px-3 bg-[var(--app-nested)] hover:bg-[#252528] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-white transition-colors"
-                    >
-                      <span>Open Internshala</span>
-                      <ExternalLink className="w-3 h-3 text-zinc-400" />
-                    </a>
                     <button
                       onClick={handleSync}
                       disabled={syncing}
-                      className="inline-flex items-center justify-center gap-1.5 h-8 px-3 bg-white text-black hover:bg-zinc-200 rounded-md text-[12px] font-semibold transition-colors disabled:opacity-50"
+                      className="inline-flex items-center justify-center gap-1.5 h-7 px-3 bg-[#181818] hover:bg-[#202020] border border-[#262626] rounded text-[12px] font-medium text-[#EDEDED] transition-colors disabled:opacity-50"
                     >
-                      <RefreshCw className={`w-3 h-3 ${syncing ? "animate-spin" : ""}`} />
-                      <span>{syncing ? "Syncing..." : "Sync messages now"}</span>
+                      <RefreshCw className={`w-3 h-3 text-[#929292] ${syncing ? "animate-spin" : ""}`} />
+                      <span>{syncing ? "Sync messages" : "Sync messages"}</span>
                     </button>
                   </div>
                 )}
@@ -453,46 +439,38 @@ export default function MessagesPage() {
                   <button
                     key={conv.id}
                     onClick={() => handleSelectConversation(conv)}
-                    className={`w-full text-left p-3.5 transition-colors flex flex-col gap-1 relative ${
+                    className={`w-full text-left px-3.5 py-3 transition-colors flex flex-col gap-1 border-l-2 ${
                       isSelected
-                        ? "bg-[var(--app-nested)] border-l-2 border-l-white"
-                        : "hover:bg-[var(--app-nested)]/50"
+                        ? "bg-[#1A1A1A] border-l-[#EDEDED]"
+                        : isUnread
+                        ? "bg-[#141414] hover:bg-[#181818] border-l-transparent"
+                        : "bg-transparent hover:bg-[#161616] border-l-transparent"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-1.5 min-w-0">
-                        {conv.is_important && (
-                          <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
-                        )}
-                        <span
-                          className={`text-[13px] truncate ${
-                            isUnread ? "font-semibold text-white" : "font-medium text-zinc-300"
-                          }`}
-                        >
-                          {conv.sender_name}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        {isUnread && (
-                          <span className="w-2 h-2 rounded-full bg-blue-500" title="Unread message" />
-                        )}
-                        <span className="text-[11px] text-zinc-500">
-                          {formatRelativeTime(conv.received_at)}
-                        </span>
-                      </div>
+                      <span
+                        className={`text-[13px] truncate ${
+                          isUnread ? "font-semibold text-[#EDEDED]" : "font-normal text-[#B5B5B5]"
+                        }`}
+                      >
+                        {conv.sender_name}
+                      </span>
+                      <span className="text-[11px] text-[#737373] shrink-0 font-normal">
+                        {formatRelativeTime(conv.received_at)}
+                      </span>
                     </div>
 
                     {(conv.company || conv.job_title) && (
-                      <div className="text-[11px] text-zinc-400 truncate">
+                      <div className="text-[12px] text-[#929292] truncate">
                         {conv.job_title && conv.company
-                          ? `${conv.job_title} • ${conv.company}`
+                          ? `${conv.job_title} · ${conv.company}`
                           : conv.company || conv.job_title}
                       </div>
                     )}
 
                     <p
-                      className={`text-[12px] line-clamp-2 mt-0.5 leading-snug ${
-                        isUnread ? "text-zinc-200" : "text-zinc-400"
+                      className={`text-[12px] line-clamp-1 leading-normal ${
+                        isUnread ? "text-[#D4D4D4]" : "text-[#737373]"
                       }`}
                     >
                       {conv.preview || "No message preview"}
@@ -504,40 +482,33 @@ export default function MessagesPage() {
           </div>
         </div>
 
-        {/* Right Pane — Selected Conversation & Message History */}
+        {/* Right Panel — Conversation Reader */}
         <div
           className={`${
             mobileDetailView ? "flex" : "hidden md:flex"
-          } flex-1 flex-col bg-[var(--app-card)] min-w-0`}
+          } flex-1 flex-col bg-[#0E0E0E] min-w-0`}
         >
           {selectedConversation ? (
             <>
               {/* Selected Conversation Header */}
-              <div className="p-3.5 sm:p-4 border-b border-[var(--app-border-strong)] flex items-center justify-between gap-3 bg-[var(--app-card)] shrink-0">
+              <div className="px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#262626] flex items-center justify-between gap-3 bg-[#111111] shrink-0">
                 <div className="flex items-center gap-3 min-w-0">
                   <button
                     onClick={() => setMobileDetailView(false)}
-                    className="md:hidden p-1.5 rounded-md hover:bg-[var(--app-nested)] text-zinc-400 hover:text-white"
+                    className="md:hidden p-1 rounded hover:bg-[#1A1A1A] text-[#929292] hover:text-[#EDEDED]"
+                    aria-label="Back to conversations"
                   >
                     <ArrowLeft className="w-4 h-4" />
                   </button>
 
                   <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-[15px] font-semibold text-white truncate max-w-[130px] sm:max-w-none">
-                        {selectedConversation.sender_name}
-                      </h2>
-                      {selectedConversation.is_important && (
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-950/60 text-amber-300 border border-amber-800/50">
-                          <Star className="w-2.5 h-2.5 fill-amber-300" />
-                          Important
-                        </span>
-                      )}
-                    </div>
+                    <h2 className="text-[15px] font-semibold text-[#EDEDED] truncate">
+                      {selectedConversation.sender_name}
+                    </h2>
                     {(selectedConversation.company || selectedConversation.job_title) && (
-                      <p className="text-[12px] text-zinc-400 truncate mt-0.5">
+                      <p className="text-[12px] text-[#929292] truncate mt-0.5">
                         {selectedConversation.job_title && selectedConversation.company
-                          ? `${selectedConversation.job_title} • ${selectedConversation.company}`
+                          ? `${selectedConversation.job_title} · ${selectedConversation.company}`
                           : selectedConversation.company || selectedConversation.job_title}
                       </p>
                     )}
@@ -547,7 +518,7 @@ export default function MessagesPage() {
                 <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={() => handleToggleStatus(selectedConversation)}
-                    className="h-7 px-2.5 rounded-md bg-[var(--app-nested)] hover:bg-[#252528] border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
+                    className="h-7 px-2.5 rounded bg-[#181818] hover:bg-[#202020] border border-[#262626] text-[12px] font-medium text-[#929292] hover:text-[#EDEDED] transition-colors inline-flex items-center gap-1.5"
                     title={selectedConversation.status === "unread" ? "Mark as read" : "Mark as unread"}
                   >
                     <CheckCheck className="w-3.5 h-3.5" />
@@ -557,19 +528,22 @@ export default function MessagesPage() {
                   </button>
 
                   <a
-                    href={selectedConversation.url || `https://internshala.com/chat/${selectedConversation.external_id}`}
+                    href={
+                      selectedConversation.url ||
+                      `https://internshala.com/chat/${selectedConversation.external_id}`
+                    }
                     target="_blank"
-                    rel="noreferrer"
-                    className="h-7 px-2.5 rounded-md bg-white hover:bg-zinc-200 text-black text-[12px] font-semibold transition-colors inline-flex items-center gap-1.5 shrink-0"
+                    rel="noopener noreferrer"
+                    className="h-7 px-2.5 rounded bg-[#181818] hover:bg-[#202020] border border-[#262626] text-[12px] font-medium text-[#EDEDED] transition-colors inline-flex items-center gap-1.5"
                   >
-                    <span>Open in Internshala</span>
-                    <ExternalLink className="w-3 h-3" />
+                    <span>Open in source</span>
+                    <ExternalLink className="w-3 h-3 text-[#929292]" />
                   </a>
                 </div>
               </div>
 
-              {/* Message Timeline */}
-              <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 bg-[var(--app-card)]">
+              {/* Message History Chronological List */}
+              <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#0E0E0E]">
                 {selectedConversation.messages && selectedConversation.messages.length > 0 ? (
                   selectedConversation.messages.map((m, idx) => {
                     const isCandidate = m.sender === "candidate";
@@ -580,50 +554,42 @@ export default function MessagesPage() {
                         className={`flex flex-col ${isCandidate ? "items-end" : "items-start"}`}
                       >
                         <div
-                          className={`max-w-[85%] sm:max-w-[75%] rounded-lg p-3 text-[13px] leading-relaxed ${
+                          className={`max-w-[85%] sm:max-w-[75%] rounded-md p-3.5 text-[13px] leading-relaxed border ${
                             isCandidate
-                              ? "bg-[#27272a] border border-white/10 text-white rounded-tr-sm"
-                              : "bg-[#1c1c1f] border border-[var(--app-border-strong)] text-zinc-200 rounded-tl-sm"
+                              ? "bg-[#181818] border-[#2B2B2B]"
+                              : "bg-[#141414] border-[#222222]"
                           }`}
                         >
-                          <div className="flex items-center justify-between gap-3 mb-1.5 text-[11px]">
-                            <span className={isCandidate ? "text-zinc-300 font-medium" : "text-zinc-400 font-medium"}>
+                          <div className="flex items-center justify-between gap-4 mb-1.5 text-[11px]">
+                            <span className="font-medium text-[#EDEDED]">
                               {m.sender_name || (isCandidate ? "You" : selectedConversation.sender_name)}
                             </span>
                             {m.timestamp && (
-                              <span className="text-zinc-500 font-normal">
+                              <span className="text-[#737373] font-normal">
                                 {formatRelativeTime(m.timestamp)}
                               </span>
                             )}
                           </div>
-                          <div className="whitespace-pre-wrap break-words">{m.text}</div>
+                          <div className="text-[#D4D4D4] whitespace-pre-wrap break-words leading-relaxed">
+                            {renderMessageContent(m.text)}
+                          </div>
                         </div>
                       </div>
                     );
                   })
                 ) : (
-                  <div className="flex flex-col items-center justify-center py-16 text-center">
-                    <p className="text-[13px] text-zinc-400">No message history available for this conversation.</p>
+                  <div className="flex flex-col items-center justify-center py-20 text-center">
+                    <p className="text-[13px] text-[#737373]">
+                      No message history available for this conversation.
+                    </p>
                   </div>
                 )}
               </div>
             </>
           ) : (
-            /* Minimal Empty State when no conversation selected */
-            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center text-zinc-500">
-                <MessageSquare className="w-5 h-5" />
-              </div>
-              <div className="max-w-[320px]">
-                <p className="text-[14px] font-medium text-white">
-                  {conversations.length === 0 ? "No conversations yet" : "Select a conversation"}
-                </p>
-                <p className="text-[12px] text-zinc-400 mt-1 leading-relaxed">
-                  {conversations.length === 0
-                    ? "Recruiter messages from your active Internshala account will appear here in chronological order with message history."
-                    : "Select a conversation from the left to view the message history."}
-                </p>
-              </div>
+            /* Quiet Empty State when no conversation selected */
+            <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+              <p className="text-[13px] text-[#737373]">Select a conversation to read messages.</p>
             </div>
           )}
         </div>

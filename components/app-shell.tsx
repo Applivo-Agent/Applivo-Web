@@ -54,7 +54,7 @@ function ShellBody({
       <div className={`app-main ${isChat ? "h-screen max-h-screen overflow-hidden" : "min-h-screen"} flex flex-col transition-[padding] duration-200 ${collapsed ? "md:pl-[var(--app-sidebar-w-collapsed)]" : "md:pl-[var(--app-sidebar-w)]"}`}>
         <AppHeader />
         <main className={`flex-1 min-w-0 bg-[var(--app-bg)] md:border-l border-t border-[var(--app-border)] px-4 md:px-6 ${isChat ? "min-h-0 overflow-hidden pt-3 pb-3 flex flex-col" : "overflow-x-hidden pt-6 pb-12"}`}>
-          <div className={`max-w-[1400px] mx-auto w-full ${isChat ? "h-full flex-1 min-h-0 flex flex-col" : ""}`}>
+          <div className={`w-full ${isChat ? "h-full flex-1 min-h-0 flex flex-col" : ""}`}>
             <PageTransition>{children}</PageTransition>
           </div>
         </main>

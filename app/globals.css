@@ -1271,11 +1271,11 @@ svg.animate-spin {
 }
 
 /* ============================================
-   PRICING — DARK
+   PRICING — DARK (MONOCHROME)
    ============================================ */
 .pricing-card-popular {
-  background: linear-gradient(135deg, rgba(30, 136, 229, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
-  border-color: rgba(30, 136, 229, 0.4) !important;
+  background: #141414;
+  border-color: #383838 !important;
 }
 
 /* ============================================

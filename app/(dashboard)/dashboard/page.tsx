@@ -14,8 +14,8 @@ import { cn, formatDate, getStatusClass, getStatusLabel, getMatchBadgeClass, tim
 import {
   Briefcase, FileText, Send, TrendingUp, Clock, Zap,
   AlertCircle, Star, ChevronRight, Play, Pause, RefreshCw, CheckCircle,
-  Activity, Target, Rocket, Lock, ExternalLink, Crown
-  , Loader2
+  Activity, Target, Rocket, Lock, ExternalLink, Crown,
+  Loader2, Calendar, BarChart3, Infinity as InfinityIcon, Bot, Flame
 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -94,7 +94,7 @@ function StatCard({ icon: Icon, label, value, sub, color, delay = 0, isLocked = 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4 }}
-      
+
       className={cn(
         "bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 group cursor-default relative overflow-hidden transition-all",
         !isLocked && "hover:border-[var(--app-border-strong)]"
@@ -128,93 +128,361 @@ function StatCard({ icon: Icon, label, value, sub, color, delay = 0, isLocked = 
   );
 }
 
-function QuotaRing({ used, limit }: { used: number; limit: number }) {
-  const pct = limit > 0 ? Math.min((used / limit) * 100, 100) : 0;
-  const r = 38; const circ = 2 * Math.PI * r;
-  const strokeColor = pct >= 90 ? "#ffffff" : pct >= 70 ? "#e4e4e7" : "#d4d4d8"; // monochrome shades
+function formatTokenCount(tokens: number): string {
+  if (tokens >= 1_000_000) return `${(tokens / 1_000_000).toFixed(1)}M`;
+  if (tokens >= 1_000) return `${(tokens / 1_000).toFixed(1)}k`;
+  return tokens.toLocaleString();
+}
+
+interface DailyTokenUsage {
+  date: string;
+  day: string;
+  tokens: number;
+}
+
+interface AnalyzeBudgetInfo {
+  is_unlimited?: boolean;
+  used_day_tokens?: number;
+  used_month_tokens?: number;
+  monthly_limit_tokens?: number;
+  remaining_month_tokens?: number;
+  run_limit_tokens?: number;
+  history_7d?: DailyTokenUsage[];
+  [key: string]: unknown;
+}
+
+function AIUsageCard({ budget }: { budget?: AnalyzeBudgetInfo | null }) {
+  const isUnlimited = Boolean(budget?.is_unlimited);
+  const usedDay = Number(budget?.used_day_tokens || 0);
+  const usedMonth = Number(budget?.used_month_tokens || 0);
+  const limit = Number(budget?.monthly_limit_tokens || 0);
+  const remaining = Number(budget?.remaining_month_tokens || 0);
+
+  const history7d = Array.isArray(budget?.history_7d) ? budget.history_7d : [];
+  const hasHistory = history7d.length > 0 && history7d.some((d) => (d.tokens || 0) > 0);
+  const maxDailyTokens = hasHistory ? Math.max(...history7d.map((d) => d.tokens || 0), 1) : 1;
+  const history7dTotal = hasHistory ? history7d.reduce((acc, d) => acc + (d.tokens || 0), 0) : 0;
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 flex flex-col items-center justify-center relative overflow-hidden group"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.15, duration: 0.25 }}
+      className="bg-[var(--app-card)] border border-white/[0.08] rounded-xl p-4 flex flex-col justify-between h-full"
     >
-      <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-4 relative z-10">Daily Quota</p>
-      <div className="relative z-10">
-        <svg width="100" height="100" viewBox="0 0 100 100">
-          {/* Base invisible ring for dark theme */}
-          <circle cx="50" cy="50" r={r} fill="none" strokeWidth="6" stroke="#1a1a1a" />
-          <motion.circle
-            cx="50" cy="50" r={r} fill="none" strokeWidth="6" stroke={strokeColor}
-            strokeDasharray={circ}
-            initial={{ strokeDashoffset: circ }}
-            animate={{ strokeDashoffset: circ - (circ * pct) / 100 }}
-            transition={{ duration: 1.5, ease: "circOut" }}
-            strokeLinecap="round" transform="rotate(-90 50 50)"
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xl font-bold tracking-tighter text-white">{Math.round(pct)}%</span>
+      <div>
+        {/* 1. Header: Compact icon, title, subtitle, badge */}
+        <div className="flex items-center justify-between gap-2 min-w-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-7 h-7 rounded-md bg-white/[0.04] border border-white/[0.08] flex items-center justify-center shrink-0">
+              <FileText className="w-3.5 h-3.5 text-zinc-300" />
+            </div>
+            <div className="min-w-0">
+              <h3 className="text-[14px] font-medium text-white leading-tight">AI Usage</h3>
+              <p className="text-[12px] text-zinc-400 truncate mt-0.5">Monthly token consumption</p>
+            </div>
+          </div>
+          <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/[0.04] text-zinc-300 border border-white/[0.08] tabular-nums shrink-0">
+            {isUnlimited ? "Unlimited" : "Monthly cap"}
+          </span>
+        </div>
+
+        {/* 2. Main Metric + 7-day Mini Chart */}
+        <div className="flex items-end justify-between gap-3 mt-3.5">
+          <div>
+            <span className="text-[26px] font-semibold tracking-tight text-white leading-none tabular-nums block">
+              {formatTokenCount(usedMonth)}
+            </span>
+            <p className="text-[12px] text-zinc-400 mt-1.5">tokens this month</p>
+          </div>
+
+          <div className="flex flex-col items-end gap-1">
+            <span className="text-[11px] text-zinc-400 font-normal">Last 7 days</span>
+            {hasHistory ? (
+              <div className="flex items-end gap-1 h-[20px]" role="img" aria-label="Last 7 days token usage chart">
+                {history7d.map((d, idx) => {
+                  const isToday = idx === history7d.length - 1;
+                  const hasTokens = (d.tokens || 0) > 0;
+                  const heightPct = hasTokens
+                    ? Math.max(25, Math.min(100, Math.round((d.tokens / maxDailyTokens) * 100)))
+                    : 15;
+
+                  return (
+                    <div
+                      key={d.date}
+                      style={{ height: `${heightPct}%` }}
+                      title={`${d.day} (${d.date}): ${d.tokens.toLocaleString()} tokens`}
+                      className={cn(
+                        "w-1 sm:w-1.5 rounded-[1px] transition-all cursor-default",
+                        hasTokens
+                          ? isToday
+                            ? "bg-white"
+                            : "bg-zinc-400 hover:bg-white"
+                          : "bg-white/[0.08]"
+                      )}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex items-end gap-1 h-[20px]">
+                {Array.from({ length: 7 }).map((_, idx) => (
+                  <div key={idx} className="w-1 sm:w-1.5 h-[3px] rounded-[1px] bg-white/[0.08]" />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      <div className="mt-4 text-center">
-        <p className="text-[13px] font-bold text-white">{used} <span className="text-zinc-400 font-medium">/ {limit}</span></p>
-        <p className="text-[10px] text-zinc-400 uppercase tracking-widest mt-1">Applications</p>
+
+      {/* 3. Single Divider + Lower Statistics (Today, 7-day, Plan) */}
+      <div className="border-t border-white/[0.06] pt-3 mt-4">
+        <div className="grid grid-cols-3 gap-2">
+          <div className="min-w-0">
+            <p className="text-[11px] text-zinc-400">Today</p>
+            <p className="text-[13px] font-medium text-white tabular-nums leading-tight mt-1 truncate">
+              {formatTokenCount(usedDay)}
+            </p>
+          </div>
+
+          <div className="min-w-0">
+            <p className="text-[11px] text-zinc-400">7-day</p>
+            <p className="text-[13px] font-medium text-white tabular-nums leading-tight mt-1 truncate">
+              {formatTokenCount(history7dTotal)}
+            </p>
+          </div>
+
+          <div className="min-w-0">
+            <p className="text-[11px] text-zinc-400">Plan</p>
+            <p className="text-[13px] font-medium text-white leading-tight mt-1 truncate">
+              {isUnlimited ? "Unlimited" : formatTokenCount(limit)}
+            </p>
+          </div>
+        </div>
       </div>
     </motion.div>
   );
 }
 
-function AnalyzeTokenCard({ budget }: { budget: any }) {
-  const isUnlimited = Boolean(budget?.is_unlimited);
-  const usedDay = Number(budget?.used_day_tokens || 0);
-  const dailyPlan = Number(budget?.daily_plan_tokens || 0);
-  const used = Number(budget?.used_month_tokens || 0);
-  const limit = Number(budget?.monthly_limit_tokens || 0);
-  const remaining = Number(budget?.remaining_month_tokens || 0);
-  const runLimit = Number(budget?.run_limit_tokens || 0);
-  const dailyVisualCap = isUnlimited
-    ? Math.max(1000, Math.ceil((Math.max(usedDay, 1) * 1.2) / 1000) * 1000)
-    : dailyPlan;
-  const monthlyVisualCap = isUnlimited
-    ? Math.max(30000, Math.ceil((Math.max(used, 1) * 1.2) / 10000) * 10000)
-    : limit;
-  const dailyPct = dailyVisualCap > 0 ? Math.min((usedDay / dailyVisualCap) * 100, 100) : 0;
-  const pct = monthlyVisualCap > 0 ? Math.min((used / monthlyVisualCap) * 100, 100) : 0;
+interface DailyQuotaCardProps {
+  quota: {
+    used?: number;
+    limit?: number;
+    remaining?: number;
+    allowed?: boolean;
+    plan?: string;
+  };
+  subscription?: any;
+}
+
+function DailyQuotaCard({ quota, subscription }: DailyQuotaCardProps) {
+  const used = Math.max(0, Number(quota?.used || 0));
+  const rawLimit = Number(quota?.limit ?? 0);
+  const isUnlimited = rawLimit >= 99999 || rawLimit === -1 || (rawLimit === 0 && subscription?.plan === "premium");
+  const limit = isUnlimited ? 0 : Math.max(0, rawLimit);
+
+  // Safe remaining calculation preventing negative values
+  const remaining = isUnlimited
+    ? Infinity
+    : Math.max(0, quota?.remaining != null ? quota.remaining : limit - used);
+
+  const pct = isUnlimited
+    ? 0
+    : limit > 0
+    ? Math.min(100, Math.round((used / limit) * 100))
+    : 0;
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 relative overflow-hidden"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.18, duration: 0.25 }}
+      className="bg-[var(--app-card)] border border-white/[0.08] rounded-xl p-4 flex flex-col justify-between h-full"
     >
-      <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-400 mb-3">Analyze Tokens</p>
-      <div className="space-y-2">
-        <p className="text-[13px] font-bold text-white">
-          {isUnlimited ? "Unlimited" : `${(used / 1000).toFixed(1)}k / ${(limit / 1000).toFixed(0)}k`}
-        </p>
-        <p className="text-[10px] text-zinc-400 uppercase tracking-wider">
-          {isUnlimited
-            ? `Today: ${(usedDay / 1000).toFixed(1)}k used`
-            : `Today: ${(usedDay / 1000).toFixed(1)}k / ${(dailyVisualCap / 1000).toFixed(1)}k`}
-        </p>
-        <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
-          <div className="h-full bg-white" style={{ width: `${Math.max(0, Math.min(100, dailyPct))}%` }} />
+      <div>
+        {/* 1. Header: Compact icon, title, subtitle, badge */}
+        <div className="flex items-center justify-between gap-2 min-w-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-7 h-7 rounded-md bg-white/[0.04] border border-white/[0.08] flex items-center justify-center shrink-0">
+              <Zap className="w-3.5 h-3.5 text-zinc-300" />
+            </div>
+            <div className="min-w-0">
+              <h3 className="text-[14px] font-medium text-white leading-tight">Daily Quota</h3>
+              <p className="text-[12px] text-zinc-400 truncate mt-0.5">Application limit</p>
+            </div>
+          </div>
+          <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white/[0.04] text-zinc-300 border border-white/[0.08] tabular-nums shrink-0">
+            {isUnlimited ? "Unlimited" : `${pct}% used`}
+          </span>
         </div>
-        <p className="text-[10px] text-zinc-400 uppercase tracking-wider">
-          {isUnlimited ? `${(used / 1000).toFixed(1)}k used this month` : `${(used / 1000).toFixed(1)}k used • ${(remaining / 1000).toFixed(1)}k remaining this month`}
-        </p>
-        <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-          <div className="h-full bg-white" style={{ width: `${Math.max(0, Math.min(100, pct))}%` }} />
+
+        {/* 2. Main Metric (Used / Limit & Remaining) */}
+        <div className="flex items-end justify-between gap-3 mt-3.5">
+          <div>
+            <div className="flex items-baseline gap-1">
+              <span className="text-[26px] font-semibold tracking-tight text-white leading-none tabular-nums">
+                {used}
+              </span>
+              <span className="text-[15px] font-normal text-zinc-400 tabular-nums">
+                / {isUnlimited ? "∞" : limit > 0 ? limit : "—"}
+              </span>
+            </div>
+            <p className="text-[12px] text-zinc-400 mt-1.5">Applications used today</p>
+          </div>
+
+          <div className="text-right">
+            <span className="text-[26px] font-semibold tracking-tight text-white leading-none tabular-nums">
+              {isUnlimited ? "∞" : remaining}
+            </span>
+            <p className="text-[12px] text-zinc-400 mt-1.5">remaining</p>
+          </div>
         </div>
-        {isUnlimited && (
-          <p className="text-[10px] text-zinc-500 uppercase tracking-wider">
-            No monthly cap on your plan (visual scale is based on your usage)
-          </p>
-        )}
-        <p className="text-[10px] text-zinc-500 uppercase tracking-wider">
-          Run limit: {isUnlimited ? "Unlimited" : `${(runLimit / 1000).toFixed(0)}k tokens`}
-        </p>
+      </div>
+
+      {/* 3. Progress Bar + Footer Row */}
+      <div className="mt-4 pt-2.5">
+        <div className="w-full bg-white/[0.08] h-1 rounded-full overflow-hidden mb-3">
+          <motion.div
+            className={cn(
+              "h-full rounded-full transition-all",
+              pct >= 90 ? "bg-zinc-200" : "bg-zinc-400"
+            )}
+            initial={{ width: 0 }}
+            animate={{ width: isUnlimited ? "100%" : `${pct}%` }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          />
+        </div>
+
+        <div className="flex items-center justify-between text-[11px] text-zinc-400">
+          <span>Daily limit: {isUnlimited ? "Unlimited" : limit}</span>
+          <span>Resets at 00:00 UTC</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+interface StreakDay {
+  date: string;
+  day: string;
+  full_day: string;
+  count: number;
+  has_activity: boolean;
+  is_today: boolean;
+}
+
+interface StreakResponse {
+  streak: number;
+  active_today: boolean;
+  days: StreakDay[];
+  total_7d_actions: number;
+  active_days_count: number;
+  message: string;
+}
+
+function JobSearchStreakCard() {
+  const tzOffset = typeof window !== "undefined" ? new Date().getTimezoneOffset() : 0;
+  const { data } = useQuery({
+    queryKey: ["job-search-streak", tzOffset],
+    queryFn: () => analyticsApi.streak(tzOffset).then((r) => r.data as StreakResponse),
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
+  });
+
+  const streak = data?.streak ?? 0;
+  const activeToday = Boolean(data?.active_today);
+  const days = data?.days ?? [];
+  const totalActions = data?.total_7d_actions ?? 0;
+  const activeDaysCount = data?.active_days_count ?? 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.21, duration: 0.25 }}
+      className="bg-[var(--app-card)] border border-white/[0.08] rounded-xl p-4 flex flex-col justify-between h-full"
+    >
+      <div>
+        {/* 1. Header: Compact icon, title, subtitle, badge */}
+        <div className="flex items-center justify-between gap-2 min-w-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-7 h-7 rounded-md bg-white/[0.04] border border-white/[0.08] flex items-center justify-center shrink-0">
+              <Flame className="w-3.5 h-3.5 text-zinc-300" />
+            </div>
+            <div className="min-w-0">
+              <h3 className="text-[14px] font-medium text-white leading-tight">Job Search Streak</h3>
+              <p className="text-[12px] text-zinc-400 truncate mt-0.5">Build your daily momentum</p>
+            </div>
+          </div>
+          <span
+            className={cn(
+              "text-[11px] font-medium px-2 py-0.5 rounded-full border tabular-nums shrink-0",
+              activeToday || streak > 0
+                ? "bg-white/[0.08] text-white border-white/[0.16]"
+                : "bg-white/[0.04] text-zinc-400 border-white/[0.08]"
+            )}
+          >
+            {activeToday || streak > 0 ? "Active" : "Inactive"}
+          </span>
+        </div>
+
+        {/* 2. Main Metric + 7 Indicators */}
+        <div className="flex items-end justify-between gap-3 mt-3.5">
+          <div>
+            <div className="flex items-baseline gap-1">
+              <span className="text-[26px] font-semibold tracking-tight text-white leading-none tabular-nums">
+                {streak}
+              </span>
+              <span className="text-[15px] font-normal text-zinc-400">
+                {streak === 1 ? "day" : "days"}
+              </span>
+            </div>
+            <p className="text-[12px] text-zinc-400 mt-1.5">Current streak</p>
+          </div>
+
+          <div className="flex flex-col items-end gap-1.5">
+            <span className="text-[11px] text-zinc-400 font-normal">Last 7 days</span>
+            <div className="flex items-center gap-1.5 h-[20px]" role="group" aria-label="7-day activity indicators">
+              {days.length > 0 ? (
+                days.map((d) => (
+                  <div
+                    key={d.date}
+                    title={`${d.full_day} (${d.date}): ${d.count} action${d.count === 1 ? "" : "s"}`}
+                    className={cn(
+                      "w-2.5 h-2.5 rounded-[2px] transition-all cursor-default",
+                      d.has_activity
+                        ? "bg-white"
+                        : "bg-white/[0.08]"
+                    )}
+                  />
+                ))
+              ) : (
+                Array.from({ length: 7 }).map((_, idx) => (
+                  <div key={idx} className="w-2.5 h-2.5 rounded-[2px] bg-white/[0.08]" />
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Single Divider + Lower Statistics (Active days, Actions) */}
+      <div className="border-t border-white/[0.06] pt-3 mt-4">
+        <div className="flex items-center justify-between">
+          <div className="min-w-0">
+            <p className="text-[11px] text-zinc-400">Active days</p>
+            <p className="text-[13px] font-medium text-white tabular-nums leading-tight mt-1 truncate">
+              {activeDaysCount} of 7
+            </p>
+          </div>
+
+          <div className="min-w-0 text-right">
+            <p className="text-[11px] text-zinc-400">Actions</p>
+            <p className="text-[13px] font-medium text-white tabular-nums leading-tight mt-1 truncate">
+              {totalActions}
+            </p>
+          </div>
+        </div>
       </div>
     </motion.div>
   );
@@ -252,12 +520,6 @@ export default function DashboardPage() {
     enabled: !!user?.id,
   });
 
-  const { data: topJobs } = useQuery({
-    queryKey: ["top-jobs"],
-    queryFn: () => jobsApi.list({ sort_by: "match_score", page: 1, page_size: 5 }).then((r) => r.data),
-    staleTime: 60000,
-  });
-
 
   const safeDashboard = dashboard ?? {
     total_jobs: 0,
@@ -285,7 +547,7 @@ export default function DashboardPage() {
     limit: 0,
   };
 
-  const safeAnalyzeBudget = analyzeBudget ?? {
+  const safeAnalyzeBudget: AnalyzeBudgetInfo = (analyzeBudget as AnalyzeBudgetInfo) ?? {
     is_unlimited: false,
     used_day_tokens: 0,
     daily_plan_tokens: 0,
@@ -293,23 +555,25 @@ export default function DashboardPage() {
     monthly_limit_tokens: 0,
     remaining_month_tokens: 0,
     run_limit_tokens: 0,
+    history_7d: [],
   };
 
   const planAnalyzeBudget = getPlanAnalyzeBudget(subscription?.plan);
-  const resolvedAnalyzeBudget = safeAnalyzeBudget.monthly_limit_tokens > 0 || !planAnalyzeBudget
+  const resolvedAnalyzeBudget: AnalyzeBudgetInfo = (safeAnalyzeBudget.monthly_limit_tokens ?? 0) > 0 || !planAnalyzeBudget
     ? safeAnalyzeBudget
     : {
-        allowed: true,
-        is_unlimited: false,
-        plan: subscription?.plan ?? "none",
-        used_day_tokens: 0,
-        daily_plan_tokens: planAnalyzeBudget.daily_plan_tokens,
-        used_month_tokens: 0,
-        monthly_limit_tokens: planAnalyzeBudget.monthly_limit_tokens,
-        remaining_month_tokens: planAnalyzeBudget.monthly_limit_tokens,
-        run_limit_tokens: planAnalyzeBudget.run_limit_tokens,
-        reason: null,
-      };
+      allowed: true,
+      is_unlimited: false,
+      plan: subscription?.plan ?? "none",
+      used_day_tokens: 0,
+      daily_plan_tokens: planAnalyzeBudget.daily_plan_tokens,
+      used_month_tokens: 0,
+      monthly_limit_tokens: planAnalyzeBudget.monthly_limit_tokens,
+      remaining_month_tokens: planAnalyzeBudget.monthly_limit_tokens,
+      run_limit_tokens: planAnalyzeBudget.run_limit_tokens,
+      reason: null,
+      history_7d: safeAnalyzeBudget.history_7d ?? [],
+    };
 
   // Agent action UI helpers (now powered by global context)
 
@@ -368,7 +632,7 @@ export default function DashboardPage() {
   }, [finishedCount]);
 
   return (
-    <div className="mx-auto space-y-6">
+    <div className="w-full space-y-6">
 
       {/* Header Actions - Only for active subscriptions */}
       {isActive && (
@@ -415,7 +679,6 @@ export default function DashboardPage() {
         </div>
       )}
 
-      <RunPanel />
       <DeployDialog open={deployOpen} onClose={() => setDeployOpen(false)} />
 
       {/* Pending approval banner */}
@@ -477,59 +740,12 @@ export default function DashboardPage() {
       )}
 
 
-      {/* Quota + Agent status row - Only for active subscriptions */}
+      {/* ── Core Metric Cards: AI Usage, Daily Quota, Job Search Streak ── */}
       {isActive ? (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {/* Quota ring */}
-          <QuotaRing used={safeQuota.used} limit={safeQuota.limit} />
-
-          {/* Analyze token budget */}
-          <AnalyzeTokenCard budget={resolvedAnalyzeBudget} />
-
-          {/* Agent status - Premium */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 md:col-span-2 shadow-sm hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-center justify-between mb-5">
-              <div className="flex items-center gap-3">
-                <div className={cn("w-3 h-3 rounded-full", agentStatus?.is_running ? "bg-zinc-300" : "bg-zinc-300")}>
-                  {agentStatus?.is_running && (
-                    <motion.div
-                      className="w-full h-full rounded-full bg-zinc-300"
-                      animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  )}
-                </div>
-                <h3 className="font-bold text-sm text-white">Automation Agent</h3>
-                <div className={cn("flex items-center gap-1.5 text-[10px] px-2.5 py-1 rounded-full font-medium",
-                  agentStatus?.is_running ? "bg-white/[0.06] text-zinc-500" : "bg-white/10 text-zinc-400")}>
-                  {agentStatus?.is_running ? "Active" : "Idle"}
-                </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <motion.div whileHover={{ scale: 1.02 }} className="p-4 bg-[var(--app-nested)] rounded-lg border border-[var(--app-border-strong)]">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Last Run</p>
-                <p className="text-sm font-semibold text-white">{agentStatus?.last_run ? timeAgo(agentStatus.last_run) : "Never"}</p>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} className="p-4 bg-[var(--app-nested)] rounded-lg border border-[var(--app-border-strong)]">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Jobs Found</p>
-                <p className="text-sm font-semibold text-white"><AnimatedNumber value={agentStatus?.jobs_found_today ?? 0} /></p>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} className="p-4 bg-[var(--app-nested)] rounded-lg border border-[var(--app-border-strong)]">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Applied</p>
-                <p className="text-sm font-semibold text-white"><AnimatedNumber value={agentStatus?.applications_today ?? 0} /></p>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} className="p-4 bg-[var(--app-nested)] rounded-lg border border-[var(--app-border-strong)]">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 mb-1">Match Rate</p>
-                <p className="text-sm font-semibold text-white">{(dashboard?.response_rate ?? 0).toFixed(1)}%</p>
-              </motion.div>
-            </div>
-          </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          <AIUsageCard budget={resolvedAnalyzeBudget} />
+          <DailyQuotaCard quota={safeQuota} subscription={subscription} />
+          <JobSearchStreakCard />
         </div>
       ) : (
         <motion.div
@@ -553,70 +769,15 @@ export default function DashboardPage() {
         </motion.div>
       )}
 
-      {/* Top job matches */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5"
-      >
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="font-bold text-lg tracking-tight">Top Job Matches</h3>
-          <Link href="/jobs" className="text-xs font-bold text-white hover:underline flex items-center gap-1">
-            View all <ChevronRight className="w-3 h-3" />
-          </Link>
-        </div>
-        <div className="space-y-4">
-          {(topJobs?.items ?? []).slice(0, 5).map((job: any, i: number) => (
-            <motion.div
-              key={job.id}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 + (i * 0.05) }}
-              className="flex items-center gap-4 p-4 bg-[var(--app-card)] border border-white/[0.08] rounded-2xl hover:border-white/20 hover:bg-[var(--app-card)] transition-all group"
-            >
-              <div className="w-12 h-12 rounded-xl bg-[var(--app-card)] shadow-sm flex items-center justify-center shrink-0 border border-white/[0.08] group-hover:scale-110 transition-transform">
-                <Briefcase className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold truncate text-white">{job.title}</p>
-                <p className="text-xs text-muted-foreground font-medium">{job.company_name} · {job.location ?? "Remote"}</p>
-              </div>
-              {job.analysis?.match_score != null && (
-                <div className="flex flex-col items-end gap-1">
-                  <span className={cn("px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-tighter", getMatchBadgeClass(job.analysis.match_score))}>
-                    {Math.round(job.analysis.match_score)}% Match
-                  </span>
-                </div>
-              )}
+      {/* ── Application Run Status (Full-width below summary cards) ─────── */}
+      <RunPanel
+        totalJobs={safeDashboard.total_jobs}
+        jobsToday={safeDashboard.jobs_today}
+        highMatchJobs={safeDashboard.high_match_jobs}
+        queueLength={queueStatus?.totalInQueue ?? queueStatus?.queueLength ?? 0}
+        currentTask={currentTask}
+      />
 
-              {job.source_url && (
-                <a
-                  href={job.source_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-lg border border-white/[0.12] text-zinc-300 hover:text-white hover:border-white/30 hover:bg-white/5 transition-colors"
-                  title="Open source job page"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              )}
-
-            </motion.div>
-          ))}
-          {(!topJobs?.items || topJobs.items.length === 0) && (
-            <div className="text-center py-20 bg-[var(--app-card)] border border-white/[0.08] rounded-[20px] shadow-[inset_0_1px_0_rgba(255,255,255,0.035)] transition-all">
-              <div className="w-12 h-12 rounded-full bg-[var(--app-card)] border border-white/[0.08] flex items-center justify-center mx-auto mb-6">
-                <Target className="w-5 h-5 text-zinc-600" />
-              </div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 mb-2">No Matches Deployed</p>
-              <p className="text-[9px] font-bold text-zinc-600 max-w-[200px] mx-auto uppercase tracking-wider leading-relaxed italic">
-                Ready to start? Initializing the agent will populate this sector.
-              </p>
-            </div>
-          )}
-        </div>
-      </motion.div>
 
     </div>
   );

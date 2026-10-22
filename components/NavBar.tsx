@@ -13,7 +13,7 @@ const navLinks = [
   { label: "Workflow", href: "/#workflow" },
   { label: "Features", href: "/#features" },
   { label: "Integrations", href: "/#integrations" },
-  { label: "Pricing", href: "/#pricing" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Docs", href: "/docs" },
   { label: "Contact", href: "/contact" },
 ];

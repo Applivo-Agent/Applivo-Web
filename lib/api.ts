@@ -105,6 +105,10 @@ export const jobsApi = {
   analyze: (id: string) => api.post(`/jobs/${id}/analyze`),
   skip: (id: string) => api.post(`/jobs/${id}/skip`),
   scrape: () => api.post("/jobs/scrape"),
+  exportCsv: (params?: Record<string, unknown>) =>
+    api.get("/jobs/export-csv", { params, responseType: "blob" }),
+  backfillDescriptions: (params?: { limit?: number; force?: boolean; source?: string }) =>
+    api.post("/jobs/backfill-descriptions", null, { params }),
 };
 
 // ─── Applications ─────────────────────────────────────────────────────────
@@ -116,6 +120,12 @@ export const applicationsApi = {
     api.patch(`/applications/${id}/status`, data),
   approve: (id: string) => api.post(`/applications/${id}/approve`),
   star: (id: string) => api.patch(`/applications/${id}/star`),
+  delete: (id: string) => api.delete(`/applications/${id}`),
+  bulk: (data: { action: string; application_ids: string[]; status?: string }) =>
+    api.post("/applications/bulk", data),
+  exportCsv: (params?: Record<string, unknown>) =>
+    api.get("/applications/export-csv", { params, responseType: "blob" }),
+  applyNow: (id: string) => api.post(`/applications/${id}/apply-now`),
   stats: () => api.get("/applications/stats"),
   queueStatus: () => api.get("/applications/queue-status"),
 };
@@ -176,6 +186,7 @@ export const analyticsApi = {
   velocity: (days?: number) => api.get("/analytics/velocity", { params: { days } }),
   funnel: () => api.get("/analytics/funnel"),
   performance: (days?: number) => api.get("/analytics/performance", { params: { days } }),
+  streak: (tz_offset_minutes?: number) => api.get("/analytics/streak", { params: { tz_offset_minutes } }),
   downloadCsv: async (days: number = 30) => {
     const res = await api.get("/analytics/export-csv", {
       params: { days },
@@ -221,6 +232,26 @@ export const paymentsApi = {
 export const quotasApi = {
   status: () => api.get("/quota/"),
   analyzeBudget: () => api.get("/quota/analyze-budget"),
+  usage: (params?: {
+    days?: number;
+    feature?: string;
+    model?: string;
+    status?: string;
+    page?: number;
+    page_size?: number;
+  }) => api.get("/quota/usage", { params }),
+  exportCsv: async (params?: {
+    days?: number;
+    feature?: string;
+    model?: string;
+    status?: string;
+  }) => {
+    const res = await api.get("/quota/usage/export-csv", {
+      params,
+      responseType: "blob",
+    });
+    return res.data;
+  },
 };
 
 // ─── Platform ─────────────────────────────────────────────────────────────

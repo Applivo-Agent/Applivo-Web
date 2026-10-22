@@ -276,32 +276,6 @@ export function IntegrationsHub() {
                 );
               })}
             </div>
-
-            {/* Expand / Collapse Action below Grid */}
-            {activeCategory === "All" && !searchQuery && (
-              <div className="flex justify-center mt-8">
-                {!showAll ? (
-                  <button
-                    onClick={() => setShowAll(true)}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 hover:border-white/20 transition-all duration-200 shadow-sm active:scale-95"
-                  >
-                    Browse all {INTEGRATION_REGISTRY.length} integrations
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setShowAll(false);
-                      const el = document.getElementById("integration-grid-anchor");
-                      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium text-zinc-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 transition-all duration-200 active:scale-95"
-                  >
-                    Show featured (8)
-                  </button>
-                )}
-              </div>
-            )}
           </div>
         ) : (
           /* Empty Search State */
