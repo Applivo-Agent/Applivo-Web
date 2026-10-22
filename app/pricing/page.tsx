@@ -46,8 +46,8 @@ export default function PricingPage() {
           ))}
         </div>
 
-        {/* ─── 3. FULL COMPARE PLANS TABLE (DENSE & COMPACT) ─── */}
-        <div className="w-full flex justify-center mb-14 sm:mb-16">
+        {/* ─── 3. FULL COMPARE PLANS TABLE ─── */}
+        <div className="w-full flex justify-center mb-16 sm:mb-20">
           <ComparisonTable isLoggedIn={isLoggedIn} />
         </div>
 
