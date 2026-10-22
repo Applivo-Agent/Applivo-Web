@@ -68,46 +68,46 @@ export function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative z-10 w-full py-20 md:py-28 px-4 sm:px-6 md:px-8 bg-[#0A0A0A] overflow-hidden"
+      className="relative z-10 w-full py-14 sm:py-16 md:py-16 px-4 sm:px-6 md:px-8 bg-[#0A0A0A] overflow-hidden"
       aria-label="Customer Testimonials"
     >
-      {/* ─── Centered Section Heading ─── */}
-      <div className="max-w-3xl mx-auto text-center mb-12 sm:mb-16">
-        <span className="text-[11px] sm:text-[12px] font-medium text-[#71717A] uppercase tracking-[0.15em] block mb-3.5">
+      {/* ─── Centered Section Heading (Compact SaaS Typography) ─── */}
+      <div className="max-w-2xl mx-auto text-center mb-9 sm:mb-10">
+        <span className="text-[10px] sm:text-[11px] font-medium text-[#71717A] uppercase tracking-[0.15em] block mb-3">
           TESTIMONIALS
         </span>
-        <h2 className="text-[28px] sm:text-[34px] md:text-[38px] font-semibold text-[#F5F5F5] tracking-tight leading-[1.18] max-w-[620px] mx-auto mb-3.5">
+        <h2 className="text-[26px] sm:text-[30px] md:text-[32px] font-semibold text-[#F5F5F5] tracking-tight leading-[1.2] max-w-[650px] mx-auto mb-3">
           Trusted by job seekers building their next chapter
         </h2>
-        <p className="text-[15px] sm:text-[15.5px] text-[#A1A1AA] leading-[1.6] max-w-xl mx-auto">
+        <p className="text-[13px] sm:text-[13.5px] text-[#A1A1AA] leading-[1.5] max-w-lg mx-auto">
           See how Applivo helps candidates organize applications, prepare smarter, and manage their job search.
         </p>
       </div>
 
-      {/* ─── 3-Column Masonry-Inspired Grid (1,180–1,220px Max Width) ─── */}
-      <div className="w-full max-w-[1200px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-[16px] items-start">
+      {/* ─── 3-Column Masonry Layout (Max Width: 1,180px) ─── */}
+      <div className="w-full max-w-[1180px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[14px] md:gap-[16px] items-start">
           {/* Left Column (2 cards) */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-[14px]">
             {leftTestimonials.map((t, idx) => (
               <div
                 key={idx}
-                className="rounded-[24px] bg-[#161616] border border-[#242424] p-5 sm:p-6 hover:border-[#333333] hover:bg-[#181818] transition-all duration-200 flex flex-col justify-between"
+                className="rounded-[18px] sm:rounded-[20px] bg-[#151515] border border-[#252525] p-4 sm:p-[18px] hover:border-[#333333] hover:bg-[#181818] transition-all duration-200 flex flex-col justify-between"
               >
-                <p className="text-[#E5E5E5] text-[14px] sm:text-[14.5px] leading-[1.6] font-normal">
+                <p className="text-[#E5E5E5] text-[13px] sm:text-[13.5px] leading-[1.55] font-normal">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="flex items-center gap-3.5 mt-6">
-                  <div className="w-[44px] h-[44px] rounded-[12px] bg-[#202022] border border-[#2D2D30] flex items-center justify-center shrink-0">
-                    <span className="text-[#F5F5F5] font-semibold text-[13.5px] tracking-tight">
+                <div className="flex items-center gap-2.5 sm:gap-3 mt-4 sm:mt-[18px]">
+                  <div className="w-[38px] h-[38px] sm:w-[40px] sm:h-[40px] rounded-[10px] bg-[#202022] border border-[#2D2D30] flex items-center justify-center shrink-0">
+                    <span className="text-[#F5F5F5] font-semibold text-[12px] sm:text-[12.5px] tracking-tight">
                       {t.initials}
                     </span>
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-[#F5F5F5] font-medium text-[14px] sm:text-[14.5px] tracking-tight truncate">
+                    <h3 className="text-[#F5F5F5] font-medium text-[13px] tracking-tight truncate">
                       {t.name}
                     </h3>
-                    <p className="text-[#A1A1AA] text-[12px] sm:text-[12.5px] truncate mt-0.5">
+                    <p className="text-[#A1A1AA] text-[11.5px] sm:text-[12px] truncate mt-0.5">
                       {t.role} <span className="text-[#52525B]">/</span> {t.context}
                     </p>
                   </div>
@@ -116,23 +116,23 @@ export function Testimonials() {
             ))}
           </div>
 
-          {/* Center Column (Featured Tall Card) */}
+          {/* Center Column (Featured Card: ~350–390px tall) */}
           <div className="flex flex-col">
-            <div className="rounded-[24px] bg-[#161616] border border-[#242424] p-6 sm:p-7 hover:border-[#333333] hover:bg-[#181818] transition-all duration-200 flex flex-col justify-between min-h-[420px] md:min-h-[460px]">
-              <p className="text-[#F5F5F5] text-[17px] sm:text-[18.5px] md:text-[19.5px] font-medium leading-[1.5]">
+            <div className="rounded-[18px] sm:rounded-[20px] bg-[#151515] border border-[#252525] p-5 sm:p-[20px] hover:border-[#333333] hover:bg-[#181818] transition-all duration-200 flex flex-col justify-between min-h-[350px] md:min-h-[370px]">
+              <p className="text-[#F5F5F5] text-[15px] sm:text-[16px] font-medium leading-[1.55]">
                 &ldquo;{featuredTestimonial.quote}&rdquo;
               </p>
-              <div className="flex items-center gap-4 mt-8 sm:mt-10">
-                <div className="w-[72px] h-[72px] sm:w-[78px] sm:h-[78px] rounded-[16px] bg-[#202022] border border-[#2D2D30] flex items-center justify-center shrink-0">
-                  <span className="text-[#F5F5F5] font-semibold text-[20px] sm:text-[22px] tracking-tight">
+              <div className="flex items-center gap-3.5 sm:gap-4 mt-6 sm:mt-8">
+                <div className="w-[54px] h-[54px] sm:w-[58px] sm:h-[58px] rounded-[12px] bg-[#202022] border border-[#2D2D30] flex items-center justify-center shrink-0">
+                  <span className="text-[#F5F5F5] font-semibold text-[15px] sm:text-[16px] tracking-tight">
                     {featuredTestimonial.initials}
                   </span>
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-[#F5F5F5] font-medium text-[15px] sm:text-[16px] tracking-tight truncate">
+                  <h3 className="text-[#F5F5F5] font-medium text-[13.5px] sm:text-[14px] tracking-tight truncate">
                     {featuredTestimonial.name}
                   </h3>
-                  <p className="text-[#A1A1AA] text-[12.5px] sm:text-[13px] truncate mt-0.5">
+                  <p className="text-[#A1A1AA] text-[11.5px] sm:text-[12px] truncate mt-0.5">
                     {featuredTestimonial.role} <span className="text-[#52525B]">/</span> {featuredTestimonial.context}
                   </p>
                 </div>
@@ -141,26 +141,26 @@ export function Testimonials() {
           </div>
 
           {/* Right Column (2 cards) */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-[14px]">
             {rightTestimonials.map((t, idx) => (
               <div
                 key={idx}
-                className="rounded-[24px] bg-[#161616] border border-[#242424] p-5 sm:p-6 hover:border-[#333333] hover:bg-[#181818] transition-all duration-200 flex flex-col justify-between"
+                className="rounded-[18px] sm:rounded-[20px] bg-[#151515] border border-[#252525] p-4 sm:p-[18px] hover:border-[#333333] hover:bg-[#181818] transition-all duration-200 flex flex-col justify-between"
               >
-                <p className="text-[#E5E5E5] text-[14px] sm:text-[14.5px] leading-[1.6] font-normal">
+                <p className="text-[#E5E5E5] text-[13px] sm:text-[13.5px] leading-[1.55] font-normal">
                   &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="flex items-center gap-3.5 mt-6">
-                  <div className="w-[44px] h-[44px] rounded-[12px] bg-[#202022] border border-[#2D2D30] flex items-center justify-center shrink-0">
-                    <span className="text-[#F5F5F5] font-semibold text-[13.5px] tracking-tight">
+                <div className="flex items-center gap-2.5 sm:gap-3 mt-4 sm:mt-[18px]">
+                  <div className="w-[38px] h-[38px] sm:w-[40px] sm:h-[40px] rounded-[10px] bg-[#202022] border border-[#2D2D30] flex items-center justify-center shrink-0">
+                    <span className="text-[#F5F5F5] font-semibold text-[12px] sm:text-[12.5px] tracking-tight">
                       {t.initials}
                     </span>
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-[#F5F5F5] font-medium text-[14px] sm:text-[14.5px] tracking-tight truncate">
+                    <h3 className="text-[#F5F5F5] font-medium text-[13px] tracking-tight truncate">
                       {t.name}
                     </h3>
-                    <p className="text-[#A1A1AA] text-[12px] sm:text-[12.5px] truncate mt-0.5">
+                    <p className="text-[#A1A1AA] text-[11.5px] sm:text-[12px] truncate mt-0.5">
                       {t.role} <span className="text-[#52525B]">/</span> {t.context}
                     </p>
                   </div>
@@ -170,20 +170,20 @@ export function Testimonials() {
           </div>
         </div>
 
-        {/* ─── Compact Metrics Row Beneath Testimonials ─── */}
-        <div className="mt-10 sm:mt-12 pt-8 sm:pt-10 border-t border-[#242424]">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0">
+        {/* ─── Compact Metrics Row (20px padding, thin #252525 divider) ─── */}
+        <div className="mt-9 sm:mt-10 pt-[20px] pb-1 border-t border-[#252525]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-0">
             {metrics.map((m, idx) => (
               <div
                 key={idx}
                 className={`flex flex-col items-center justify-center text-center px-4 ${
-                  idx > 0 ? "md:border-l md:border-[#242424]" : ""
+                  idx > 0 ? "md:border-l md:border-[#252525]" : ""
                 }`}
               >
-                <div className="text-[25px] sm:text-[28px] md:text-[30px] font-semibold text-[#F5F5F5] tracking-tight">
+                <div className="text-[23px] sm:text-[25px] font-semibold text-[#F5F5F5] tracking-tight">
                   {m.value}
                 </div>
-                <div className="text-[12px] sm:text-[13px] text-[#A1A1AA] mt-1 font-normal">
+                <div className="text-[11px] sm:text-[11.5px] text-[#A1A1AA] mt-0.5 font-normal">
                   {m.label}
                 </div>
               </div>
