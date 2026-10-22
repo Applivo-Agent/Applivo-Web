@@ -28,22 +28,22 @@ const leftTestimonials: Testimonial[] = [
   {
     quote:
       "I tracked over 80 applications across Internshala and LinkedIn in my first two weeks. The Kanban tracker and status sync keep my search completely organized.",
-    name: "Sudharsan",
-    role: "AI Engineer",
-    context: "Times Media, Malaysia",
-    avatar: "/testimonials/sudharsan.png",
-    initials: "S",
+    name: "Shree Harish V",
+    role: "Quant Developer",
+    context: "Finflock Systems Pvt Ltd",
+    avatar: "/testimonials/shree-harish.png",
+    initials: "SH",
   },
 ];
 
 const featuredTestimonial: Testimonial = {
   quote:
     "Applivo auto-resolves tedious application questions with accurate resume context. I was able to automate targeted applications with high precision, and my interview pipeline finally breathes.",
-  name: "Shree Harish V",
-  role: "Quant Developer",
-  context: "Finflock Systems Pvt Ltd",
-  avatar: "/testimonials/shree-harish.png",
-  initials: "SH",
+  name: "Sudharsan",
+  role: "AI Engineer",
+  context: "Times Media, Malaysia",
+  avatar: "/testimonials/sudharsan.png",
+  initials: "S",
 };
 
 const rightTestimonials: Testimonial[] = [
@@ -157,7 +157,7 @@ export function Testimonials() {
                       alt={featuredTestimonial.name}
                       width={116}
                       height={116}
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-cover object-center"
                     />
                   ) : (
                     <span className="text-[#F5F5F5] font-semibold text-[15px] sm:text-[16px] tracking-tight">
