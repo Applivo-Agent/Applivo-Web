@@ -42,7 +42,7 @@ const featuredTestimonial: Testimonial = {
   name: "Sudharsan",
   role: "AI Engineer",
   context: "Times Media, Malaysia",
-  avatar: "/testimonials/sudharsan.png",
+  avatar: "/testimonials/sudharsan-portrait.png",
   initials: "S",
 };
 
