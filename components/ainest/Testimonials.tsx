@@ -71,12 +71,12 @@ export function Testimonials() {
       className="relative z-10 w-full py-14 sm:py-16 md:py-16 px-4 sm:px-6 md:px-8 bg-[#0A0A0A] overflow-hidden"
       aria-label="Customer Testimonials"
     >
-      {/* ─── Centered Section Heading (Hero-Style Two-Tone Typography) ─── */}
-      <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-12">
-        <span className="text-[10.5px] sm:text-[11px] font-medium text-[#71717A] uppercase tracking-[0.15em] block mb-3.5">
+      {/* ─── Centered Section Heading (Compact SaaS Two-Tone Typography) ─── */}
+      <div className="max-w-3xl mx-auto text-center mb-9 sm:mb-10">
+        <span className="text-[10px] sm:text-[11px] font-medium text-[#71717A] uppercase tracking-[0.15em] block mb-3">
           TESTIMONIALS
         </span>
-        <h2 className="text-[32px] sm:text-[42px] md:text-[52px] lg:text-[56px] font-semibold tracking-tight leading-[1.08] max-w-3xl mx-auto mb-4">
+        <h2 className="text-[26px] sm:text-[30px] md:text-[34px] lg:text-[36px] xl:text-[38px] font-semibold tracking-tight leading-[1.12] max-w-[780px] mx-auto mb-3">
           <span className="text-[#A3A3A3] block">
             Trusted by job seekers building their next
           </span>
@@ -84,7 +84,7 @@ export function Testimonials() {
             chapter
           </span>
         </h2>
-        <p className="text-[14px] sm:text-[14.5px] text-[#A1A1AA] leading-[1.55] max-w-xl mx-auto">
+        <p className="text-[13px] sm:text-[13.5px] text-[#A1A1AA] leading-[1.5] max-w-lg mx-auto">
           See how Applivo helps candidates organize applications, prepare smarter, and manage their job search.
         </p>
       </div>
