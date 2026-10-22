@@ -22,6 +22,7 @@ import { SecondaryBento } from "@/components/ainest/SecondaryBento";
 import { IntegrationsHub } from "@/components/ainest/IntegrationsHub";
 import { HowItWorksSteps } from "@/components/ainest/HowItWorksSteps";
 import { SimplePricing as Pricing } from "@/components/ainest/Pricing";
+import { Testimonials } from "@/components/ainest/Testimonials";
 import { Footer } from "@/components/Footer";
 import { AppDock, type DockEntry } from "@/components/ainest/AppDock";
 
@@ -355,6 +356,8 @@ export default function LandingPage() {
         <div id="pricing">
           <Pricing />
         </div>
+
+        <Testimonials />
 
         {/* ── CLOSING CTA (dock unifies heading, dock, button & caption) ── */}
         <section
