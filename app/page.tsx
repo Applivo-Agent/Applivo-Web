@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { NavBar } from "@/components/NavBar";
 import { motion, useScroll, useTransform, AnimatePresence, MotionConfig } from "framer-motion";
 import { useEffect, useState, useRef, useMemo } from "react";
@@ -23,64 +22,12 @@ import { IntegrationsHub } from "@/components/ainest/IntegrationsHub";
 import { HowItWorksSteps } from "@/components/ainest/HowItWorksSteps";
 import { SimplePricing as Pricing } from "@/components/ainest/Pricing";
 import { Testimonials } from "@/components/ainest/Testimonials";
+import { FAQ } from "@/components/ainest/FAQ";
+import { Insights } from "@/components/ainest/Insights";
 import { Footer } from "@/components/Footer";
-import { AppDock, type DockEntry } from "@/components/ainest/AppDock";
+import { MiniDashboardPreview } from "@/components/landing/MiniDashboardPreview";
 
-/* ─── HERO APP DOCK ─────────────────────────────────────────
-   Ecosystem / workflow representations shown in the hero dock.
-   These depict the apps Applivo's workflow revolves around — they
-   do not imply that every service is connected, supported, or
-   enabled for a given account. Only the Applivo mark is the
-   featured (actionable) destination in this composition.
-─────────────────────────────────────────────────────────────── */
-const dockItems: DockEntry[] = [
-  {
-    id: "internshala",
-    label: "Internshala",
-    src: "/logos/internshala-icon.png",
-    role: "job discovery and application platform",
-  },
-  {
-    id: "gmail",
-    label: "Gmail",
-    src: "/logos/gmail.png",
-    role: "recruiter communication",
-  },
-  {
-    id: "google-drive",
-    label: "Google Drive",
-    src: "/logos/google-drive.png",
-    role: "resumes and career documents",
-  },
-  {
-    id: "google-calendar",
-    label: "Google Calendar",
-    src: "/logos/google-calendar.png",
-    role: "interview scheduling",
-  },
-  {
-    id: "github",
-    label: "GitHub",
-    src: "/logos/github.svg",
-    role: "portfolio and project links",
-  },
-  {
-    id: "notion",
-    label: "Notion",
-    src: "/logos/notion.svg",
-    role: "job-search notes and organisation",
-  },
-  { separator: true, id: "sep-applivo" },
-  {
-    id: "applivo",
-    label: "Applivo",
-    src: "/logo.png",
-    role: "featured application",
-    href: "/register",
-    invert: true,
-    featured: true,
-  },
-];
+
 
 
 /* ─── HERO MOCKUP ─────────────────────────────────────────── */
@@ -218,17 +165,8 @@ function HeroMockup() {
 
         {/* Dashboard preview correctly seated */}
         <div className="bg-[#0a0a0a] relative overflow-hidden">
-          <Image
-            src="/dashboard-screenshot.png?v=3"
-            alt="Applivo Dashboard"
-            width={2560}
-            height={1455}
-            className="w-full h-auto mt-0 object-cover object-top shadow-2xl"
-            priority
-            unoptimized
-          />
-
-          <div className="absolute inset-x-0 bottom-0 h-[220px] sm:h-[300px] bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/85 to-transparent pointer-events-none z-20" />
+          <MiniDashboardPreview />
+          <div className="absolute inset-x-0 bottom-0 h-[120px] sm:h-[170px] bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/85 to-transparent pointer-events-none z-20" />
         </div>
       </div>
     </motion.div>
@@ -313,8 +251,9 @@ export default function LandingPage() {
 
         <div id="workflow" className="relative z-10 pt-20 md:pt-28 pb-16 md:pb-24">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 relative z-10">
-            <h2 className="k-h2 mb-3.5 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2] max-w-2xl mx-auto text-white">
-              Automate Your Job Search —<br className="hidden sm:inline" /> End to End.
+            <h2 className="k-h2 mb-3.5 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2] max-w-2xl mx-auto">
+              <span className="text-[#a1a1a1] block">Automate Your Job Search —</span>
+              <span className="text-white font-semibold block">End to End.</span>
             </h2>
             <p className="k-body max-w-xl mx-auto text-[14.5px] sm:text-[15.5px] text-zinc-400 leading-relaxed">
               Connect your accounts, discover matching roles, and let AI apply to opportunities automatically — saving hours of manual effort every day.
@@ -338,8 +277,9 @@ export default function LandingPage() {
 
         <div id="features" className="py-16 md:py-24 relative">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 mb-12 md:mb-14 relative z-10">
-            <h2 className="k-h2 mb-3.5 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2] max-w-2xl mx-auto text-white">
-              Everything you need to scale.
+            <h2 className="k-h2 mb-3.5 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2] max-w-2xl mx-auto">
+              <span className="text-[#a1a1a1] block">Everything you need</span>
+              <span className="text-white font-semibold block">to scale.</span>
             </h2>
             <p className="k-body max-w-2xl mx-auto text-[14.5px] sm:text-[15.5px] text-zinc-400 leading-relaxed">
               A massively scalable ecosystem that natively handles deployment, tracking, synchronization, and security.
@@ -359,50 +299,10 @@ export default function LandingPage() {
 
         <Testimonials />
 
-        {/* ── CLOSING CTA (dock unifies heading, dock, button & caption) ── */}
-        <section
-          aria-label="Get started with Applivo"
-          className="relative z-10 w-full px-4 sm:px-6 md:px-8 pt-8 md:pt-12 pb-14 md:pb-20 overflow-hidden border-t border-white/[0.06]"
-        >
-          <div
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.045),transparent_65%)]"
-            aria-hidden="true"
-          />
+        <FAQ />
 
-          <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center text-center">
-            <h2 className="k-h2 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight text-white leading-[1.2]">
-              Make your next<br className="hidden sm:inline" /> career move.
-            </h2>
-            <p className="mt-3.5 text-[14.5px] sm:text-[15.5px] text-zinc-400 max-w-xl mx-auto leading-relaxed">
-              Find relevant opportunities, prepare stronger applications, and manage your job search with Applivo.
-            </p>
-
-            <div className="mt-14 sm:mt-16 md:mt-20 w-full">
-              <AppDock
-                items={dockItems.map((it) =>
-                  "separator" in it ? it : it.id === "applivo"
-                    ? { ...it, href: isLoggedIn ? "/dashboard" : "/register" }
-                    : it,
-                )}
-              />
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.6 }}
-              transition={{ duration: 0.5 }}
-              className="mt-12 sm:mt-14 md:mt-16 flex flex-col items-center"
-            >
-              <Link
-                href={isLoggedIn ? "/dashboard" : "/register"}
-                className="inline-flex items-center justify-center rounded-full bg-white px-7 py-3 text-sm font-semibold text-black shadow-[0_4px_24px_rgba(255,255,255,0.18)] transition-all duration-200 hover:bg-zinc-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-              >
-                Get started
-              </Link>
-            </motion.div>
-          </div>
-        </section>
+        {/* ── APPLIVO INSIGHTS (EDITORIAL BLOG SECTION) ── */}
+        <Insights />
 
         {/* ── FOUR-COLUMN FOOTER ────────────────────────────── */}
         <Footer />

@@ -1,12 +1,12 @@
 "use client";
 
 import { SettingSection } from "@/components/settings/card";
-import { ExtensionCard } from "@/components/extension-card";
+import { ExtensionPanel } from "@/components/extension-card";
 
 export function ExtensionSection() {
   return (
     <SettingSection>
-      <ExtensionCard />
+      <ExtensionPanel />
     </SettingSection>
   );
 }

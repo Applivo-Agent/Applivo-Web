@@ -280,14 +280,7 @@ export default function MessagesPage() {
     <div className="flex flex-col min-h-0 space-y-4">
       {/* ── Page Header ─────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#262626]">
-        <div>
-          <h1 className="text-[22px] font-semibold text-[#EDEDED] tracking-tight leading-none">
-            Messages
-          </h1>
-          <p className="text-[13px] text-[#929292] mt-1.5">
-            Recruiter conversations and updates from your connected job platforms.
-          </p>
-        </div>
+        <div />
 
         <div className="flex items-center gap-3">
           <span className="text-[12px] text-[#929292]">
@@ -346,15 +339,15 @@ export default function MessagesPage() {
       )}
 
       {/* ── Two-Column Inbox ────────────────────────────────────────────── */}
-      <div className="bg-[#111111] border border-[#262626] rounded-lg overflow-hidden flex flex-1 h-[calc(100vh-200px)] min-h-[560px]">
+      <div className="bg-[var(--app-card)] border border-[#262626] rounded-lg overflow-hidden flex flex-1 h-[calc(100vh-200px)] min-h-[560px]">
         {/* Left Panel — Conversation List */}
         <div
           className={`${
             mobileDetailView ? "hidden md:flex" : "flex"
-          } w-full md:w-[350px] lg:w-[360px] flex-col border-r border-[#262626] shrink-0 bg-[#111111]`}
+          } w-full md:w-[350px] lg:w-[360px] flex-col border-r border-[#262626] shrink-0 bg-[var(--app-card)]`}
         >
           {/* Search & Filters */}
-          <div className="p-3 border-b border-[#262626] space-y-2.5 bg-[#111111]">
+          <div className="p-3 border-b border-[#262626] space-y-2.5 bg-[var(--app-card)]">
             <div className="relative">
               <Search className="w-3.5 h-3.5 text-[#737373] absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
@@ -491,7 +484,7 @@ export default function MessagesPage() {
           {selectedConversation ? (
             <>
               {/* Selected Conversation Header */}
-              <div className="px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#262626] flex items-center justify-between gap-3 bg-[#111111] shrink-0">
+              <div className="px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#262626] flex items-center justify-between gap-3 bg-[var(--app-card)] shrink-0">
                 <div className="flex items-center gap-3 min-w-0">
                   <button
                     onClick={() => setMobileDetailView(false)}

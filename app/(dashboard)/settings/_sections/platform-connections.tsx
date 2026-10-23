@@ -97,7 +97,7 @@ export function PlatformConnectionsSection() {
               return (
                 <div
                   key={p.id}
-                  className="flex items-center justify-between p-3.5 rounded-lg border border-[var(--app-border-strong)] bg-[var(--app-nested)] transition-colors"
+                  className="flex items-center justify-between p-3.5 rounded-lg border border-[var(--app-border-strong)] bg-transparent transition-colors"
                 >
                   <div className="flex items-center gap-3.5">
                     <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center bg-[var(--app-card)] border border-[var(--app-border-strong)] text-zinc-300", p.color)}>

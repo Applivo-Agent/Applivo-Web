@@ -29,25 +29,29 @@ export default function PricingPage() {
           aria-hidden="true"
         />
 
-        {/* ─── 1. PAGE HEADER (COMPACT TYPOGRAPHY & REFINED SPACING) ─── */}
-        <div className="text-center mb-7 sm:mb-8 relative z-10 max-w-xl mx-auto">
-          <h1 className="text-[28px] sm:text-[31px] md:text-[32px] font-semibold tracking-tight text-[#F5F5F5] mb-2 leading-[1.2]">
-            Choose your plan
+        {/* ─── 1. PAGE HEADER (RECORD-INSPIRED CENTERED LAYOUT) ─── */}
+        <div className="text-center mb-10 sm:mb-12 md:mb-14 relative z-10 max-w-2xl mx-auto px-4">
+          <span className="text-[11px] sm:text-[11.5px] font-medium text-[#71717A] uppercase tracking-[0.15em] block mb-3">
+            PRICING
+          </span>
+          <h1 className="text-[32px] sm:text-[36px] md:text-[38px] font-semibold tracking-tight mb-3 leading-[1.2]">
+            <span className="text-[#a1a1a1] block">Simple plans.</span>
+            <span className="text-white font-semibold block">Serious progress.</span>
           </h1>
-          <p className="text-[13px] sm:text-[13.5px] text-[#A1A1AA] leading-[1.6] max-w-md mx-auto">
-            Tailored for every stage of your career search. All plans include automated scraping, AI answering, and real-time tracking.
+          <p className="text-[13.5px] sm:text-[14px] text-[#A1A1AA] leading-[1.6] max-w-lg mx-auto">
+            Choose the right plan for your job search and unlock the tools you need to move forward.
           </p>
         </div>
 
-        {/* ─── 2. THREE COMPACT MONOCHROME PRICING CARDS (1,040px Container) ─── */}
-        <div className="w-full max-w-[1040px] grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-[18px] relative z-10 mb-12 sm:mb-14">
+        {/* ─── 2. THREE COMPACT PLAN CARDS (980px Container, Single Row on Desktop) ─── */}
+        <div className="w-full max-w-[980px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-3.5 lg:gap-4 relative z-10 mb-14 sm:mb-16 items-stretch">
           {PRICING_PLANS.map((plan) => (
             <PricingCard key={plan.id} plan={plan} isLoggedIn={isLoggedIn} />
           ))}
         </div>
 
         {/* ─── 3. FULL COMPARE PLANS TABLE ─── */}
-        <div className="w-full flex justify-center mb-16 sm:mb-20">
+        <div className="w-full max-w-[1100px] mx-auto flex justify-center mb-16 sm:mb-20">
           <ComparisonTable isLoggedIn={isLoggedIn} />
         </div>
 

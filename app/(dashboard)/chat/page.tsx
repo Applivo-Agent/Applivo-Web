@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, User as UserIcon, Zap, Trash2 } from "lucide-react";
+import { Send, User as UserIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLumi } from "@/lib/lumi-context";
 
@@ -33,8 +33,6 @@ export default function ChatPage() {
     setInput,
     isTyping,
     sendMessage,
-    newChat,
-    credits,
   } = useLumi();
 
   const endRef = useRef<HTMLDivElement>(null);
@@ -48,7 +46,17 @@ export default function ChatPage() {
     }
   }, [input]);
 
+  const didInitialScroll = useRef(false);
   useEffect(() => {
+    if (messages.length === 0) return;
+    // First render with history: jump straight to the latest message; afterwards scroll smoothly.
+    if (!didInitialScroll.current) {
+      didInitialScroll.current = true;
+      const jump = () => endRef.current?.scrollIntoView({ behavior: "auto", block: "end" });
+      jump();
+      const t = setTimeout(jump, 120);   // again once images/markdown have laid out
+      return () => clearTimeout(t);
+    }
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages.length, isTyping]);
 
@@ -58,63 +66,10 @@ export default function ChatPage() {
     sendMessage();
   };
 
-  const getCreditDisplay = () => {
-    if (!credits) return null;
-    if (credits.is_unlimited) {
-      return { label: "Unlimited", color: "text-white" };
-    }
-    if (credits.remaining <= 10) {
-      return { label: `${credits.remaining} credits`, color: "text-zinc-400" };
-    }
-    return { label: `${credits.remaining} credits`, color: "text-white" };
-  };
-
-  const creditDisplay = getCreditDisplay();
-
   return (
     <div className="flex-1 min-h-0 flex flex-col w-full relative h-full">
-      {/* Header */}
-      <div className="flex items-center justify-between pb-3 pt-0.5 border-b border-[var(--app-border-strong)] shrink-0 w-full">
-        <div className="flex items-center gap-2.5">
-          <Image
-            src="/lumi-logo.png"
-            alt="Lumi"
-            width={28}
-            height={28}
-            className="w-7 h-7 sm:w-[30px] sm:h-[30px] object-contain shrink-0"
-            priority
-          />
-          <h1 className="text-[19px] sm:text-[20px] font-medium tracking-tight text-white leading-none">
-            Lumi
-          </h1>
-        </div>
-
-        {/* Controls: Clear chat + Credits */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => void newChat()}
-            className="h-7 w-7 sm:h-7.5 sm:w-7.5 rounded-md bg-[#171717] hover:bg-[var(--app-card)] border border-[var(--app-border-strong)] text-zinc-400 hover:text-white flex items-center justify-center transition-colors disabled:opacity-50"
-            title="Start new conversation"
-            aria-label="Start new conversation"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-          </button>
-          {creditDisplay && (
-            <div
-              className={cn(
-                "flex items-center gap-1.5 h-7 sm:h-7.5 px-2.5 rounded-full bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-[11px] sm:text-[12px] font-medium",
-                creditDisplay.color
-              )}
-            >
-              <Zap className="w-3 h-3 text-zinc-400" />
-              <span>{creditDisplay.label}</span>
-            </div>
-          )}
-        </div>
-      </div>
-
       {/* Messages History - independently scrolling container */}
-      <div className="flex-1 min-h-0 overflow-y-auto py-3.5 px-1 space-y-3 w-full">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-3 px-1 space-y-3 w-full">
         <AnimatePresence initial={false}>
           {messages.map((m, i) => (
             <motion.div
@@ -158,7 +113,7 @@ export default function ChatPage() {
       </div>
 
       {/* Input Composer */}
-      <div className="shrink-0 pt-2 pb-2 border-t border-[var(--app-border-strong)] bg-[var(--app-bg)] w-full">
+      <div className="shrink-0 pt-2 pb-0 border-t border-[var(--app-border-strong)] bg-[var(--app-bg)] w-full">
         <form onSubmit={handleSubmit} className="relative w-full">
           <textarea
             ref={textareaRef}

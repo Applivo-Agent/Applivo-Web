@@ -96,7 +96,7 @@ function StatCard({ icon: Icon, label, value, sub, color, delay = 0, isLocked = 
       transition={{ delay, duration: 0.4 }}
 
       className={cn(
-        "bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 group cursor-default relative overflow-hidden transition-all",
+        "bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-xl p-4 group cursor-default relative overflow-hidden transition-all",
         !isLocked && "hover:border-[var(--app-border-strong)]"
       )}
     >
@@ -113,11 +113,11 @@ function StatCard({ icon: Icon, label, value, sub, color, delay = 0, isLocked = 
       )}
 
       <div className={cn("flex flex-col h-full justify-between relative z-10", isLocked && "opacity-20 grayscale")}>
-        <div className="flex items-center justify-between mb-3">
-          <IconTile icon={Icon} size="md" />
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-[12px] font-medium text-zinc-400">{label}</p>
+          <IconTile icon={Icon} size="sm" />
         </div>
-        <div>
-          <p className="text-[12px] font-medium text-zinc-400 mb-1">{label}</p>
+        <div className="mt-2">
           <h4 className="text-[24px] leading-8 font-semibold tracking-tight text-white">
             <AnimatedNumber value={value ?? 0} />
           </h4>
@@ -632,12 +632,12 @@ export default function DashboardPage() {
   }, [finishedCount]);
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-4">
 
       {/* Header Actions - Only for active subscriptions */}
       {isActive && (
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-          <h2 className="text-[22px] leading-7 font-medium tracking-tight text-white hidden md:block">System Overview</h2>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="hidden md:block" />
           <div className="flex flex-wrap items-center justify-end gap-2 w-full md:w-auto">
             <ActionButton
               label="Scrape"
@@ -702,7 +702,7 @@ export default function DashboardPage() {
 
       {/* Stats grid */}
       {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {[...Array(6)].map((_, i) => <div key={i} className="shimmer h-32 rounded-2xl" />)}
         </div>
       ) : (

@@ -295,7 +295,7 @@ export function RunPanel({
         {stages.map((st, idx) => (
           <div
             key={st.name}
-            className="bg-[#141414] border border-[#262626] rounded-md p-3 flex flex-col justify-between"
+            className="bg-[var(--app-card)] border border-[var(--app-border)] rounded-md p-3 flex flex-col justify-between"
           >
             <div className="flex items-center justify-between gap-2">
               <span className="text-[12px] font-medium text-[#EDEDED]">
@@ -307,10 +307,10 @@ export function RunPanel({
                   st.status === "Running"
                     ? "bg-[#1F1F1F] border-[#383838] text-white animate-pulse"
                     : st.status === "Completed"
-                    ? "bg-[#181818] border-[#262626] text-[#B5B5B5]"
+                    ? "bg-[var(--app-card)] border-[#262626] text-[#B5B5B5]"
                     : st.status === "Stopped"
-                    ? "bg-[#181818] border-[#2A2A2A] text-[#929292]"
-                    : "bg-[#161616] border-[#222222] text-[#737373]"
+                    ? "bg-[var(--app-card)] border-[#2A2A2A] text-[#929292]"
+                    : "bg-[var(--app-card)] border-[#222222] text-[#737373]"
                 )}
               >
                 {st.status}
@@ -326,7 +326,7 @@ export function RunPanel({
       {/* ── Application Results List ──────────────────────────────── */}
       {items.length > 0 && (
         <div className="pt-1 space-y-2">
-          <div className="divide-y divide-[#1C1C1C] border border-[#222222] rounded-md overflow-hidden bg-[#111111]">
+          <div className="divide-y divide-[#1C1C1C] border border-[#222222] rounded-md overflow-hidden bg-[var(--app-card)]">
             {visibleItems.map((it) => {
               const url = OPENABLE.includes(it.stage) ? safeUrl(it.job_url) : null;
               return (

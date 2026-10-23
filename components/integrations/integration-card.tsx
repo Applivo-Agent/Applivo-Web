@@ -57,18 +57,16 @@ const STATUS_META: Record<string, StatusTone> = {
   },
 };
 
+export const STATUS_LOOKUP = STATUS_META;
+
 const MANAGEABLE_PROVIDERS = new Set(["google_drive", "github", "google_calendar", "slack", "telegram", "notion", "calendly", "zapier", "make", "n8n"]);
 
 const primaryBtn =
   "h-8 px-3 inline-flex items-center justify-center gap-1.5 rounded-lg bg-white text-[12px] font-semibold text-black hover:bg-zinc-200 transition-colors disabled:opacity-60";
 const ghostBtn =
   "h-8 px-3 inline-flex items-center justify-center gap-1.5 rounded-lg border border-[var(--app-border-strong)] bg-transparent hover:bg-white/[0.04] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors";
-const iconBtn =
-  "h-8 w-8 inline-flex items-center justify-center rounded-lg border border-[var(--app-border-strong)] bg-transparent hover:bg-white/[0.04] text-zinc-400 hover:text-white transition-colors";
 
-interface IntegrationCardProps {
-  item: IntegrationItem;
-  connecting?: boolean;
+interface Handlers {
   onConnect: (item: IntegrationItem) => void;
   onManage: (item: IntegrationItem) => void;
   onShowSetup: (item: IntegrationItem) => void;
@@ -76,112 +74,71 @@ interface IntegrationCardProps {
   onCheckHealth: (item: IntegrationItem) => void;
 }
 
-export function IntegrationCard({
-  item,
-  connecting,
-  onConnect,
-  onManage,
-  onShowSetup,
-  onDisconnect,
-  onCheckHealth,
-}: IntegrationCardProps) {
+/** Hub-style tile: logo, status, name, description, footer. The whole tile opens the detail view. */
+export function IntegrationCard({ item, connecting, onOpen }: { item: IntegrationItem; connecting?: boolean; onOpen: (item: IntegrationItem) => void }) {
   const meta = STATUS_META[item.status] ?? STATUS_META.not_connected;
-  const isConnected = item.status === "connected";
-  const isManageable = MANAGEABLE_PROVIDERS.has(item.id);
-  const canConnect =
-    item.status === "not_connected" || item.status === "needs_reauth" || item.status === "error";
-  const isWebhook = !!item.is_webhook;
-
   return (
-    <div className="group rounded-xl border border-[var(--app-border-strong)] bg-[var(--app-card)] hover:border-white/15 hover:bg-[var(--app-nested)] p-4 flex flex-col transition-colors">
-      {/* Logo + status */}
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="w-11 h-11 rounded-xl bg-[var(--app-nested)] border border-[var(--app-border-strong)] group-hover:border-white/15 flex items-center justify-center p-2 shrink-0 transition-colors">
+    <button
+      type="button"
+      onClick={() => onOpen(item)}
+      className="group text-left rounded-xl border border-[var(--app-border-strong)] bg-[var(--app-card)] hover:border-white/20 hover:bg-[var(--app-nested)] p-4 flex flex-col transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-white/30"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="w-6 h-6 rounded-[5px] overflow-hidden flex items-center justify-center shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={item.logo} alt={item.name} className="w-full h-full object-contain" />
+          <img src={item.logo} alt="" className="w-full h-full object-contain" />
         </div>
-        <span
-          className={cn(
-            "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium whitespace-nowrap",
-            meta.tone
-          )}
-        >
-          <meta.Icon className={cn("w-2.5 h-2.5", connecting && "animate-spin")} />
+        <span className={cn("inline-flex items-center gap-1 text-[11px] whitespace-nowrap", meta.tone.split(" ")[0])}>
+          <meta.Icon className={cn("w-3 h-3", connecting && "animate-spin")} />
           {connecting ? "Connecting…" : meta.label}
         </span>
       </div>
-
-      <h3 className="text-[14px] font-semibold text-white tracking-tight leading-5">{item.name}</h3>
+      <h3 className="mt-3 text-[14px] font-semibold text-white tracking-tight leading-5">{item.name}</h3>
       <p className="mt-1 text-[12px] text-zinc-400 leading-relaxed line-clamp-2">{item.description}</p>
+    </button>
+  );
+}
 
-      {/* Actions */}
-      <div className="mt-auto pt-3.5 flex items-center gap-2">
-        {isConnected && (
-          <>
-            {isManageable && (
-              <button type="button" onClick={() => onManage(item)} className={primaryBtn}>
-                <Settings2 className="w-3.5 h-3.5" />
-                Manage
-              </button>
-            )}
-            {!isManageable && (
-              <button type="button" onClick={() => onDisconnect(item)} className={primaryBtn}>
-                Disconnect
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={() => onCheckHealth(item)}
-              className={iconBtn}
-              title="Check connection"
-              aria-label={`Check ${item.name} connection`}
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-            </button>
-            {isManageable && (
-              <button
-                type="button"
-                onClick={() => onDisconnect(item)}
-                className={cn(iconBtn, "hover:border-red-500/20 hover:bg-red-500/10 hover:text-red-300")}
-                title="Disconnect"
-                aria-label={`Disconnect ${item.name}`}
-              >
-                <PlugZap className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </>
-        )}
-
-        {canConnect && (
-          <button
-            type="button"
-            onClick={() => (isWebhook ? onManage(item) : onConnect(item))}
-            disabled={connecting}
-            className={cn(primaryBtn, "min-w-[92px]")}
-          >
-            {connecting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-            {isWebhook ? "Configure" : item.status === "not_connected" ? "Connect" : item.status === "error" ? "Retry" : "Reconnect"}
+export function IntegrationActions({ item, connecting, onConnect, onManage, onShowSetup, onDisconnect, onCheckHealth }: Handlers & { item: IntegrationItem; connecting?: boolean }) {
+  const isConnected = item.status === "connected";
+  const isManageable = MANAGEABLE_PROVIDERS.has(item.id);
+  const canConnect = item.status === "not_connected" || item.status === "needs_reauth" || item.status === "error";
+  const isWebhook = !!item.is_webhook;
+  const wide = cn(primaryBtn, "w-full h-10 text-[13px]");
+  return (
+    <div className="flex flex-col gap-2">
+      {canConnect && (
+        <button type="button" onClick={() => (isWebhook ? onManage(item) : onConnect(item))} disabled={connecting} className={wide}>
+          {connecting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+          {isWebhook ? "Configure" : item.status === "not_connected" ? `Connect ${item.name}` : item.status === "error" ? "Retry" : "Reconnect"}
+        </button>
+      )}
+      {isConnected && isManageable && (
+        <button type="button" onClick={() => onManage(item)} className={wide}>
+          <Settings2 className="w-3.5 h-3.5" />Manage
+        </button>
+      )}
+      {isConnected && (
+        <>
+          <button type="button" onClick={() => onCheckHealth(item)} className={cn(ghostBtn, "w-full h-9")}>
+            <RefreshCw className="w-3.5 h-3.5" />Check connection
           </button>
-        )}
-
-        {item.status === "setup_required" && (
-          <button type="button" onClick={() => onShowSetup(item)} className={ghostBtn}>
-            <Info className="w-3.5 h-3.5" />
-            Set up
+          <button type="button" onClick={() => onDisconnect(item)} className={cn(ghostBtn, "w-full h-9 hover:border-red-500/20 hover:bg-red-500/10 hover:text-red-300")}>
+            <PlugZap className="w-3.5 h-3.5" />Disconnect
           </button>
-        )}
-
-        {item.status === "coming_soon" && (
-          <button type="button" disabled className={cn(primaryBtn, "cursor-not-allowed bg-white/[0.06] text-zinc-500")}>
-            <Clock className="w-3.5 h-3.5" />
-            Coming soon
-          </button>
-        )}
-
-        {item.status === "available_manually" && (
-          <span className="text-[11px] text-zinc-500">Assisted preparation only</span>
-        )}
-      </div>
+        </>
+      )}
+      {item.status === "setup_required" && (
+        <button type="button" onClick={() => onShowSetup(item)} className={wide}>
+          <Info className="w-3.5 h-3.5" />Set up
+        </button>
+      )}
+      {item.status === "coming_soon" && (
+        <button type="button" disabled className={cn(wide, "cursor-not-allowed bg-white/[0.06] text-zinc-500")}>
+          <Clock className="w-3.5 h-3.5" />Coming soon
+        </button>
+      )}
+      {item.status === "available_manually" && <p className="text-[12px] text-zinc-500">Assisted preparation only — nothing to connect.</p>}
     </div>
   );
 }

@@ -107,7 +107,7 @@ export function AdvancedSection() {
         description="Integrate Applivo with external systems"
         icon={<Key className="w-4 h-4 text-white" />}
       >
-        <div className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg">
+        <div className="p-4 bg-transparent border border-[var(--app-border-strong)] rounded-lg">
           <div className="flex items-center gap-2 mb-3">
             <AlertTriangle className="w-4 h-4 text-zinc-400" />
             <p className="text-[12px] text-zinc-400 font-medium">Enterprise feature — contact support to enable</p>
@@ -129,7 +129,7 @@ export function AdvancedSection() {
         description="Reset all settings to factory defaults"
         icon={<Trash2 className="w-4 h-4 text-zinc-400" />}
       >
-        <div className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg space-y-3">
+        <div className="p-4 bg-transparent border border-[var(--app-border-strong)] rounded-lg space-y-3">
           <div className="flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-zinc-400 shrink-0" />
             <p className="text-[12px] text-zinc-400">This will permanently reset ALL settings to defaults. This cannot be undone.</p>

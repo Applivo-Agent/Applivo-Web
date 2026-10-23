@@ -671,19 +671,12 @@ export default function ProfilePage() {
   const initials = getInitials(candidateName, user?.email);
 
   return (
-    <div className="dash-page space-y-5 max-w-7xl mx-auto pb-16">
+    <div className="dash-page pb-16">
       {/* ─────────────────────────────────────────────────────────────
           1. PAGE HEADER (TITLE & PRIMARY ACTIONS)
           ───────────────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-[24px] leading-tight font-semibold tracking-tight text-white">
-            Profile
-          </h1>
-          <p className="text-[13px] text-zinc-400 mt-1">
-            Manage your personal credentials, experience records, and account identity.
-          </p>
-        </div>
+        <div />
 
         <div className="flex items-center gap-2">
           <button
@@ -959,7 +952,7 @@ export default function ProfilePage() {
                 <span className="text-zinc-400 text-[12px] font-medium block">
                   Professional Summary
                 </span>
-                <div className="p-3 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-[12.5px] text-zinc-300 leading-relaxed">
+                <div className="p-3 rounded-lg bg-transparent border border-[var(--app-border-strong)] text-[12.5px] text-zinc-300 leading-relaxed">
                   {profile?.professional_summary?.trim() ? (
                     profile.professional_summary
                   ) : (
@@ -1013,7 +1006,7 @@ export default function ProfilePage() {
                   {profile.work_experience.map((exp: WorkExpItem, i: number) => (
                     <div
                       key={i}
-                      className="p-3.5 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] transition-colors hover:border-zinc-700/60 flex flex-col sm:flex-row sm:items-start justify-between gap-3 group"
+                      className="p-3.5 rounded-lg bg-[var(--app-card)] border border-[var(--app-border-strong)] transition-colors hover:border-zinc-700/60 flex flex-col sm:flex-row sm:items-start justify-between gap-3 group"
                     >
                       <div className="flex items-start gap-3">
                         <div className="w-8 h-8 rounded-md bg-[var(--app-card)] border border-[var(--app-border-strong)] flex items-center justify-center shrink-0 text-zinc-400 mt-0.5">
@@ -1145,7 +1138,7 @@ export default function ProfilePage() {
                   {profile.education.map((edu: EducationItem, i: number) => (
                     <div
                       key={i}
-                      className="p-3.5 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] transition-colors hover:border-zinc-700/60 relative group"
+                      className="p-3.5 rounded-lg bg-[var(--app-card)] border border-[var(--app-border-strong)] transition-colors hover:border-zinc-700/60 relative group"
                     >
                       <div className="flex items-start gap-2.5">
                         <div className="w-7 h-7 rounded-md bg-[var(--app-card)] border border-[var(--app-border-strong)] flex items-center justify-center shrink-0 text-zinc-400 mt-0.5">

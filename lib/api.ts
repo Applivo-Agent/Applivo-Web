@@ -29,7 +29,15 @@ api.interceptors.response.use(
         localStorage.removeItem("applivo_token");
         localStorage.removeItem("applivo_user");
         const path = window.location.pathname;
-        const isPublicPage = path === "/" || path === "/contact" || path === "/integrations" || path === "/pricing" || path.startsWith("/docs") || path === "/login" || path === "/register";
+        const isPublicPage =
+          path === "/" ||
+          path === "/contact" ||
+          path === "/integrations" ||
+          path === "/pricing" ||
+          path.startsWith("/docs") ||
+          path === "/login" ||
+          path === "/register" ||
+          path === "/admin/login";
         if (!isPublicPage) {
           window.location.href = "/login" + nextQuery(safeNext(window.location.pathname + window.location.search));
         }
@@ -222,6 +230,8 @@ export const paymentsApi = {
   createOrder: (data: { plan: string }) => api.post("/payments/create-order", data),
   verify: (data: Record<string, string>) => api.post("/payments/verify", data),
   history: () => api.get("/payments/history"),
+  downloadInvoice: (paymentId: string) =>
+    api.get(`/payments/${encodeURIComponent(paymentId)}/invoice`, { responseType: "blob" }),
   startTrialWithAutopay: (data: { plan: string }) =>
     api.post("/payments/start-trial-with-autopay", data),
   getAutopayManageUrl: () => api.get("/payments/autopay-manage-url"),
@@ -309,6 +319,7 @@ export const settingsV2Api = {
   getAll: () => api.get("/settings/v2"),
   updateGeneral: (data: Record<string, unknown>) => api.put("/settings/v2/general", data),
   updateNotifications: (data: Record<string, unknown>) => api.put("/settings/v2/notifications", data),
+  notificationStatus: () => api.get("/settings/v2/notifications/status"),
   testNotification: (channel: string) => api.post("/settings/v2/notifications/test", { channel }),
   updateAutomation: (data: Record<string, unknown>) => api.put("/settings/v2/automation", data),
   updateStrategy: (data: Record<string, unknown>) => api.put("/settings/v2/strategy", data),
@@ -341,7 +352,6 @@ export const securityApi = {
 // ─── Admin ────────────────────────────────────────────────────────────────
 export const adminApi = {
   stats: () => api.get("/admin/stats"),
-  llmUsage: () => api.get("/admin/llm-usage"),
   health: () => api.get("/admin/system/health"),
   users: (params?: Record<string, unknown>) => api.get("/admin/users", { params }),
   getUser: (id: string) => api.get(`/admin/users/${id}`),

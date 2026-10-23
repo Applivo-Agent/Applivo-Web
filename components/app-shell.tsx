@@ -7,6 +7,9 @@ import { AppHeader } from "@/components/app-header";
 import { PageTransition } from "@/components/page-transition";
 import { LumiProvider, useLumi } from "@/lib/lumi-context";
 import { LumiPanel } from "@/components/lumi-panel";
+import { useQuery } from "@tanstack/react-query";
+import { settingsV2Api } from "@/lib/api";
+import { applyDensity, applyMotionPref, applyTimezone } from "@/lib/prefs";
 
 interface ShellState {
   collapsed: boolean;
@@ -42,7 +45,7 @@ function ShellBody({
   const { isOpen: isLumiOpen } = useLumi();
 
   return (
-    <div className={`app-shell dashboard-typography ${isChat ? "h-screen max-h-screen overflow-hidden" : "min-h-screen"} bg-[var(--app-sidebar)]`}>
+    <div className={`app-shell dashboard-typography user-app ${isChat ? "h-screen max-h-screen overflow-hidden" : "min-h-screen"} bg-[var(--app-sidebar)]`}>
       <Sidebar />
       {mobileOpen && (
         <button
@@ -53,7 +56,7 @@ function ShellBody({
       )}
       <div className={`app-main ${isChat ? "h-screen max-h-screen overflow-hidden" : "min-h-screen"} flex flex-col transition-[padding] duration-200 ${collapsed ? "md:pl-[var(--app-sidebar-w-collapsed)]" : "md:pl-[var(--app-sidebar-w)]"}`}>
         <AppHeader />
-        <main className={`flex-1 min-w-0 bg-[var(--app-bg)] md:border-l border-t border-[var(--app-border)] px-4 md:px-6 ${isChat ? "min-h-0 overflow-hidden pt-3 pb-3 flex flex-col" : "overflow-x-hidden pt-6 pb-12"}`}>
+        <main className={`flex-1 min-w-0 bg-[var(--app-bg)] md:border-l border-t border-[var(--app-border)] px-4 md:px-6 ${isChat ? "min-h-0 overflow-hidden pt-3 pb-1 flex flex-col" : "overflow-x-hidden pt-4 pb-10"}`}>
           <div className={`w-full ${isChat ? "h-full flex-1 min-h-0 flex flex-col" : ""}`}>
             <PageTransition>{children}</PageTransition>
           </div>
@@ -97,6 +100,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   const isChat = pathname === "/chat";
+
+  // Density comes from the saved setting (shared cache with the Settings page); the cached value avoids a flash.
+  const { data: savedSettings } = useQuery({
+    queryKey: ["settings-v2"],
+    queryFn: () => settingsV2Api.getAll().then((r) => r.data),
+    staleTime: 30_000,
+  });
+  const savedDensity: string | undefined = savedSettings?.data?.dashboard_layout;
+  const savedTimezone: string | undefined = savedSettings?.data?.timezone;
+  useEffect(() => { applyDensity(savedDensity); }, [savedDensity]);
+  useEffect(() => { applyTimezone(savedTimezone); }, [savedTimezone]);
+
+  useEffect(() => {                                   // "Smooth transitions" preference -> <html data-motion>
+    applyMotionPref();
+    window.addEventListener("applivo-pref", applyMotionPref);
+    return () => window.removeEventListener("applivo-pref", applyMotionPref);
+  }, []);
 
   return (
     <ShellContext.Provider value={{ collapsed, mobileOpen, toggle, expand, closeMobile }}>

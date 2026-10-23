@@ -68,7 +68,7 @@ export function SecuritySection() {
         icon={<Shield className="w-4 h-4 text-white" />}
       >
         <div className="space-y-4">
-          <div className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg">
+          <div className="p-4 bg-transparent border border-[var(--app-border-strong)] rounded-lg">
             <div className="flex items-center gap-3 mb-3.5">
               <div className="w-8 h-8 rounded-lg bg-[var(--app-card)] border border-[var(--app-border-strong)] flex items-center justify-center text-zinc-300">
                 <KeyRound className="w-4 h-4" />
@@ -104,7 +104,7 @@ export function SecuritySection() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg">
+          <div className="flex items-center justify-between p-4 bg-transparent border border-[var(--app-border-strong)] rounded-lg">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-[var(--app-card)] border border-[var(--app-border-strong)] flex items-center justify-center text-zinc-300">
                 <Smartphone className="w-4 h-4" />
@@ -133,7 +133,7 @@ export function SecuritySection() {
         ) : (
           <div className="space-y-2.5">
             {sessions.length === 0 && (
-              <div className="flex items-center justify-between p-3.5 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg">
+              <div className="flex items-center justify-between p-3.5 bg-transparent border border-[var(--app-border-strong)] rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-zinc-400" />
                   <div>
@@ -149,7 +149,7 @@ export function SecuritySection() {
             {sessions.map((s) => (
               <div
                 key={s.id}
-                className="flex items-center justify-between p-3.5 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg"
+                className="flex items-center justify-between p-3.5 bg-transparent border border-[var(--app-border-strong)] rounded-lg"
               >
                 <div className="flex items-center gap-3">
                   <div className={cn("w-2 h-2 rounded-full", s.is_current ? "bg-zinc-400" : "bg-zinc-600")} />

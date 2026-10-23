@@ -28,6 +28,7 @@ const FOOTER_COLUMNS: FooterColumn[] = [
     title: "Resources",
     links: [
       { label: "Docs", href: "/docs" },
+      { label: "Blog", href: "/blog" },
       { label: "FAQ", href: "/docs/faq" },
       { label: "Getting Started", href: "/docs/quick-start" },
     ],
@@ -91,10 +92,10 @@ export function Footer({ showCta = false, className = "" }: FooterProps) {
       <footer className="relative border-t border-white/[0.06] pt-14 md:pt-18 pb-8 px-5 md:px-8 overflow-hidden">
         <div className="max-w-[1200px] mx-auto w-full">
           {/* Four Navigation Columns */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 pb-12 md:pb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 pb-14 md:pb-20">
             {FOOTER_COLUMNS.map((col) => (
               <div key={col.title}>
-                <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-zinc-500 mb-3.5 sm:mb-4">
+                <h3 className="text-[13px] font-normal text-zinc-500 mb-4">
                   {col.title}
                 </h3>
                 <ul className="space-y-2.5">
@@ -105,14 +106,14 @@ export function Footer({ showCta = false, className = "" }: FooterProps) {
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[13px] text-zinc-400 hover:text-white transition-colors inline-block focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40 rounded"
+                          className="text-[13px] text-zinc-200 hover:text-white transition-colors inline-block focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40 rounded"
                         >
                           {link.label}
                         </a>
                       ) : (
                         <Link
                           href={link.href}
-                          className="text-[13px] text-zinc-400 hover:text-white transition-colors inline-block focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40 rounded"
+                          className="text-[13px] text-zinc-200 hover:text-white transition-colors inline-block focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40 rounded"
                         >
                           {link.label}
                         </Link>
@@ -129,12 +130,13 @@ export function Footer({ showCta = false, className = "" }: FooterProps) {
             className="relative py-6 sm:py-10 md:py-14 flex items-center justify-center overflow-hidden pointer-events-none select-none"
             aria-hidden="true"
           >
-            <div className="flex items-center justify-center gap-4 sm:gap-6 md:gap-8 opacity-25 transition-opacity">
+            <div className="flex items-center justify-center gap-4 sm:gap-6 md:gap-8 opacity-40 transition-opacity">
               {/* Emblem Box */}
               <div className="w-[52px] h-[52px] sm:w-[80px] sm:h-[80px] md:w-[110px] md:h-[110px] bg-gradient-to-br from-[#2a2a2a] to-[#141414] rounded-2xl md:rounded-3xl flex items-center justify-center border border-white/[0.08] shadow-[inset_0_2px_10px_rgba(255,255,255,0.03)]">
                 <Image
                   src="/logo.png"
                   alt="Applivo Logo"
+                  loading="eager"
                   width={70}
                   height={70}
                   className="w-7 h-7 sm:w-11 sm:h-11 md:w-16 md:h-16 object-contain grayscale opacity-60"
@@ -142,28 +144,29 @@ export function Footer({ showCta = false, className = "" }: FooterProps) {
               </div>
 
               {/* Massive Wordmark with subtle fade */}
-              <span className="text-[60px] sm:text-[96px] md:text-[130px] lg:text-[160px] font-extrabold tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-b from-white/30 via-white/10 to-transparent">
+              <span className="text-[60px] sm:text-[96px] md:text-[130px] lg:text-[160px] font-extrabold tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-b from-white/40 via-white/20 to-white/5">
                 Applivo
               </span>
             </div>
           </div>
 
           {/* Clean Bottom Bar */}
-          <div className="border-t border-white/[0.06] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+          <div className="border-t border-white/[0.06] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-zinc-400">
             <div className="flex items-center gap-2.5">
               <Image
                 src="/logo.png"
                 alt="Applivo"
+                loading="eager"
                 width={18}
                 height={18}
                 className="rounded object-contain opacity-80"
               />
               <span className="font-semibold text-zinc-300 tracking-tight">Applivo</span>
               <span className="text-zinc-700 hidden sm:inline">·</span>
-              <span className="text-zinc-500">© 2026 Applivo. All rights reserved.</span>
+              <span className="text-zinc-400">© 2026 Applivo. All rights reserved.</span>
             </div>
 
-            <div className="flex items-center gap-5 text-xs text-zinc-400">
+            <div className="flex items-center gap-5 text-[13px] text-zinc-300">
               <Link href="/docs/privacy-policy" className="hover:text-white transition-colors">
                 Privacy Policy
               </Link>

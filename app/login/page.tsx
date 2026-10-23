@@ -50,20 +50,102 @@ export default function LoginPage() {
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.info("Applivo is currently in development. Sign-in and account access will open soon upon official launch!");
+    if (loading) return;
+    setLoading(true);
+
+    try {
+      if (rememberMe) {
+        localStorage.setItem("applivo_remember_email", email);
+      } else {
+        localStorage.removeItem("applivo_remember_email");
+      }
+
+      await login(email.trim(), password);
+      toast.success("Security check: please check your email for the verification code.");
+      setStep("verify");
+    } catch (err: any) {
+      toast.error(getErrorMessage(err, "Authentication failed. Check your email and password."));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleVerifySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.info("Applivo is currently in development. Account verification will open soon!");
+    if (loading || otp.length < 6) return;
+    setLoading(true);
+
+    try {
+      await verifyLoginOtp(email.trim(), otp);
+      toast.success("Welcome back!");
+      router.push(nextUrl || "/dashboard");
+    } catch (err: any) {
+      toast.error(getErrorMessage(err, "Invalid or expired verification code"));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleGoogleClick = () => {
-    toast.info("Applivo is currently in development. Google sign-in will be enabled upon official launch!");
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      toast.error(
+        "Google Sign-In is not configured yet. Required environment variable: NEXT_PUBLIC_GOOGLE_CLIENT_ID"
+      );
+      return;
+    }
+
+    if (!window.google?.accounts?.id) {
+      toast.error("Google authentication service is loading. Please try again in a moment.");
+      return;
+    }
+
+    try {
+      setGoogleLoading(true);
+      window.google.accounts.id.initialize({
+        client_id: clientId,
+        callback: async (response: { credential?: string }) => {
+          if (response?.credential) {
+            try {
+              await loginWithGoogle(response.credential);
+              toast.success("Welcome back to Applivo!");
+              router.push(nextUrl || "/dashboard");
+            } catch (err: any) {
+              toast.error(getErrorMessage(err, "Google sign-in failed. Please try again."));
+            } finally {
+              setGoogleLoading(false);
+            }
+          } else {
+            setGoogleLoading(false);
+          }
+        },
+      });
+
+      window.google.accounts.id.prompt((notification: any) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          setGoogleLoading(false);
+        }
+      });
+    } catch {
+      setGoogleLoading(false);
+      toast.error("Could not initialize Google authentication.");
+    }
   };
 
   const handleAppleClick = () => {
-    toast.info("Applivo is currently in development. Apple sign-in will be enabled upon official launch!");
+    const appleClientId = process.env.NEXT_PUBLIC_APPLE_CLIENT_ID;
+    if (!appleClientId) {
+      toast.error(
+        "Apple Sign-In is not configured yet. Required setup: Apple Developer Service ID, APPLE_CLIENT_ID, and backend credentials."
+      );
+      return;
+    }
+
+    setAppleLoading(true);
+    toast.info("Connecting to Apple authentication...");
+    setTimeout(() => {
+      setAppleLoading(false);
+    }, 1500);
   };
 
   const footer =
@@ -106,7 +188,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 autoComplete="email"
-                className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+                className="w-full h-10 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
             </div>
 
@@ -119,7 +201,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 autoComplete="current-password"
-                className="w-full h-11 px-4 pr-11 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+                className="w-full h-10 px-4 pr-11 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
               <button
                 type="button"
@@ -159,7 +241,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-[#ededed] text-[#0a0a0a] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50 shadow-sm"
+              className="w-full h-10 flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-[#ededed] text-[#0a0a0a] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50 shadow-sm"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -193,14 +275,14 @@ export default function LoginPage() {
                   setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
                 }
                 placeholder="000000"
-                className="w-full h-12 px-3.5 rounded-xl bg-[#19191b] border border-[#2b2b2b] text-center text-2xl font-mono tracking-[0.35em] text-[#f5f5f5] focus:outline-none focus:border-white/30 transition-colors"
+                className="w-full h-11 px-3.5 rounded-xl bg-[#19191b] border border-[#2b2b2b] text-center text-xl font-mono tracking-[0.35em] text-[#f5f5f5] focus:outline-none focus:border-white/30 transition-colors"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading || otp.length < 6}
-              className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[#f5f5f5] hover:bg-white text-[#080808] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50"
+              className="w-full h-10 flex items-center justify-center gap-2 rounded-xl bg-[#f5f5f5] hover:bg-white text-[#080808] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

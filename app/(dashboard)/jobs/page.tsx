@@ -8,14 +8,11 @@ import { cn, timeAgo } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
-  Filter,
   SlidersHorizontal,
-  Briefcase,
   MapPin,
   Clock,
   Zap,
   Send,
-  ChevronRight,
   RefreshCw,
   ExternalLink,
   Loader2,
@@ -23,11 +20,9 @@ import {
   CheckCircle,
   X,
   Building2,
-  DollarSign,
   AlertCircle,
   ArrowUpDown,
   Check,
-  Share2,
   Download,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -302,7 +297,7 @@ const PRESETS: Preset[] = [
   },
   {
     id: "high_match",
-    label: "70%+ Match",
+    label: "High Match",
     filters: { work_mode: "", job_type: "", source: "", min_match_score: 70, sort_by: "match_score" },
   },
   {
@@ -599,177 +594,99 @@ export default function JobsPage() {
   const savedCount = Object.keys(savedJobsMap).length;
 
   return (
-    <div className="dash-page relative">
-      {/* ─── 1. Header (Compact Linear style) ─── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-        <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-md bg-[var(--app-card)] border border-[var(--app-border-strong)] flex items-center justify-center shrink-0">
-            <Briefcase className="w-3.5 h-3.5 text-white" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-[22px] leading-tight font-medium tracking-tight text-white">
-                Find Jobs
-              </h1>
-              {viewSavedOnly && (
-                <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700">
-                  Saved View
-                </span>
-              )}
-            </div>
-            <p className="text-[12px] sm:text-[13px] text-zinc-400 mt-0.5">
-              {viewSavedOnly
-                ? `${displayedJobs.length} saved opportunit${displayedJobs.length === 1 ? "y" : "ies"}`
-                : `${data?.total ?? 0} matching opportunities`}
-            </p>
-          </div>
-        </div>
-
-        {/* Header Right Actions */}
-        <div className="flex items-center gap-2 self-start sm:self-center">
+    <div className="dash-page relative !gap-3">
+      {/* ─── 1. Header ─── */}
+      <div className="flex justify-end">
+        <div className="flex items-center gap-1 text-[12px]">
           <button
             onClick={() => setViewSavedOnly(!viewSavedOnly)}
-            className={cn(
-              "h-8 px-3 rounded-md text-[12px] font-medium transition-colors border flex items-center gap-1.5",
-              viewSavedOnly
-                ? "bg-white text-black border-white"
-                : "bg-[var(--app-card)] hover:bg-[#202022] text-zinc-300 hover:text-white border-[var(--app-border-strong)]"
-            )}
-            title="Toggle Saved Jobs"
+            aria-pressed={viewSavedOnly}
+            className={cn("h-8 px-2.5 rounded-md inline-flex items-center gap-1.5 transition-colors", viewSavedOnly ? "bg-white/[0.08] text-white" : "text-zinc-400 hover:text-white hover:bg-white/[0.04]")}
+            title="Show saved jobs"
           >
             <Bookmark className={cn("w-3.5 h-3.5", viewSavedOnly && "fill-current")} />
-            <span>Saved</span>
-            {savedCount > 0 && (
-              <span
-                className={cn(
-                  "ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-semibold",
-                  viewSavedOnly ? "bg-black text-white" : "bg-white/10 text-white"
-                )}
-              >
-                {savedCount}
-              </span>
-            )}
+            Saved{savedCount > 0 && <span className="text-zinc-500 tabular-nums">{savedCount}</span>}
           </button>
-
-          {/* Export CSV button */}
           <button
             onClick={() => handleExportCSV("matching")}
             disabled={isExporting}
-            className="h-8 px-2.5 bg-[var(--app-card)] hover:bg-[#202022] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium transition-colors border border-[var(--app-border-strong)] flex items-center gap-1.5 disabled:opacity-50"
+            className="h-8 px-2.5 rounded-md inline-flex items-center gap-1.5 text-zinc-400 hover:text-white hover:bg-white/[0.04] transition-colors disabled:opacity-50"
             title="Export matching jobs to CSV (including original job URLs)"
           >
-            {isExporting ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-zinc-300" />
-            ) : (
-              <Download className="w-3.5 h-3.5 text-zinc-400" />
-            )}
+            {isExporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
             <span className="hidden sm:inline">Export CSV</span>
           </button>
-
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="h-8 px-3 bg-[var(--app-card)] hover:bg-[#202022] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium transition-colors border border-[var(--app-border-strong)] flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="h-8 px-2.5 rounded-md inline-flex items-center gap-1.5 text-zinc-400 hover:text-white hover:bg-white/[0.04] transition-colors disabled:opacity-50"
             title={isRefreshing ? "Refreshing feed..." : "Refresh job feed"}
           >
-            {isRefreshing ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin text-zinc-300" />
-            ) : (
-              <RefreshCw className="w-3.5 h-3.5 text-zinc-400" />
-            )}
+            {isRefreshing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
             <span className="hidden sm:inline">{isRefreshing ? "Refreshing…" : "Refresh"}</span>
           </button>
         </div>
       </div>
 
-      {/* ─── 2. Search & Filter Sticky Toolbar ─── */}
-      <div className="sticky top-0 z-20 bg-[var(--app-bg)]/95 backdrop-blur-md pt-1 pb-3 space-y-2.5 border-b border-[var(--app-border)]/60 mb-3">
-        {/* Row 1: Search + Sort + Filter trigger */}
-        <div className="flex flex-col md:flex-row gap-2">
-          {/* Search Input */}
+      {/* ─── 2. Search, sort, filters ─── */}
+      <div className="space-y-2.5 mb-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
             <input
               type="text"
-              placeholder="Search job title, company, skills, or keywords…"
+              aria-label="Search jobs"
+              placeholder="Search title, company, skills or keywords"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-9 pr-8 h-8 bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-md text-[13px] font-normal text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
+              className="w-full pl-9 pr-8 h-9 bg-transparent border border-[var(--app-border-strong)] rounded-lg text-[13px] text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 transition-colors"
             />
             {searchInput && (
-              <button
-                onClick={() => setSearchInput("")}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white"
-                title="Clear search"
-              >
+              <button onClick={() => setSearchInput("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white" aria-label="Clear search">
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
           </div>
-
-          {/* Sort & Filter Controls */}
           <div className="flex items-center gap-2">
             <div className="relative">
               <select
+                aria-label="Sort jobs"
                 value={filters.sort_by}
                 onChange={(e) => updateFilter("sort_by", e.target.value)}
-                className="h-8 pl-3 pr-7 bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-zinc-300 focus:outline-none focus:border-zinc-500 transition-colors cursor-pointer appearance-none"
+                className="h-9 pl-3 pr-8 bg-transparent border border-[var(--app-border-strong)] rounded-lg text-[13px] text-zinc-300 focus:outline-none focus:border-zinc-500 cursor-pointer appearance-none"
               >
-                {SORTS.map((s) => (
-                  <option key={s.value} value={s.value} className="bg-[#181818] text-white">
-                    {s.label}
-                  </option>
-                ))}
+                {SORTS.map((o) => <option key={o.value} value={o.value} className="bg-[#181818] text-white">{o.label}</option>)}
               </select>
               <ArrowUpDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-zinc-500 pointer-events-none" />
             </div>
-
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className={cn(
-                "h-8 px-3 rounded-md text-[12px] font-medium transition-colors border flex items-center gap-1.5",
-                showFilters || activeFilterCount > 0
-                  ? "bg-zinc-800 text-white border-zinc-600"
-                  : "bg-[var(--app-card)] text-zinc-300 border-[var(--app-border-strong)] hover:text-white hover:bg-[#202022]"
-              )}
+              aria-expanded={showFilters}
+              className={cn("h-9 px-3 rounded-lg text-[13px] border inline-flex items-center gap-1.5 transition-colors",
+                showFilters || activeFilterCount > 0 ? "border-zinc-500 text-white" : "border-[var(--app-border-strong)] text-zinc-300 hover:text-white")}
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
-              <span>Filters</span>
-              {activeFilterCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-white text-black text-[10px] font-bold flex items-center justify-center">
-                  {activeFilterCount}
-                </span>
-              )}
+              Filters
+              {activeFilterCount > 0 && <span className="text-zinc-400 tabular-nums">{activeFilterCount}</span>}
             </button>
-
             {(activeFilterCount > 0 || searchInput || viewSavedOnly) && (
-              <button
-                onClick={clearAllFilters}
-                className="h-8 px-2 text-[12px] text-zinc-400 hover:text-white transition-colors flex items-center gap-1"
-                title="Clear all filters"
-              >
-                <X className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Reset</span>
+              <button onClick={clearAllFilters} className="h-9 px-1.5 text-[13px] text-zinc-500 hover:text-white transition-colors" title="Clear all filters">
+                Reset
               </button>
             )}
           </div>
         </div>
 
-        {/* Row 2: Search Preset Chips */}
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-[11px]">
-          <span className="text-zinc-500 font-medium mr-1 shrink-0">Presets:</span>
+        {/* Presets: quiet text tabs */}
+        <div role="group" aria-label="Quick filters" className="flex items-center gap-1 overflow-x-auto no-scrollbar -mx-1 px-1">
           {PRESETS.map((preset) => {
             const isActive = currentPresetId === preset.id && !viewSavedOnly;
             return (
               <button
                 key={preset.id}
                 onClick={() => applyPreset(preset)}
-                className={cn(
-                  "px-2.5 py-1 rounded-md shrink-0 transition-colors border font-medium",
-                  isActive
-                    ? "bg-white text-black border-white shadow-xs"
-                    : "bg-[var(--app-card)] text-zinc-400 border-[var(--app-border-strong)] hover:text-zinc-200 hover:border-zinc-700"
-                )}
+                aria-pressed={isActive}
+                className={cn("px-2.5 py-1 rounded-md text-[13px] shrink-0 transition-colors", isActive ? "bg-white/[0.08] text-white" : "text-zinc-500 hover:text-zinc-200")}
               >
                 {preset.label}
               </button>
@@ -777,380 +694,151 @@ export default function JobsPage() {
           })}
         </div>
 
-        {/* Collapsible Filter Dropdown Panel */}
         <AnimatePresence>
           {showFilters && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden"
-            >
-              <div className="p-3 bg-[var(--app-card)] rounded-md border border-[var(--app-border-strong)] grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-1">
-                {/* Work Mode */}
-                <div className="space-y-1">
-                  <label className="text-[11px] font-medium text-zinc-400">Work Mode</label>
-                  <select
-                    value={filters.work_mode}
-                    onChange={(e) => updateFilter("work_mode", e.target.value)}
-                    className="w-full h-7 px-2 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded text-[12px] text-zinc-300 focus:outline-none"
-                  >
-                    {MODES.map((m) => (
-                      <option key={m.value} value={m.value} className="bg-[#1b1b1d] text-white">
-                        {m.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Job Type */}
-                <div className="space-y-1">
-                  <label className="text-[11px] font-medium text-zinc-400">Job Type</label>
-                  <select
-                    value={filters.job_type}
-                    onChange={(e) => updateFilter("job_type", e.target.value)}
-                    className="w-full h-7 px-2 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded text-[12px] text-zinc-300 focus:outline-none"
-                  >
-                    {TYPES.map((t) => (
-                      <option key={t.value} value={t.value} className="bg-[#1b1b1d] text-white">
-                        {t.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Source */}
-                <div className="space-y-1">
-                  <label className="text-[11px] font-medium text-zinc-400">Source Platform</label>
-                  <select
-                    value={filters.source}
-                    onChange={(e) => updateFilter("source", e.target.value)}
-                    className="w-full h-7 px-2 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded text-[12px] text-zinc-300 focus:outline-none"
-                  >
-                    {SOURCES.map((s) => (
-                      <option key={s.value} value={s.value} className="bg-[#1b1b1d] text-white">
-                        {s.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Min Match Score */}
-                <div className="space-y-1">
-                  <label className="text-[11px] font-medium text-zinc-400">Min AI Match</label>
-                  <select
-                    value={filters.min_match_score}
-                    onChange={(e) => updateFilter("min_match_score", +e.target.value)}
-                    className="w-full h-7 px-2 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded text-[12px] text-zinc-300 focus:outline-none"
-                  >
-                    {MIN_SCORES.map((s) => (
-                      <option key={s.value} value={s.value} className="bg-[#1b1b1d] text-white">
-                        {s.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-3 border-y border-[var(--app-border)]">
+                {([
+                  ["Work mode", "work_mode", MODES, filters.work_mode],
+                  ["Job type", "job_type", TYPES, filters.job_type],
+                  ["Source", "source", SOURCES, filters.source],
+                  ["Minimum match", "min_match_score", MIN_SCORES, filters.min_match_score],
+                ] as const).map(([label, key, opts, val]) => (
+                  <label key={key} className="space-y-1 block">
+                    <span className="text-[12px] text-zinc-500">{label}</span>
+                    <select
+                      value={val as any}
+                      onChange={(e) => updateFilter(key, key === "min_match_score" ? +e.target.value : e.target.value)}
+                      className="w-full h-8 px-2 bg-transparent border border-[var(--app-border-strong)] rounded-md text-[13px] text-zinc-300 focus:outline-none focus:border-zinc-500"
+                    >
+                      {(opts as readonly { value: string | number; label: string }[]).map((o) => (
+                        <option key={String(o.value)} value={o.value} className="bg-[#181818] text-white">{o.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                ))}
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Active Filter Chips */}
-        {activeFilterCount > 0 && (
-          <div className="flex flex-wrap items-center gap-1.5 pt-0.5 text-[11px]">
-            <span className="text-zinc-500">Active filters:</span>
-            {filters.work_mode && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-zinc-300">
-                Mode: {filters.work_mode}
-                <button onClick={() => updateFilter("work_mode", "")} className="hover:text-white">
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            )}
-            {filters.job_type && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-zinc-300">
-                Type: {filters.job_type.replace("_", " ")}
-                <button onClick={() => updateFilter("job_type", "")} className="hover:text-white">
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            )}
-            {filters.source && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-zinc-300">
-                Source: {filters.source}
-                <button onClick={() => updateFilter("source", "")} className="hover:text-white">
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            )}
-            {filters.min_match_score > 0 && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-zinc-300">
-                Match: ≥{filters.min_match_score}%
-                <button onClick={() => updateFilter("min_match_score", 0)} className="hover:text-white">
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            )}
-          </div>
-        )}
       </div>
 
-      {/* ─── 3. Job Cards List (Linear Compact Hierarchy) ─── */}
+      {/* ─── 3. Job rows ─── */}
       {isLoading ? (
-        <div className="space-y-2">
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="h-[108px] rounded-lg bg-[var(--app-card)] border border-[var(--app-border-strong)] animate-pulse p-4 flex flex-col justify-between"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-md bg-zinc-800" />
-                  <div className="space-y-1.5">
-                    <div className="h-4 w-48 bg-zinc-800 rounded" />
-                    <div className="h-3 w-32 bg-zinc-800/60 rounded" />
-                  </div>
-                </div>
-                <div className="h-4 w-16 bg-zinc-800 rounded" />
-              </div>
-              <div className="h-3 w-3/4 bg-zinc-800/40 rounded" />
+        <div className="divide-y divide-[var(--app-border)]" aria-busy="true" aria-label="Loading jobs">
+          {[...Array(7)].map((_, i) => (
+            <div key={i} className="py-4 flex gap-3 animate-pulse">
+              <div className="w-8 h-8 rounded-md bg-white/[0.05]" />
+              <div className="flex-1 space-y-2"><div className="h-3.5 w-1/3 rounded bg-white/[0.06]" /><div className="h-3 w-1/2 rounded bg-white/[0.04]" /><div className="h-3 w-3/4 rounded bg-white/[0.03]" /></div>
             </div>
           ))}
         </div>
       ) : isError ? (
-        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-10 text-center">
-          <AlertCircle className="w-8 h-8 text-zinc-500 mx-auto mb-2.5" />
-          <h3 className="text-[14px] font-medium text-white mb-1">Failed to load jobs</h3>
-          <p className="text-[12px] text-zinc-400 max-w-sm mx-auto mb-4">
-            Could not fetch opportunities. Please check your network connection and try again.
-          </p>
-          <button
-            onClick={() => refetch()}
-            className="h-8 px-4 bg-white text-black hover:bg-zinc-200 rounded-md text-[12px] font-medium transition-colors"
-          >
-            Retry
-          </button>
+        <div className="py-14 text-center">
+          <AlertCircle className="w-5 h-5 text-zinc-500 mx-auto mb-2" />
+          <p className="text-[14px] text-white">Couldn&apos;t load jobs</p>
+          <p className="text-[13px] text-zinc-500 mt-1 mb-4">Check your connection and try again.</p>
+          <button onClick={() => refetch()} className="h-8 px-4 rounded-lg border border-[var(--app-border-strong)] text-[13px] text-zinc-200 hover:text-white hover:bg-white/[0.04]">Retry</button>
         </div>
       ) : (
-        <div className="space-y-2 pb-6">
-          {displayedJobs.map((job: any, i: number) => {
+        <ul className="divide-y divide-[var(--app-border)] border-t border-[var(--app-border)] pb-4">
+          {displayedJobs.map((job: any) => {
             const isSaved = !!savedJobsMap[job.id];
             const appStatus = appliedJobStatusMap[job.id];
-            const hasAnalysis = !!job.analysis;
             const matchScore = job.analysis?.match_score != null ? Math.round(job.analysis.match_score) : null;
-
-            // Rating label
-            const ratingLabel =
-              matchScore != null
-                ? matchScore >= 75
-                  ? "Strong Match"
-                  : matchScore >= 60
-                  ? "Good Match"
-                  : matchScore >= 40
-                  ? "Moderate"
-                  : "Low Match"
-                : null;
+            const applying = applyMutation.isPending && applyMutation.variables === job.id;
+            const cap = (v: string) => v.replace(/_/g, " ").toLowerCase().replace(/^\w/, (c) => c.toUpperCase());
+            const meta = [
+              job.location,
+              job.work_mode && job.work_mode !== "unknown" ? cap(String(job.work_mode)) : null,
+              job.job_type ? cap(String(job.job_type)) : null,
+              job.experience_level && job.experience_level !== "unknown" ? cap(String(job.experience_level)) : null,
+              ((job.salary_min ?? 0) > 0 || (job.salary_max ?? 0) > 0) ? `₹${job.salary_min || "?"} – ${job.salary_max || "?"}K` : null,
+              job.posted_at ? timeAgo(job.posted_at) : null,
+              job.source ? `via ${cap(String(job.source))}` : null,
+            ].filter(Boolean) as string[];
 
             return (
-              <motion.div
-                key={job.id}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: Math.min(i * 0.02, 0.2) }}
-                onClick={() => setSelectedJob(job)}
-                className="bg-[var(--app-card)] p-3.5 sm:p-4 rounded-lg border border-[var(--app-border-strong)] hover:border-zinc-700/80 hover:bg-[#1a1a1c] transition-all flex flex-col md:flex-row items-start gap-3 group cursor-pointer"
-              >
-                {/* Company Logo (Monochrome building fallback, no initials) */}
-                <CompanyLogo src={job.company_logo_url} companyName={job.company_name} size="md" />
+              <li key={job.id} className="group relative flex flex-col md:flex-row md:items-start gap-3 py-4 px-2 -mx-2 rounded-lg hover:bg-white/[0.025] focus-within:bg-white/[0.025] transition-colors">
+                <CompanyLogo src={job.company_logo_url} companyName={job.company_name} size="sm" />
 
-                {/* Content Column */}
-                <div className="flex-1 min-w-0 w-full">
-                  {/* Row 1: Title · Company · Location */}
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <h3 className="font-semibold text-[14px] sm:text-[15px] tracking-tight text-white leading-snug group-hover:text-zinc-100 transition-colors">
-                      {job.title}
-                    </h3>
-                    <span className="text-[12px] font-medium text-zinc-300">
-                      {job.company_name}
-                    </span>
-                    {job.location && (
-                      <span className="inline-flex items-center gap-1 text-[12px] text-zinc-400">
-                        <span className="text-zinc-600">·</span>
-                        <MapPin className="w-3 h-3 text-zinc-500 shrink-0" />
-                        <span className="truncate max-w-[140px]">{job.location}</span>
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Row 2: Metadata Badges */}
-                  <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[11px] font-medium text-zinc-400">
-                    {job.work_mode && (
-                      <span className="bg-[var(--app-nested)] px-2 py-0.5 rounded border border-[var(--app-border-strong)] capitalize text-zinc-300">
-                        {job.work_mode}
-                      </span>
-                    )}
-                    {job.job_type && (
-                      <span className="bg-[var(--app-nested)] px-2 py-0.5 rounded border border-[var(--app-border-strong)] text-zinc-300">
-                        {job.job_type.replace("_", " ")}
-                      </span>
-                    )}
-                    {job.experience_level && job.experience_level !== "unknown" && (
-                      <span className="bg-[var(--app-nested)] px-2 py-0.5 rounded border border-[var(--app-border-strong)] text-zinc-400 capitalize">
-                        {job.experience_level.replace("_", " ")}
-                      </span>
-                    )}
-                    {((job.salary_min ?? 0) > 0 || (job.salary_max ?? 0) > 0) ? (
-                      <span className="text-zinc-200 bg-white/[0.05] border border-[var(--app-border-strong)] px-2 py-0.5 rounded font-medium">
-                        ₹{job.salary_min || "?"} – {job.salary_max || "?"}K
-                      </span>
-                    ) : null}
-                    {job.source && (
-                      <span className="text-zinc-500 capitalize text-[10px] ml-0.5">
-                        via {job.source}
-                      </span>
-                    )}
-                    {job.posted_at && (
-                      <span className="inline-flex items-center gap-1 text-zinc-500 text-[11px] ml-auto sm:ml-1">
-                        <Clock className="w-3 h-3 text-zinc-600" />
-                        {timeAgo(job.posted_at)}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Row 3: Short Description / AI Summary */}
-                  <p className="text-[12px] text-zinc-400 mt-1.5 line-clamp-2 leading-relaxed">
+                <div className="flex-1 min-w-0">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedJob(job)}
+                    className="text-left text-[15px] font-medium text-white leading-snug break-words hover:underline underline-offset-2 decoration-zinc-600 focus:outline-none focus-visible:underline after:absolute after:inset-0 after:content-['']"
+                  >
+                    {job.title}
+                  </button>
+                  <div className="text-[13px] text-zinc-300 mt-0.5 break-words">{job.company_name || "Company not listed"}</div>
+                  {meta.length > 0 && (
+                    <div className="mt-1 text-[12px] text-zinc-500">
+                      {meta.map((m, i) => (
+                        <span key={i}>{i > 0 && <span className="mx-1.5 text-zinc-700">·</span>}{m}</span>
+                      ))}
+                    </div>
+                  )}
+                  <p className="mt-1.5 text-[13px] text-zinc-400 line-clamp-2 leading-relaxed">
                     {job.analysis?.ai_summary || job.description_clean || "No description preview available."}
                   </p>
                 </div>
 
-                {/* Right: Match Score + Actions */}
-                <div
-                  className="flex flex-row md:flex-col items-center md:items-end justify-between shrink-0 gap-2 w-full md:w-auto pt-2 md:pt-0 border-t md:border-t-0 border-[var(--app-border-strong)]/50 self-stretch"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {/* Match Score Indicator (real data only) */}
-                  <div>
+                <div className="relative z-10 flex md:flex-col items-center md:items-end justify-between md:justify-start gap-3 md:gap-2 shrink-0 md:w-40">
+                  <div className="text-[12px] tabular-nums md:text-right" title={matchScore != null ? `AI match score ${matchScore}%` : "No AI match score available for this job yet"}>
                     {matchScore != null ? (
-                      <div
-                        className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-[var(--app-nested)] rounded-md border border-[var(--app-border-strong)]"
-                        title={`AI Match Score: ${matchScore}%`}
-                      >
-                        <MatchScoreRing score={matchScore} size={16} strokeWidth={2} />
-                        <span className="text-[11px] font-semibold text-white tabular-nums">
-                          {matchScore}%
-                        </span>
-                        <span
-                          className={cn(
-                            "text-[10px] font-medium hidden sm:inline",
-                            matchScore >= 75 ? "text-emerald-400" : "text-zinc-400"
-                          )}
-                        >
-                          {ratingLabel}
-                        </span>
-                      </div>
+                      <span className="text-zinc-300">{matchScore}% <span className="text-zinc-500">match</span></span>
                     ) : (
-                      <span className="text-[11px] text-zinc-500 italic hidden md:inline">
-                        Unscored
-                      </span>
+                      <span className="text-zinc-600">Not scored</span>
                     )}
                   </div>
-
-                  {/* Actions Group */}
                   <div className="flex items-center gap-1.5">
-                    {/* Bookmark / Save Job */}
                     <button
                       onClick={() => toggleSaveJob(job)}
-                      className={cn(
-                        "w-7 h-7 rounded-md border flex items-center justify-center transition-colors",
-                        isSaved
-                          ? "bg-white/10 text-white border-white/20"
-                          : "bg-[var(--app-nested)] text-zinc-400 border-[var(--app-border-strong)] hover:text-white hover:bg-[var(--app-card)]"
-                      )}
-                      title={isSaved ? "Remove from saved" : "Save job"}
+                      aria-pressed={isSaved}
+                      aria-label={isSaved ? "Remove from saved jobs" : "Save job"}
+                      title={isSaved ? "Saved — click to remove" : "Save job"}
+                      className="h-8 w-8 rounded-lg inline-flex items-center justify-center text-zinc-500 hover:text-white hover:bg-white/[0.06] transition-colors"
                     >
-                      <Bookmark className={cn("w-3.5 h-3.5", isSaved && "fill-current")} />
+                      <Bookmark className={cn("w-4 h-4", isSaved && "fill-current text-white")} />
                     </button>
-
-                    {/* Source link */}
-                    {job.source_url && (
-                      <a
-                        href={job.source_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-7 h-7 flex items-center justify-center bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-md hover:bg-[var(--app-card)] text-zinc-400 hover:text-white transition-colors"
-                        title="Open original job posting"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    )}
-
-                    {/* Primary Apply action (application status aware) */}
                     {appStatus === "APPLIED" ? (
-                      <span className="h-7 px-2.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-md text-[11px] font-medium flex items-center gap-1">
-                        <CheckCircle className="w-3 h-3" />
-                        <span>Applied</span>
-                      </span>
+                      <span className="h-8 px-3 inline-flex items-center gap-1.5 text-[12px] text-zinc-400"><CheckCircle className="w-3.5 h-3.5" />Applied</span>
                     ) : appStatus === "QUEUED" ? (
-                      <span className="h-7 px-2.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-md text-[11px] font-medium flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        <span>Queued</span>
-                      </span>
+                      <span className="h-8 px-3 inline-flex items-center gap-1.5 text-[12px] text-zinc-400"><Clock className="w-3.5 h-3.5" />Queued</span>
                     ) : (
                       <button
                         onClick={() => applyMutation.mutate(job.id)}
-                        disabled={applyMutation.isPending}
-                        className="h-7 px-2.5 bg-white text-black rounded-md text-[12px] font-medium hover:bg-zinc-200 transition-colors flex items-center justify-center gap-1 disabled:opacity-50"
-                        title="Quick Apply with Applivo Agent"
+                        disabled={applying}
+                        className="h-8 px-3.5 rounded-lg bg-white text-black text-[12px] font-medium hover:bg-zinc-200 transition-colors inline-flex items-center gap-1.5 disabled:opacity-50"
+                        title="Quick apply with the Applivo agent"
                       >
-                        <Send className="w-3 h-3" />
-                        <span>Apply</span>
+                        {applying ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
+                        Apply
                       </button>
                     )}
-
-                    {/* Details arrow */}
-                    <button
-                      onClick={() => setSelectedJob(job)}
-                      className="w-7 h-7 flex items-center justify-center bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-md hover:bg-[var(--app-card)] text-zinc-400 hover:text-white transition-colors"
-                      title="Inspect job details & AI match"
-                    >
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
                   </div>
                 </div>
-              </motion.div>
+              </li>
             );
           })}
 
-          {/* Empty state */}
           {displayedJobs.length === 0 && (
-            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-10 text-center">
-              <Briefcase className="w-8 h-8 text-zinc-500 mx-auto mb-2.5" />
-              <h3 className="text-[14px] font-medium text-white mb-1">
-                {viewSavedOnly ? "No saved jobs yet" : "No matching jobs found"}
-              </h3>
-              <p className="text-[12px] text-zinc-400 max-w-sm mx-auto mb-4">
-                {viewSavedOnly
-                  ? "Click the bookmark icon on any job card to save it for quick review."
-                  : "Try clearing active filters, broadening your search query, or checking back soon."}
+            <li className="py-14 text-center">
+              <p className="text-[14px] text-white">
+                {viewSavedOnly ? "No saved jobs yet" : filters.keyword ? `No jobs match “${filters.keyword}”` : "No matching jobs"}
               </p>
-              {viewSavedOnly ? (
-                <button
-                  onClick={() => setViewSavedOnly(false)}
-                  className="h-8 px-4 bg-white text-black hover:bg-zinc-200 rounded-md text-[12px] font-medium transition-colors"
-                >
-                  View All Opportunities
-                </button>
-              ) : (
-                <button
-                  onClick={clearAllFilters}
-                  className="h-8 px-4 bg-white text-black hover:bg-zinc-200 rounded-md text-[12px] font-medium transition-colors"
-                >
-                  Clear Filters
-                </button>
-              )}
-            </div>
+              <p className="text-[13px] text-zinc-500 mt-1 mb-4 max-w-sm mx-auto">
+                {viewSavedOnly ? "Use the bookmark on a job to keep it here." : "Try a broader search or clear the filters."}
+              </p>
+              <button
+                onClick={viewSavedOnly ? () => setViewSavedOnly(false) : clearAllFilters}
+                className="h-8 px-4 rounded-lg border border-[var(--app-border-strong)] text-[13px] text-zinc-200 hover:text-white hover:bg-white/[0.04]"
+              >
+                {viewSavedOnly ? "View all jobs" : "Clear filters"}
+              </button>
+            </li>
           )}
-        </div>
+        </ul>
       )}
 
       {/* ─── 4. Pagination (Server-side) ─── */}
@@ -1243,7 +931,7 @@ export default function JobsPage() {
                       Applied
                     </span>
                   ) : appliedJobStatusMap[selectedJob.id] === "QUEUED" ? (
-                    <span className="h-8 px-3 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-md text-[12px] font-medium flex items-center gap-1.5">
+                    <span className="h-8 px-3 bg-white/[0.04] border border-[var(--app-border-strong)] text-zinc-300 rounded-md text-[12px] font-medium flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5" />
                       Queued for Bot
                     </span>
@@ -1306,7 +994,7 @@ export default function JobsPage() {
               <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-5">
                 {/* 1. Neutral Match Explanation Section (No green Lumi branding) */}
                 {selectedJob.analysis ? (
-                  <div className="p-3.5 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] space-y-3">
+                  <div className="p-3.5 rounded-lg bg-transparent border border-[var(--app-border-strong)] space-y-3">
                     <div className="flex items-center justify-between">
                       <h4 className="text-[13px] font-medium text-white">Match details</h4>
                       <div className="flex items-center gap-2">
@@ -1388,7 +1076,7 @@ export default function JobsPage() {
                     )}
                   </div>
                 ) : (
-                  <div className="p-3.5 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-between">
+                  <div className="p-3.5 rounded-lg bg-transparent border border-[var(--app-border-strong)] flex items-center justify-between">
                     <div>
                       <h4 className="text-[13px] font-medium text-white">AI Analysis</h4>
                       <p className="text-[11px] text-zinc-400 mt-0.5">
@@ -1442,11 +1130,11 @@ export default function JobsPage() {
                 <div>
                   <h4 className="text-[13px] font-semibold text-white mb-2">Job Description</h4>
                   {selectedJob.description_clean ? (
-                    <div className="bg-[var(--app-nested)] p-4 rounded-lg border border-[var(--app-border-strong)] overflow-hidden">
+                    <div className="bg-transparent p-4 rounded-lg border border-[var(--app-border-strong)] overflow-hidden">
                       <FormattedJobDescription text={selectedJob.description_clean} />
                     </div>
                   ) : (
-                    <div className="bg-[var(--app-nested)] p-4 rounded-lg border border-[var(--app-border-strong)] text-center py-6">
+                    <div className="bg-transparent p-4 rounded-lg border border-[var(--app-border-strong)] text-center py-6">
                       <p className="text-[12px] text-zinc-400">
                         Detailed description not available for this posting.
                       </p>

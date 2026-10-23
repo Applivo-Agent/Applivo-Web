@@ -1,94 +1,60 @@
 "use client";
-import React from "react";
-import { Bell, Mail, Clock, Send, CheckCircle2, AlertCircle, Sparkles , Loader2} from "lucide-react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { applicationsApi } from "@/lib/api";
+import { formatDate } from "@/lib/utils";
 
-const followups = [
-  { id: 1, company: "Amazon", role: "SDE II", status: "Scheduled", time: "in 2 hours", type: "Email" },
-  { id: 2, company: "Microsoft", role: "Specialist", status: "Sent", time: "Yesterday", type: "LinkedIn" },
-  { id: 3, company: "Meta", role: "Product Manager", status: "Delayed", time: "Pending", type: "Email" },
-];
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const WAIT_DAYS = 7;   // same rule the analytics reminder uses: applied, no response for 7 days
 
 export default function FollowUpsPage() {
+  const { data: due = [], isLoading, isError, refetch } = useQuery({
+    queryKey: ["follow-up-candidates"],
+    queryFn: async () => {
+      const items = ((await applicationsApi.list({ status: "applied", page_size: 100 })).data?.items ?? []) as any[];
+      const now = Date.now();                                          // evaluated at fetch time, not during render
+      return items
+        .filter((a) => a.applied_at && new Date(a.applied_at).getTime() <= now - WAIT_DAYS * 86_400_000)
+        .map((a) => ({ ...a, days_ago: Math.floor((now - new Date(a.applied_at).getTime()) / 86_400_000) }))
+        .sort((x, y) => String(x.applied_at).localeCompare(String(y.applied_at)));
+    },
+  });
+
   return (
-      <div className="dash-page max-w-6xl space-y-6">
-        <div>
-          <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white">Follow-ups</h1>
-          <p className="dash-subtitle mt-1">Smart reminders and automated check-ins for pending applications.</p>
-        </div>
+    <div className="dash-page">
+      <section className="rounded-xl border border-[var(--app-border-strong)] bg-[var(--app-card)] p-4">
+        <header className="flex items-baseline justify-between gap-3 mb-3">
+          <h2 className="text-[14px] font-medium text-white">Awaiting a response</h2>
+          <span className="text-[12px] text-zinc-500">Applied {WAIT_DAYS}+ days ago with no reply</span>
+        </header>
 
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg overflow-hidden">
-              <div className="p-4 border-b border-[var(--app-border-strong)] bg-[var(--app-card)] flex items-center justify-between">
-                <h3 className="text-[15px] font-semibold text-white tracking-tight flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-zinc-400" />
-                  Pending Interactions
-                </h3>
-                <div className="text-[11px] font-medium text-zinc-400 flex items-center gap-1.5">
-                  <span>Auto-pilot:</span>
-                  <span className="text-white font-semibold">Enabled</span>
+        {isLoading ? (
+          <div className="space-y-2" aria-busy="true">{[0, 1].map((i) => <div key={i} className="h-12 rounded-lg bg-white/[0.04] animate-pulse" />)}</div>
+        ) : isError ? (
+          <p className="text-[13px] text-zinc-400">Couldn&apos;t load your applications. <button className="underline" onClick={() => refetch()}>Retry</button></p>
+        ) : due.length === 0 ? (
+          <p className="text-[13px] text-zinc-500 py-6 text-center">
+            Nothing to follow up on. Applications appear here {WAIT_DAYS} days after you apply if the employer has not replied.
+          </p>
+        ) : (
+          <ul className="divide-y divide-[var(--app-border)]">
+            {due.map((a) => (
+              <li key={a.id} className="py-3 flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <Link href={`/applications/${a.id}`} className="text-[14px] text-white hover:underline break-words">
+                    {a.job_title_snapshot || a.job?.title || "Role not listed"}
+                  </Link>
+                  <p className="text-[12px] text-zinc-500 break-words">{a.company_snapshot || a.job?.company_name || "Company not listed"}</p>
                 </div>
-              </div>
-              <div className="divide-y divide-[var(--app-border-strong)]">
-                {followups.map((f) => (
-                  <div key={f.id} className="p-4 hover:bg-[var(--app-nested)] transition-colors flex items-center justify-between">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[var(--app-nested)] text-zinc-300 border border-[var(--app-border-strong)] shrink-0">
-                        {f.type === 'Email' ? <Mail className="w-4 h-4" /> : <Send className="w-4 h-4" />}
-                      </div>
-                      <div>
-                        <h4 className="text-[13px] sm:text-[14px] font-medium text-white">{f.company}</h4>
-                        <p className="text-[12px] text-zinc-400">{f.role} • {f.time}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-zinc-300">
-                        {f.status}
-                      </span>
-                      <button className="text-[12px] font-medium text-zinc-400 hover:text-white transition-colors">
-                        Pause
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
-              <h3 className="text-[15px] font-semibold text-white tracking-tight mb-4">Smart Sequence</h3>
-              <div className="space-y-3.5">
-                <div className="flex items-start gap-3">
-                  <div className="mt-0.5 w-5 h-5 rounded-full bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center text-[11px] font-medium text-zinc-300 shrink-0">1</div>
-                  <p className="text-[13px] text-zinc-300"><span className="text-white font-medium">Day 3:</span> Soft check-in on application status.</p>
+                <div className="shrink-0 text-right text-[12px]">
+                  <p className="text-zinc-300">{a.days_ago} days ago</p>
+                  <p className="text-zinc-500">{formatDate(a.applied_at)}</p>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="mt-0.5 w-5 h-5 rounded-full bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center text-[11px] font-medium text-zinc-300 shrink-0">2</div>
-                  <p className="text-[13px] text-zinc-300"><span className="text-white font-medium">Day 7:</span> Ask about interview timelines.</p>
-                </div>
-                <div className="flex items-start gap-3 opacity-40">
-                  <div className="mt-0.5 w-5 h-5 rounded-full bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center text-[11px] font-medium text-zinc-400 shrink-0">3</div>
-                  <p className="text-[13px] text-zinc-400"><span className="text-zinc-300 font-medium">Day 14:</span> Final follow-up and value add.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <Sparkles className="w-4 h-4 text-zinc-400" />
-                <h3 className="text-[15px] font-semibold text-white tracking-tight">Ghosting Rate</h3>
-              </div>
-              <div className="text-[24px] leading-8 font-semibold tracking-tight text-white mb-1">12%</div>
-              <p className="text-[12px] text-zinc-400 leading-relaxed mb-4">Your current ghosting rate is below the industry average (45%).</p>
-              <div className="w-full h-1.5 bg-[var(--app-nested)] rounded-full overflow-hidden border border-[var(--app-border-strong)]">
-                <div className="h-full bg-white rounded-full" style={{ width: '88%' }} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
   );
 }

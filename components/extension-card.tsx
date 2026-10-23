@@ -24,7 +24,7 @@ const primaryBtn =
 const ghostBtn =
   "h-8 px-3 inline-flex items-center justify-center gap-1.5 rounded-lg border border-[var(--app-border-strong)] bg-transparent hover:bg-white/[0.04] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors";
 
-export function ExtensionCard({ className }: { className?: string }) {
+export function ExtensionPanel({ className }: { className?: string }) {
   const { status, info, busy, connect, disconnect, refresh } = useExtension();
   const [checking, setChecking] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
@@ -75,9 +75,9 @@ export function ExtensionCard({ className }: { className?: string }) {
     >
       {/* Logo + status */}
       <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="w-11 h-11 rounded-xl bg-[var(--app-nested)] border border-[var(--app-border-strong)] group-hover:border-white/15 flex items-center justify-center p-2 shrink-0 transition-colors">
+        <div className="w-9 h-9 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] group-hover:border-white/15 flex items-center justify-center p-1.5 shrink-0 transition-colors">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logos/extension.png" alt="Applivo Browser Extension" className="w-full h-full object-contain" />
+          <img src="/applivo-emblem.png" alt="Applivo Browser Extension" className="w-full h-full object-contain" />
         </div>
         <span
           className={cn(
@@ -206,5 +206,39 @@ export function ExtensionCard({ className }: { className?: string }) {
         </div>
       )}
     </div>
+  );
+}
+
+const TILE_STATUS: Record<string, { text: string; tone: string }> = {
+  connected: { text: "Connected", tone: "text-white" },
+  expired: { text: "Needs reconnect", tone: "text-amber-400/90" },
+  subscription_required: { text: "Plan required", tone: "text-amber-400/90" },
+  disconnected: { text: "Installed", tone: "text-zinc-300" },
+  checking: { text: "Checking…", tone: "text-zinc-400" },
+  not_installed: { text: "Not installed", tone: "text-zinc-400" },
+};
+
+/** Fixed-size tile matching the other connection tiles; actions live in the detail view so the grid never reflows. */
+export function ExtensionCard({ onOpen }: { onOpen: () => void }) {
+  const { status } = useExtension();
+  const meta = TILE_STATUS[status] ?? TILE_STATUS.not_installed;
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="group text-left rounded-xl border border-[var(--app-border-strong)] bg-[var(--app-card)] hover:border-white/20 hover:bg-[var(--app-nested)] p-4 flex flex-col transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-white/30"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="w-6 h-6 flex items-center justify-center shrink-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/applivo-emblem.png" alt="" className="w-full h-full object-contain" />
+        </div>
+        <span className={cn("text-[11px] whitespace-nowrap", meta.tone)}>{meta.text}</span>
+      </div>
+      <h3 className="mt-3 text-[14px] font-semibold text-white tracking-tight leading-5">Applivo Browser Extension</h3>
+      <p className="mt-1 text-[12px] text-zinc-400 leading-relaxed line-clamp-2">
+        Fill and submit supported job forms from your own browser session and logins.
+      </p>
+    </button>
   );
 }

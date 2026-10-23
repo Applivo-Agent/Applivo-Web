@@ -31,7 +31,7 @@ export function SetupInfoModal({
       <DialogContent className="sm:max-w-[500px] bg-[#121215] border border-zinc-800 text-white p-6 shadow-2xl">
         <DialogHeader className="space-y-2">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center p-1.5 shrink-0">
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={integration.logo} alt={integration.name} className="w-full h-full object-contain" />
             </div>

@@ -74,7 +74,7 @@ export function JobAutomationSection() {
         icon={<BarChart3 className="w-4 h-4 text-white" />}
       >
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg space-y-3">
+          <div className="p-4 bg-transparent border border-[var(--app-border-strong)] rounded-lg space-y-3">
             <label className="text-[11px] font-medium text-zinc-400">Daily Limit</label>
             <div className="flex items-center gap-3">
               <input
@@ -100,7 +100,7 @@ export function JobAutomationSection() {
             />
           </div>
 
-          <div className="p-4 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg space-y-3">
+          <div className="p-4 bg-transparent border border-[var(--app-border-strong)] rounded-lg space-y-3">
             <label className="text-[11px] font-medium text-zinc-400">Weekly Limit</label>
             <div className="flex items-center gap-3">
               <input

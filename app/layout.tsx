@@ -27,6 +27,11 @@ export const metadata: Metadata = {
     description: "Automate your job search. Apply to 500 jobs a day on autopilot.",
     type: "website",
   },
+  icons: {
+    icon: "/applivo-emblem.png",
+    shortcut: "/applivo-emblem.png",
+    apple: "/applivo-emblem.png",
+  },
 };
 
 export default function RootLayout({

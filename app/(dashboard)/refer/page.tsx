@@ -69,14 +69,7 @@ export default function ReferPage() {
   };
 
   return (
-    <div className="dash-page max-w-5xl space-y-6">
-      {/* Page Header */}
-      <div>
-        <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white">Refer &amp; Earn</h1>
-        <p className="dash-subtitle mt-1">
-          Share Applivo with friends who are building their next career move.
-        </p>
-      </div>
+    <div className="dash-page">
 
       {/* Compact Invitation Hero */}
       <div className="rounded-lg border border-[var(--app-border-strong)] bg-[var(--app-card)] p-6">
@@ -138,7 +131,7 @@ export default function ReferPage() {
 
           {/* Right Hero Abstract Graphic Treatment */}
           <div className="md:col-span-5">
-            <div className="rounded-lg border border-[var(--app-border-strong)] bg-[var(--app-nested)] p-6 flex flex-col items-center justify-center text-center space-y-3">
+            <div className="rounded-lg border border-[var(--app-border-strong)] bg-transparent p-6 flex flex-col items-center justify-center text-center space-y-3">
               <div className="relative flex items-center justify-center w-14 h-14 rounded-full bg-[var(--app-card)] border border-[var(--app-border-strong)]">
                 <Sparkles className="w-6 h-6 text-zinc-300" />
                 <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">

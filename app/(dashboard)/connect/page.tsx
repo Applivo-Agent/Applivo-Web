@@ -4,8 +4,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { AlertCircle, RefreshCw, Search, ShieldCheck, X } from "lucide-react";
 import { toast } from "sonner";
 
-import { ExtensionCard } from "@/components/extension-card";
+import { ExtensionCard, ExtensionPanel } from "@/components/extension-card";
 import { IntegrationCard } from "@/components/integrations/integration-card";
+import { IntegrationDetail } from "@/components/integrations/integration-detail";
 import { GoogleDriveModal } from "@/components/integrations/google-drive-modal";
 import { GitHubSyncModal } from "@/components/integrations/github-sync-modal";
 import { CalendarEventModal } from "@/components/integrations/calendar-event-modal";
@@ -39,6 +40,7 @@ export default function ConnectPage() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [connectingId, setConnectingId] = useState<string | null>(null);
   const [manageItem, setManageItem] = useState<IntegrationItem | null>(null);
   const [setupItem, setSetupItem] = useState<IntegrationItem | null>(null);
@@ -157,14 +159,35 @@ export default function ConnectPage() {
 
   const totalVisible = visibleItems.length + (showExtension ? 1 : 0);
 
+  const selected = selectedId ? items.find((i) => i.id === selectedId) ?? null : null;
+
   return (
+    <>
+    {selectedId === "__extension" ? (
+      <div className="dash-page">
+        <nav className="flex items-center gap-2 text-[13px] text-zinc-400">
+          <button type="button" onClick={() => setSelectedId(null)} className="hover:text-white transition-colors">← Connections</button>
+          <span className="text-zinc-600">/</span>
+          <span className="text-white">Applivo Browser Extension</span>
+        </nav>
+        <ExtensionPanel className="max-w-xl" />
+      </div>
+    ) : selected ? (
+      <IntegrationDetail
+        item={selected}
+        connecting={connectingId === selected.id}
+        onBack={() => setSelectedId(null)}
+        onConnect={handleConnect}
+        onManage={setManageItem}
+        onShowSetup={setSetupItem}
+        onDisconnect={setDisconnectItem}
+        onCheckHealth={handleCheckHealth}
+      />
+    ) : (
     <div className="dash-page">
       {/* Header */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white">Connections</h1>
-          <p className="dash-subtitle mt-1">Connect the tools you use for your job search.</p>
-        </div>
+        <div />
         {summary && (
           <div className="flex items-center gap-2 text-[12px] text-zinc-400 shrink-0">
             <span>
@@ -236,17 +259,13 @@ export default function ConnectPage() {
         </div>
       ) : (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {showExtension && <ExtensionCard />}
+          {showExtension && <ExtensionCard onOpen={() => setSelectedId("__extension")} />}
           {visibleItems.map((item) => (
             <IntegrationCard
               key={item.id}
               item={item}
               connecting={connectingId === item.id}
-              onConnect={handleConnect}
-              onManage={setManageItem}
-              onShowSetup={setSetupItem}
-              onDisconnect={setDisconnectItem}
-              onCheckHealth={handleCheckHealth}
+              onOpen={(i) => setSelectedId(i.id)}
             />
           ))}
         </div>
@@ -256,6 +275,8 @@ export default function ConnectPage() {
         <ShieldCheck className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
         Access tokens are encrypted at rest (AES-256-GCM) and never exposed to your browser. You can revoke access at any time by disconnecting.
       </p>
+    </div>
+    )}
 
       {manageItem?.id === "google_drive" && (
         <GoogleDriveModal
@@ -359,7 +380,7 @@ export default function ConnectPage() {
         onConfirm={confirmDisconnect}
         isDisconnecting={isDisconnecting}
       />
-    </div>
+    </>
   );
 }
 

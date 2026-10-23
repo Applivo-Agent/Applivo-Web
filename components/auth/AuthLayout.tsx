@@ -110,15 +110,15 @@ export function AuthLayout({
       </div>
 
       {/* ── CENTERED AUTH PANEL (430px desktop width, 16px radius, #111111 surface, 24–32px padding) ── */}
-      <div className="w-full max-w-[430px] relative z-10">
-        <div className="rounded-2xl bg-[#111111] border border-[#232326] p-6 sm:p-8 shadow-[0_24px_60px_rgba(0,0,0,0.95)]">
+      <div className="w-full max-w-[380px] relative z-10">
+        <div className="rounded-2xl bg-[#111111] border border-[#232326] p-5 sm:p-6 shadow-[0_24px_60px_rgba(0,0,0,0.95)]">
           {/* Logo & Header */}
-          <div className="flex flex-col items-center text-center mb-6">
+          <div className="flex flex-col items-center text-center mb-4">
             <Link
               href="/"
-              className="inline-flex items-center justify-center mb-4 group transition-transform hover:scale-[1.03] active:scale-[0.98]"
+              className="inline-flex items-center justify-center mb-3 group transition-transform hover:scale-[1.03] active:scale-[0.98]"
             >
-              <div className="w-12 h-12 rounded-2xl overflow-hidden border border-white/10 bg-[#161618] flex items-center justify-center shadow-md p-1.5">
+              <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 bg-[#161618] flex items-center justify-center shadow-md p-1.5">
                 <Image
                   src="/applivo-logo.png"
                   alt="Applivo"
@@ -131,28 +131,28 @@ export function AuthLayout({
               </div>
             </Link>
 
-            <h1 className="text-[24px] font-semibold text-[#f5f5f5] tracking-tight">
+            <h1 className="text-[20px] font-semibold text-[#f5f5f5] tracking-tight">
               {heading}
             </h1>
-            <p className="text-[13.5px] text-[#a1a1aa] mt-1 leading-normal max-w-[340px]">
+            <p className="text-[13px] text-[#a1a1aa] mt-1 leading-normal max-w-[320px]">
               {supportingText}
             </p>
           </div>
 
           {/* Development Status Notice Banner inside card (Exact site theme) */}
-          <div className="flex items-center justify-center gap-2 px-3.5 py-2.5 mb-5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-center">
+          <div className="flex items-center justify-center gap-2 px-3 py-2 mb-4 rounded-lg bg-white/[0.04] border border-white/[0.08] text-center">
             <span className="w-1.5 h-1.5 rounded-full bg-white/70 animate-pulse shrink-0" />
-            <span className="text-[12.5px] font-medium text-zinc-300 leading-tight">
+            <span className="text-[12px] font-medium text-zinc-300 leading-tight">
               Platform in Development &bull; Access opening soon
             </span>
           </div>
 
           {/* Form Content */}
-          <div className="space-y-4">{children}</div>
+          <div className="space-y-3">{children}</div>
 
           {/* Footer */}
           {footer && (
-            <div className="mt-5 pt-4 border-t border-white/[0.06] text-center text-[13px] text-[#a1a1aa]">
+            <div className="mt-4 pt-3 border-t border-white/[0.06] text-center text-[13px] text-[#a1a1aa]">
               {footer}
             </div>
           )}

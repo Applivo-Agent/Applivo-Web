@@ -29,7 +29,37 @@ export default function ResetPasswordPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.info("Applivo is currently in development. Password reset services will open soon upon launch!");
+    if (loading) return;
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+    if (!token) {
+      toast.error("Missing reset token. Please request a new link.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await authApi.resetPassword({ token, new_password: password });
+      setSuccess(true);
+      toast.success("Password updated successfully!");
+      setTimeout(() => router.push("/login"), 2500);
+    } catch (err: any) {
+      const detail = err?.response?.data?.detail;
+      toast.error(
+        typeof detail === "string"
+          ? detail
+          : "Failed to reset password. The link may have expired."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const footer = (

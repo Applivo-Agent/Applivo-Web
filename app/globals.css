@@ -51,6 +51,84 @@
   --surface-4: #1a1a1a;
   --surface-border: rgba(255, 255, 255, 0.06);
   --surface-border-hover: rgba(255, 255, 255, 0.12);
+
+  /* Admin type & spacing tokens - aligned with User App */
+  --admin-sidebar-w: 248px;
+  --admin-sidebar-w-collapsed: 68px;
+  --admin-header-h: 56px;
+  --admin-pad-x: 24px;
+  --admin-pad-y: 24px;
+  --admin-title-size: 19px;
+  --admin-section-heading-size: 16px;
+  --admin-card-title-size: 13.5px;
+  --admin-subtitle-size: 12px;
+  --admin-nav-label-size: 14px;
+  --admin-body-size: 13px;
+  --admin-table-head-size: 11.5px;
+  --admin-table-cell-size: 13px;
+  --admin-input-btn-size: 12.5px;
+  --admin-kpi-size: 21px;
+  --admin-control-h: 32px;
+}
+
+/* Admin Design Utilities - Matching User App Proportions */
+.admin-page-title {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.admin-section-heading {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+.admin-card-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.35;
+}
+
+.admin-card-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: #71717a;
+  line-height: 1.4;
+}
+
+.admin-cell {
+  font-size: 13px;
+  font-weight: 400;
+  color: #d4d4d8;
+}
+
+.admin-th {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #a1a1aa;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.admin-kpi {
+  font-size: 21px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #ffffff;
+}
+
+.admin-btn {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  border-radius: 6px;
 }
 
 
@@ -207,19 +285,23 @@
 .k-pill-light {
   display: inline-flex;
   align-items: center;
-  padding: 10px 12px;
-  border-radius: 10px;
+  justify-content: center;
+  height: 29px;
+  padding: 0 11px;
+  border-radius: 7px;
   background: #e5e5e5;
-  color: var(--k-faint);
-  font-size: var(--fs-base);
-  line-height: 16px;
-  font-weight: var(--fw-heading);
-  box-shadow: rgba(255, 255, 255, 0) 0 6px 12px 0;
-  transition: background-color .2s;
+  color: #1a1a1a;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  box-shadow: rgba(255, 255, 255, 0) 0 4px 8px 0;
+  transition: background-color .2s, color .2s;
 }
 
 .k-pill-light:hover {
-  background: #fff;
+  background: #ffffff;
+  color: #000000;
 }
 
 .k-badge {
@@ -652,37 +734,39 @@ svg.animate-spin {
    32px nav rows, ~52px header, 32px avatar.
    ============================================ */
 :root {
-  --app-sidebar: #181818;
-  --app-header: #181818;
-  --app-bg: #111111;
-  --app-card: #181818;
-  --app-nested: #1b1b1d;
-  --app-inset: #1b1b1d;
-  --app-menu: #181818;
-  --app-border: #212121;
-  --app-border-strong: #2d2d2f;
-  --app-hover: #222223;
-  --app-active: #2c2c2e;
-  --app-text: #d6d6d8;
-  --app-text-dim: #8f8f94;
-  --app-sidebar-w: 232px;
-  --app-sidebar-w-collapsed: 56px;
-  --app-header-h: 52px;
+  --app-sidebar: #101012;
+  --app-header: #101012;
+  --app-bg: #0c0c0e;
+  --app-card: var(--app-sidebar);   /* cards share the sidebar/top-bar surface */
+  --app-nested: #1a1a1c;
+  --app-inset: #141416;
+  --app-menu: #151516;
+  --app-border: rgba(255, 255, 255, 0.08);
+  --app-border-strong: rgba(255, 255, 255, 0.14);
+  --app-hover: rgba(255, 255, 255, 0.04);
+  --app-active: rgba(255, 255, 255, 0.08);
+  --app-text: #ededef;
+  --app-text-dim: #8e8e96;
+  --app-sidebar-w: 240px;
+  --app-sidebar-w-collapsed: 68px;
+  --app-header-h: 56px;
   --app-pad: 24px;
   --app-gap: 20px;
-  --fs-title: 22px;
+  --app-radius-card: 18px;
+  --app-radius-control: 12px;
+  --fs-title: 20px;
   /* page title */
-  --fs-card-title: 17px;
-  /* card titles (16–18px scale) */
-  --fs-heading: 15px;
+  --fs-card-title: 15px;
+  /* card titles */
+  --fs-heading: 14px;
   /* card / section heading */
-  --fs-body: 15px;
-  /* body text & descriptions (14–16px scale) */
-  --fs-metric: 24px;
-  /* big numbers */
+  --fs-body: 13.5px;
+  /* body text & descriptions */
+  --fs-metric: 20px;
+  /* numbers */
   --fs-base: 13px;
   /* nav, body, buttons, menus */
-  --fs-meta: 12px;
+  --fs-meta: 11.5px;
   /* helper text, badges */
   /* Weights follow Runpod: light headings, regular UI text, medium only for emphasis */
   --fw-title: 400;
@@ -1529,3 +1613,55 @@ html {
 .landing-typography .font-medium {
   font-weight: var(--fw-ui) !important;
 }
+/* ============================================
+   USER APP — one small type scale and one font.
+   Titles/metrics 18 · section 14 · body 13 · meta 12 (Inter everywhere except code).
+   ============================================ */
+.user-app,
+.user-app *:not(code):not(pre):not(kbd):not(.font-mono) {
+  font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+}
+/* titles + big numbers */
+.user-app h1,
+.user-app :is([class*="text-[40px]"],[class*="text-[36px]"],[class*="text-[32px]"],[class*="text-[30px]"],[class*="text-[28px]"],[class*="text-[26px]"],[class*="text-[24px]"],[class*="text-[22px]"],[class*="text-[20px]"],[class*="text-[19px]"],[class*="text-[18px]"],[class*="text-xl"],[class*="text-2xl"],[class*="text-3xl"],[class*="text-4xl"],[class*="text-5xl"]) {
+  font-size: 18px !important;
+  line-height: 24px !important;
+  letter-spacing: -0.01em;
+}
+/* section headings */
+.user-app :is([class*="text-[17px]"],[class*="text-[16px]"],[class*="text-[15px]"],[class*="text-[14.5px]"],[class*="text-[14px]"],[class*="text-lg"],[class*="text-base"]) {
+  font-size: 14px !important;
+  line-height: 20px !important;
+}
+/* body */
+.user-app :is([class*="text-[13.5px]"],[class*="text-[13px]"],[class*="text-[12.5px]"],[class*="text-sm"]) {
+  font-size: 13px !important;
+  line-height: 18px !important;
+}
+/* meta */
+.user-app :is([class*="text-[12px]"],[class*="text-[11.5px]"],[class*="text-[11px]"],[class*="text-[10.5px]"],[class*="text-[10px]"],[class*="text-[9px]"],[class*="text-xs"]) {
+  font-size: 12px !important;
+  line-height: 16px !important;
+}
+
+/* "Smooth transitions" off (Settings > Appearance): no animated transitions or keyframes anywhere. */
+html[data-motion="reduced"] *, html[data-motion="reduced"] *::before, html[data-motion="reduced"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* The pricing card's price keeps its landing-page size inside the compact user-app type scale. */
+.user-app [data-plan-price] { font-size: 29px !important; line-height: 1 !important; letter-spacing: -0.01em; }
+
+/* ── Density (Settings → Appearance) ──────────────────────────────────────────
+   html[data-density] is set from the saved setting. "comfortable" is the baseline; only the user app is
+   affected (the admin console is not inside .user-app). */
+.user-app { --d-gap: 12px; --d-card-pad: 20px; --d-row-y: 10px; --d-grid-gap: 16px; }
+html[data-density="compact"]  .user-app { --d-gap: 8px; --d-card-pad: 14px; --d-row-y: 6px;  --d-grid-gap: 10px; }
+html[data-density="spacious"] .user-app { --d-gap: 20px; --d-card-pad: 26px; --d-row-y: 14px; --d-grid-gap: 22px; }
+.user-app .dash-page { gap: var(--d-gap) !important; }   /* pages set !gap-3 themselves: this makes that value density-aware */
+.user-app main .grid:is([class*="gap-3"], [class*="gap-4"], [class*="gap-5"], [class*="gap-6"]) { gap: var(--d-grid-gap); }
+.user-app [class*="rounded-"][class*="border"]:is(.p-4, .p-5, .p-6) { padding: var(--d-card-pad); }
+.user-app :is(td, th) { padding-block: var(--d-row-y); }

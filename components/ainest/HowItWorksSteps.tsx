@@ -222,10 +222,6 @@ function PrepareAndApplyPreview() {
             <span>›</span>
             <span className="text-zinc-300 font-medium">Application Assistant</span>
           </div>
-          <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full font-medium">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Companion Ready
-          </span>
         </div>
 
         {/* Selected Job Context Card */}

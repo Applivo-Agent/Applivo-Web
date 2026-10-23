@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { analyticsApi } from "@/lib/api";
 import { useSubscription } from "@/lib/subscription";
 import { TrendingUp, Briefcase, DollarSign, MapPin, Users, Loader2 } from "lucide-react";
-import { ApplivoLoader } from "@/components/applivo-loader";
 
 export default function MarketPage() {
   const { isPremium, isLoading: subLoading } = useSubscription();
@@ -16,16 +15,16 @@ export default function MarketPage() {
   });
 
   if (subLoading || isLoading) {
-    return <ApplivoLoader variant="content" text="Loading Market Insights" />;
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
   }
 
   if (!isPremium) {
     return (
-      <div className="dash-page space-y-6">
-        <div>
-          <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white">Market Insights</h1>
-          <p className="dash-subtitle mt-1">Latest job market intelligence based on your target roles.</p>
-        </div>
+      <div className="dash-page">
         <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-12 text-center">
           <TrendingUp className="w-8 h-8 text-zinc-400 mx-auto mb-3" />
           <h2 className="text-[16px] font-semibold text-white mb-1.5">Premium Feature</h2>
@@ -37,11 +36,7 @@ export default function MarketPage() {
 
   if (!market) {
     return (
-      <div className="dash-page space-y-6">
-        <div>
-          <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white">Market Insights</h1>
-          <p className="dash-subtitle mt-1">Latest job market intelligence based on your target roles.</p>
-        </div>
+      <div className="dash-page">
         <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-12 text-center">
           <p className="text-[14px] text-zinc-400">No market data available. Run the agent first to collect data.</p>
         </div>
@@ -50,11 +45,7 @@ export default function MarketPage() {
   }
 
   return (
-    <div className="dash-page space-y-6">
-      <div>
-        <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white">Market Insights</h1>
-        <p className="dash-subtitle mt-1">Latest job market intelligence based on your target roles.</p>
-      </div>
+    <div className="dash-page">
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
@@ -70,7 +61,7 @@ export default function MarketPage() {
             <span className="text-[12px] font-medium text-zinc-400">Avg Salary Range</span>
           </div>
           <p className="text-[24px] leading-8 font-semibold tracking-tight text-white">
-            ₹{Math.round((market.salary_data?.min_salary || 1400000) / 100000)}L - 
+            ₹{Math.round((market.salary_data?.min_salary || 1400000) / 100000)}L -
             ₹{Math.round((market.salary_data?.max_salary || 2200000) / 100000)}L
           </p>
         </div>
@@ -132,8 +123,8 @@ export default function MarketPage() {
                   <span className="text-zinc-400">{count} jobs</span>
                 </div>
                 <div className="h-2 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-white rounded-full" 
+                  <div
+                    className="h-full bg-white rounded-full"
                     style={{ width: `${(count / (market.total_jobs_analyzed || 1)) * 100}%` }}
                   />
                 </div>

@@ -22,24 +22,28 @@ export function SimplePricing() {
         aria-hidden="true"
       />
 
-      {/* Header (Heading 30-34px, Body 13-14px) */}
+      {/* Header (Record-Inspired Eyebrow, Heading, and Subtitle) */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        className="text-center mb-7 sm:mb-8 relative z-10 max-w-xl mx-auto"
+        className="text-center mb-10 sm:mb-12 relative z-10 max-w-2xl mx-auto px-4"
       >
-        <h2 className="text-[28px] sm:text-[31px] md:text-[32px] font-semibold tracking-tight text-[#F5F5F5] mb-2 leading-[1.2]">
-          Simple plans. Serious progress.
+        <span className="text-[11px] sm:text-[11.5px] font-medium text-[#71717A] uppercase tracking-[0.15em] block mb-3">
+          PRICING
+        </span>
+        <h2 className="text-[30px] sm:text-[34px] md:text-[36px] font-semibold tracking-tight mb-3 leading-[1.2]">
+          <span className="text-[#a1a1a1] block">Simple plans.</span>
+          <span className="text-white font-semibold block">Serious progress.</span>
         </h2>
-        <p className="text-[13px] sm:text-[13.5px] text-[#A1A1AA] leading-[1.6] max-w-md mx-auto">
-          Tailored for every stage of your career search. Real-time scraping, intelligent AI answers, and automated job submissions.
+        <p className="text-[13.5px] sm:text-[14px] text-[#A1A1AA] leading-[1.6] max-w-lg mx-auto">
+          Choose the right plan for your job search and unlock the tools you need to move forward.
         </p>
       </motion.div>
 
-      {/* Three Compact Cards Grid (Total Width: ~1,040px, Gaps: 16-18px) */}
-      <div className="w-full max-w-[1040px] grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-[18px] relative z-10">
+      {/* Three Compact Cards Grid (Total Width: ~980px, Gaps: 14-16px) */}
+      <div className="w-full max-w-[980px] grid grid-cols-1 md:grid-cols-3 gap-3.5 lg:gap-4 relative z-10 items-stretch">
         {PRICING_PLANS.map((plan, i) => (
           <motion.div
             key={plan.id}

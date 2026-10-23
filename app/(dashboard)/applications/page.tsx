@@ -7,7 +7,6 @@ import { cn, getStatusClass, getStatusLabel, timeAgo, formatDate } from "@/lib/u
 import Link from "next/link";
 import { toast } from "sonner";
 import {
-  Briefcase,
   Search,
   LayoutGrid,
   List,
@@ -368,26 +367,10 @@ export default function ApplicationsPage() {
   ];
 
   return (
-    <div className="dash-page relative w-full min-w-0">
+    <div className="dash-page relative w-full min-w-0 !gap-3">
       {/* ── 1. Page Header (Jobs Page style, strictly aligned) ──────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+      <div className="flex justify-end">
         {/* Left: Icon, Title, Count Badge, Subtitle */}
-        <div className="flex items-center gap-3">
-          <div className="w-7 h-7 rounded-md bg-[var(--app-card)] border border-[var(--app-border-strong)] flex items-center justify-center shrink-0">
-            <Briefcase className="w-3.5 h-3.5 text-white" />
-          </div>
-          <div>
-            <h1 className="text-[22px] leading-tight font-medium tracking-tight text-white">
-              Applications
-            </h1>
-            <p className="text-[12px] sm:text-[13px] text-zinc-400 mt-0.5">
-              {isFiltered
-                ? `Showing ${data?.total ?? 0} matching applications (of ${stats?.total ?? 0} total)`
-                : "Track and manage your job applications."}
-            </p>
-          </div>
-        </div>
-
         {/* Right: Export, Refresh, View Switcher */}
         <div className="flex items-center gap-2 self-start sm:self-center">
           {/* Export Dropdown */}
@@ -408,7 +391,7 @@ export default function ApplicationsPage() {
             </button>
 
             {isExportMenuOpen && (
-              <div className="absolute right-0 mt-1.5 w-56 py-1 bg-[#18181b] border border-white/[0.1] rounded-lg shadow-2xl z-50 text-[12px]">
+              <div className="absolute right-0 mt-1.5 w-56 py-1 bg-[var(--app-card)] border border-white/[0.1] rounded-lg shadow-2xl z-50 text-[12px]">
                 <div className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-500 border-b border-white/[0.06]">
                   Export CSV
                 </div>
@@ -484,7 +467,7 @@ export default function ApplicationsPage() {
       </div>
 
       {/* ── 2. Compact Status Summary Strip ───────────────────────── */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 mb-4 scrollbar-none text-[12px]">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-[12px]">
         {summaryPills.map((pill) => {
           const isActive = statusFilter === pill.id;
           return (
@@ -516,7 +499,7 @@ export default function ApplicationsPage() {
       </div>
 
       {/* ── 3. Search and Filter Toolbar (Clean, compact, no star!) ── */}
-      <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-2.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 mb-4">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
         <div className="flex flex-1 items-center gap-2 min-w-0">
           {/* Search Box */}
           <div className="relative flex-1 min-w-[200px]">
@@ -689,7 +672,7 @@ export default function ApplicationsPage() {
                     }}
                     className={cn(
                       "w-[280px] shrink-0 bg-[var(--app-card)] border rounded-lg p-2.5 flex flex-col max-h-[76vh] transition-colors",
-                      isOver ? "border-blue-500/60 bg-blue-950/10" : "border-[var(--app-border-strong)]"
+                      isOver ? "border-white/40 bg-white/[0.03]" : "border-[var(--app-border-strong)]"
                     )}
                   >
                     {/* Column Header */}
@@ -1013,7 +996,7 @@ export default function ApplicationsPage() {
                       {activeFilterCount > 0 && (
                         <button
                           onClick={handleClearFilters}
-                          className="mt-2 text-[12px] text-blue-400 hover:underline"
+                          className="mt-2 text-[12px] text-zinc-300 hover:text-white hover:underline"
                         >
                           Clear all filters
                         </button>
@@ -1214,7 +1197,7 @@ export default function ApplicationsPage() {
                     href={drawerApp.job.source_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-400 hover:underline flex items-center gap-1"
+                    className="text-zinc-300 hover:text-white hover:underline flex items-center gap-1"
                   >
                     <span>View original job posting</span>
                     <ExternalLink className="w-3 h-3" />
@@ -1268,7 +1251,7 @@ export default function ApplicationsPage() {
       {/* ── 7. Single Delete Confirmation Dialog ───────────────────── */}
       {deleteConfirmId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="bg-[#18181b] border border-[var(--app-border-strong)] rounded-lg p-5 max-w-md w-full shadow-2xl">
+          <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 max-w-md w-full shadow-2xl">
             <h3 className="text-[16px] font-semibold text-white mb-2">Delete Application</h3>
             <p className="text-[13px] text-zinc-400 mb-5">
               Are you sure you want to delete this application record? This action will remove the application history
@@ -1296,7 +1279,7 @@ export default function ApplicationsPage() {
       {/* ── 8. Bulk Delete Confirmation Dialog ─────────────────────── */}
       {isBulkDeleting && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="bg-[#18181b] border border-[var(--app-border-strong)] rounded-lg p-5 max-w-md w-full shadow-2xl">
+          <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5 max-w-md w-full shadow-2xl">
             <h3 className="text-[16px] font-semibold text-white mb-2">Delete Selected Applications</h3>
             <p className="text-[13px] text-zinc-400 mb-5">
               Are you sure you want to delete <span className="text-white font-medium">{selectedIds.length}</span>{" "}

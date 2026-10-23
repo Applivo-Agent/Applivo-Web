@@ -1,8 +1,20 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { PREF_24H, getDisplayTimezone, readBoolPref } from "./prefs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+function safeTimeZone(): string | undefined {
+  const tz = getDisplayTimezone();
+  if (!tz) return undefined;
+  try {
+    new Intl.DateTimeFormat("en", { timeZone: tz });
+    return tz;
+  } catch {
+    return undefined;
+  }
 }
 
 export function formatDate(date: string | Date | null | undefined): string {
@@ -11,6 +23,7 @@ export function formatDate(date: string | Date | null | undefined): string {
     day: "numeric",
     month: "short",
     year: "numeric",
+    timeZone: safeTimeZone(),
   });
 }
 
@@ -22,6 +35,8 @@ export function formatDateTime(date: string | Date | null | undefined): string {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    hour12: !readBoolPref(PREF_24H, false),     // the "24-hour time" setting
+    timeZone: safeTimeZone(),                   // the "Timezone" setting (display only)
   });
 }
 

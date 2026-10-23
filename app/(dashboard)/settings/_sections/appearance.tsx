@@ -4,80 +4,54 @@ import { useState, useEffect } from "react";
 import { SettingSection, SettingCard, SettingRow } from "@/components/settings/card";
 import { Toggle } from "@/components/settings/toggle";
 import { useSettings } from "@/lib/settings-context";
-import { Palette, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+import { PREF_MOTION, readBoolPref, writeBoolPref } from "@/lib/prefs";
 import { cn } from "@/lib/utils";
 
 export function AppearanceSection() {
   const { settings, saveSection } = useSettings();
 
-  const [showActiveDot, setShowActiveDot] = useState(true);
   const [smoothAnimations, setSmoothAnimations] = useState(true);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedDot = localStorage.getItem("applivo_pref_active_dot");
-      if (savedDot !== null) setShowActiveDot(savedDot === "true");
-
-      const savedAnim = localStorage.getItem("applivo_pref_animations");
-      if (savedAnim !== null) setSmoothAnimations(savedAnim === "true");
-    }
+    setSmoothAnimations(readBoolPref(PREF_MOTION, true));
   }, []);
-
-  const handleToggleActiveDot = (checked: boolean) => {
-    setShowActiveDot(checked);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("applivo_pref_active_dot", String(checked));
-    }
-    toast.success(checked ? "Active status indicator enabled" : "Active status indicator hidden");
-  };
 
   const handleToggleAnimations = (checked: boolean) => {
     setSmoothAnimations(checked);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("applivo_pref_animations", String(checked));
-    }
-    toast.success(checked ? "Smooth animations enabled" : "Reduced motion mode enabled");
+    writeBoolPref(PREF_MOTION, checked);               // applied app-wide through <html data-motion>
+    toast.success(checked ? "Smooth transitions enabled" : "Reduced motion enabled");
   };
 
   return (
     <SettingSection>
       <SettingCard
-        title="Theme & Workspace Density"
-        description="Visual presentation, layout density, and interface aesthetics"
-        icon={<Palette className="w-4 h-4 text-white" />}
+        title="Theme & layout"
+        description="How Applivo looks and how densely it lays out content."
       >
         <div className="space-y-1">
           <SettingRow
-            label="Interface Theme"
-            description="Applivo uses a signature monochrome dark palette optimized for contrast, clarity, and extended coding/application sessions."
+            label="Theme"
+            description="Dark is currently the only theme."
           >
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-[12px] font-medium bg-[var(--app-nested)] border border-[var(--app-border-strong)] text-white shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
-                <span>Monochrome Dark</span>
-                <span className="text-[10px] text-zinc-400 font-normal border-l border-zinc-700 pl-2 ml-0.5">
-                  Standard
-                </span>
-              </span>
-            </div>
+            <span className="inline-flex h-9 items-center rounded-lg border border-[var(--app-border-strong)] px-3 text-[13px] text-zinc-200">Dark (default)</span>
           </SettingRow>
 
           <SettingRow
-            label="Dashboard Density"
-            description="Control the vertical spacing and row height across table lists, cards, and application queues."
+            label="Density"
+            description="Spacing between sections, card padding, table rows and grids across the app. Saved to your account."
           >
-            <div className="flex items-center gap-1 bg-[#171717] border border-[var(--app-border-strong)] rounded-lg p-0.5 w-full sm:w-auto">
+            <div className="flex items-center gap-0.5 border border-[var(--app-border-strong)] rounded-lg p-0.5 w-full sm:w-auto">
               {(["compact", "comfortable", "spacious"] as const).map((density) => (
                 <button
                   key={density}
                   type="button"
                   onClick={() => saveSection("general", { dashboard_layout: density })}
                   className={cn(
-                    "flex-1 sm:flex-initial h-7.5 px-3 rounded-md text-[12px] font-medium transition-colors capitalize",
+                    "flex-1 sm:flex-initial h-8 px-3 rounded-md text-[13px] transition-colors capitalize",
                     settings.dashboardLayout === density
-                      ? "bg-white text-black font-semibold shadow-sm"
-                      : "text-zinc-400 hover:text-white"
+                      ? "bg-white/[0.1] text-white"
+                      : "text-zinc-500 hover:text-zinc-200"
                   )}
                 >
                   {density}
@@ -87,17 +61,10 @@ export function AppearanceSection() {
           </SettingRow>
 
           <SettingRow
-            label="Show Active Indicator"
-            description="Display a green online indicator dot on your avatar across the dashboard header and profile."
+            label="Smooth transitions"
+            description="Turn off to remove animated transitions across the app. Stored in this browser."
           >
-            <Toggle checked={showActiveDot} onChange={handleToggleActiveDot} />
-          </SettingRow>
-
-          <SettingRow
-            label="Smooth Page Transitions"
-            description="Enable micro-animations, modal easing, and smooth tab switching transitions."
-          >
-            <Toggle checked={smoothAnimations} onChange={handleToggleAnimations} />
+            <Toggle checked={smoothAnimations} onChange={handleToggleAnimations} label="Smooth transitions" />
           </SettingRow>
         </div>
       </SettingCard>

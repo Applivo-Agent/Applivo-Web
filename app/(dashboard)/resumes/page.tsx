@@ -91,18 +91,11 @@ export default function ResumesPage() {
   return (
     <div className="dash-page">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg">
-          <FileText className="w-5 h-5 text-white" />
-        </div>
+      <div className="flex items-center gap-3">
         <div className="flex-1">
-          <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white flex items-center gap-2.5">
-            Resumes & Templates
-            <span className={cn("px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wide uppercase", isAtLimit ? "bg-white/[0.06] text-zinc-300 border border-[var(--app-border-strong)]" : "bg-white/5 text-zinc-400 border border-[var(--app-border-strong)]")}>
-              {resumeCount}/3 RESUMES
-            </span>
-          </h1>
-          <p className="text-[14px] text-zinc-400 mt-1">Manage your baseline PDF files and choose AI generation templates for your automated applications.</p>
+          <span className={cn("px-2.5 py-0.5 rounded-full text-[11px] font-medium tracking-wide uppercase", isAtLimit ? "bg-white/[0.06] text-zinc-300 border border-[var(--app-border-strong)]" : "bg-white/5 text-zinc-400 border border-[var(--app-border-strong)]")}>
+            {resumeCount}/3 RESUMES
+          </span>
         </div>
         <button 
           onClick={() => setUploadOpen(true)} 
@@ -148,8 +141,8 @@ export default function ResumesPage() {
       )}
 
       {/* Resumes List */}
-      <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
-        <div className="flex items-center justify-between mb-5 border-b border-[var(--app-border-strong)] pb-4">
+      <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-4">
+        <div className="flex items-center justify-between mb-3 border-b border-[var(--app-border-strong)] pb-3">
           <h2 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight flex items-center gap-2.5">
              <FileText className="w-4 h-4 text-zinc-400" />
              Base Documents
@@ -159,22 +152,22 @@ export default function ResumesPage() {
         {isLoading ? (
            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">{[1,2].map(i => <div key={i} className="skeleton h-32 rounded-lg" />)}</div>
         ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
               {resumes?.map((res: any) => (
-                <div key={res.id} className={cn("p-4 rounded-lg border transition-all flex flex-col group", res.is_default ? "bg-[var(--app-nested)] border-white/30 ring-1 ring-white/20" : "bg-[var(--app-nested)] border-[var(--app-border-strong)] hover:border-white/20")}>
-                  <div className="flex justify-between items-start mb-4">
+                <div key={res.id} className={cn("p-3 rounded-lg border transition-all flex flex-col group", res.is_default ? "bg-[var(--app-card)] border-white/30" : "bg-[var(--app-card)] border-[var(--app-border-strong)] hover:border-white/20")}>
+                  <div className="flex justify-between items-start mb-3">
                     <div className="flex items-center gap-3">
-                      <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center shrink-0", res.is_default ? "bg-white text-black" : "bg-[var(--app-card)] border border-[var(--app-border-strong)] text-zinc-400")}>
+                      <div className={cn("w-8 h-8 rounded-md flex items-center justify-center shrink-0", res.is_default ? "bg-white text-black" : "bg-[var(--app-card)] border border-[var(--app-border-strong)] text-zinc-400")}>
                         <FileText className={cn("w-4 h-4", res.is_default ? "text-black" : "text-zinc-400")} />
                       </div>
                       <div>
-                        <p className="font-semibold text-[14px] text-white truncate pr-2 max-w-[150px] tracking-tight">{res.name}</p>
+                        <p className="font-semibold text-[14px] text-white truncate pr-2 max-w-[130px] tracking-tight">{res.name}</p>
                         <p className="text-[11px] font-medium text-zinc-400">{formatDate(res.created_at)}</p>
                       </div>
                     </div>
                     {res.is_default && <span className="bg-white text-black px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider uppercase">PRIMARY</span>}
                   </div>
-                  <div className="flex items-center gap-2 mt-auto pt-3 border-t border-[var(--app-border-strong)]">
+                  <div className="flex items-center gap-2 mt-auto pt-2.5 border-t border-[var(--app-border-strong)]">
                     {!res.is_default && (
                       <>
                         <button onClick={() => setDefault.mutate(res.id)} className="flex-1 h-8 px-3 bg-[#171717] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-white hover:bg-[var(--app-card)] transition-colors">
@@ -200,7 +193,7 @@ export default function ResumesPage() {
                 </div>
               ))}
               {resumes?.length === 0 && (
-                <div className="col-span-full min-h-[180px] text-center bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-lg transition-all flex flex-col items-center justify-center px-5 py-8">
+                <div className="col-span-full text-center bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg transition-all flex flex-col items-center justify-center px-5 py-5">
                   <div className="w-10 h-10 rounded-lg bg-[var(--app-card)] border border-[var(--app-border-strong)] flex items-center justify-center mx-auto mb-3">
                     <FileText className="w-4 h-4 text-zinc-400" />
                   </div>
@@ -215,8 +208,8 @@ export default function ResumesPage() {
       </div>
 
       {/* Templates List */}
-      <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-5">
-        <div className="mb-5 border-b border-[var(--app-border-strong)] pb-4">
+      <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-lg p-4">
+        <div className="mb-3 border-b border-[var(--app-border-strong)] pb-3">
            <h2 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight flex items-center gap-2.5">
              Presentation Themes
              <span className="px-2 py-0.5 bg-white/10 text-zinc-300 rounded text-[10px] font-medium tracking-wide uppercase border border-[var(--app-border-strong)]">AI Matrix</span>
@@ -224,7 +217,7 @@ export default function ResumesPage() {
            <p className="text-zinc-400 text-[13px] mt-1 max-w-xl">When the agent deploys an application, it dynamically builds an ATS-optimized profile using one of these structural themes.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
             {templates?.available?.map((tpl: any) => {
                const isSelected = templates.selected === tpl.name;
                const isLocked = tpl.tier !== "starter" && tpl.tier === "premium" && !isPremium || tpl.tier === "pro" && !isPro && !isPremium;
@@ -234,12 +227,12 @@ export default function ResumesPage() {
                     key={tpl.name} 
                     whileHover={!isLocked ? { y: -2 } : {}}
                     className={cn(
-                      "relative group rounded-lg overflow-hidden border transition-all cursor-pointer flex flex-col h-full bg-[var(--app-nested)]", 
-                      isSelected ? "border-white/40 ring-1 ring-white/20" : "border-[var(--app-border-strong)] hover:border-white/20"
+                      "relative group rounded-lg overflow-hidden border transition-all cursor-pointer flex flex-col h-full bg-[var(--app-card)]", 
+                      isSelected ? "border-white/40" : "border-[var(--app-border-strong)] hover:border-white/20"
                     )} 
                     onClick={() => !isLocked && selectTemplate.mutate(tpl.name)}
                   >
-                    <div className="aspect-[1/1.18] bg-black/30 p-3 border-b border-[var(--app-border-strong)] overflow-hidden">
+                    <div className="aspect-[1/1.1] bg-black/30 p-2 border-b border-[var(--app-border-strong)] overflow-hidden">
                         {tpl.preview_img_url ? (
                         <img src={tpl.preview_img_url} alt={tpl.name} className={cn("w-full h-full object-contain rounded-md opacity-90 group-hover:opacity-100 transition-opacity", isLocked ? "blur-[4px] opacity-40 grayscale" : "")} />
                         ) : (
@@ -256,7 +249,7 @@ export default function ResumesPage() {
                            </div>
                         </div>
                      )}
-                     <div className="p-3.5 bg-[var(--app-nested)] flex flex-col gap-1 relative z-10 mt-auto">
+                     <div className="p-2.5 bg-[var(--app-nested)] flex flex-col gap-0.5 relative z-10 mt-auto">
                         <div className="flex items-center justify-between">
                           <p className="font-semibold text-[13px] text-white capitalize tracking-tight">{tpl.name.replace(/-/g, " ").replace(/_/g, " ")}</p>
                           {isSelected && <div className="w-4 h-4 bg-white text-black rounded-full flex items-center justify-center"><Check className="w-3 h-3 text-black stroke-[3]" /></div>}

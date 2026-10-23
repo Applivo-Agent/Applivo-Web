@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  PanelLeft, Sparkles, Settings, CreditCard, UserRound, Shield, LogOut, ArrowUpRight,
+  PanelLeft, Sparkles, Settings, CreditCard, UserRound, Shield, LogOut, ArrowUpRight, Trash2, Zap,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useSubscription } from "@/lib/subscription";
@@ -14,24 +14,24 @@ import { useLumi } from "@/lib/lumi-context";
 import { cn } from "@/lib/utils";
 
 const TITLES: [string, string][] = [
-  ["/dashboard", "Dashboard"],
-  ["/jobs", "Jobs"],
+  ["/dashboard", "System Overview"],
+  ["/jobs", "Find Jobs"],
   ["/applications", "Applications"],
-  ["/resumes", "Resumes"],
+  ["/resumes", "Resumes & Templates"],
   ["/analytics", "Analytics"],
-  ["/chat", "AI Chat"],
+  ["/chat", "Lumi"],
   ["/messages", "Messages"],
-  ["/cover-letters", "Cover Letters"],
-  ["/interviews", "Interviews"],
-  ["/skill-gaps", "Skill Gaps"],
+  ["/cover-letters", "AI Cover Letters"],
+  ["/interviews", "Interview Preparation"],
+  ["/skill-gaps", "Skill Gap Analysis"],
   ["/follow-ups", "Follow-ups"],
   ["/market", "Market Insights"],
   ["/profile", "Profile"],
   ["/connect", "Connections"],
-  ["/subscription", "Subscription"],
+  ["/subscription", "Subscription & Billing"],
   ["/refer", "Refer & Earn"],
   ["/settings", "Settings"],
-  ["/security", "Security"],
+  ["/security", "Security & Privacy"],
   ["/admin", "Admin Panel"],
 ];
 
@@ -47,7 +47,7 @@ export function AppHeader() {
   const { user, logout } = useAuth();
   const { plan, quota } = useSubscription();
   const { toggle, collapsed } = useShell();
-  const { togglePanel, isOpen: isLumiOpen } = useLumi();
+  const { togglePanel, isOpen: isLumiOpen, newChat, credits } = useLumi();
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -104,10 +104,35 @@ export function AppHeader() {
         >
           <PanelLeft className="h-4 w-4" strokeWidth={1.75} />
         </button>
-        <h1 className="truncate text-[13px] font-normal leading-5 text-white">{titleFor(pathname)}</h1>
+        <div className="flex min-w-0 items-center gap-2">
+          {pathname === "/chat" && (
+            <Image src="/lumi-logo.png" alt="" width={20} height={20} className="w-5 h-5 object-contain shrink-0" />
+          )}
+          <h1 className="truncate text-[14px] font-medium leading-5 text-white">{titleFor(pathname)}</h1>
+        </div>
       </div>
 
       <div className="flex shrink-0 items-center gap-2">
+        {pathname === "/chat" && (
+          <>
+            <button
+              type="button"
+              onClick={() => void newChat()}
+              className="app-icon-btn"
+              title="Start new conversation"
+              aria-label="Start new conversation"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+            {credits && (
+              <span className="hidden sm:inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--app-border-strong)] px-2.5 text-[12px] text-zinc-300">
+                <Zap className="h-3 w-3 text-zinc-400" />
+                {credits.is_unlimited ? "Unlimited" : `${credits.remaining} credits`}
+              </span>
+            )}
+          </>
+        )}
+        {pathname !== "/chat" && (
         <button
           type="button"
           onClick={togglePanel}
@@ -128,14 +153,17 @@ export function AppHeader() {
           />
           <span className="hidden sm:inline">Ask Lumi</span>
         </button>
+        )}
 
-        <Link
-          href="/subscription"
-          className="app-btn tabular-nums"
-          title={quota ? `${quota.used} of ${quota.limit} applications used today` : undefined}
-        >
-          <span className="text-[var(--app-text-dim)]">{planLabel}</span>
-        </Link>
+        {!isAdmin && (
+          <Link
+            href="/subscription"
+            className="app-btn tabular-nums"
+            title={quota ? `${quota.used} of ${quota.limit} applications used today` : undefined}
+          >
+            <span className="text-[var(--app-text-dim)]">{planLabel}</span>
+          </Link>
+        )}
 
         {canUpgrade && (
           <Link href="/subscription" className="app-btn app-btn-accent hidden md:inline-flex">

@@ -125,38 +125,22 @@ export default function SecurityPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl">
-      <div>
-        <h1 className="text-[22px] leading-7 font-medium tracking-tight text-white">Security & Privacy</h1>
-        <p className="text-[14px] text-zinc-400 mt-1">Manage your account security, sessions, and data privacy.</p>
-      </div>
+    <div className="space-y-4">
 
       <div className="grid gap-4">
         {/* Password Section */}
-        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] p-5 rounded-lg">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)]">
-                <Key className="w-4 h-4 text-white" />
-              </div>
-              <div>
-                <h3 className="text-[15px] sm:text-[16px] font-semibold text-white tracking-tight">Password</h3>
-                <p className="text-[12px] text-zinc-400">Last changed 3 months ago</p>
-              </div>
+        <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] p-4 rounded-xl">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h3 className="text-[14px] font-medium text-white">Password</h3>
+              <p className="text-[12px] text-zinc-500">Choose a strong password you do not use anywhere else.</p>
             </div>
             <button
               onClick={() => setShowPasswordModal(true)}
-              className="h-8 px-3.5 bg-white text-black text-[13px] font-semibold rounded-lg hover:bg-zinc-200 transition-colors flex items-center gap-2"
+              className="h-8 px-3.5 bg-white text-black text-[13px] font-medium rounded-lg hover:bg-zinc-200 transition-colors"
             >
-              Update Password
+              Update password
             </button>
-          </div>
-          
-          <div className="p-3.5 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex gap-3 items-center">
-             <AlertTriangle className="w-4 h-4 text-zinc-400 shrink-0" />
-             <p className="text-[13px] text-zinc-400">
-                Your password is currently rated as <span className="text-white font-medium">Medium Strength</span>.
-             </p>
           </div>
         </div>
 
@@ -176,7 +160,7 @@ export default function SecurityPage() {
             <>
               <div className="space-y-2.5">
                 {sessions.map((session) => (
-                  <div key={session.id} className="flex items-center justify-between p-3.5 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)]">
+                  <div key={session.id} className="flex items-center justify-between p-3.5 rounded-lg bg-transparent border border-[var(--app-border-strong)]">
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="w-8 h-8 rounded-lg bg-[#202025] border border-[var(--app-border-strong)] flex items-center justify-center shrink-0">
                         {getDeviceIcon(session.device_type)}
@@ -205,7 +189,7 @@ export default function SecurityPage() {
                 ))}
 
                 {!sessions.length && (
-                  <div className="p-4 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)]">
+                  <div className="p-4 rounded-lg bg-transparent border border-[var(--app-border-strong)]">
                     <p className="text-[13px] text-zinc-400">No active sessions found.</p>
                   </div>
                 )}
