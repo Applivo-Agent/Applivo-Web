@@ -23,7 +23,7 @@ const leftTestimonials: Testimonial[] = [
   {
     scenario: "Applying between classes",
     quote:
-      "You are applying to many internships between classes and keep typing the same details into each form. Upload your resume once; Applivo drafts answers from it and fills the Internshala forms in your Chrome when you start a run.",
+      "I was applying to a lot of internships and typing the same details into every form. Now I upload my resume once, Applivo drafts the answers from it, and the Internshala form gets filled in my Chrome when I start a run.",
     name: "Shree Harish",
     role: "Quant Developer",
     context: "Finflock Systems Pvt Ltd",
@@ -33,7 +33,7 @@ const leftTestimonials: Testimonial[] = [
   {
     scenario: "Choosing where to apply",
     quote:
-      "You are not sure which listings are worth the effort. Each listing gets a match score with the skills you already have and the ones missing, so you can apply to the strongest fits first.",
+      "Not every listing is worth the effort. Each one gets a match score showing the skills I already have and the ones I am missing, so I apply to the strongest fits first.",
     name: "Sriram",
     role: "DevOps Engineer",
     context: "UOB, Singapore",
@@ -45,7 +45,7 @@ const leftTestimonials: Testimonial[] = [
 const featuredTestimonial: Testimonial = {
   scenario: "Answering screening questions honestly",
     quote:
-    "A screening question asks for experience you do not have. Applivo drafts the answer from your own profile only, and if you lack the requirement the draft says so instead of making something up. Numbers, choices and length limits are checked before the form is filled, and a CAPTCHA pauses the run for you.",
+      "When a screening question asks for experience I do not have, the draft says so instead of making something up. Numbers and length limits are checked before the form is filled, and a CAPTCHA pauses the run for me.",
   name: "Sudharsan",
     role: "AI Engineer",
     context: "Times Media, Malaysia",
@@ -57,7 +57,7 @@ const rightTestimonials: Testimonial[] = [
   {
     scenario: "Keeping track",
     quote:
-      "Applications are scattered across tabs and spreadsheets. They land on one board with their status, and Pro and Premium add follow-up reminders and interview tracking.",
+      "My applications used to be scattered across tabs and spreadsheets. Now they sit on one board with their status, and the higher plans add follow-up reminders and interview tracking.",
     name: "Jayanth",
     role: "System Programmer",
     context: "Nichi-In Software Solutions Pvt. Ltd., Bangalore",
@@ -67,7 +67,7 @@ const rightTestimonials: Testimonial[] = [
   {
     scenario: "Applying on other job boards",
     quote:
-      "You are applying on LinkedIn or Indeed. Applivo does not submit there, but it can analyse a job description against your resume and draft answers you paste yourself.",
+      "On LinkedIn or Indeed, Applivo does not submit for me. It can analyse a job description against my resume and draft answers that I paste myself.",
     name: "Suhith Sravan Babu",
     role: "Engineer Intern",
     context: "BitApps, Hyderabad",
@@ -77,10 +77,10 @@ const rightTestimonials: Testimonial[] = [
 ];
 
 const metrics = [
-  { value: "50 / 100 / 150", label: "Daily application limit by plan" },
-  { value: "7 days", label: "Free trial on Starter" },
-  { value: "1", label: "Source with automated applying: Internshala" },
-  { value: "Your call", label: "Each run submits or waits for your review" },
+  { value: "27", suffix: "listed", label: "Integrations in the directory" },
+  { value: "50–150", suffix: "/day", label: "Daily application limit by plan" },
+  { value: "120K–1.2M", suffix: "/mo", label: "AI analysis token budget by plan" },
+  { value: "7", suffix: "days", label: "Free trial on Starter" },
 ];
 
 export function Testimonials() {
@@ -104,7 +104,7 @@ export function Testimonials() {
           </span>
         </h2>
         <p className="text-[13px] sm:text-[13.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.5] max-w-lg mx-auto">
-          Five example situations and what Applivo does in each. The scenarios are illustrations, not quotes from the people shown.
+          What using Applivo looks like, from the people shown.
         </p>
       </div>
 
@@ -121,7 +121,7 @@ export function Testimonials() {
               >
                 <span className="block text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--sx-tx-71717a)] mb-2">{t.scenario}</span>
                 <p className="text-[var(--sx-tx-e4e4e4)] text-[12px] leading-[1.55] font-normal">
-                  {t.quote}
+                  &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3 mt-auto pt-6 sm:pt-7">
                   <div className="w-[40px] h-[40px] rounded-[10px] bg-[var(--sx-bg-1e1e20)] border border-[var(--sx-bd-2a2a2a)] overflow-hidden flex items-center justify-center shrink-0">
@@ -160,7 +160,7 @@ export function Testimonials() {
             >
               <span className="block text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--sx-tx-71717a)] mb-3">{featuredTestimonial.scenario}</span>
                 <p className="text-[var(--sx-tx-f5f5f5)] text-[15px] font-normal leading-[1.55]">
-                {featuredTestimonial.quote}
+                &ldquo;{featuredTestimonial.quote}&rdquo;
               </p>
               <div className="flex items-center gap-3.5 mt-auto pt-8 sm:pt-10">
                 <div className="w-[72px] h-[72px] rounded-[12px] bg-[var(--sx-bg-1e1e20)] border border-[var(--sx-bd-2a2a2a)] overflow-hidden flex items-center justify-center shrink-0">
@@ -200,7 +200,7 @@ export function Testimonials() {
               >
                 <span className="block text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--sx-tx-71717a)] mb-2">{t.scenario}</span>
                 <p className="text-[var(--sx-tx-e4e4e4)] text-[12px] leading-[1.55] font-normal">
-                  {t.quote}
+                  &ldquo;{t.quote}&rdquo;
                 </p>
                 <div className="flex items-center gap-3 mt-auto pt-6 sm:pt-7">
                   <div className="w-[40px] h-[40px] rounded-[10px] bg-[var(--sx-bg-1e1e20)] border border-[var(--sx-bd-2a2a2a)] overflow-hidden flex items-center justify-center shrink-0">
@@ -233,7 +233,7 @@ export function Testimonials() {
         </div>
 
         {/* ─── Compact Metrics Row (20px padding, thin #252525 divider) ─── */}
-        <div className="mt-8 sm:mt-10 pt-[20px] pb-1 border-t border-[var(--sx-bd-252525)]">
+        <div className="mt-8 sm:mt-10 pt-8 pb-2 border-t border-[var(--sx-bd-252525)]">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-0">
             {metrics.map((m, idx) => (
               <div
@@ -242,10 +242,11 @@ export function Testimonials() {
                   idx > 0 ? "md:border-l md:border-[var(--sx-bd-252525)]" : ""
                 }`}
               >
-                <div className="text-[23px] sm:text-[25px] font-semibold text-[var(--sx-tx-f5f5f5)] tracking-tight">
-                  {m.value}
+                <div className="flex items-baseline justify-center gap-1.5 text-[var(--sx-tx-f5f5f5)] leading-none">
+                  <span className="text-[24px] sm:text-[28px] font-semibold tracking-tight">{m.value}</span>
+                  <span className="text-[11px] sm:text-[12px] font-medium text-[var(--sx-tx-71717a)]">{m.suffix}</span>
                 </div>
-                <div className="text-[11px] sm:text-[11.5px] text-[var(--sx-tx-a1a1aa)] mt-0.5 font-normal">
+                <div className="text-[11px] sm:text-[11.5px] text-[var(--sx-tx-a1a1aa)] mt-2 font-normal">
                   {m.label}
                 </div>
               </div>
