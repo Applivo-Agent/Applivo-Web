@@ -219,13 +219,12 @@ export default function ContactPage() {
 
             {/* Prominent Heading */}
             <h1 className="mt-4 text-2xl sm:text-3xl md:text-[36px] font-bold tracking-tight text-white flex items-center justify-center">
-              Let&apos;s Have a Chat
+              Ask a question or get help
             </h1>
 
             {/* Muted Supporting Text */}
             <p className="mt-2 text-xs sm:text-sm text-zinc-400 max-w-sm mx-auto leading-relaxed">
-              Questions about Applivo, your account, integrations, or applications?
-              Send us a message and we&apos;ll get back to you.
+              Ask about your account, billing, integrations or an application that needs attention. Include the page you were on and what you expected to happen so we can help faster. We reply by email.
             </p>
           </div>
 
@@ -244,7 +243,7 @@ export default function ContactPage() {
                 </h2>
                 <p className="mt-1.5 text-xs sm:text-sm text-zinc-400 max-w-xs mx-auto leading-relaxed">
                   {serverMessage ||
-                    "Thank you for contacting us! Your message has been saved and our team has been notified. We will get back to you shortly."}
+                    "Thank you for contacting us! Your message has been saved and our team has been notified. We will reply to the email address you gave."}
                 </p>
                 <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-2.5">
                   <button
@@ -436,7 +435,7 @@ export default function ContactPage() {
                     id="message"
                     name="message"
                     rows={4}
-                    placeholder="Tell us how we can help..."
+                    placeholder="What happened, and what did you expect?"
                     value={formData.message}
                     onChange={handleChange}
                     disabled={submissionStatus === "submitting"}

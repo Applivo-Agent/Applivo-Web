@@ -11,54 +11,49 @@ interface FAQItem {
 
 const FAQ_ITEMS: FAQItem[] = [
   {
-    question: "What is Applivo?",
+    question: "Who is Applivo for, and what do I need to start?",
     answer:
-      "Applivo helps job seekers discover opportunities, organize applications, analyze job descriptions, and streamline repetitive parts of the job search.",
+      "Applivo is built for students and freshers applying for internships and entry-level jobs on Internshala, and works as a tracker and application assistant for other job searches. You need an account, a PDF resume and, for automated applying, an Internshala account, Google Chrome and the Applivo Companion extension.",
   },
   {
-    question: "How does Applivo's automated application feature work?",
+    question: "Which job platforms does it support?",
     answer:
-      "Applivo assists with supported application workflows using your verified resume and profile information. Through the lightweight browser extension, it autofills candidate answers directly within your active browser session without storing or sharing your portal passwords.",
+      "Automated applying works on Internshala only. For LinkedIn and Indeed, Applivo helps with job analysis, draft answers and tracking, and you submit the application yourself. Other sources listed in the integrations section are assisted or still being set up; each card shows its status.",
   },
   {
-    question: "Which job platforms does Applivo support?",
+    question: "Does it apply without asking me?",
     answer:
-      "Currently, Applivo supports automated application workflows on Internshala, and provides smart job description analysis and Kanban application tracking for listings from LinkedIn and major career boards.",
+      "Only if you allow it. You start each run from the Applivo website and choose whether it may submit automatically; otherwise it fills the form and leaves it ready for your review. It works in an inactive tab of your own Chrome window. If a portal asks for a CAPTCHA, an assessment or a form Applivo cannot read, that application stops and is flagged for you.",
   },
   {
-    question: "Do I need to install the browser extension?",
+    question: "How are the answers to screening questions written?",
     answer:
-      "The web app handles resume parsing, job analysis, profile customization, and Kanban tracking. The browser extension is only needed when you want automated form autofill and submission on supported job portals within your own browser session.",
+      "Answers are drafted from the facts in your profile and resume only. If you do not have a required skill or experience, the draft says so instead of inventing it. Numbers, choices and character limits are checked before anything is filled in.",
   },
   {
-    question: "How does AI-powered job analysis work?",
+    question: "What happens to my resume and personal details?",
     answer:
-      "Applivo compares job descriptions against your uploaded resume and profile context. It highlights key skill matches, calculates compatibility scores, and suggests tailored responses for application questions to help you apply with higher precision.",
+      "Your resume is parsed into a profile that is used to score listings and draft answers for your applications. The extension runs in your browser and pairs with your account through a one-time code; you can disconnect it at any time. Read the Privacy Policy for how data is stored and handled.",
   },
   {
-    question: "What are the subscription plans and usage limits?",
+    question: "What do the plans limit, and what happens at the limit?",
     answer:
-      "Applivo offers three tiers: Starter (₹199/month with a 7-day free trial) includes 50 daily automated applications and 120k analysis tokens/month; Pro (₹399/month) provides 100 daily applications, 600k tokens, priority queues, and AI cover letters; and Premium (₹599/month) provides 150 daily applications, 1.2M tokens, and salary benchmark insights.",
+      "Each plan sets a daily application limit (Starter 50, Pro 100, Premium 150), a monthly analysis budget and a monthly chat-message allowance. When you reach the daily limit, no more applications go out that day and the count resets the next day. Cover letters, interview prep and follow-ups are on Pro and Premium.",
   },
   {
-    question: "Can I track my job applications?",
+    question: "How does the free trial and cancellation work?",
     answer:
-      "Yes. Every submitted application is automatically logged on your interactive Kanban board. You can monitor live stages across Applied, In Review, Interviewing, Offered, and Archived, add interview notes, and export your history to CSV.",
+      "Starter includes a 7-day free trial, then ₹199 per month. You can cancel from the Subscription page and keep access until the end of the period you have paid for. Check the Terms of Use or contact us before paying if you need refund details.",
   },
   {
-    question: "How does Applivo protect my data?",
+    question: "Can Applivo guarantee interviews or offers?",
     answer:
-      "Your account is secured with JWT authentication and encrypted data storage. Profile information is used strictly to answer job applications with your explicit consent, and the browser extension runs locally without recording sensitive portal credentials.",
+      "No. Applivo reduces the repetitive work of applying and shows how well you match a listing. Whether you are shortlisted depends on the employer.",
   },
   {
-    question: "Can I cancel my subscription?",
+    question: "What if something goes wrong or I need help?",
     answer:
-      "Yes. You can cancel your subscription at any time directly from your dashboard settings. You will retain full access to your plan's quotas until the end of your current billing period with zero cancellation fees.",
-  },
-  {
-    question: "What should I do if an application requires manual input?",
-    answer:
-      "If a job portal prompts for a custom assessment, portfolio upload, or CAPTCHA verification, Applivo pauses and notifies you so you can review and complete the final step safely before submission.",
+      "Open the Docs for step-by-step guides and troubleshooting, or send a message from the Contact page with the page you were on and what you expected to happen.",
   },
 ];
 
@@ -81,11 +76,11 @@ export function FAQ() {
           FAQ
         </span>
         <h2 className="text-[26px] sm:text-[30px] md:text-[32px] font-semibold tracking-tight mb-2.5 leading-[1.2]">
-          <span className="text-[var(--sx-tx-a1a1a1)] block">Have Questions?</span>
-          <span className="text-white font-semibold block">We&apos;ve Got Answers.</span>
+          <span className="text-[var(--sx-tx-a1a1a1)] block">Before you sign up,</span>
+          <span className="text-white font-semibold block">what to know.</span>
         </h2>
         <p className="text-[13px] sm:text-[13.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.6] max-w-md mx-auto">
-          Everything you need to know about using Applivo to simplify your job search.
+          What it works with, what it needs, and what stays in your control.
         </p>
       </div>
 

@@ -1,4 +1,5 @@
 import React from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -11,6 +12,19 @@ export function generateStaticParams() {
   return BLOG_ARTICLES.map((article) => ({
     slug: article.slug,
   }));
+}
+
+const RELATED: Record<string, { label: string; href: string }> = {
+  "build-a-smarter-job-search-workflow": { label: "How Applivo scores listings", href: "/#workflow" },
+  "how-ai-can-improve-your-applications": { label: "How answers are drafted from your profile", href: "/#features" },
+  "from-application-tracking-to-career-progress": { label: "See the application tracker", href: "/#features" },
+};
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const article = BLOG_ARTICLES.find((a) => a.slug === slug);
+  if (!article) return {};
+  return { title: article.title, description: article.description, alternates: { canonical: `/blog/${article.slug}` } };
 }
 
 export default async function BlogPostPage({
@@ -127,10 +141,16 @@ export default async function BlogPostPage({
               <span>Explore all articles</span>
             </Link>
             <Link
+              href={RELATED[article.slug]?.href ?? "/#workflow"}
+              className="text-[13px] font-medium text-[var(--sx-tx-a1a1aa)] hover:text-white transition-colors"
+            >
+              {RELATED[article.slug]?.label ?? "See how Applivo works"} →
+            </Link>
+            <Link
               href="/register"
               className="px-4 py-2 rounded-[4px] bg-[var(--sx-bg-181818)] hover:bg-[var(--sx-bg-222222)] border border-[var(--sx-bd-2e2e2e)] text-[13px] font-medium text-[var(--sx-tx-f5f5f5)] transition-colors"
             >
-              Start using Applivo free →
+              Get started with Applivo →
             </Link>
           </div>
         </article>

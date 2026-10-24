@@ -9,9 +9,9 @@ import { useAuth } from "@/lib/auth";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 /* ─── NAV LINKS ──────────────────────────────────────────── */
-const navLinks = [
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Workflow", href: "/#workflow" },
+const navLinks: { label: string; href: string; authOnly?: boolean }[] = [
+  { label: "Dashboard", href: "/dashboard", authOnly: true },
+  { label: "How it works", href: "/#workflow" },
   { label: "Features", href: "/#features" },
   { label: "Integrations", href: "/#integrations" },
   { label: "Pricing", href: "/pricing" },
@@ -67,7 +67,7 @@ export function NavBar({ sidebarOffset = false }: NavBarProps) {
 
         {/* Nav links — center */}
         <nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
-          {navLinks.map((l) => (
+          {navLinks.filter((l) => !l.authOnly || (!isLoading && isAuthenticated)).map((l) => (
             <Link
               key={l.label}
               href={l.href}
@@ -124,7 +124,7 @@ export function NavBar({ sidebarOffset = false }: NavBarProps) {
       {menuOpen && (
         <nav id="mobile-nav" aria-label="Mobile" className="md:hidden border-t border-white/[0.06] bg-[color-mix(in_srgb,var(--sx-bg-0a0a0a)_95%,transparent)] backdrop-blur-xl">
           <div className="k-container flex flex-col py-3">
-            {navLinks.map((l) => (
+            {navLinks.filter((l) => !l.authOnly || (!isLoading && isAuthenticated)).map((l) => (
               <Link key={l.label} href={l.href} onClick={() => setMenuOpen(false)} className="flex h-11 items-center text-[length:var(--fs-heading)] text-zinc-300 hover:text-white">
                 {l.label}
               </Link>

@@ -53,7 +53,7 @@ export function ComparisonTable({ isLoggedIn }: { isLoggedIn: boolean }) {
           Compare Plans
         </h2>
         <p className="text-[13.5px] sm:text-[14px] text-[var(--sx-tx-a1a1aa)] mt-2 sm:mt-2.5 max-w-md mx-auto">
-          Review every limit, quota, and intelligence feature side by side.
+          Daily limits, monthly analysis budgets, chat messages and plan-only features, side by side.
         </p>
       </div>
 

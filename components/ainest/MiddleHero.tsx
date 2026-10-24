@@ -91,35 +91,6 @@ const Platforms = [
       </svg>
     ),
   },
-  {
-    name: "Workday",
-    icon: (
-      <svg viewBox="0 0 64 64" className="w-[27px] h-[27px] sm:w-[29px] sm:h-[29px] shrink-0" fill="none" aria-hidden="true">
-        <g transform="matrix(0.53333333,0,0,0.53333333,-124.63685,-16)">
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="m 251.21,88.7755 h 8.224 c 1.166,0 2.178,0.7836 2.444,1.8924 l 11.057,44.6751 c 0.152,0.002 12.182,-44.6393 12.182,-44.6393 0.306,-1.1361 1.36,-1.9282 2.566,-1.9282 h 12.74 c 1.144,0 2.144,0.7515 2.435,1.8296 l 12.118,44.9289 c 0.448,-0.282 11.147,-44.8661 11.147,-44.8661 0.267,-1.1088 1.279,-1.8924 2.444,-1.8924 h 8.219 c 1.649,0 2.854,1.5192 2.437,3.0742 l -15.08,56.3173 c -0.286,1.072 -1.272,1.823 -2.406,1.833 l -12.438,-0.019 c -1.142,-0.002 -2.137,-0.744 -2.429,-1.819 -2.126,-7.805 -12.605,-47.277 -12.605,-47.277 0,0 -11.008,39.471 -13.133,47.277 -0.293,1.075 -1.288,1.817 -2.429,1.819 L 266.264,150 c -1.133,-0.01 -2.119,-0.761 -2.406,-1.833 L 248.777,91.8438 c -0.416,-1.5524 0.786,-3.0683 2.433,-3.0683 z"
-            fill="rgb(var(--tw-white))"
-          />
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="m 333.324,72.2449 c 0.531,0 1.071,-0.0723 1.608,-0.2234 3.18,-0.8968 5.039,-4.2303 4.153,-7.446 -0.129,-0.4673 -0.265,-0.9327 -0.408,-1.3936 C 332.529,43.3349 314.569,30 293.987,30 c -20.557,0 -38.51,13.3133 -44.673,33.1281 -0.136,0.4355 -0.267,0.8782 -0.391,1.3232 -0.902,3.2119 0.943,6.5541 4.12,7.4645 3.173,0.9112 6.48,-0.9547 7.381,-4.1666 0.094,-0.3322 0.19,-0.6616 0.292,-0.9892 4.591,-14.7582 17.961,-24.6707 33.271,-24.6707 15.329,0 28.704,9.9284 33.281,24.7063 0.105,0.3397 0.206,0.682 0.301,1.0263 0.737,2.6726 3.139,4.423 5.755,4.423 z"
-            fill="rgb(var(--tw-white))"
-          />
-        </g>
-      </svg>
-    ),
-  },
-  {
-    name: "Wellfound",
-    icon: (
-      <svg viewBox="0 0 24 24" className="w-[25px] h-[25px] sm:w-[27px] sm:h-[27px] shrink-0" fill="rgb(var(--tw-white))" aria-hidden="true">
-        <path d="M23.998 8.128c.063-1.379-1.612-2.376-2.795-1.664-1.23.598-1.322 2.52-.156 3.234 1.2.862 2.995-.09 2.951-1.57zm0 7.748c.063-1.38-1.612-2.377-2.795-1.665-1.23.598-1.322 2.52-.156 3.234 1.2.863 2.995-.09 2.951-1.57zm-20.5 1.762L0 6.364h3.257l2.066 8.106 2.245-8.106h3.267l2.244 8.106 2.065-8.106h3.257l-3.54 11.274H11.39c-.73-2.713-1.46-5.426-2.188-8.14l-2.233 8.14H3.5z" />
-      </svg>
-    ),
-  },
 ];
 
 export function MiddleHero() {
@@ -134,10 +105,10 @@ export function MiddleHero() {
         className="text-center mb-8 sm:mb-10 z-20 px-6 max-w-2xl"
       >
         <p className="text-white text-[17px] sm:text-[18px] md:text-[19px] font-semibold tracking-tight mb-1.5">
-          Powering ambitious job seekers worldwide.
+          Built around Internshala. Assisted on other job boards.
         </p>
         <p className="text-zinc-400 text-[13.5px] sm:text-[14.5px] leading-relaxed">
-          From fresh graduates to senior executives — all in one intelligent platform.
+          Automated applying runs on Internshala today. For the other platforms shown, Applivo helps with analysis, answers and tracking, and you submit yourself.
         </p>
       </motion.div>
 

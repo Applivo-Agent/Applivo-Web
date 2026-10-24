@@ -124,13 +124,13 @@ export function IntegrationsHub() {
           <div className="max-w-2xl">
             {/* Main Section Heading */}
             <h2 className="k-h2 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2]">
-              <span className="text-[var(--sx-tx-a1a1a1)] block">Works with your</span>
-              <span className="text-white font-semibold block">Entire Career Stack</span>
+              <span className="text-[var(--sx-tx-a1a1a1)] block">Job sources and the tools</span>
+              <span className="text-white font-semibold block">around your search.</span>
             </h2>
 
             {/* Supporting Paragraph */}
-            <p className="mt-3 text-[14.5px] sm:text-[15.5px] text-zinc-400 font-normal leading-relaxed max-w-xl">
-              Applivo integrates natively with verified job sources, interview calendars, and communication tools — powering discovery, application tracking, and automated scheduling.
+            <p className="mt-3 text-[13px] sm:text-[14px] text-zinc-400 font-normal leading-relaxed max-w-xl">
+              Internshala is the only source with automated applying today. Other boards are assisted: you submit. Connect calendars, notes and notifications for interviews and follow-ups.
             </p>
           </div>
 

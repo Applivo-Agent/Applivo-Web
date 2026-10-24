@@ -288,7 +288,7 @@ function PrepareAndApplyPreview() {
 
         {/* Action Button */}
         <div className="mt-auto pt-1 flex items-center justify-between gap-2 border-t border-white/[0.05]">
-          <span className="text-[10px] text-zinc-500">Supported portal: Greenhouse / Workday</span>
+          <span className="text-[10px] text-zinc-500">Supported portal: Internshala</span>
           <button className="px-3 py-1.5 rounded-lg bg-white text-black hover:bg-zinc-200 text-[11px] font-semibold transition-all">
             Autofill with Extension
           </button>
@@ -414,37 +414,40 @@ const steps = [
   {
     id: 1,
     label: "Discover",
-    heading: "Find Jobs That Fit You",
-    body: "Discover jobs and internships that align with your skills, experience, and career preferences. Review relevant opportunities and understand how well they match your profile.",
+    heading: "Know which listings are worth your time",
+    body: "Applivo collects Internshala listings and compares each one with your resume. You see a match score, the skills you already have and the ones you are missing, so you can pick what to apply to.",
     bullets: [
-      { icon: Compass, text: "Personalized job discovery" },
-      { icon: Sparkles, text: "Profile-based match scoring" },
-      { icon: FileText, text: "Clear job and eligibility details" },
+      { icon: Compass, text: "Listings collected for your role and location" },
+      { icon: Sparkles, text: "Match score with matching and missing skills" },
+      { icon: FileText, text: "Requirements and eligibility in one view" },
     ],
+    note: "Needs a resume and an Internshala account. The preview shows sample listings.",
     mockup: <JobDiscoveryPreview />,
   },
   {
     id: 2,
     label: "Prepare",
-    heading: "Prepare Better Applications",
-    body: "Keep your career profile and resume ready, generate relevant application content, and use the Applivo Companion extension to assist with supported application forms.",
+    heading: "Get your answers ready, then choose how to run",
+    body: "Applivo drafts answers to screening questions from your own profile and resume only. If you lack a requirement, the draft says so. The Companion extension then fills the Internshala form in your Chrome. You choose whether each run submits automatically or stops for your review.",
     bullets: [
-      { icon: FileText, text: "Reusable career profile and resumes" },
-      { icon: Bot, text: "AI-assisted application answers" },
-      { icon: CheckCircle2, text: "Guided browser autofill and validation" },
+      { icon: FileText, text: "One profile and resume reused everywhere" },
+      { icon: Bot, text: "Answers grounded in your own facts" },
+      { icon: CheckCircle2, text: "Autofill with validation; pauses on CAPTCHAs" },
     ],
+    note: "Needs Chrome, the Companion extension and a paid plan. Works on Internshala today. You start each run. Sample data shown.",
     mockup: <PrepareAndApplyPreview />,
   },
   {
     id: 3,
     label: "Track",
-    heading: "Keep Your Job Search Organized",
-    body: "Track applications, review pending actions, and monitor your progress from one place, so you can manage your job search with greater clarity.",
+    heading: "See where every application stands",
+    body: "Every application you send through Applivo lands on one board with its status. Check what is pending, export your history, and see how your search is going.",
     bullets: [
-      { icon: Layers, text: "Centralized application tracking" },
-      { icon: Calendar, text: "Follow-up and interview visibility" },
-      { icon: BarChart3, text: "Job-search progress analytics" },
+      { icon: Layers, text: "Board and table of all applications" },
+      { icon: Calendar, text: "Follow-ups and interviews (Pro and Premium)" },
+      { icon: BarChart3, text: "Progress analytics and CSV export" },
     ],
+    note: "Statuses come from runs you start and updates you record. The preview shows sample data.",
     mockup: <TrackProgressPreview />,
   },
 ];
@@ -517,7 +520,7 @@ export function HowItWorksSteps() {
                 </h3>
 
                 {/* Body description: 15–16px, line-height 1.5–1.65 */}
-                <p className="text-[15px] sm:text-[15.5px] text-zinc-400 leading-[1.6] mb-6 max-w-[420px]">
+                <p className="text-[13px] sm:text-[13.5px] text-zinc-400 leading-[1.6] mb-6 max-w-[420px]">
                   {step.body}
                 </p>
 
@@ -536,6 +539,7 @@ export function HowItWorksSteps() {
                     );
                   })}
                 </div>
+                <p className="mt-5 max-w-[420px] text-[12.5px] leading-relaxed text-zinc-500">{step.note}</p>
               </motion.div>
             </AnimatePresence>
           </div>

@@ -21,15 +21,15 @@ export const BLOG_ARTICLES: BlogArticle[] = [
   {
     slug: "build-a-smarter-job-search-workflow",
     category: "Job Search",
-    title: "Build a Smarter Job Search Workflow",
+    title: "Build a Repeatable Weekly Job Search Routine",
     description:
-      "A step-by-step system to define target roles, organize job deadlines, tailor applications, and run a reliable weekly routine.",
+      "Pick two or three target roles, rank opportunities in tiers, tailor each application and keep a weekly routine you can sustain.",
     readingTime: "7 min read",
     publishedAt: "October 2026",
     coverImage: "/blog/smarter-job-search-workflow.jpg",
     altText: "Architectural minimal 3D glass steps illustrating a structured job search progression",
     summary:
-      "A systematic approach turns job hunting from an overwhelming daily chore into a predictable, measurable funnel with steady momentum.",
+      "Replace panic-applying with a process: fewer target roles, ranked opportunities and a weekly funnel you can measure.",
     content: [
       {
         heading: "1. Defining Target Roles and Prioritizing Opportunities",
@@ -102,15 +102,15 @@ export const BLOG_ARTICLES: BlogArticle[] = [
   {
     slug: "how-ai-can-improve-your-applications",
     category: "AI & Careers",
-    title: "How AI Can Improve Your Applications",
+    title: "How to Use AI on Job Applications Without Losing Your Voice",
     description:
-      "Use modern AI tools to decode job requirements, run skill-gap audits, and draft relevant answers without losing your authentic voice.",
+      "Use AI to read job descriptions, find skill gaps and draft answers that you review and edit, so the application still sounds like you.",
     readingTime: "8 min read",
     publishedAt: "October 2026",
     coverImage: "/blog/how-ai-improves-applications.jpg",
     altText: "Minimal dark futuristic digital analytics and glass document interface representing AI analysis",
     summary:
-      "How to leverage language models as precision copilots to analyze job listings, highlight missing keywords, and draft tailored answers responsibly.",
+      "How to use language models to analyse listings, spot missing keywords and draft answers responsibly, with you checking every line.",
     content: [
       {
         heading: "1. How AI Analyzes Job Descriptions and Extracts Skills",
@@ -172,15 +172,15 @@ export const BLOG_ARTICLES: BlogArticle[] = [
   {
     slug: "from-application-tracking-to-career-progress",
     category: "Productivity",
-    title: "From Application Tracking to Career Progress",
+    title: "Track Your Applications So You Know What to Do Next",
     description:
-      "Transform application tracking into an actionable feedback loop with structured milestones, interview notes, and pipeline metrics.",
+      "Set up a simple pipeline with stages, interview notes and a few metrics so you follow up on time and see what is working.",
     readingTime: "7 min read",
     publishedAt: "October 2026",
     coverImage: "/blog/tracking-to-career-progress.jpg",
     altText: "Minimalist horizontal progression tiles and milestone indicator representing career tracking",
     summary:
-      "Turn the emotional roller coaster of job hunting into an objective, data-backed career progression system with metrics, interview logs, and continuous iteration.",
+      "Use a lightweight pipeline, an interview log and a few numbers to decide where to spend your time next.",
     content: [
       {
         heading: "1. Designing a Useful Application-Tracking Workflow",

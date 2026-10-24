@@ -173,7 +173,7 @@ function LockGraphic() {
       >
         <Image
           src="/lock.png"
-          alt="Enterprise Security Lock"
+          alt="Padlock illustrating approval and permission controls"
           width={100}
           height={100}
           className="w-[96px] h-[96px] object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] [html.light_&]:drop-shadow-[0_8px_14px_rgba(0,0,0,0.3)]"
@@ -209,7 +209,7 @@ export function SecondaryBento() {
                 unoptimized
               />
             </div>
-            <span className="text-[var(--sx-tx-e5e5e5)] font-semibold text-[13.5px] sm:text-[14px] tracking-tight">Introducing Lumi</span>
+            <span className="text-[var(--sx-tx-e5e5e5)] font-semibold text-[13.5px] sm:text-[14px] tracking-tight">Lumi, your search assistant</span>
           </div>
 
           {/* Visual Canvas with Lumi Graphic */}
@@ -220,10 +220,10 @@ export function SecondaryBento() {
           {/* Bottom Text Area */}
           <div className="px-6 pb-6 pt-2 border-t border-transparent relative z-20">
             <h3 className="text-[14.5px] sm:text-[15px] font-semibold text-white tracking-tight mb-1">
-              Your AI job search, working in the background.
+              Ask about a listing, a resume or an application.
             </h3>
-            <p className="text-[12px] sm:text-[12.5px] text-zinc-400 leading-relaxed font-normal">
-              Lumi helps you discover relevant opportunities, evaluate your fit, prepare tailored applications, and keep your job search organized.
+            <p className="text-[11.5px] sm:text-[12px] text-zinc-400 leading-relaxed font-normal">
+              Chat with Lumi about how well a role fits your resume, what a job description is asking for, or how to prepare. Answers use your profile. Monthly message limits depend on your plan.
             </p>
           </div>
         </motion.div>
@@ -239,7 +239,7 @@ export function SecondaryBento() {
           {/* Header Row */}
           <div className="flex items-center gap-2.5 px-6 py-3.5 border-b border-white/[0.08]">
             <Settings className="w-4 h-4 text-zinc-400" strokeWidth={1.8} />
-            <span className="text-[var(--sx-tx-e5e5e5)] font-semibold text-[13.5px] sm:text-[14px] tracking-tight">Custom Knowledge Base</span>
+            <span className="text-[var(--sx-tx-e5e5e5)] font-semibold text-[13.5px] sm:text-[14px] tracking-tight">Resume and profile</span>
           </div>
 
           {/* Visual Canvas */}
@@ -250,10 +250,10 @@ export function SecondaryBento() {
           {/* Bottom Text Area */}
           <div className="px-6 pb-6 pt-2 border-t border-transparent relative z-20">
             <h3 className="text-[14.5px] sm:text-[15px] font-semibold text-white mb-1 tracking-tight">
-              Agents that speak your language
+              Your resume becomes a reusable profile.
             </h3>
-            <p className="text-[12px] sm:text-[12.5px] text-zinc-400 leading-relaxed font-normal">
-              Train your agents with your unique career data, documents, and preferences. Your agents provide tailored applications that reflect your expertise.
+            <p className="text-[11.5px] sm:text-[12px] text-zinc-400 leading-relaxed font-normal">
+              Upload a PDF resume once. Applivo parses it into a profile that drives match scores and screening answers. Choose a resume template and export to Overleaf to edit.
             </p>
           </div>
         </motion.div>
@@ -261,7 +261,7 @@ export function SecondaryBento() {
 
       {/* ── ROW 2: 3 Columns with Standardized Dimensions ── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
-        {/* Card 3: Smart Application Automation */}
+        {/* Card 3: Fill each form once, not forty times. */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -276,13 +276,13 @@ export function SecondaryBento() {
             <h3 className="text-[14px] sm:text-[14.5px] font-semibold text-white mb-1 tracking-tight">
               Smart Application Automation
             </h3>
-            <p className="text-[12px] sm:text-[12.5px] text-zinc-400 leading-relaxed font-normal">
-              Applivo automatically finds relevant opportunities, fills application forms, and submits them on your behalf.
+            <p className="text-[11.5px] sm:text-[12px] text-zinc-400 leading-relaxed font-normal">
+              On Internshala, the Companion extension fills applications in your own Chrome once you start a run. You choose whether it submits or waits for your review. It stops on CAPTCHAs and forms it cannot read. Needs a paid plan.
             </p>
           </div>
         </motion.div>
 
-        {/* Card 4: Real-Time Application Tracking */}
+        {/* Card 4: See every application in one place. */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -297,8 +297,8 @@ export function SecondaryBento() {
             <h3 className="text-[14px] sm:text-[14.5px] font-semibold text-white mb-1 tracking-tight">
               Real-Time Application Tracking
             </h3>
-            <p className="text-[12px] sm:text-[12.5px] text-zinc-400 leading-relaxed font-normal">
-              Track every application, response, and interview update in one unified dashboard with instant notifications.
+            <p className="text-[11.5px] sm:text-[12px] text-zinc-400 leading-relaxed font-normal">
+              A board and table of your applications with statuses, analytics and CSV export. Pro and Premium add follow-up reminders and interview tracking.
             </p>
           </div>
         </motion.div>
@@ -316,10 +316,10 @@ export function SecondaryBento() {
           </div>
           <div className="mt-auto pt-2">
             <h3 className="text-[14px] sm:text-[14.5px] font-semibold text-white mb-1 tracking-tight">
-              Enterprise Security
+              Controls you keep
             </h3>
-            <p className="text-[12px] sm:text-[12.5px] text-zinc-400 leading-relaxed font-normal">
-              Enterprise-level encryption and granular permissions keep your career data safe.
+            <p className="text-[11.5px] sm:text-[12px] text-zinc-400 leading-relaxed font-normal">
+              You start every run and decide whether it may submit. The extension works in your own browser session, can be disconnected, and connected apps are asked for the narrowest permissions.
             </p>
           </div>
         </motion.div>

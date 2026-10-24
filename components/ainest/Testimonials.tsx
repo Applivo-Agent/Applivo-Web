@@ -16,61 +16,60 @@ const CARD_GRADIENT_STYLE = {
   background: "var(--testimonial-card-bg)",
 };
 
+/* Example scenarios, NOT customer reviews. The previous quotes could not be verified as genuine, owner-approved testimonials and were
+   withheld (see docs/marketing/applivo_content_matrix.md). Each card describes behaviour that exists in the product. */
 const leftTestimonials: Testimonial[] = [
   {
     quote:
-      "We went from spending 4+ hours every day copying resumes and filling portal forms to automated submissions. Setup was seamless.",
-    name: "Ananya Rao",
-    role: "UI/UX Designer",
-    context: "Active Search",
-    initials: "AR",
+      "You are applying to many internships between classes and keep typing the same details into each form. Upload your resume once; Applivo drafts answers from it and fills the Internshala forms in your Chrome when you start a run.",
+    name: "Applying between classes",
+    role: "Example scenario",
+    context: "Freshers",
+    initials: "01",
   },
   {
     quote:
-      "I tracked over 80 applications across Internshala and LinkedIn in my first two weeks. The Kanban tracker and status sync keep my search completely organized.",
-    name: "Shree Harish V",
-    role: "Quant Developer",
-    context: "Finflock Systems Pvt Ltd",
-    avatar: "/testimonials/shree-harish-portrait.png",
-    initials: "SH",
+      "You are not sure which listings are worth the effort. Each listing gets a match score with the skills you already have and the ones missing, so you can apply to the strongest fits first.",
+    name: "Choosing where to apply",
+    role: "Example scenario",
+    context: "Match scores",
+    initials: "02",
   },
 ];
 
 const featuredTestimonial: Testimonial = {
   quote:
-    "Applivo auto-resolves tedious application questions with accurate resume context. I was able to automate targeted applications with high precision, and my interview pipeline finally breathes.",
-  name: "Sudharsan",
-  role: "AI Engineer",
-  context: "Times Media, Malaysia",
-  avatar: "/testimonials/sudharsan-formal.png",
-  initials: "S",
+    "A screening question asks for experience you do not have. Applivo drafts the answer from your own profile only, and if you lack the requirement the draft says so instead of making something up. Numbers, choices and length limits are checked before the form is filled, and a CAPTCHA pauses the run for you.",
+  name: "Answering screening questions honestly",
+  role: "Example scenario",
+  context: "Grounded answers",
+  initials: "03",
 };
 
 const rightTestimonials: Testimonial[] = [
   {
     quote:
-      "As someone switching careers, I was able to tailor match scores to real job descriptions in minutes. The AI suggestions are thoughtful and saved me so much guesswork.",
-    name: "Rohit Verma",
-    role: "QA Engineer",
-    context: "Interview Prep",
-    initials: "RV",
+      "Applications are scattered across tabs and spreadsheets. They land on one board with their status, and Pro and Premium add follow-up reminders and interview tracking.",
+    name: "Keeping track",
+    role: "Example scenario",
+    context: "Tracker",
+    initials: "04",
   },
   {
     quote:
-      "In week one, Applivo streamlined my resume matching and daily application quota. The background runner works reliably while I prepare for technical rounds.",
-    name: "M Sriram",
-    role: "DevOps Engineer",
-    context: "UOB Singapore",
-    avatar: "/testimonials/sriram-portrait.png",
-    initials: "MS",
+      "You are applying on LinkedIn or Indeed. Applivo does not submit there, but it can analyse a job description against your resume and draft answers you paste yourself.",
+    name: "Applying on other job boards",
+    role: "Example scenario",
+    context: "Assisted",
+    initials: "05",
   },
 ];
 
 const metrics = [
-  { value: "50–150", label: "Daily application quota" },
-  { value: "120k+", label: "Token analysis budget" },
-  { value: "100%", label: "Real-time status tracking" },
-  { value: "Zero-tab", label: "Background extension runner" },
+  { value: "50 / 100 / 150", label: "Daily application limit by plan" },
+  { value: "7 days", label: "Free trial on Starter" },
+  { value: "1", label: "Source with automated applying: Internshala" },
+  { value: "Your call", label: "Each run submits or waits for your review" },
 ];
 
 export function Testimonials() {
@@ -78,23 +77,23 @@ export function Testimonials() {
     <section
       id="testimonials"
       className="relative z-10 w-full py-12 sm:py-14 md:py-14 px-4 sm:px-6 md:px-8 bg-[var(--sx-bg-090909)] overflow-hidden"
-      aria-label="Customer Testimonials"
+      aria-label="Example scenarios"
     >
       {/* ─── Centered Section Heading (Compact SaaS Two-Tone Typography) ─── */}
       <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-11">
         <span className="text-[10px] sm:text-[11px] font-medium text-[var(--sx-tx-71717a)] uppercase tracking-[0.15em] block mb-2.5">
-          TESTIMONIALS
+          HOW PEOPLE USE IT
         </span>
         <h2 className="text-[26px] sm:text-[30px] md:text-[34px] lg:text-[36px] xl:text-[38px] font-semibold tracking-tight leading-[1.12] max-w-[780px] mx-auto mb-2.5">
           <span className="text-[var(--sx-tx-a1a1a1)] block">
-            Trusted by job seekers building their next
+            Where Applivo saves
           </span>
           <span className="text-white font-semibold block">
-            chapter
+            the most time
           </span>
         </h2>
         <p className="text-[13px] sm:text-[13.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.5] max-w-lg mx-auto">
-          See how Applivo helps candidates organize applications, prepare smarter, and manage their job search.
+          Five example situations and what Applivo does in each. These are scenarios, not customer reviews.
         </p>
       </div>
 

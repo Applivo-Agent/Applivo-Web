@@ -7,8 +7,8 @@ import Image from "next/image";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Integrations — Applivo",
-  description: "Connect your career stack with Applivo. Verified integrations for GitHub, Internshala, Greenhouse, Lever, Google, OpenRouter, Overleaf, and LinkedIn.",
+  title: "Integrations and job sources",
+  description: "Internshala has automated applying today; other job boards are assisted. See each integration's status, from calendars and notes to Slack, Telegram and webhooks.",
 };
 
 export default function IntegrationsPage() {

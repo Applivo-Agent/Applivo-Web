@@ -20,7 +20,7 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "starter",
     name: "Starter",
-    description: "Essential automation for active job seekers",
+    description: "For students starting out: Internshala applying and a tracker",
     monthlyPrice: 199,
     billingPeriod: "/month",
     hasTrial: true,
@@ -43,7 +43,7 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "pro",
     name: "Pro",
-    description: "Full intelligence suite for maximum interview volume",
+    description: "For a bigger search: higher limit, cover letters, interview prep, follow-ups",
     monthlyPrice: 399,
     billingPeriod: "/month",
     hasTrial: false,
@@ -65,7 +65,7 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "premium",
     name: "Premium",
-    description: "Maximum processing power and executive analytics",
+    description: "For high-volume searching: the highest daily limit and queue priority",
     monthlyPrice: 599,
     billingPeriod: "/month",
     hasTrial: false,

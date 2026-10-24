@@ -35,11 +35,11 @@ export default function PricingPage() {
             PRICING
           </span>
           <h1 className="text-[32px] sm:text-[36px] md:text-[38px] font-semibold tracking-tight mb-3 leading-[1.2]">
-            <span className="text-[var(--sx-tx-a1a1a1)] block">Simple plans.</span>
-            <span className="text-white font-semibold block">Serious progress.</span>
+            <span className="text-[var(--sx-tx-a1a1a1)] block">Pick a plan by how many</span>
+            <span className="text-white font-semibold block">applications you send a day.</span>
           </h1>
-          <p className="text-[13.5px] sm:text-[14px] text-[var(--sx-tx-a1a1aa)] leading-[1.6] max-w-lg mx-auto">
-            Choose the right plan for your job search and unlock the tools you need to move forward.
+          <p className="text-[12.5px] sm:text-[13px] text-[var(--sx-tx-a1a1aa)] leading-[1.6] max-w-lg mx-auto">
+            Starter includes a 7-day free trial. Higher plans raise your daily limit and add cover letters, interview prep and follow-ups.
           </p>
         </div>
 

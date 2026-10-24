@@ -324,7 +324,7 @@ export function WorkflowBento() {
           <div className="flex items-center gap-2.5 px-5 py-3 sm:px-6 sm:py-3.5 border-b border-white/[0.08]">
             <Command className="w-4 h-4 text-zinc-400" strokeWidth={1.8} />
             <span className="text-[var(--sx-tx-e5e5e5)] font-semibold text-[14px] sm:text-[14.5px] tracking-tight">
-              Automation Handle Applications
+              Describe the roles you want
             </span>
           </div>
 
@@ -346,7 +346,7 @@ export function WorkflowBento() {
           <div className="flex items-center gap-2.5 px-5 py-3 sm:px-6 sm:py-3.5 border-b border-white/[0.08]">
             <Network className="w-4 h-4 text-zinc-400" strokeWidth={1.8} />
             <span className="text-[var(--sx-tx-e5e5e5)] font-semibold text-[14px] sm:text-[14.5px] tracking-tight">
-              Intelligent Job Automation
+              What a run does, step by step
             </span>
           </div>
 

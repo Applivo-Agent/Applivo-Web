@@ -25,11 +25,11 @@ export function Insights() {
           INSIGHTS
         </span>
         <h2 className="text-[30px] sm:text-[34px] md:text-[36px] font-semibold tracking-tight mb-3 leading-[1.2]">
-          <span className="text-[var(--sx-tx-a1a1a1)] block">Ideas for a</span>
-          <span className="text-white font-semibold block">smarter job search</span>
+          <span className="text-[var(--sx-tx-a1a1a1)] block">Guides for a more</span>
+          <span className="text-white font-semibold block">organised job search</span>
         </h2>
         <p className="text-[14px] sm:text-[14.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.6] max-w-[600px] mx-auto">
-          Practical guides, career insights, and AI-powered strategies to help you discover opportunities and move forward with confidence.
+          Practical guides on organising a high-volume application search, using AI responsibly on applications and keeping track of where you stand.
         </p>
       </div>
 
@@ -66,7 +66,7 @@ export function Insights() {
               </h3>
 
               {/* 4. More informative two- or three-line summary */}
-              <p className="text-[13px] sm:text-[13.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.55] font-normal line-clamp-3 mb-4">
+              <p className="text-[12px] sm:text-[12.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.55] font-normal line-clamp-3 mb-4">
                 {article.description}
               </p>
             </div>

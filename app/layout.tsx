@@ -8,23 +8,15 @@ const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export const metadata: Metadata = {
   title: {
-    default: "Applivo — AI Career Automation Platform",
+    default: "Applivo | Apply to internships faster, without retyping every form",
     template: "%s | Applivo",
   },
   description:
-    "Automate your job search with AI. Applivo scrapes job boards, scores opportunities, generates ATS-optimised resumes, and applies automatically — all on autopilot.",
-  keywords: [
-    "job search automation",
-    "AI resume builder",
-    "auto apply jobs",
-    "ATS optimized",
-    "career automation",
-    "Internshala automation",
-    "job scraper",
-  ],
+    "Applivo scores Internshala listings against your resume, drafts answers to screening questions from your own profile, fills applications in your Chrome and tracks every one.",
+  keywords: ["internship application tracker","Internshala auto apply","job application tracker","resume job match score","screening question answers","application autofill"],
   openGraph: {
-    title: "Applivo — AI Career Automation Platform",
-    description: "Automate your job search. Apply to 500 jobs a day on autopilot.",
+    title: "Applivo | Apply to internships faster, without retyping every form",
+    description: "Match scores, grounded answers to screening questions, Chrome autofill on Internshala and one tracker for every application.",
     type: "website",
   },
   icons: {

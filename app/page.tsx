@@ -201,8 +201,8 @@ export default function LandingPage() {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="k-h1 mt-6 text-center flex flex-col items-center max-w-2xl mx-auto"
             >
-              <span className="text-[var(--sx-tx-a1a1a1)] block">Land Your Dream Job</span>
-              <span className="text-white font-semibold">With AI Agents</span>
+              <span className="text-[var(--sx-tx-a1a1a1)] block">Apply to more internships</span>
+              <span className="text-white font-semibold">without retyping every form.</span>
             </motion.h1>
 
             {/* Subtitle - Kiloagent Style */}
@@ -210,9 +210,9 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="k-body max-w-xl mx-auto mt-6 text-center"
+              className="k-body max-w-xl mx-auto mt-6 text-center !text-[13.5px] sm:!text-[14.5px]"
             >
-              Applivo automates the job application process by matching opportunities, generating applications, and submitting them automatically.
+              Applivo scores Internshala listings against your resume, drafts screening answers from your profile, and fills the form in your Chrome. You choose whether it submits or stops for review.
             </motion.p>
 
             {/* CTA buttons */}
@@ -226,14 +226,17 @@ export default function LandingPage() {
                 href={isLoggedIn ? "/dashboard" : "/register"}
                 className="k-btn k-btn-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
               >
-                Deploy Agent
+                {isLoggedIn ? "Go to dashboard" : "Get started"}
               </Link>
               <Link
-                href="/#features"
+                href="/#workflow"
                 className="k-btn k-btn-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
               >
-                Learn more
+                See how it works
               </Link>
+              <p className="basis-full text-center text-[12.5px] text-zinc-500 mt-1">
+                Starter includes a 7-day free trial. Automation works on Internshala today.
+              </p>
             </motion.div>
           </div>
 
@@ -248,18 +251,18 @@ export default function LandingPage() {
         <div id="workflow" className="relative z-10 pt-20 md:pt-28 pb-16 md:pb-24">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 relative z-10">
             <h2 className="k-h2 mb-3.5 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2] max-w-2xl mx-auto">
-              <span className="text-[var(--sx-tx-a1a1a1)] block">Automate Your Job Search —</span>
-              <span className="text-white font-semibold block">End to End.</span>
+              <span className="text-[var(--sx-tx-a1a1a1)] block">From listing to submitted application,</span>
+              <span className="text-white font-semibold block">in three steps you control.</span>
             </h2>
-            <p className="k-body max-w-xl mx-auto text-[14.5px] sm:text-[15.5px] text-zinc-400 leading-relaxed">
-              Connect your accounts, discover matching roles, and let AI apply to opportunities automatically — saving hours of manual effort every day.
+            <p className="k-body max-w-xl mx-auto text-[13px] sm:text-[14px] text-zinc-400 leading-relaxed">
+              Applivo finds and scores listings, prepares your answers, and fills the form in your own browser. You choose what to apply to and whether each run may submit. Your progress lands on one board.
             </p>
             <div className="mt-5 mb-8 md:mb-10 flex justify-center">
               <Link
                 href="#features"
                 className="inline-flex items-center justify-center px-5 py-2 rounded-full bg-white hover:bg-zinc-200 text-black font-semibold text-xs sm:text-sm transition-all duration-200 shadow-[0_2px_14px_rgba(255,255,255,0.12)] hover:scale-[1.02] active:scale-[0.98]"
               >
-                Learn more
+                See what it does and what it needs
               </Link>
             </div>
           </div>
@@ -274,11 +277,11 @@ export default function LandingPage() {
         <div id="features" className="py-16 md:py-24 relative">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 mb-12 md:mb-14 relative z-10">
             <h2 className="k-h2 mb-3.5 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2] max-w-2xl mx-auto">
-              <span className="text-[var(--sx-tx-a1a1a1)] block">Everything you need</span>
-              <span className="text-white font-semibold block">to scale.</span>
+              <span className="text-[var(--sx-tx-a1a1a1)] block">What it does,</span>
+              <span className="text-white font-semibold block">and what it needs.</span>
             </h2>
-            <p className="k-body max-w-2xl mx-auto text-[14.5px] sm:text-[15.5px] text-zinc-400 leading-relaxed">
-              A massively scalable ecosystem that natively handles deployment, tracking, synchronization, and security.
+            <p className="k-body max-w-2xl mx-auto text-[13px] sm:text-[14px] text-zinc-400 leading-relaxed">
+              Each tool below solves one part of a high-volume application search, with the requirement stated up front.
             </p>
           </div>
           <SecondaryBento />

@@ -1,10 +1,17 @@
 import React from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Clock } from "lucide-react";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
 import { BLOG_ARTICLES } from "@/lib/blog-data";
+
+export const metadata: Metadata = {
+  title: "Job search guides",
+  description: "Practical guides on organising a high-volume internship and job application search, using AI responsibly on applications and tracking your progress.",
+  alternates: { canonical: "/blog" },
+};
 
 export default function BlogIndexPage() {
   return (
@@ -18,11 +25,11 @@ export default function BlogIndexPage() {
             INSIGHTS & GUIDES
           </span>
           <h1 className="text-[32px] sm:text-[36px] md:text-[40px] font-semibold tracking-tight mb-3 leading-[1.2]">
-            <span className="text-[var(--sx-tx-a1a1a1)] block">Ideas for a</span>
-            <span className="text-white font-semibold block">smarter job search</span>
+            <span className="text-[var(--sx-tx-a1a1a1)] block">Guides for a more</span>
+            <span className="text-white font-semibold block">organised job search</span>
           </h1>
           <p className="text-[14px] sm:text-[14.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.6] max-w-lg mx-auto">
-            Practical guides, career insights, and AI-powered strategies to help you discover opportunities and move forward with confidence.
+            Practical guides on organising a high-volume application search, using AI responsibly on applications and keeping track of where you stand.
           </p>
         </div>
 

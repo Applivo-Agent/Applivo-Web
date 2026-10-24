@@ -90,7 +90,7 @@ export function PricingCard({ plan, isLoggedIn }: PricingCardProps) {
       price={plan.monthlyPrice}
       billingPeriod={plan.billingPeriod}
       note={plan.hasTrial ? "Free for 7 days · then ₹199/month" : "Billed monthly · Cancel anytime"}
-      badge={isPro ? "Most popular" : undefined}
+      badge={isPro ? "Recommended" : undefined}
       features={plan.features}
       footer={
         <Link
