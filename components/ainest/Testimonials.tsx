@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 
 interface Testimonial {
+  scenario: string;
   quote: string;
   name: string;
   role: string;
@@ -20,47 +21,57 @@ const CARD_GRADIENT_STYLE = {
    withheld (see docs/marketing/applivo_content_matrix.md). Each card describes behaviour that exists in the product. */
 const leftTestimonials: Testimonial[] = [
   {
+    scenario: "Applying between classes",
     quote:
       "You are applying to many internships between classes and keep typing the same details into each form. Upload your resume once; Applivo drafts answers from it and fills the Internshala forms in your Chrome when you start a run.",
-    name: "Applying between classes",
-    role: "Example scenario",
-    context: "Freshers",
+    name: "Shree Harish",
+    role: "Quant Developer",
+    context: "Finflock Systems Pvt Ltd",
+    avatar: "/testimonials/shree-harish.jpg",
     initials: "01",
   },
   {
+    scenario: "Choosing where to apply",
     quote:
       "You are not sure which listings are worth the effort. Each listing gets a match score with the skills you already have and the ones missing, so you can apply to the strongest fits first.",
-    name: "Choosing where to apply",
-    role: "Example scenario",
-    context: "Match scores",
+    name: "Sriram",
+    role: "DevOps Engineer",
+    context: "UOB, Singapore",
+    avatar: "/testimonials/sriram.jpg",
     initials: "02",
   },
 ];
 
 const featuredTestimonial: Testimonial = {
-  quote:
+  scenario: "Answering screening questions honestly",
+    quote:
     "A screening question asks for experience you do not have. Applivo drafts the answer from your own profile only, and if you lack the requirement the draft says so instead of making something up. Numbers, choices and length limits are checked before the form is filled, and a CAPTCHA pauses the run for you.",
-  name: "Answering screening questions honestly",
-  role: "Example scenario",
-  context: "Grounded answers",
-  initials: "03",
+  name: "Sudharsan",
+    role: "AI Engineer",
+    context: "Times Media, Malaysia",
+    avatar: "/testimonials/sudharsan.jpg",
+    initials: "03",
 };
 
 const rightTestimonials: Testimonial[] = [
   {
+    scenario: "Keeping track",
     quote:
       "Applications are scattered across tabs and spreadsheets. They land on one board with their status, and Pro and Premium add follow-up reminders and interview tracking.",
-    name: "Keeping track",
-    role: "Example scenario",
-    context: "Tracker",
+    name: "Jayanth",
+    role: "System Programmer",
+    context: "Nichi-In Software Solutions Pvt. Ltd., Bangalore",
+    avatar: "/testimonials/jayanth.jpg",
     initials: "04",
   },
   {
+    scenario: "Applying on other job boards",
     quote:
       "You are applying on LinkedIn or Indeed. Applivo does not submit there, but it can analyse a job description against your resume and draft answers you paste yourself.",
-    name: "Applying on other job boards",
-    role: "Example scenario",
-    context: "Assisted",
+    name: "Suhith Sravan Babu",
+    role: "Engineer Intern",
+    context: "BitApps, Hyderabad",
+    avatar: "/testimonials/suhith-sravan-babu.jpg",
     initials: "05",
   },
 ];
@@ -93,7 +104,7 @@ export function Testimonials() {
           </span>
         </h2>
         <p className="text-[13px] sm:text-[13.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.5] max-w-lg mx-auto">
-          Five example situations and what Applivo does in each. These are scenarios, not customer reviews.
+          Five example situations and what Applivo does in each. The scenarios are illustrations, not quotes from the people shown.
         </p>
       </div>
 
@@ -108,8 +119,9 @@ export function Testimonials() {
                 style={CARD_GRADIENT_STYLE}
                 className="rounded-[24px] border border-[var(--sx-bd-292929)] p-6 sm:p-[26px] lg:p-[26px] hover:border-[var(--sx-bd-383838)] transition-all duration-200 flex flex-col justify-between flex-1 min-h-[185px] sm:min-h-[195px] lg:min-h-[200px]"
               >
+                <span className="block text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--sx-tx-71717a)] mb-2">{t.scenario}</span>
                 <p className="text-[var(--sx-tx-e4e4e4)] text-[12px] leading-[1.55] font-normal">
-                  &ldquo;{t.quote}&rdquo;
+                  {t.quote}
                 </p>
                 <div className="flex items-center gap-3 mt-auto pt-6 sm:pt-7">
                   <div className="w-[40px] h-[40px] rounded-[10px] bg-[var(--sx-bg-1e1e20)] border border-[var(--sx-bd-2a2a2a)] overflow-hidden flex items-center justify-center shrink-0">
@@ -128,10 +140,10 @@ export function Testimonials() {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-[var(--sx-tx-f5f5f5)] font-medium text-[12px] leading-[1.4] tracking-tight truncate">
+                    <h3 className="text-[var(--sx-tx-f5f5f5)] font-medium text-[12px] leading-[1.4] tracking-tight">
                       {t.name}
                     </h3>
-                    <p className="text-[var(--sx-tx-999999)] text-[10px] leading-[1.4] mt-0.5 line-clamp-1">
+                    <p className="text-[var(--sx-tx-999999)] text-[10px] leading-[1.4] mt-0.5 line-clamp-2">
                       {t.role} <span className="text-[var(--sx-tx-52525b)]">/</span> {t.context}
                     </p>
                   </div>
@@ -146,8 +158,9 @@ export function Testimonials() {
               style={CARD_GRADIENT_STYLE}
               className="rounded-[24px] border border-[var(--sx-bd-292929)] p-7 sm:p-8 lg:p-[32px] hover:border-[var(--sx-bd-383838)] transition-all duration-200 flex flex-col justify-between h-full min-h-[380px] sm:min-h-[410px] lg:min-h-[420px]"
             >
-              <p className="text-[var(--sx-tx-f5f5f5)] text-[15px] font-normal leading-[1.55]">
-                &ldquo;{featuredTestimonial.quote}&rdquo;
+              <span className="block text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--sx-tx-71717a)] mb-3">{featuredTestimonial.scenario}</span>
+                <p className="text-[var(--sx-tx-f5f5f5)] text-[15px] font-normal leading-[1.55]">
+                {featuredTestimonial.quote}
               </p>
               <div className="flex items-center gap-3.5 mt-auto pt-8 sm:pt-10">
                 <div className="w-[72px] h-[72px] rounded-[12px] bg-[var(--sx-bg-1e1e20)] border border-[var(--sx-bd-2a2a2a)] overflow-hidden flex items-center justify-center shrink-0">
@@ -169,7 +182,7 @@ export function Testimonials() {
                   <h3 className="text-[var(--sx-tx-f5f5f5)] font-medium text-[12px] sm:text-[13px] leading-[1.4] tracking-tight">
                     {featuredTestimonial.name}
                   </h3>
-                  <p className="text-[var(--sx-tx-999999)] text-[10px] leading-[1.4] mt-0.5 line-clamp-1">
+                  <p className="text-[var(--sx-tx-999999)] text-[10px] leading-[1.4] mt-0.5 line-clamp-2">
                     {featuredTestimonial.role} <span className="text-[var(--sx-tx-52525b)]">/</span> {featuredTestimonial.context}
                   </p>
                 </div>
@@ -185,8 +198,9 @@ export function Testimonials() {
                 style={CARD_GRADIENT_STYLE}
                 className="rounded-[24px] border border-[var(--sx-bd-292929)] p-6 sm:p-[26px] lg:p-[26px] hover:border-[var(--sx-bd-383838)] transition-all duration-200 flex flex-col justify-between flex-1 min-h-[185px] sm:min-h-[195px] lg:min-h-[200px]"
               >
+                <span className="block text-[10px] font-medium uppercase tracking-[0.12em] text-[var(--sx-tx-71717a)] mb-2">{t.scenario}</span>
                 <p className="text-[var(--sx-tx-e4e4e4)] text-[12px] leading-[1.55] font-normal">
-                  &ldquo;{t.quote}&rdquo;
+                  {t.quote}
                 </p>
                 <div className="flex items-center gap-3 mt-auto pt-6 sm:pt-7">
                   <div className="w-[40px] h-[40px] rounded-[10px] bg-[var(--sx-bg-1e1e20)] border border-[var(--sx-bd-2a2a2a)] overflow-hidden flex items-center justify-center shrink-0">
@@ -205,10 +219,10 @@ export function Testimonials() {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-[var(--sx-tx-f5f5f5)] font-medium text-[12px] leading-[1.4] tracking-tight truncate">
+                    <h3 className="text-[var(--sx-tx-f5f5f5)] font-medium text-[12px] leading-[1.4] tracking-tight">
                       {t.name}
                     </h3>
-                    <p className="text-[var(--sx-tx-999999)] text-[10px] leading-[1.4] mt-0.5 line-clamp-1">
+                    <p className="text-[var(--sx-tx-999999)] text-[10px] leading-[1.4] mt-0.5 line-clamp-2">
                       {t.role} <span className="text-[var(--sx-tx-52525b)]">/</span> {t.context}
                     </p>
                   </div>

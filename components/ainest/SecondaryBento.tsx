@@ -218,7 +218,7 @@ export function SecondaryBento() {
           </div>
 
           {/* Bottom Text Area */}
-          <div className="px-6 pb-6 pt-2 border-t border-transparent relative z-20">
+          <div className="px-6 pb-6 pt-2 min-h-[124px] border-t border-transparent relative z-20">
             <h3 className="text-[14.5px] sm:text-[15px] font-semibold text-white tracking-tight mb-1">
               Ask about a listing, a resume or an application.
             </h3>
@@ -248,7 +248,7 @@ export function SecondaryBento() {
           </div>
 
           {/* Bottom Text Area */}
-          <div className="px-6 pb-6 pt-2 border-t border-transparent relative z-20">
+          <div className="px-6 pb-6 pt-2 min-h-[124px] border-t border-transparent relative z-20">
             <h3 className="text-[14.5px] sm:text-[15px] font-semibold text-white mb-1 tracking-tight">
               Your resume becomes a reusable profile.
             </h3>
@@ -272,7 +272,7 @@ export function SecondaryBento() {
           <div className="flex-1 flex flex-col justify-center">
             <CursorsGraphic />
           </div>
-          <div className="mt-auto pt-2">
+          <div className="h-[128px] shrink-0 pt-2">
             <h3 className="text-[14px] sm:text-[14.5px] font-semibold text-white mb-1 tracking-tight">
               Smart Application Automation
             </h3>
@@ -293,7 +293,7 @@ export function SecondaryBento() {
           <div className="flex-1 flex flex-col justify-center">
             <RadarGraphic />
           </div>
-          <div className="mt-auto pt-2">
+          <div className="h-[128px] shrink-0 pt-2">
             <h3 className="text-[14px] sm:text-[14.5px] font-semibold text-white mb-1 tracking-tight">
               Real-Time Application Tracking
             </h3>
@@ -314,7 +314,7 @@ export function SecondaryBento() {
           <div className="flex-1 flex flex-col justify-center">
             <LockGraphic />
           </div>
-          <div className="mt-auto pt-2">
+          <div className="h-[128px] shrink-0 pt-2">
             <h3 className="text-[14px] sm:text-[14.5px] font-semibold text-white mb-1 tracking-tight">
               Controls you keep
             </h3>
