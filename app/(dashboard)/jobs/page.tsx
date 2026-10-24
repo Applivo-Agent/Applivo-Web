@@ -109,12 +109,12 @@ function MatchScoreRing({
   const pct = Math.min(Math.max(score, 0), 100);
   const color =
     score >= 75
-      ? "#34d399" // emerald-400
+      ? "var(--cc-34d399)" // emerald-400
       : score >= 60
-      ? "#e4e4e7" // zinc-200
+      ? "rgb(var(--tw-zinc-200))" // zinc-200
       : score >= 40
-      ? "#a1a1aa" // zinc-400
-      : "#71717a"; // zinc-500
+      ? "rgb(var(--tw-zinc-400))" // zinc-400
+      : "rgb(var(--tw-zinc-500))"; // zinc-500
 
   return (
     <div className="relative shrink-0" style={{ width: size, height: size }}>
@@ -655,7 +655,7 @@ export default function JobsPage() {
                 onChange={(e) => updateFilter("sort_by", e.target.value)}
                 className="h-9 pl-3 pr-8 bg-transparent border border-[var(--app-border-strong)] rounded-lg text-[13px] text-zinc-300 focus:outline-none focus:border-zinc-500 cursor-pointer appearance-none"
               >
-                {SORTS.map((o) => <option key={o.value} value={o.value} className="bg-[#181818] text-white">{o.label}</option>)}
+                {SORTS.map((o) => <option key={o.value} value={o.value} className="bg-[var(--sx-bg-181818)] text-white">{o.label}</option>)}
               </select>
               <ArrowUpDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-zinc-500 pointer-events-none" />
             </div>
@@ -712,7 +712,7 @@ export default function JobsPage() {
                       className="w-full h-8 px-2 bg-transparent border border-[var(--app-border-strong)] rounded-md text-[13px] text-zinc-300 focus:outline-none focus:border-zinc-500"
                     >
                       {(opts as readonly { value: string | number; label: string }[]).map((o) => (
-                        <option key={String(o.value)} value={o.value} className="bg-[#181818] text-white">{o.label}</option>
+                        <option key={String(o.value)} value={o.value} className="bg-[var(--sx-bg-181818)] text-white">{o.label}</option>
                       ))}
                     </select>
                   </label>
@@ -851,7 +851,7 @@ export default function JobsPage() {
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="h-7 px-2.5 bg-[var(--app-card)] hover:bg-[#202022] border border-[var(--app-border-strong)] rounded text-zinc-300 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed font-medium"
+              className="h-7 px-2.5 bg-[var(--app-card)] hover:bg-[var(--sx-bg-202022)] border border-[var(--app-border-strong)] rounded text-zinc-300 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed font-medium"
             >
               ← Prev
             </button>
@@ -861,7 +861,7 @@ export default function JobsPage() {
             <button
               onClick={() => setPage((p) => Math.min(data.pages, p + 1))}
               disabled={page === data.pages}
-              className="h-7 px-2.5 bg-[var(--app-card)] hover:bg-[#202022] border border-[var(--app-border-strong)] rounded text-zinc-300 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed font-medium"
+              className="h-7 px-2.5 bg-[var(--app-card)] hover:bg-[var(--sx-bg-202022)] border border-[var(--app-border-strong)] rounded text-zinc-300 hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed font-medium"
             >
               Next →
             </button>
@@ -967,7 +967,7 @@ export default function JobsPage() {
                     <button
                       onClick={() => analyzeMutation.mutate(selectedJob.id)}
                       disabled={analyzeMutation.isPending}
-                      className="h-8 px-2.5 bg-[var(--app-nested)] border border-[var(--app-border-strong)] hover:bg-[#202022] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium flex items-center gap-1 transition-colors"
+                      className="h-8 px-2.5 bg-[var(--app-nested)] border border-[var(--app-border-strong)] hover:bg-[var(--sx-bg-202022)] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium flex items-center gap-1 transition-colors"
                       title="Run AI Match Score Analysis"
                     >
                       <Zap className="w-3.5 h-3.5 text-zinc-400" />
@@ -980,7 +980,7 @@ export default function JobsPage() {
                       href={selectedJob.source_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="h-8 px-2.5 bg-[var(--app-nested)] border border-[var(--app-border-strong)] hover:bg-[#202022] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium flex items-center gap-1 transition-colors"
+                      className="h-8 px-2.5 bg-[var(--app-nested)] border border-[var(--app-border-strong)] hover:bg-[var(--sx-bg-202022)] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium flex items-center gap-1 transition-colors"
                       title="Open source posting"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />

@@ -90,7 +90,7 @@ export function DocsFigure({ label, file, ratio = "16 / 9", alt, src, caption }:
   return (
     <figure className={`docs-figure ${isIntegrationHero ? "my-6" : "my-8"} w-full max-w-full`}>
       {resolvedSrc ? (
-        <div className="docs-media relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#0c0c0e] shadow-sm flex items-center justify-center p-0">
+        <div className="docs-media relative overflow-hidden rounded-xl border border-white/[0.08] bg-[var(--sx-bg-0c0c0e)] shadow-sm flex items-center justify-center p-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={resolvedSrc}
@@ -101,7 +101,7 @@ export function DocsFigure({ label, file, ratio = "16 / 9", alt, src, caption }:
         </div>
       ) : (
         <div
-          className="docs-media relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#0c0c0e] shadow-sm"
+          className="docs-media relative overflow-hidden rounded-xl border border-white/[0.08] bg-[var(--sx-bg-0c0c0e)] shadow-sm"
           style={{ aspectRatio: ratio }}
         >
           <DocsImagePlaceholder label={label} file={file} ratio={ratio} />
@@ -146,7 +146,7 @@ export function DocsDiagramPlaceholder({ label, file, ratio = "16 / 9", caption 
   return (
     <figure className="my-8 w-full max-w-full">
       <div
-        className="docs-media relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#0c0c0e] shadow-sm"
+        className="docs-media relative overflow-hidden rounded-xl border border-white/[0.08] bg-[var(--sx-bg-0c0c0e)] shadow-sm"
         style={{ aspectRatio: ratio }}
       >
         <div
@@ -192,7 +192,7 @@ export function DocsVideoPlaceholder({
 
   return (
     <figure className="docs-figure my-8 w-full max-w-full">
-      <div className="docs-media relative overflow-hidden rounded-xl border border-white/[0.08] bg-[#0c0c0e] shadow-sm">
+      <div className="docs-media relative overflow-hidden rounded-xl border border-white/[0.08] bg-[var(--sx-bg-0c0c0e)] shadow-sm">
         <video
           controls
           poster={poster}

@@ -69,10 +69,10 @@ function ActionButton({
           "bg-[var(--app-card)] border-white/20 text-white",
         ],
         !isActive && !isDisabled && [
-          "bg-[#171717] hover:bg-[var(--app-card)] text-white border-[var(--app-border-strong)]",
+          "bg-[var(--sx-bg-171717)] hover:bg-[var(--app-card)] text-white border-[var(--app-border-strong)]",
         ],
         isDisabled && [
-          "bg-[#171717]/60 text-zinc-500 border-[var(--app-border-strong)]/50 opacity-50",
+          "bg-[color-mix(in_srgb,var(--sx-bg-171717)_60%,transparent)] text-zinc-500 border-[var(--app-border-strong)]/50 opacity-50",
         ]
       )}
     >

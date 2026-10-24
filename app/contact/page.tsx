@@ -191,18 +191,18 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col justify-between selection:bg-white/20">
+    <div className="public-flat min-h-screen bg-[var(--sx-bg-0a0a0a)] text-white flex flex-col justify-between selection:bg-white/20">
       <NavBar />
 
       {/* Main Content Area */}
       <main className="relative flex-1 pt-20 sm:pt-24 md:pt-28 pb-12 px-4 sm:px-6 overflow-hidden">
         {/* Subtle ambient lighting texture consistent with landing page */}
         <div
-          className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_45%)] pointer-events-none"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_45%)] pointer-events-none [html.light_&]:hidden"
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(10,10,10,0.85))] pointer-events-none"
+          className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(10,10,10,0.85))] pointer-events-none [html.light_&]:hidden"
           aria-hidden="true"
         />
 
@@ -234,7 +234,7 @@ export default function ContactPage() {
             {submissionStatus === "success" ? (
               <div
                 role="status"
-                className="rounded-2xl border border-white/[0.06] bg-[#111111]/80 p-6 sm:p-8 text-center shadow-[0_16px_40px_rgba(0,0,0,0.5)] backdrop-blur-md"
+                className="rounded-2xl border border-white/[0.06] bg-[color-mix(in_srgb,var(--sx-bg-111111)_80%,transparent)] p-6 sm:p-8 text-center shadow-[0_16px_40px_rgba(0,0,0,0.5)] backdrop-blur-md"
               >
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-400">
                   <CheckCircle2 className="h-6 w-6" />
@@ -268,7 +268,7 @@ export default function ContactPage() {
               <form
                 onSubmit={handleSubmit}
                 noValidate
-                className="rounded-2xl border border-white/[0.06] bg-[#111111]/80 p-5 sm:p-6 shadow-[0_16px_40px_rgba(0,0,0,0.5)] backdrop-blur-md"
+                className="rounded-2xl border border-white/[0.06] bg-[color-mix(in_srgb,var(--sx-bg-111111)_80%,transparent)] p-5 sm:p-6 shadow-[0_16px_40px_rgba(0,0,0,0.5)] backdrop-blur-md"
               >
                 {/* Honeypot field (hidden from screen, detected for bots) */}
                 <div className="hidden" aria-hidden="true">
@@ -317,7 +317,7 @@ export default function ContactPage() {
                       disabled={submissionStatus === "submitting"}
                       aria-invalid={Boolean(formErrors.first_name)}
                       aria-describedby={formErrors.first_name ? "first_name-error" : undefined}
-                      className={`w-full rounded-xl border bg-[#141415]/90 px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 transition-all focus:outline-none focus:ring-1 ${
+                      className={`w-full rounded-xl border bg-[color-mix(in_srgb,var(--sx-bg-141415)_90%,transparent)] px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 transition-all focus:outline-none focus:ring-1 ${
                         formErrors.first_name
                           ? "border-red-500/60 focus:border-red-500 focus:ring-red-500/30"
                           : "border-white/[0.08] focus:border-white/30 focus:ring-white/20"
@@ -347,7 +347,7 @@ export default function ContactPage() {
                       disabled={submissionStatus === "submitting"}
                       aria-invalid={Boolean(formErrors.last_name)}
                       aria-describedby={formErrors.last_name ? "last_name-error" : undefined}
-                      className={`w-full rounded-xl border bg-[#141415]/90 px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 transition-all focus:outline-none focus:ring-1 ${
+                      className={`w-full rounded-xl border bg-[color-mix(in_srgb,var(--sx-bg-141415)_90%,transparent)] px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 transition-all focus:outline-none focus:ring-1 ${
                         formErrors.last_name
                           ? "border-red-500/60 focus:border-red-500 focus:ring-red-500/30"
                           : "border-white/[0.08] focus:border-white/30 focus:ring-white/20"
@@ -380,7 +380,7 @@ export default function ContactPage() {
                       disabled={submissionStatus === "submitting"}
                       aria-invalid={Boolean(formErrors.email)}
                       aria-describedby={formErrors.email ? "email-error" : undefined}
-                      className={`w-full rounded-xl border bg-[#141415]/90 px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 transition-all focus:outline-none focus:ring-1 ${
+                      className={`w-full rounded-xl border bg-[color-mix(in_srgb,var(--sx-bg-141415)_90%,transparent)] px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 transition-all focus:outline-none focus:ring-1 ${
                         formErrors.email
                           ? "border-red-500/60 focus:border-red-500 focus:ring-red-500/30"
                           : "border-white/[0.08] focus:border-white/30 focus:ring-white/20"
@@ -410,7 +410,7 @@ export default function ContactPage() {
                       disabled={submissionStatus === "submitting"}
                       aria-invalid={Boolean(formErrors.subject)}
                       aria-describedby={formErrors.subject ? "subject-error" : undefined}
-                      className={`w-full rounded-xl border bg-[#141415]/90 px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 transition-all focus:outline-none focus:ring-1 ${
+                      className={`w-full rounded-xl border bg-[color-mix(in_srgb,var(--sx-bg-141415)_90%,transparent)] px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 transition-all focus:outline-none focus:ring-1 ${
                         formErrors.subject
                           ? "border-red-500/60 focus:border-red-500 focus:ring-red-500/30"
                           : "border-white/[0.08] focus:border-white/30 focus:ring-white/20"
@@ -442,7 +442,7 @@ export default function ContactPage() {
                     disabled={submissionStatus === "submitting"}
                     aria-invalid={Boolean(formErrors.message)}
                     aria-describedby={formErrors.message ? "message-error" : undefined}
-                    className={`w-full rounded-xl border bg-[#141415]/90 px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 transition-all resize-y min-h-[96px] focus:outline-none focus:ring-1 ${
+                    className={`w-full rounded-xl border bg-[color-mix(in_srgb,var(--sx-bg-141415)_90%,transparent)] px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-500 transition-all resize-y min-h-[96px] focus:outline-none focus:ring-1 ${
                       formErrors.message
                         ? "border-red-500/60 focus:border-red-500 focus:ring-red-500/30"
                         : "border-white/[0.08] focus:border-white/30 focus:ring-white/20"
@@ -485,7 +485,7 @@ export default function ContactPage() {
               >
                 <div className="w-full border-t border-white/[0.06]" />
               </div>
-              <div className="relative flex justify-center bg-[#0a0a0a] px-3">
+              <div className="relative flex justify-center bg-[var(--sx-bg-0a0a0a)] px-3">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-zinc-500">
                   Connect With Us
                 </span>
@@ -516,7 +516,7 @@ export default function ContactPage() {
       </main>
 
       {/* Shared Four-Column Footer */}
-      <Footer className="border-t border-white/10" />
+      <Footer />
     </div>
   );
 }

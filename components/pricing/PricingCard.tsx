@@ -29,35 +29,35 @@ export function PricingCardShell({ name, description, price, billingPeriod, note
   const [open, setOpen] = useState(false);
   const list = open ? [...features, ...moreFeatures] : features;
   return (
-    <div className="relative rounded-[4px] bg-[#131313] border border-[#262626] hover:border-[#333333] p-4 sm:p-[17px] flex flex-col justify-between transition-colors duration-150 h-full w-full">
+    <div className="relative rounded-[4px] [html.light_&]:rounded-xl bg-[var(--sx-bg-131313)] border border-[var(--sx-bd-262626)] hover:border-[var(--sx-bd-333333)] p-4 sm:p-[17px] flex flex-col justify-between transition-colors duration-150 h-full w-full">
       <div className="flex flex-col">
         <div className="flex items-center gap-2 min-h-[24px] mb-1.5">
-          <h3 className="text-[16.5px] font-medium text-[#F5F5F5] tracking-tight">{name}</h3>
+          <h3 className="text-[16.5px] font-medium text-[var(--sx-tx-f5f5f5)] tracking-tight">{name}</h3>
           {badge && (
-            <span className="text-[10px] font-normal px-1.5 py-0.5 rounded-[3px] border border-[#333333] text-[#A1A1AA] bg-[#1C1C1C]">
+            <span className="text-[10px] font-normal px-1.5 py-0.5 rounded-[3px] border border-[var(--sx-bd-333333)] text-[var(--sx-tx-a1a1aa)] bg-[var(--sx-bg-1c1c1c)]">
               {badge}
             </span>
           )}
         </div>
 
-        <p className="text-[12px] text-[#A1A1AA] leading-[1.4] min-h-[34px] mb-3.5">{description}</p>
+        <p className="text-[12px] text-[var(--sx-tx-a1a1aa)] leading-[1.4] min-h-[34px] mb-3.5">{description}</p>
 
         <div className={`mb-3.5 flex flex-col justify-end ${compact ? "" : "min-h-[50px]"}`}>
           <div className="flex items-baseline gap-1">
-            <span data-plan-price className="text-[28px] sm:text-[29px] font-medium text-[#F5F5F5] tracking-tight leading-none">₹{price}</span>
-            <span className="text-[11.5px] text-[#71717A] font-normal">{billingPeriod}</span>
+            <span data-plan-price className="text-[28px] sm:text-[29px] font-medium text-[var(--sx-tx-f5f5f5)] tracking-tight leading-none">₹{price}</span>
+            <span className="text-[11.5px] text-[var(--sx-tx-71717a)] font-normal">{billingPeriod}</span>
           </div>
-          {note && <p className="text-[11px] text-[#71717A] mt-1 font-normal leading-snug">{note}</p>}
+          {note && <p className="text-[11px] text-[var(--sx-tx-71717a)] mt-1 font-normal leading-snug">{note}</p>}
         </div>
 
-        <div className="w-full border-t border-[#262626] mb-3.5" />
+        <div className="w-full border-t border-[var(--sx-bd-262626)] mb-3.5" />
 
-        {open && moreIntro && <p className="text-[11px] text-[#71717A] mb-2">{moreIntro}</p>}
+        {open && moreIntro && <p className="text-[11px] text-[var(--sx-tx-71717a)] mb-2">{moreIntro}</p>}
         <ul className="space-y-2 mb-3">
           {list.map((feat, fi) => (
             <li key={fi} className="flex items-start gap-2">
-              <Check className="mt-[3px] w-3 h-3 shrink-0 text-[#71717A]" strokeWidth={2} />
-              <span className="text-[#A1A1AA] text-[12px] leading-[1.45] font-normal">{feat}</span>
+              <Check className="mt-[3px] w-3 h-3 shrink-0 text-[var(--sx-tx-71717a)]" strokeWidth={2} />
+              <span className="text-[var(--sx-tx-a1a1aa)] text-[12px] leading-[1.45] font-normal">{feat}</span>
             </li>
           ))}
         </ul>
@@ -66,7 +66,7 @@ export function PricingCardShell({ name, description, price, billingPeriod, note
             type="button"
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
-            className="self-start mb-3 text-[11.5px] text-[#71717A] hover:text-[#F5F5F5] transition-colors"
+            className="self-start mb-3 text-[11.5px] text-[var(--sx-tx-71717a)] hover:text-[var(--sx-tx-f5f5f5)] transition-colors"
           >
             {open ? "Show fewer features" : `Show all features (+${moreFeatures.length})`}
           </button>
@@ -97,8 +97,8 @@ export function PricingCard({ plan, isLoggedIn }: PricingCardProps) {
           href={targetHref}
           className={`w-full h-[36px] flex items-center justify-center rounded-[4px] text-[12px] font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/30 ${
             isPro
-              ? "bg-[#F5F5F5] hover:bg-white text-[#0A0A0A] shadow-sm"
-              : "bg-[#1A1A1A] hover:bg-[#222222] text-[#F5F5F5] border border-[#2D2D2D] hover:border-[#3A3A3A]"
+              ? "bg-[var(--sx-bg-f5f5f5)] hover:bg-white text-[var(--sx-tx-0a0a0a)] shadow-sm"
+              : "bg-[var(--sx-bg-1a1a1a)] hover:bg-[var(--sx-bg-222222)] text-[var(--sx-tx-f5f5f5)] border border-[var(--sx-bd-2d2d2d)] hover:border-[var(--sx-bd-3a3a3a)]"
           }`}
         >
           {ctaText}

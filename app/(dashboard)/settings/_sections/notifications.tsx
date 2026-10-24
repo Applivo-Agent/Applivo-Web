@@ -19,7 +19,7 @@ interface NotificationStatus {
 }
 
 const testBtn =
-  "h-8 px-3 rounded-md bg-[#171717] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors flex items-center gap-1.5 disabled:opacity-50";
+  "h-8 px-3 rounded-md bg-[var(--sx-bg-171717)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors flex items-center gap-1.5 disabled:opacity-50";
 
 export function NotificationsSection() {
   const qc = useQueryClient();

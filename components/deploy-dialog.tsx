@@ -89,7 +89,7 @@ export function DeployDialog({ open, onClose }: { open: boolean; onClose: () => 
         <div className="flex items-start justify-between border-b border-[var(--app-border-strong)] px-5 py-4">
           <div>
             <h3 className="text-sm font-semibold text-white">Start applying</h3>
-            <p className="mt-1 text-xs leading-5 text-[#A1A1AA]">
+            <p className="mt-1 text-xs leading-5 text-[var(--sx-tx-a1a1aa)]">
               Applivo works through these jobs one at a time in ONE background tab of this Chrome window,
               using your own Internshala login. Applivo stays in front. Keep Chrome open.
             </p>

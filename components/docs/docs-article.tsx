@@ -50,7 +50,7 @@ export function DocsArticleView({ article }: { article: DocArticle }) {
           {prev ? (
             <Link
               href={`/docs/${prev.slug}`}
-              className="group flex flex-col justify-between rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-5 transition-colors hover:border-[#383838] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
+              className="group flex flex-col justify-between rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-5 transition-colors hover:border-[var(--sx-bd-383838)] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
             >
               <span className="flex items-center gap-1.5 text-[12px] text-[var(--docs-muted)] transition-colors group-hover:text-[var(--docs-secondary)]">
                 <ArrowLeft className="h-3.5 w-3.5" /> Previous
@@ -66,7 +66,7 @@ export function DocsArticleView({ article }: { article: DocArticle }) {
           {next && (
             <Link
               href={`/docs/${next.slug}`}
-              className="group flex flex-col justify-between rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-5 text-right transition-colors hover:border-[#383838] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
+              className="group flex flex-col justify-between rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-5 text-right transition-colors hover:border-[var(--sx-bd-383838)] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
             >
               <span className="flex items-center justify-end gap-1.5 text-[12px] text-[var(--docs-muted)] transition-colors group-hover:text-[var(--docs-secondary)]">
                 Next <ArrowRight className="h-3.5 w-3.5" />

@@ -32,7 +32,7 @@ const workflowCodeBg = `{ "workflow_id": "wf_internshala_stream",
 /* ─── LEFT CARD: Application Editor ──────────────────────────────── */
 function ApplicationEditorCard() {
   return (
-    <div className="flex flex-col h-full bg-[#121212] relative w-full overflow-hidden select-none">
+    <div className="flex flex-col h-full bg-[var(--sx-bg-121212)] relative w-full overflow-hidden select-none">
       {/* Subtle ambient radial glow in the center */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] pointer-events-none rounded-full"
@@ -49,7 +49,7 @@ function ApplicationEditorCard() {
           initial={{ opacity: 0, y: 8, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mb-4 sm:mb-5 flex items-center gap-1 sm:gap-1.5 bg-[#161618] border border-white/[0.12] rounded-full px-3 py-1 sm:px-3.5 sm:py-1.5 shadow-[0_16px_36px_rgba(0,0,0,0.85)] z-20"
+          className="mb-4 sm:mb-5 flex items-center gap-1 sm:gap-1.5 bg-[var(--sx-bg-161618)] border border-white/[0.12] rounded-full px-3 py-1 sm:px-3.5 sm:py-1.5 shadow-[0_16px_36px_rgba(0,0,0,0.85)] z-20"
         >
           <button
             type="button"
@@ -110,7 +110,7 @@ function ApplicationEditorCard() {
             Find matching internships from <span className="text-white font-medium">Internshala</span>. Score
             them based on profile potential, and automatically
             route{" "}
-            <span className="relative inline-block text-white bg-[#1e3a5f] border border-sky-400/50 rounded px-1.5 py-0.5 mx-0.5 font-medium shadow-sm">
+            <span className="relative inline-block text-white bg-[var(--sx-bg-1e3a5f)] border border-sky-400/50 rounded px-1.5 py-0.5 mx-0.5 font-medium shadow-sm">
               high-match opportunities
               <motion.span
                 animate={{ opacity: [1, 0, 1] }}
@@ -133,7 +133,7 @@ function ApplicationEditorCard() {
 /* ─── RIGHT CARD: Workflow Visual ────────────────────────────────── */
 function WorkflowVisualCard() {
   return (
-    <div className="flex flex-col h-full bg-[#121212] relative w-full overflow-hidden select-none">
+    <div className="flex flex-col h-full bg-[var(--sx-bg-121212)] relative w-full overflow-hidden select-none">
       {/* Background Code Faint Texture */}
       <div className="absolute inset-0 p-5 overflow-hidden pointer-events-none opacity-[0.14] select-none">
         <pre className="text-[10px] text-zinc-400 font-mono leading-[1.7] whitespace-pre-wrap">
@@ -195,10 +195,10 @@ function WorkflowVisualCard() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="absolute left-[38%] sm:left-[40%] top-[45px] w-[190px] sm:w-[200px] flex items-center gap-3 bg-[#18181B] border border-white/[0.14] rounded-2xl px-3.5 py-2.5 shadow-[0_16px_36px_rgba(0,0,0,0.85)] z-20"
+            className="absolute left-[38%] sm:left-[40%] top-[45px] w-[190px] sm:w-[200px] flex items-center gap-3 bg-[var(--sx-bg-18181b)] border border-white/[0.14] rounded-2xl px-3.5 py-2.5 shadow-[0_16px_36px_rgba(0,0,0,0.85)] z-20"
           >
             {/* Status Badge: Active Green Dot */}
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-[#121212] shadow-sm">
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-[var(--sx-bd-121212)] shadow-sm">
               <CheckCircle2 className="w-3 h-3 text-black stroke-[3]" />
             </div>
 
@@ -218,15 +218,15 @@ function WorkflowVisualCard() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="absolute left-[8%] sm:left-[10%] top-[160px] w-[185px] sm:w-[195px] flex items-center gap-3 bg-[#18181B] border border-white/[0.14] rounded-2xl px-3.5 py-2.5 shadow-[0_16px_36px_rgba(0,0,0,0.85)] z-20"
+            className="absolute left-[8%] sm:left-[10%] top-[160px] w-[185px] sm:w-[195px] flex items-center gap-3 bg-[var(--sx-bg-18181b)] border border-white/[0.14] rounded-2xl px-3.5 py-2.5 shadow-[0_16px_36px_rgba(0,0,0,0.85)] z-20"
           >
             {/* Status Badge: Active Green */}
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-[#121212] shadow-sm">
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center border-2 border-[var(--sx-bd-121212)] shadow-sm">
               <CheckCircle2 className="w-3 h-3 text-black stroke-[3]" />
             </div>
 
             {/* Icon Box */}
-            <div className="w-8 h-8 rounded-lg bg-[#27272A] border border-white/10 flex items-center justify-center shrink-0 text-amber-400 shadow-sm">
+            <div className="w-8 h-8 rounded-lg bg-[var(--sx-bg-27272a)] border border-white/10 flex items-center justify-center shrink-0 text-amber-400 shadow-sm">
               <Sparkles className="w-4 h-4 text-amber-400 fill-amber-400/20" />
             </div>
 
@@ -241,15 +241,15 @@ function WorkflowVisualCard() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="absolute left-[8%] sm:left-[10%] top-[300px] w-[185px] sm:w-[195px] flex items-center gap-3 bg-[#18181B] border border-white/[0.14] rounded-2xl px-3.5 py-2.5 shadow-[0_16px_36px_rgba(0,0,0,0.85)] z-20"
+            className="absolute left-[8%] sm:left-[10%] top-[300px] w-[185px] sm:w-[195px] flex items-center gap-3 bg-[var(--sx-bg-18181b)] border border-white/[0.14] rounded-2xl px-3.5 py-2.5 shadow-[0_16px_36px_rgba(0,0,0,0.85)] z-20"
           >
             {/* Status Badge: Orange Key */}
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#f97316] rounded-full flex items-center justify-center border-2 border-[#121212] shadow-sm">
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#f97316] rounded-full flex items-center justify-center border-2 border-[var(--sx-bd-121212)] shadow-sm">
               <Wrench className="w-2.5 h-2.5 text-black stroke-[2.5]" />
             </div>
 
             {/* Icon Box */}
-            <div className="w-8 h-8 rounded-lg bg-[#27272A] border border-white/10 flex items-center justify-center shrink-0 text-zinc-300 shadow-sm">
+            <div className="w-8 h-8 rounded-lg bg-[var(--sx-bg-27272a)] border border-white/10 flex items-center justify-center shrink-0 text-zinc-300 shadow-sm">
               <svg className="w-4 h-4 text-zinc-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect width="18" height="12" x="3" y="6" rx="2" />
                 <path d="M12 2v4" />
@@ -272,7 +272,7 @@ function WorkflowVisualCard() {
               opacity: { duration: 0.5, delay: 0.5 },
               y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
             }}
-            className="absolute left-[48%] sm:left-[50%] md:left-[52%] top-[205px] w-[205px] sm:w-[215px] flex items-center gap-3 bg-[#18181B] border border-white/[0.16] rounded-2xl px-3.5 py-2.5 shadow-[0_18px_40px_rgba(0,0,0,0.85)] z-30 rotate-[-2deg]"
+            className="absolute left-[48%] sm:left-[50%] md:left-[52%] top-[205px] w-[205px] sm:w-[215px] flex items-center gap-3 bg-[var(--sx-bg-18181b)] border border-white/[0.16] rounded-2xl px-3.5 py-2.5 shadow-[0_18px_40px_rgba(0,0,0,0.85)] z-30 rotate-[-2deg]"
           >
             {/* Status Badge: Amber Wrench */}
             <div className="absolute -top-1.5 -right-1.5 w-4.5 h-4.5 bg-[#d97706] border border-black/40 rounded-full flex items-center justify-center shadow-md">
@@ -280,7 +280,7 @@ function WorkflowVisualCard() {
             </div>
 
             {/* Icon Box */}
-            <div className="w-8 h-8 rounded-lg bg-[#27272A] border border-white/10 flex items-center justify-center shrink-0 text-sky-400 shadow-[0_0_16px_rgba(56,189,248,0.15)]">
+            <div className="w-8 h-8 rounded-lg bg-[var(--sx-bg-27272a)] border border-white/10 flex items-center justify-center shrink-0 text-sky-400 shadow-[0_0_16px_rgba(56,189,248,0.15)]">
               <Search className="w-3.5 h-3.5 text-sky-400" />
             </div>
 
@@ -318,12 +318,12 @@ export function WorkflowBento() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-          className="rounded-[20px] bg-[#121212] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.5)] hover:border-white/[0.16] transition-colors duration-300"
+          className="rounded-[20px] bg-[var(--sx-bg-121212)] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.5)] hover:border-white/[0.16] transition-colors duration-300"
         >
           {/* Header Row */}
           <div className="flex items-center gap-2.5 px-5 py-3 sm:px-6 sm:py-3.5 border-b border-white/[0.08]">
             <Command className="w-4 h-4 text-zinc-400" strokeWidth={1.8} />
-            <span className="text-[#e5e5e5] font-semibold text-[14px] sm:text-[14.5px] tracking-tight">
+            <span className="text-[var(--sx-tx-e5e5e5)] font-semibold text-[14px] sm:text-[14.5px] tracking-tight">
               Automation Handle Applications
             </span>
           </div>
@@ -340,12 +340,12 @@ export function WorkflowBento() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1], delay: 0.1 }}
-          className="rounded-[20px] bg-[#121212] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.5)] hover:border-white/[0.16] transition-colors duration-300"
+          className="rounded-[20px] bg-[var(--sx-bg-121212)] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.5)] hover:border-white/[0.16] transition-colors duration-300"
         >
           {/* Header Row */}
           <div className="flex items-center gap-2.5 px-5 py-3 sm:px-6 sm:py-3.5 border-b border-white/[0.08]">
             <Network className="w-4 h-4 text-zinc-400" strokeWidth={1.8} />
-            <span className="text-[#e5e5e5] font-semibold text-[14px] sm:text-[14.5px] tracking-tight">
+            <span className="text-[var(--sx-tx-e5e5e5)] font-semibold text-[14px] sm:text-[14.5px] tracking-tight">
               Intelligent Job Automation
             </span>
           </div>

@@ -84,7 +84,7 @@ function HeroMockup() {
           transition={{ delay: 0.9, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="w-full"
         >
-          <div className="rounded-[18px] sm:rounded-[20px] bg-[#121214]/95 backdrop-blur-2xl border border-[#27272a] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.92),0_0_0_1px_rgba(255,255,255,0.06)] px-3.5 py-3 sm:px-4 sm:py-3.5 md:px-4.5 md:py-3.5 flex flex-col justify-between min-h-[112px] sm:min-h-[118px] md:min-h-[122px]">
+          <div className="rounded-[18px] sm:rounded-[20px] bg-[color-mix(in_srgb,var(--sx-bg-121214)_95%,transparent)] backdrop-blur-2xl border border-[var(--sx-bd-27272a)] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.92),0_0_0_1px_rgba(255,255,255,0.06)] px-3.5 py-3 sm:px-4 sm:py-3.5 md:px-4.5 md:py-3.5 flex flex-col justify-between min-h-[112px] sm:min-h-[118px] md:min-h-[122px]">
             {/* Top text area with ~14.5px font and cyan cursor */}
             <div className="w-full text-left min-h-[38px] sm:min-h-[42px]">
               <p className="text-zinc-200 text-[13.5px] sm:text-[14px] md:text-[14.5px] font-normal leading-relaxed tracking-normal select-none">
@@ -95,7 +95,7 @@ function HeroMockup() {
 
             {/* Bottom actions row */}
             <div className="flex items-center justify-between mt-2 pt-0.5">
-              <div className="flex items-center gap-0.5 bg-[#19191d] border border-white/[0.08] rounded-[9px] px-1.5 py-0.5 shadow-inner">
+              <div className="flex items-center gap-0.5 bg-[var(--sx-bg-19191d)] border border-white/[0.08] rounded-[9px] px-1.5 py-0.5 shadow-inner">
                 <button
                   type="button"
                   aria-label="Attach file"
@@ -118,7 +118,7 @@ function HeroMockup() {
                 type="button"
                 aria-label="Send prompt"
                 title="Run agent prompt"
-                className="w-[36px] h-[28px] sm:w-[38px] sm:h-[30px] rounded-[9px] sm:rounded-[10px] bg-[#f4f4f5] hover:bg-white active:scale-95 flex items-center justify-center transition-all shadow-md group"
+                className="w-[36px] h-[28px] sm:w-[38px] sm:h-[30px] rounded-[9px] sm:rounded-[10px] bg-[var(--sx-bg-f4f4f5)] hover:bg-white active:scale-95 flex items-center justify-center transition-all shadow-md group"
               >
                 <svg
                   width="13"
@@ -141,11 +141,11 @@ function HeroMockup() {
       </div>
 
       {/* Browser Chrome Mockup: 1,040px Max Width matching Kilo */}
-      <div className="relative w-full rounded-t-[18px] sm:rounded-t-[24px] overflow-hidden border border-white/[0.08] bg-[#0a0a0a] shadow-[0_32px_100px_-20px_rgba(0,0,0,0.95)] z-10 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]">
+      <div className="mockup-fade relative w-full rounded-t-[18px] sm:rounded-t-[24px] overflow-hidden border border-white/[0.08] bg-[var(--sx-bg-0a0a0a)] shadow-[0_32px_100px_-20px_rgba(0,0,0,0.95)] z-10 [mask-image:linear-gradient(to_bottom,black_60%,transparent_100%)]">
         {/* Title bar tightly matched to Kilo */}
-        <div className="flex items-center justify-between px-3.5 sm:px-5 py-2.5 sm:py-3 bg-[#121214] border-b border-white/[0.06]">
+        <div className="flex items-center justify-between px-3.5 sm:px-5 py-2.5 sm:py-3 bg-[var(--sx-bg-121214)] border-b border-white/[0.06]">
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-[#17171a] border border-white/[0.08] rounded-full pl-3 pr-2.5 py-1 min-w-[190px] sm:min-w-[220px]">
+            <div className="flex items-center gap-2 bg-[var(--sx-bg-17171a)] border border-white/[0.08] rounded-full pl-3 pr-2.5 py-1 min-w-[190px] sm:min-w-[220px]">
               <Globe className="w-3 h-3 text-zinc-500 shrink-0" />
               <div className="text-zinc-400 text-xs sm:text-[12.5px] font-sans tracking-normal truncate">
                 https://app.applivo.in/
@@ -164,9 +164,9 @@ function HeroMockup() {
         </div>
 
         {/* Dashboard preview correctly seated */}
-        <div className="bg-[#0a0a0a] relative overflow-hidden">
+        <div className="bg-[var(--sx-bg-0a0a0a)] relative overflow-hidden">
           <MiniDashboardPreview />
-          <div className="absolute inset-x-0 bottom-0 h-[120px] sm:h-[170px] bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/85 to-transparent pointer-events-none z-20" />
+          <div className="mockup-dissolve absolute inset-x-0 bottom-0 h-[120px] sm:h-[170px] bg-gradient-to-t from-[var(--sx-bg-0a0a0a)] via-[color-mix(in_srgb,var(--sx-bg-0a0a0a)_85%,transparent)] to-transparent pointer-events-none z-20" />
         </div>
       </div>
     </motion.div>
@@ -183,29 +183,25 @@ export default function LandingPage() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="landing-typography min-h-screen bg-[#0a0a0a] text-white selection:bg-white/20">
+      <div className="landing-typography min-h-screen bg-[var(--sx-bg-0a0a0a)] text-white selection:bg-white/20">
         <NavBar />
 
         {/* ── HERO ─────────────────────────────────────────── */}
-        <section className="relative min-h-screen flex flex-col items-center justify-center pt-[96px] pb-16 px-4 sm:px-6 md:px-8 overflow-hidden bg-[#0a0a0a]">
+        <section className="relative min-h-screen flex flex-col items-center justify-center pt-[96px] pb-16 px-4 sm:px-6 md:px-8 overflow-hidden bg-[var(--sx-bg-0a0a0a)]">
           {/* Matrix ASCII Rain Background */}
           <KiloagentBackground />
 
           {/* Text Header Container */}
           <div className="relative z-20 w-full max-w-4xl mx-auto text-center mt-6 sm:mt-8">
-            <div className="flex justify-center">
-              <span className="k-badge">
-                <span className="k-badge-tag">New</span>
-                <span className="pr-3">AI agents that apply for you</span>
-              </span>
-            </div>
+            {/* Spacer where the "New" badge used to be: keeps the headline exactly where it was. */}
+            <div aria-hidden="true" className="h-[30px]" />
             <motion.h1
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
               className="k-h1 mt-6 text-center flex flex-col items-center max-w-2xl mx-auto"
             >
-              <span className="text-[#a1a1a1] block">Land Your Dream Job</span>
+              <span className="text-[var(--sx-tx-a1a1a1)] block">Land Your Dream Job</span>
               <span className="text-white font-semibold">With AI Agents</span>
             </motion.h1>
 
@@ -252,7 +248,7 @@ export default function LandingPage() {
         <div id="workflow" className="relative z-10 pt-20 md:pt-28 pb-16 md:pb-24">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 relative z-10">
             <h2 className="k-h2 mb-3.5 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2] max-w-2xl mx-auto">
-              <span className="text-[#a1a1a1] block">Automate Your Job Search —</span>
+              <span className="text-[var(--sx-tx-a1a1a1)] block">Automate Your Job Search —</span>
               <span className="text-white font-semibold block">End to End.</span>
             </h2>
             <p className="k-body max-w-xl mx-auto text-[14.5px] sm:text-[15.5px] text-zinc-400 leading-relaxed">
@@ -278,7 +274,7 @@ export default function LandingPage() {
         <div id="features" className="py-16 md:py-24 relative">
           <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 mb-12 md:mb-14 relative z-10">
             <h2 className="k-h2 mb-3.5 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2] max-w-2xl mx-auto">
-              <span className="text-[#a1a1a1] block">Everything you need</span>
+              <span className="text-[var(--sx-tx-a1a1a1)] block">Everything you need</span>
               <span className="text-white font-semibold block">to scale.</span>
             </h2>
             <p className="k-body max-w-2xl mx-auto text-[14.5px] sm:text-[15.5px] text-zinc-400 leading-relaxed">

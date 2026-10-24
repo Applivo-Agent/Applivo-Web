@@ -164,9 +164,9 @@ export function SettingsMobileSelect({ activeTab, onTabChange }: SettingsSidebar
         className="w-full h-10 px-3 pr-9 rounded-lg bg-[var(--app-card)] border border-[var(--app-border-strong)] text-[13px] font-medium text-white focus:outline-none focus:border-white/30 appearance-none cursor-pointer"
       >
         {SETTINGS_GROUPS.map((group) => (
-          <optgroup key={group.name} label={group.name} className="bg-[#171717] text-zinc-400">
+          <optgroup key={group.name} label={group.name} className="bg-[var(--sx-bg-171717)] text-zinc-400">
             {group.items.map((item) => (
-              <option key={item.id} value={item.id} className="text-white bg-[#171717]">
+              <option key={item.id} value={item.id} className="text-white bg-[var(--sx-bg-171717)]">
                 {group.name} &rsaquo; {item.label}
               </option>
             ))}

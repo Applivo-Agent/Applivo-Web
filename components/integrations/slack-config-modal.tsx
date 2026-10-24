@@ -111,7 +111,7 @@ export function SlackConfigModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[460px] bg-[#121215] border border-[var(--app-border-strong)] text-white p-6 shadow-2xl">
+      <DialogContent className="sm:max-w-[460px] bg-[var(--sx-bg-121215)] border border-[var(--app-border-strong)] text-white p-6 shadow-2xl">
         <DialogHeader className="space-y-1.5">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-[var(--app-nested)] border border-[var(--app-border-strong)] flex items-center justify-center p-1.5 shrink-0">

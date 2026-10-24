@@ -55,7 +55,7 @@ export function ApplivoLoader({
   // Root wrapper layout based on variant
   const containerClasses =
     variant === "fullscreen"
-      ? "fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#09090b] text-white px-4 overflow-hidden select-none"
+      ? "fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--sx-bg-09090b)] text-white px-4 overflow-hidden select-none"
       : variant === "compact"
       ? "w-full flex flex-col items-center justify-center py-8 text-white px-3 select-none"
       : "w-full flex-1 flex flex-col items-center justify-center py-20 sm:py-28 min-h-[380px] text-white px-4 select-none";

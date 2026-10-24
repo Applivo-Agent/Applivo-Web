@@ -78,7 +78,7 @@ export function DocsSearch({ open, onClose }: DocsSearchProps) {
             aria-controls="docs-search-results"
             className="h-12 flex-1 bg-transparent text-[14.5px] text-[var(--docs-text)] outline-none placeholder:text-[var(--docs-muted)]"
           />
-          <kbd className="rounded border border-[var(--docs-border)] bg-[#1c1c1c] px-1.5 py-0.5 text-[11px] font-mono text-[var(--docs-muted)]">
+          <kbd className="rounded border border-[var(--docs-border)] bg-[var(--sx-bg-1c1c1c)] px-1.5 py-0.5 text-[11px] font-mono text-[var(--docs-muted)]">
             Esc
           </kbd>
         </div>

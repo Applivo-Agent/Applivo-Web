@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 /* ─── NAV LINKS ──────────────────────────────────────────── */
 const navLinks = [
@@ -79,6 +80,7 @@ export function NavBar({ sidebarOffset = false }: NavBarProps) {
 
         {/* CTA — right */}
         <div className="flex items-center gap-3 shrink-0">
+          <ThemeToggle />
           {!isLoading && isAuthenticated ? (
             <>
               <button
@@ -120,7 +122,7 @@ export function NavBar({ sidebarOffset = false }: NavBarProps) {
       </div>
 
       {menuOpen && (
-        <nav id="mobile-nav" aria-label="Mobile" className="md:hidden border-t border-white/[0.06] bg-[#0a0a0a]/95 backdrop-blur-xl">
+        <nav id="mobile-nav" aria-label="Mobile" className="md:hidden border-t border-white/[0.06] bg-[color-mix(in_srgb,var(--sx-bg-0a0a0a)_95%,transparent)] backdrop-blur-xl">
           <div className="k-container flex flex-col py-3">
             {navLinks.map((l) => (
               <Link key={l.label} href={l.href} onClick={() => setMenuOpen(false)} className="flex h-11 items-center text-[length:var(--fs-heading)] text-zinc-300 hover:text-white">

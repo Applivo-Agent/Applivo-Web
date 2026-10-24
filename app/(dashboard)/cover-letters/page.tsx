@@ -115,7 +115,7 @@ export default function CoverLettersPage() {
           <div className="bg-[var(--app-card)] border border-[var(--app-border-strong)] p-6 w-full max-w-md rounded-lg shadow-2xl">
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-semibold text-[16px] text-white">Generate Cover Letter</h3>
-              <button onClick={() => setShowGenerate(false)} className="h-8 w-8 flex items-center justify-center rounded-md bg-[#171717] border border-[var(--app-border-strong)] text-zinc-400 hover:text-white transition-colors">
+              <button onClick={() => setShowGenerate(false)} className="h-8 w-8 flex items-center justify-center rounded-md bg-[var(--sx-bg-171717)] border border-[var(--app-border-strong)] text-zinc-400 hover:text-white transition-colors">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -216,7 +216,7 @@ export default function CoverLettersPage() {
                           <button className="text-[12px] font-semibold text-white hover:underline flex items-center gap-1">
                             View Letter <ArrowRight className="w-3.5 h-3.5" />
                           </button>
-                          <button className="h-7 px-2.5 bg-[#171717] hover:bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-md text-[11px] font-medium text-white flex items-center gap-1 transition-colors">
+                          <button className="h-7 px-2.5 bg-[var(--sx-bg-171717)] hover:bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-md text-[11px] font-medium text-white flex items-center gap-1 transition-colors">
                             <Download className="w-3 h-3" /> PDF
                           </button>
                         </>

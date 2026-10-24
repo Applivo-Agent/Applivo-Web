@@ -162,7 +162,7 @@ export default function SecurityPage() {
                 {sessions.map((session) => (
                   <div key={session.id} className="flex items-center justify-between p-3.5 rounded-lg bg-transparent border border-[var(--app-border-strong)]">
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-8 h-8 rounded-lg bg-[#202025] border border-[var(--app-border-strong)] flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-[var(--sx-bg-202025)] border border-[var(--app-border-strong)] flex items-center justify-center shrink-0">
                         {getDeviceIcon(session.device_type)}
                       </div>
                       <div className="min-w-0">
@@ -199,7 +199,7 @@ export default function SecurityPage() {
                 <button
                   onClick={handleSignOutOthers}
                   disabled={revokeAllMutation.isPending}
-                  className="h-8 px-3 bg-[#171717] hover:bg-[var(--app-card)] text-white border border-[var(--app-border-strong)] text-[13px] font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="h-8 px-3 bg-[var(--sx-bg-171717)] hover:bg-[var(--app-card)] text-white border border-[var(--app-border-strong)] text-[13px] font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {revokeAllMutation.isPending ? "Signing out..." : "Sign out of all other sessions"}
                 </button>

@@ -8,20 +8,20 @@ import { BLOG_ARTICLES } from "@/lib/blog-data";
 
 export default function BlogIndexPage() {
   return (
-    <div className="min-h-screen bg-[#090909] text-[#F5F5F5] flex flex-col justify-between selection:bg-white/20">
+    <div className="min-h-screen bg-[var(--sx-bg-090909)] text-[var(--sx-tx-f5f5f5)] flex flex-col justify-between selection:bg-white/20">
       <NavBar />
 
       <main className="pt-24 sm:pt-28 md:pt-32 pb-20 px-4 sm:px-6 md:px-8 relative z-10 flex flex-col items-center flex-1">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
-          <span className="text-[11px] sm:text-[11.5px] font-medium text-[#71717A] uppercase tracking-[0.15em] block mb-3">
+          <span className="text-[11px] sm:text-[11.5px] font-medium text-[var(--sx-tx-71717a)] uppercase tracking-[0.15em] block mb-3">
             INSIGHTS & GUIDES
           </span>
           <h1 className="text-[32px] sm:text-[36px] md:text-[40px] font-semibold tracking-tight mb-3 leading-[1.2]">
-            <span className="text-[#a1a1a1] block">Ideas for a</span>
+            <span className="text-[var(--sx-tx-a1a1a1)] block">Ideas for a</span>
             <span className="text-white font-semibold block">smarter job search</span>
           </h1>
-          <p className="text-[14px] sm:text-[14.5px] text-[#A1A1AA] leading-[1.6] max-w-lg mx-auto">
+          <p className="text-[14px] sm:text-[14.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.6] max-w-lg mx-auto">
             Practical guides, career insights, and AI-powered strategies to help you discover opportunities and move forward with confidence.
           </p>
         </div>
@@ -32,10 +32,10 @@ export default function BlogIndexPage() {
             <Link
               key={article.slug}
               href={`/blog/${article.slug}`}
-              className="group rounded-[12px] bg-[#111111] border border-[#252525] hover:border-[#383838] p-4 sm:p-[18px] lg:p-[19px] flex flex-col justify-between transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40 shadow-sm hover:shadow-[0_4px_24px_rgba(0,0,0,0.5)]"
+              className="group rounded-[12px] bg-[var(--sx-bg-111111)] border border-[var(--sx-bd-252525)] hover:border-[var(--sx-bd-383838)] p-4 sm:p-[18px] lg:p-[19px] flex flex-col justify-between transition-all duration-200 overflow-hidden focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/40 shadow-sm hover:shadow-[0_4px_24px_rgba(0,0,0,0.5)]"
             >
               <div className="flex flex-col">
-                <div className="relative w-full aspect-[16/9] max-h-[168px] rounded-[8px] overflow-hidden bg-[#181818] mb-3.5">
+                <div className="relative w-full aspect-[16/9] max-h-[168px] rounded-[8px] overflow-hidden bg-[var(--sx-bg-181818)] mb-3.5">
                   <Image
                     src={article.coverImage}
                     alt={article.altText}
@@ -45,22 +45,22 @@ export default function BlogIndexPage() {
                   />
                 </div>
 
-                <div className="flex items-center gap-2 mb-2 text-[11.5px] text-[#71717A] font-medium">
+                <div className="flex items-center gap-2 mb-2 text-[11.5px] text-[var(--sx-tx-71717a)] font-medium">
                   <span>{article.category}</span>
-                  <span className="text-[#3F3F46]">·</span>
+                  <span className="text-[var(--sx-tx-3f3f46)]">·</span>
                   <span>{article.readingTime}</span>
                 </div>
 
-                <h2 className="text-[17.5px] sm:text-[18px] font-medium text-[#F5F5F5] leading-[1.3] mb-2 group-hover:text-white transition-colors">
+                <h2 className="text-[17.5px] sm:text-[18px] font-medium text-[var(--sx-tx-f5f5f5)] leading-[1.3] mb-2 group-hover:text-white transition-colors">
                   {article.title}
                 </h2>
 
-                <p className="text-[13px] sm:text-[13.5px] text-[#A1A1AA] leading-[1.55] font-normal line-clamp-3 mb-4">
+                <p className="text-[13px] sm:text-[13.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.55] font-normal line-clamp-3 mb-4">
                   {article.description}
                 </p>
               </div>
 
-              <div className="mt-auto pt-2 flex items-center gap-1.5 text-[12.5px] sm:text-[13px] font-medium text-[#E4E4E7] group-hover:text-white transition-colors">
+              <div className="mt-auto pt-2 flex items-center gap-1.5 text-[12.5px] sm:text-[13px] font-medium text-[var(--sx-tx-e4e4e7)] group-hover:text-white transition-colors">
                 <span>Read article</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
               </div>

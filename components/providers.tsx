@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/lib/auth";
 import { ExtensionProvider } from "@/lib/extension";
 import { SubscriptionProvider } from "@/lib/subscription";
-import { Toaster } from "sonner";
+import { AppThemeProvider, ThemedToaster } from "@/lib/theme-client";
 import { useState } from "react";
 
 import { AgentStatusProvider } from "@/lib/agent-status";
@@ -25,25 +25,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AppThemeProvider>
       <AuthProvider>
         <SubscriptionProvider>
           <ExtensionProvider>
           <AgentStatusProvider>
             {children}
-            <Toaster
-              position="top-right"
-              toastOptions={{
-                style: {
-                  background: "hsl(220 13% 8%)",
-                  color: "hsl(210 40% 98%)",
-                  border: "1px solid hsl(220 13% 14%)",
-                },
-              }}
-            />
+            <ThemedToaster />
           </AgentStatusProvider>
           </ExtensionProvider>
         </SubscriptionProvider>
       </AuthProvider>
+      </AppThemeProvider>
     </QueryClientProvider>
   );
 }

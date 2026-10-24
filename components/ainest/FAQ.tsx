@@ -72,19 +72,19 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      className="relative z-10 w-full py-14 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 bg-[#090909] overflow-hidden border-t border-white/[0.04]"
+      className="relative z-10 w-full py-14 sm:py-16 md:py-20 px-4 sm:px-6 md:px-8 bg-[var(--sx-bg-090909)] overflow-hidden border-t border-white/[0.04]"
       aria-label="Frequently Asked Questions"
     >
       {/* ─── Centered Header ─── */}
       <div className="max-w-2xl mx-auto text-center mb-8 sm:mb-10">
-        <span className="text-[10px] sm:text-[11px] font-medium text-[#71717A] uppercase tracking-[0.15em] block mb-2.5">
+        <span className="text-[10px] sm:text-[11px] font-medium text-[var(--sx-tx-71717a)] uppercase tracking-[0.15em] block mb-2.5">
           FAQ
         </span>
         <h2 className="text-[26px] sm:text-[30px] md:text-[32px] font-semibold tracking-tight mb-2.5 leading-[1.2]">
-          <span className="text-[#a1a1a1] block">Have Questions?</span>
+          <span className="text-[var(--sx-tx-a1a1a1)] block">Have Questions?</span>
           <span className="text-white font-semibold block">We&apos;ve Got Answers.</span>
         </h2>
-        <p className="text-[13px] sm:text-[13.5px] text-[#A1A1AA] leading-[1.6] max-w-md mx-auto">
+        <p className="text-[13px] sm:text-[13.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.6] max-w-md mx-auto">
           Everything you need to know about using Applivo to simplify your job search.
         </p>
       </div>
@@ -99,7 +99,7 @@ export function FAQ() {
           return (
             <div
               key={idx}
-              className="rounded-[11px] border border-[#262626] bg-[#141414] hover:border-[#333333] transition-colors duration-150 overflow-hidden"
+              className="rounded-[11px] border border-[var(--sx-bd-262626)] bg-[var(--sx-bg-141414)] hover:border-[var(--sx-bd-333333)] transition-colors duration-150 overflow-hidden"
             >
               <button
                 type="button"
@@ -109,14 +109,14 @@ export function FAQ() {
                 onClick={() => toggle(idx)}
                 className="w-full min-h-[56px] flex items-center justify-between text-left px-[18px] py-[16px] gap-4 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/20"
               >
-                <span className="text-[14.5px] font-medium text-[#F5F5F5] leading-[1.5]">
+                <span className="text-[14.5px] font-medium text-[var(--sx-tx-f5f5f5)] leading-[1.5]">
                   {item.question}
                 </span>
-                <span className="shrink-0 flex items-center justify-center text-[#71717A] ml-2">
+                <span className="shrink-0 flex items-center justify-center text-[var(--sx-tx-71717a)] ml-2">
                   {isOpen ? (
-                    <Minus className="w-4 h-4 text-[#A1A1AA]" aria-hidden="true" />
+                    <Minus className="w-4 h-4 text-[var(--sx-tx-a1a1aa)]" aria-hidden="true" />
                   ) : (
-                    <Plus className="w-4 h-4 text-[#71717A]" aria-hidden="true" />
+                    <Plus className="w-4 h-4 text-[var(--sx-tx-71717a)]" aria-hidden="true" />
                   )}
                 </span>
               </button>
@@ -131,7 +131,7 @@ export function FAQ() {
                 )}
               >
                 <div className="overflow-hidden">
-                  <div className="px-[18px] pb-[18px] pt-1 text-[13px] sm:text-[13.5px] text-[#A1A1AA] leading-[1.6] font-normal">
+                  <div className="px-[18px] pb-[18px] pt-1 text-[13px] sm:text-[13.5px] text-[var(--sx-tx-a1a1aa)] leading-[1.6] font-normal">
                     {item.answer}
                   </div>
                 </div>

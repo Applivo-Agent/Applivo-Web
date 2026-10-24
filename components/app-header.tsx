@@ -1,5 +1,6 @@
 "use client";
 
+import { ThemeToggle } from "@/components/theme-toggle";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -171,6 +172,8 @@ export function AppHeader() {
           </Link>
         )}
 
+        <ThemeToggle />
+
         <div ref={wrapRef} className="relative ml-1" onKeyDown={onMenuKey}>
           <button
             ref={triggerRef}
@@ -180,8 +183,8 @@ export function AppHeader() {
             aria-label="Account menu"
             onClick={() => setOpen((o) => !o)}
             className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-full bg-[#2a2a2c] text-[13px] font-semibold text-white outline-none transition-colors",
-              "hover:bg-[#343437] focus-visible:ring-2 focus-visible:ring-white/40",
+              "flex h-8 w-8 items-center justify-center rounded-full bg-[var(--app-active)] text-[13px] font-semibold text-white outline-none transition-colors",
+              "hover:bg-[var(--app-border-strong)] focus-visible:ring-2 focus-visible:ring-[var(--focus-ring)]",
               open && "ring-1 ring-white/20",
             )}
           >

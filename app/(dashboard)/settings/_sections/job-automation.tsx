@@ -39,7 +39,7 @@ export function JobAutomationSection() {
       >
         <div className="flex items-center gap-3 p-4 bg-[var(--app-card)] border border-[var(--app-border-strong)] rounded-xl">
           <div className={cn("w-2 h-2 rounded-full", autonomousActive ? "bg-zinc-400 animate-pulse" : "bg-zinc-600")} />
-          <p className="text-sm text-[#A1A1AA]">
+          <p className="text-sm text-[var(--sx-tx-a1a1aa)]">
             {autonomousActive
               ? "Agent is running autonomously. All configured automations are active."
               : "Agent is in manual mode. You must trigger each action manually."}
@@ -145,7 +145,7 @@ export function JobAutomationSection() {
                 {localThreshold}%
               </span>
             </div>
-            <p className="text-xs text-[#A1A1AA] mb-3">Jobs scoring above this threshold are auto-approved if manual approval is off</p>
+            <p className="text-xs text-[var(--sx-tx-a1a1aa)] mb-3">Jobs scoring above this threshold are auto-approved if manual approval is off</p>
             <input
               type="range"
               min={0}
@@ -156,7 +156,7 @@ export function JobAutomationSection() {
               onTouchEnd={() => save({ auto_approval_threshold: localThreshold })}
               className="w-full h-2 bg-[var(--app-inset)] rounded-full accent-white cursor-pointer"
             />
-            <div className="flex justify-between mt-2 text-[10px] text-[#A1A1AA] uppercase tracking-wider">
+            <div className="flex justify-between mt-2 text-[10px] text-[var(--sx-tx-a1a1aa)] uppercase tracking-wider">
               <span>Any match</span>
               <span>Perfect match</span>
             </div>
@@ -182,7 +182,7 @@ export function JobAutomationSection() {
               className={`p-3 rounded-xl border text-center transition-all ${
                 settings.scheduleInterval === opt.value
                   ? "bg-white text-black border-white shadow-lg"
-                  : "bg-[var(--app-card)] text-[#A1A1AA] border-[var(--app-border-strong)] hover:border-white/30"
+                  : "bg-[var(--app-card)] text-[var(--sx-tx-a1a1aa)] border-[var(--app-border-strong)] hover:border-white/30"
               }`}
             >
               <p className="text-sm font-bold">{opt.label}</p>

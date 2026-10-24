@@ -108,13 +108,13 @@ export function RunPanel({
           <span className="text-[14px] font-medium text-white">
             Application Run Status
           </span>
-          <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-[#181818] border border-[#262626] text-[#737373]">
+          <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-[var(--sx-bg-181818)] border border-[var(--sx-bd-262626)] text-[var(--sx-tx-737373)]">
             Dismissed
           </span>
         </div>
         <button
           onClick={() => setDismissed(null)}
-          className="h-7 px-2.5 rounded bg-[#181818] hover:bg-[#202020] border border-[#262626] text-[12px] font-medium text-[#929292] hover:text-[#EDEDED] transition-colors"
+          className="h-7 px-2.5 rounded bg-[var(--sx-bg-181818)] hover:bg-[var(--sx-bg-202020)] border border-[var(--sx-bd-262626)] text-[12px] font-medium text-[var(--sx-tx-929292)] hover:text-[var(--sx-tx-ededed)] transition-colors"
         >
           Show run details
         </button>
@@ -124,26 +124,26 @@ export function RunPanel({
 
   // Determine overall status label
   const getOverallStatus = () => {
-    if (!run) return { label: "Idle", style: "bg-[#181818] border-[#262626] text-[#737373]" };
+    if (!run) return { label: "Idle", style: "bg-[var(--sx-bg-181818)] border-[var(--sx-bd-262626)] text-[var(--sx-tx-737373)]" };
     if (run.status === "active") {
       if (needsAttentionCount > 0) {
-        return { label: "Needs attention", style: "bg-[#1F1B16] border-[#3A2E20] text-[#D4A574]" };
+        return { label: "Needs attention", style: "bg-[var(--sx-bg-1f1b16)] border-[var(--sx-bd-3a2e20)] text-[var(--sx-tx-d4a574)]" };
       }
-      return { label: "Running", style: "bg-[#181818] border-[#383838] text-white" };
+      return { label: "Running", style: "bg-[var(--sx-bg-181818)] border-[var(--sx-bd-383838)] text-white" };
     }
     if (run.status === "cancelled") {
-      return { label: "Stopped", style: "bg-[#181818] border-[#2A2A2A] text-[#929292]" };
+      return { label: "Stopped", style: "bg-[var(--sx-bg-181818)] border-[var(--sx-bd-2a2a2a)] text-[var(--sx-tx-929292)]" };
     }
     if (run.status === "completed") {
       if (needsAttentionCount > 0) {
-        return { label: "Needs attention", style: "bg-[#1F1B16] border-[#3A2E20] text-[#D4A574]" };
+        return { label: "Needs attention", style: "bg-[var(--sx-bg-1f1b16)] border-[var(--sx-bd-3a2e20)] text-[var(--sx-tx-d4a574)]" };
       }
       if (failedCount > 0 && submittedCount === 0) {
-        return { label: "Failed", style: "bg-[#1E1414] border-[#352020] text-[#D47474]" };
+        return { label: "Failed", style: "bg-[var(--sx-bg-1e1414)] border-[var(--sx-bd-352020)] text-[var(--sx-tx-d47474)]" };
       }
-      return { label: "Completed", style: "bg-[#181818] border-[#2A2A2A] text-[#EDEDED]" };
+      return { label: "Completed", style: "bg-[var(--sx-bg-181818)] border-[var(--sx-bd-2a2a2a)] text-[var(--sx-tx-ededed)]" };
     }
-    return { label: "Idle", style: "bg-[#181818] border-[#262626] text-[#737373]" };
+    return { label: "Idle", style: "bg-[var(--sx-bg-181818)] border-[var(--sx-bd-262626)] text-[var(--sx-tx-737373)]" };
   };
 
   const statusInfo = getOverallStatus();
@@ -252,7 +252,7 @@ export function RunPanel({
           {run && run.status === "active" ? (
             <button
               onClick={() => void handleStop()}
-              className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded bg-[#181818] hover:bg-[#202020] border border-[#262626] text-[12px] font-medium text-[#EDEDED] transition-colors"
+              className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded bg-[var(--sx-bg-181818)] hover:bg-[var(--sx-bg-202020)] border border-[var(--sx-bd-262626)] text-[12px] font-medium text-[var(--sx-tx-ededed)] transition-colors"
             >
               <Square className="h-3 w-3" />
               <span>Stop run</span>
@@ -260,7 +260,7 @@ export function RunPanel({
           ) : run ? (
             <button
               onClick={() => setDismissed(run.id)}
-              className="h-7 px-2.5 rounded bg-[#181818] hover:bg-[#202020] border border-[#262626] text-[12px] font-medium text-[#929292] hover:text-[#EDEDED] transition-colors"
+              className="h-7 px-2.5 rounded bg-[var(--sx-bg-181818)] hover:bg-[var(--sx-bg-202020)] border border-[var(--sx-bd-262626)] text-[12px] font-medium text-[var(--sx-tx-929292)] hover:text-[var(--sx-tx-ededed)] transition-colors"
             >
               Dismiss
             </button>
@@ -268,23 +268,23 @@ export function RunPanel({
 
           <Link
             href="/applications"
-            className="inline-flex items-center gap-1 h-7 px-2.5 rounded bg-[#181818] hover:bg-[#202020] border border-[#262626] text-[12px] font-medium text-[#929292] hover:text-[#EDEDED] transition-colors"
+            className="inline-flex items-center gap-1 h-7 px-2.5 rounded bg-[var(--sx-bg-181818)] hover:bg-[var(--sx-bg-202020)] border border-[var(--sx-bd-262626)] text-[12px] font-medium text-[var(--sx-tx-929292)] hover:text-[var(--sx-tx-ededed)] transition-colors"
           >
             <span>View details</span>
-            <ChevronRight className="w-3 h-3 text-[#737373]" />
+            <ChevronRight className="w-3 h-3 text-[var(--sx-tx-737373)]" />
           </Link>
         </div>
       </div>
 
       {/* ── Summary Counts & Timestamp ────────────────────────────── */}
       <div>
-        <p className="text-[13px] font-medium text-[#EDEDED]">
+        <p className="text-[13px] font-medium text-[var(--sx-tx-ededed)]">
           {run
             ? `${submittedCount} submitted · ${needsAttentionCount} need attention · ${failedCount} failed · ${skippedCount} skipped · ${remainingCount} remaining`
             : "No active application runs. Queue matching applications and click Deploy to start."}
         </p>
         {timestampText && (
-          <p className="text-[12px] text-[#737373] mt-0.5">
+          <p className="text-[12px] text-[var(--sx-tx-737373)] mt-0.5">
             {timestampText}
           </p>
         )}
@@ -298,25 +298,25 @@ export function RunPanel({
             className="bg-[var(--app-card)] border border-[var(--app-border)] rounded-md p-3 flex flex-col justify-between"
           >
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[12px] font-medium text-[#EDEDED]">
+              <span className="text-[12px] font-medium text-[var(--sx-tx-ededed)]">
                 {st.name}
               </span>
               <span
                 className={cn(
                   "px-1.5 py-0.5 rounded text-[11px] font-medium border",
                   st.status === "Running"
-                    ? "bg-[#1F1F1F] border-[#383838] text-white animate-pulse"
+                    ? "bg-[var(--sx-bg-1f1f1f)] border-[var(--sx-bd-383838)] text-white animate-pulse"
                     : st.status === "Completed"
-                    ? "bg-[var(--app-card)] border-[#262626] text-[#B5B5B5]"
+                    ? "bg-[var(--app-card)] border-[var(--sx-bd-262626)] text-[var(--sx-tx-b5b5b5)]"
                     : st.status === "Stopped"
-                    ? "bg-[var(--app-card)] border-[#2A2A2A] text-[#929292]"
-                    : "bg-[var(--app-card)] border-[#222222] text-[#737373]"
+                    ? "bg-[var(--app-card)] border-[var(--sx-bd-2a2a2a)] text-[var(--sx-tx-929292)]"
+                    : "bg-[var(--app-card)] border-[var(--sx-bd-222222)] text-[var(--sx-tx-737373)]"
                 )}
               >
                 {st.status}
               </span>
             </div>
-            <p className="text-[12px] text-[#737373] mt-2 truncate">
+            <p className="text-[12px] text-[var(--sx-tx-737373)] mt-2 truncate">
               {st.detail}
             </p>
           </div>
@@ -326,34 +326,34 @@ export function RunPanel({
       {/* ── Application Results List ──────────────────────────────── */}
       {items.length > 0 && (
         <div className="pt-1 space-y-2">
-          <div className="divide-y divide-[#1C1C1C] border border-[#222222] rounded-md overflow-hidden bg-[var(--app-card)]">
+          <div className="divide-y divide-[var(--sx-bd-1c1c1c)] border border-[var(--sx-bd-222222)] rounded-md overflow-hidden bg-[var(--app-card)]">
             {visibleItems.map((it) => {
               const url = OPENABLE.includes(it.stage) ? safeUrl(it.job_url) : null;
               return (
                 <div
                   key={it.application_id}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-3.5 py-2.5 hover:bg-[#151515] transition-colors"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-3.5 py-2.5 hover:bg-[var(--sx-bg-151515)] transition-colors"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[13px] font-medium text-[#EDEDED] truncate">
+                      <span className="text-[13px] font-medium text-[var(--sx-tx-ededed)] truncate">
                         {it.title}
                       </span>
                       {it.company && (
-                        <span className="text-[12px] text-[#737373] truncate">
+                        <span className="text-[12px] text-[var(--sx-tx-737373)] truncate">
                           · {it.company}
                         </span>
                       )}
                     </div>
                     {it.detail && (
-                      <p className="text-[12px] text-[#929292] mt-0.5 leading-snug">
+                      <p className="text-[12px] text-[var(--sx-tx-929292)] mt-0.5 leading-snug">
                         {it.detail}
                       </p>
                     )}
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
-                    <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-[#1A1A1A] text-[#929292] border border-[#262626]">
+                    <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-[var(--sx-bg-1a1a1a)] text-[var(--sx-tx-929292)] border border-[var(--sx-bd-262626)]">
                       {LABEL[it.stage] || it.stage}
                     </span>
                     {url && (
@@ -361,7 +361,7 @@ export function RunPanel({
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-1 rounded text-[#737373] hover:text-[#EDEDED] hover:bg-[#222222] transition-colors"
+                        className="p-1 rounded text-[var(--sx-tx-737373)] hover:text-[var(--sx-tx-ededed)] hover:bg-[var(--sx-bg-222222)] transition-colors"
                         title={`Open ${it.title} on Internshala`}
                         aria-label={`Open ${it.title} on Internshala`}
                       >
@@ -377,7 +377,7 @@ export function RunPanel({
           {items.length > INITIAL_LIMIT && (
             <button
               onClick={() => setShowAll((prev) => !prev)}
-              className="inline-flex items-center gap-1 text-[12px] font-medium text-[#929292] hover:text-[#EDEDED] transition-colors pt-1"
+              className="inline-flex items-center gap-1 text-[12px] font-medium text-[var(--sx-tx-929292)] hover:text-[var(--sx-tx-ededed)] transition-colors pt-1"
             >
               <span>
                 {showAll

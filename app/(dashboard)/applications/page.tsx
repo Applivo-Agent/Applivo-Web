@@ -378,7 +378,7 @@ export default function ApplicationsPage() {
             <button
               onClick={() => setIsExportMenuOpen((prev) => !prev)}
               disabled={isExporting}
-              className="h-8 px-2.5 bg-[var(--app-card)] hover:bg-[#202022] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium transition-colors border border-[var(--app-border-strong)] flex items-center gap-1.5 disabled:opacity-50"
+              className="h-8 px-2.5 bg-[var(--app-card)] hover:bg-[var(--sx-bg-202022)] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium transition-colors border border-[var(--app-border-strong)] flex items-center gap-1.5 disabled:opacity-50"
               title="Export applications to CSV"
             >
               {isExporting ? (
@@ -433,7 +433,7 @@ export default function ApplicationsPage() {
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="h-8 px-2.5 bg-[var(--app-card)] hover:bg-[#202022] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium transition-colors border border-[var(--app-border-strong)] flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="h-8 px-2.5 bg-[var(--app-card)] hover:bg-[var(--sx-bg-202022)] text-zinc-300 hover:text-white rounded-md text-[12px] font-medium transition-colors border border-[var(--app-border-strong)] flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
             title={isRefreshing ? "Refreshing..." : "Refresh"}
           >
             <RefreshCw className={cn("w-3.5 h-3.5 text-zinc-400", isRefreshing && "animate-spin text-zinc-200")} />
@@ -481,7 +481,7 @@ export default function ApplicationsPage() {
                 "px-2.5 py-1 rounded-md border flex items-center gap-1.5 shrink-0 transition-colors",
                 isActive
                   ? "bg-zinc-800 border-zinc-600 text-white font-medium"
-                  : "bg-[var(--app-card)] hover:bg-[#202022] border-[var(--app-border-strong)] text-zinc-400 hover:text-zinc-200"
+                  : "bg-[var(--app-card)] hover:bg-[var(--sx-bg-202022)] border-[var(--app-border-strong)] text-zinc-400 hover:text-zinc-200"
               )}
             >
               <span>{pill.label}</span>
@@ -532,15 +532,15 @@ export default function ApplicationsPage() {
               }}
               className="h-8 pl-3 pr-7 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-zinc-300 focus:outline-none focus:border-zinc-500 transition-colors cursor-pointer appearance-none"
             >
-              <option value="" className="bg-[#181818] text-white">All Statuses</option>
-              <option value="pending_approval" className="bg-[#181818] text-white">Pending Approval</option>
-              <option value="queued" className="bg-[#181818] text-white">Queued</option>
-              <option value="applying" className="bg-[#181818] text-white">Applying</option>
-              <option value="applied" className="bg-[#181818] text-white">Applied</option>
-              <option value="interview" className="bg-[#181818] text-white">Interview</option>
-              <option value="offer" className="bg-[#181818] text-white">Offers</option>
-              <option value="rejected" className="bg-[#181818] text-white">Rejected</option>
-              <option value="failed" className="bg-[#181818] text-white">Failed / Skipped</option>
+              <option value="" className="bg-[var(--sx-bg-181818)] text-white">All Statuses</option>
+              <option value="pending_approval" className="bg-[var(--sx-bg-181818)] text-white">Pending Approval</option>
+              <option value="queued" className="bg-[var(--sx-bg-181818)] text-white">Queued</option>
+              <option value="applying" className="bg-[var(--sx-bg-181818)] text-white">Applying</option>
+              <option value="applied" className="bg-[var(--sx-bg-181818)] text-white">Applied</option>
+              <option value="interview" className="bg-[var(--sx-bg-181818)] text-white">Interview</option>
+              <option value="offer" className="bg-[var(--sx-bg-181818)] text-white">Offers</option>
+              <option value="rejected" className="bg-[var(--sx-bg-181818)] text-white">Rejected</option>
+              <option value="failed" className="bg-[var(--sx-bg-181818)] text-white">Failed / Skipped</option>
             </select>
             <ChevronDown className="w-3.5 h-3.5 text-zinc-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
@@ -549,7 +549,7 @@ export default function ApplicationsPage() {
           {activeFilterCount > 0 && (
             <button
               onClick={handleClearFilters}
-              className="h-8 px-2.5 flex items-center gap-1.5 rounded-md text-[12px] text-zinc-400 hover:text-white transition-colors border border-[var(--app-border-strong)] rounded-md bg-[var(--app-nested)] hover:bg-[#202022]"
+              className="h-8 px-2.5 flex items-center gap-1.5 rounded-md text-[12px] text-zinc-400 hover:text-white transition-colors border border-[var(--app-border-strong)] rounded-md bg-[var(--app-nested)] hover:bg-[var(--sx-bg-202022)]"
             >
               <X className="w-3.5 h-3.5" />
               <span>Clear ({activeFilterCount})</span>
@@ -564,11 +564,11 @@ export default function ApplicationsPage() {
             onChange={(e) => setSortBy(e.target.value)}
             className="h-8 pl-3 pr-7 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-zinc-300 focus:outline-none focus:border-zinc-500 transition-colors cursor-pointer appearance-none"
           >
-            <option value="newest" className="bg-[#181818] text-white">Newest First</option>
-            <option value="oldest" className="bg-[#181818] text-white">Oldest First</option>
-            <option value="updated" className="bg-[#181818] text-white">Recently Updated</option>
-            <option value="match_score" className="bg-[#181818] text-white">Highest Match Score</option>
-            <option value="applied_date" className="bg-[#181818] text-white">Applied Date</option>
+            <option value="newest" className="bg-[var(--sx-bg-181818)] text-white">Newest First</option>
+            <option value="oldest" className="bg-[var(--sx-bg-181818)] text-white">Oldest First</option>
+            <option value="updated" className="bg-[var(--sx-bg-181818)] text-white">Recently Updated</option>
+            <option value="match_score" className="bg-[var(--sx-bg-181818)] text-white">Highest Match Score</option>
+            <option value="applied_date" className="bg-[var(--sx-bg-181818)] text-white">Applied Date</option>
           </select>
           <ChevronDown className="w-3.5 h-3.5 text-zinc-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
@@ -598,7 +598,7 @@ export default function ApplicationsPage() {
                 }
               }}
               defaultValue=""
-              className="h-7 px-2 bg-[var(--app-nested)] hover:bg-[#202022] border border-[var(--app-border-strong)] rounded text-[12px] text-zinc-200 focus:outline-none"
+              className="h-7 px-2 bg-[var(--app-nested)] hover:bg-[var(--sx-bg-202022)] border border-[var(--app-border-strong)] rounded text-[12px] text-zinc-200 focus:outline-none"
             >
               <option value="" disabled>
                 Move Status...
@@ -613,7 +613,7 @@ export default function ApplicationsPage() {
             {/* Bulk Export */}
             <button
               onClick={() => handleExport("selected")}
-              className="h-7 px-2.5 flex items-center gap-1 rounded bg-[var(--app-nested)] hover:bg-[#202022] border border-[var(--app-border-strong)] text-[12px] text-zinc-200"
+              className="h-7 px-2.5 flex items-center gap-1 rounded bg-[var(--app-nested)] hover:bg-[var(--sx-bg-202022)] border border-[var(--app-border-strong)] text-[12px] text-zinc-200"
             >
               <Download className="w-3.5 h-3.5 text-zinc-400" /> Export CSV
             </button>
@@ -692,7 +692,7 @@ export default function ApplicationsPage() {
                           onDragStart={() => setDraggedAppId(app.id)}
                           onDragEnd={() => setDraggedAppId(null)}
                           onClick={() => openDrawer(app)}
-                          className="p-3 bg-[var(--app-nested)] hover:bg-[#202024] border border-[var(--app-border-strong)] hover:border-white/20 rounded-md transition-all cursor-pointer relative group shadow-sm"
+                          className="p-3 bg-[var(--app-nested)] hover:bg-[var(--sx-bg-202024)] border border-[var(--app-border-strong)] hover:border-white/20 rounded-md transition-all cursor-pointer relative group shadow-sm"
                         >
                           {/* Top Row: Match Score & Action Menu */}
                           <div className="flex items-center justify-between gap-1 mb-1.5">
@@ -723,7 +723,7 @@ export default function ApplicationsPage() {
                               {activeMenuAppId === app.id && (
                                 <div
                                   onClick={(e) => e.stopPropagation()}
-                                  className="absolute right-0 mt-1 w-40 py-1 bg-[#1c1c20] border border-white/[0.1] rounded shadow-xl z-30 text-[11px]"
+                                  className="absolute right-0 mt-1 w-40 py-1 bg-[var(--sx-bg-1c1c20)] border border-white/[0.1] rounded shadow-xl z-30 text-[11px]"
                                 >
                                   <button
                                     onClick={() => {
@@ -1038,7 +1038,7 @@ export default function ApplicationsPage() {
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="h-7 px-2.5 bg-[var(--app-card)] hover:bg-[#202022] border border-[var(--app-border-strong)] text-zinc-200 rounded text-[12px] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="h-7 px-2.5 bg-[var(--app-card)] hover:bg-[var(--sx-bg-202022)] border border-[var(--app-border-strong)] text-zinc-200 rounded text-[12px] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Previous
                 </button>
@@ -1048,7 +1048,7 @@ export default function ApplicationsPage() {
                 <button
                   onClick={() => setPage((p) => Math.min(data.pages, p + 1))}
                   disabled={page >= data.pages}
-                  className="h-7 px-2.5 bg-[var(--app-card)] hover:bg-[#202022] border border-[var(--app-border-strong)] text-zinc-200 rounded text-[12px] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="h-7 px-2.5 bg-[var(--app-card)] hover:bg-[var(--sx-bg-202022)] border border-[var(--app-border-strong)] text-zinc-200 rounded text-[12px] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Next
                 </button>
@@ -1062,7 +1062,7 @@ export default function ApplicationsPage() {
       {drawerApp && (
         <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
           <div
-            className="w-full max-w-lg bg-[#141416] border-l border-[var(--app-border-strong)] h-full shadow-2xl flex flex-col p-6 overflow-y-auto text-zinc-200"
+            className="w-full max-w-lg bg-[var(--sx-bg-141416)] border-l border-[var(--app-border-strong)] h-full shadow-2xl flex flex-col p-6 overflow-y-auto text-zinc-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header (No star button!) */}
@@ -1109,15 +1109,15 @@ export default function ApplicationsPage() {
                   onChange={(e) => setDrawerForm({ ...drawerForm, status: e.target.value })}
                   className="w-full h-8 px-2.5 bg-[var(--app-nested)] border border-[var(--app-border-strong)] rounded-md text-[13px] text-white focus:outline-none focus:border-zinc-500"
                 >
-                  <option value="pending_approval" className="bg-[#181818] text-white">Pending Approval</option>
-                  <option value="queued" className="bg-[#181818] text-white">Queued</option>
-                  <option value="applying" className="bg-[#181818] text-white">Applying</option>
-                  <option value="applied" className="bg-[#181818] text-white">Applied</option>
-                  <option value="interview" className="bg-[#181818] text-white">Interview</option>
-                  <option value="offer" className="bg-[#181818] text-white">Offer</option>
-                  <option value="rejected" className="bg-[#181818] text-white">Rejected</option>
-                  <option value="failed" className="bg-[#181818] text-white">Failed</option>
-                  <option value="skipped" className="bg-[#181818] text-white">Skipped</option>
+                  <option value="pending_approval" className="bg-[var(--sx-bg-181818)] text-white">Pending Approval</option>
+                  <option value="queued" className="bg-[var(--sx-bg-181818)] text-white">Queued</option>
+                  <option value="applying" className="bg-[var(--sx-bg-181818)] text-white">Applying</option>
+                  <option value="applied" className="bg-[var(--sx-bg-181818)] text-white">Applied</option>
+                  <option value="interview" className="bg-[var(--sx-bg-181818)] text-white">Interview</option>
+                  <option value="offer" className="bg-[var(--sx-bg-181818)] text-white">Offer</option>
+                  <option value="rejected" className="bg-[var(--sx-bg-181818)] text-white">Rejected</option>
+                  <option value="failed" className="bg-[var(--sx-bg-181818)] text-white">Failed</option>
+                  <option value="skipped" className="bg-[var(--sx-bg-181818)] text-white">Skipped</option>
                 </select>
               </div>
 
@@ -1260,7 +1260,7 @@ export default function ApplicationsPage() {
             <div className="flex items-center justify-end gap-2.5">
               <button
                 onClick={() => setDeleteConfirmId(null)}
-                className="h-8 px-3.5 rounded-md bg-[#242428] hover:bg-[#2c2c32] text-zinc-300 text-[12px] font-medium transition-colors"
+                className="h-8 px-3.5 rounded-md bg-[var(--sx-bg-242428)] hover:bg-[var(--sx-bg-2c2c32)] text-zinc-300 text-[12px] font-medium transition-colors"
               >
                 Cancel
               </button>
@@ -1288,7 +1288,7 @@ export default function ApplicationsPage() {
             <div className="flex items-center justify-end gap-2.5">
               <button
                 onClick={() => setIsBulkDeleting(false)}
-                className="h-8 px-3.5 rounded-md bg-[#242428] hover:bg-[#2c2c32] text-zinc-300 text-[12px] font-medium transition-colors"
+                className="h-8 px-3.5 rounded-md bg-[var(--sx-bg-242428)] hover:bg-[var(--sx-bg-2c2c32)] text-zinc-300 text-[12px] font-medium transition-colors"
               >
                 Cancel
               </button>

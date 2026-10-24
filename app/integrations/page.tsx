@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function IntegrationsPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col justify-between selection:bg-white/20">
+    <div className="public-flat min-h-screen bg-[var(--sx-bg-0a0a0a)] text-white flex flex-col justify-between selection:bg-white/20">
       <NavBar />
       <main className="flex-1 pt-20 pb-16">
         <IntegrationsHub />

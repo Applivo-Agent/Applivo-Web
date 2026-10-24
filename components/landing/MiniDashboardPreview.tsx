@@ -39,7 +39,7 @@ const surface = "bg-[var(--app-card)] border border-[var(--app-border)]";
 export function MiniDashboardPreview() {
   return (
     <div
-      className="flex w-full text-left select-none pointer-events-none bg-[var(--app-bg)] text-[#ededef]"
+      className="flex w-full text-left select-none pointer-events-none bg-[var(--app-bg)] text-[var(--sx-tx-ededef)]"
       role="img"
       aria-label="Illustration of the Applivo dashboard with sample data"
     >

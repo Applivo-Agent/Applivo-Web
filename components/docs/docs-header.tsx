@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Menu, Copy, Check, Search } from "lucide-react";
 import { DocArticle, Block } from "@/lib/docs/types";
 import { getGroup } from "@/lib/docs/registry";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 function toMarkdown(a: DocArticle) {
   const out = [`# ${a.title}`, "", a.description, ""];
@@ -108,6 +109,7 @@ export function DocsHeader({ article, onMenu, onSearch }: DocsHeaderProps) {
 
       {/* Right side controls: Search + Copy page + Open Applivo */}
       <div className="flex shrink-0 items-center gap-2.5">
+        <ThemeToggle />
         <button
           type="button"
           onClick={onSearch}
@@ -116,7 +118,7 @@ export function DocsHeader({ article, onMenu, onSearch }: DocsHeaderProps) {
         >
           <Search className="h-3.5 w-3.5 text-[var(--docs-muted)]" />
           <span>Search</span>
-          <kbd className="ml-1 rounded border border-[var(--docs-border)] bg-[#1c1c1c] px-1.5 py-0.5 text-[10px] text-[var(--docs-muted)]">⌘K</kbd>
+          <kbd className="ml-1 rounded border border-[var(--docs-border)] bg-[var(--sx-bg-1c1c1c)] px-1.5 py-0.5 text-[10px] text-[var(--docs-muted)]">⌘K</kbd>
         </button>
 
         {article && (

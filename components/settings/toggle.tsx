@@ -26,7 +26,7 @@ export function Toggle({ checked, onChange, disabled, label }: ToggleProps) {
       )}
     >
       <span
-        className={cn("absolute top-0.5 h-4 w-4 rounded-full transition-all", checked ? "left-[18px] bg-[#0B0B0F]" : "left-0.5 bg-zinc-400")}
+        className={cn("absolute top-0.5 h-4 w-4 rounded-full transition-all", checked ? "left-[18px] bg-[var(--sx-bg-0b0b0f)]" : "left-0.5 bg-zinc-400")}
       />
     </button>
   );

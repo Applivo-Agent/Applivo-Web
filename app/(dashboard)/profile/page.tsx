@@ -682,7 +682,7 @@ export default function ProfilePage() {
           <button
             type="button"
             onClick={handleDownloadProfile}
-            className="h-8 px-3 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12.5px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
+            className="h-8 px-3 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12.5px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
             title="Export Profile as plain text"
           >
             <Download className="w-3.5 h-3.5 text-zinc-400" />
@@ -720,7 +720,7 @@ export default function ProfilePage() {
                 height="32"
                 patternUnits="userSpaceOnUse"
               >
-                <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#FFFFFF" strokeWidth="1" />
+                <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgb(var(--tw-white))" strokeWidth="1" />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#identity-grid-pattern)" />
@@ -734,7 +734,7 @@ export default function ProfilePage() {
           <div className="flex items-center gap-4 sm:gap-4.5">
             {/* Clean Circular Avatar (Initials, Monochrome) */}
             <div className="relative shrink-0">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-white/10 ring-1 ring-white/5 bg-[#1b1b1e] flex items-center justify-center text-white text-lg sm:text-xl font-semibold tracking-tight shadow-inner select-none">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border border-white/10 ring-1 ring-white/5 bg-[var(--sx-bg-1b1b1e)] flex items-center justify-center text-white text-lg sm:text-xl font-semibold tracking-tight shadow-inner select-none">
                 {initials}
               </div>
             </div>
@@ -829,7 +829,7 @@ export default function ProfilePage() {
               <button
                 type="button"
                 onClick={handleOpenEditProfile}
-                className="h-7 px-2.5 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
+                className="h-7 px-2.5 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
               >
                 <Edit3 className="w-3 h-3 text-zinc-400" />
                 <span>Edit</span>
@@ -993,7 +993,7 @@ export default function ProfilePage() {
                   setEditIndex(null);
                   setModalType("experience");
                 }}
-                className="h-7 px-2.5 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
+                className="h-7 px-2.5 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
               >
                 <Plus className="w-3 h-3 text-zinc-400" />
                 <span>Add</span>
@@ -1050,7 +1050,7 @@ export default function ProfilePage() {
                         <button
                           type="button"
                           onClick={() => handleEditExperienceOpen(i)}
-                          className="h-6.5 w-6.5 rounded bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-zinc-400 hover:text-white transition-colors flex items-center justify-center"
+                          className="h-6.5 w-6.5 rounded bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-zinc-400 hover:text-white transition-colors flex items-center justify-center"
                           title="Edit this position"
                         >
                           <Edit3 className="w-3 h-3" />
@@ -1058,7 +1058,7 @@ export default function ProfilePage() {
                         <button
                           type="button"
                           onClick={() => handleDeleteExperience(i)}
-                          className="h-6.5 w-6.5 rounded bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-zinc-400 hover:text-red-400 transition-colors flex items-center justify-center"
+                          className="h-6.5 w-6.5 rounded bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-zinc-400 hover:text-red-400 transition-colors flex items-center justify-center"
                           title="Delete experience"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -1090,7 +1090,7 @@ export default function ProfilePage() {
                       setEditIndex(null);
                       setModalType("experience");
                     }}
-                    className="mt-3 h-7 px-3 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-white transition-colors inline-flex items-center gap-1.5"
+                    className="mt-3 h-7 px-3 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-white transition-colors inline-flex items-center gap-1.5"
                   >
                     <Plus className="w-3 h-3" />
                     <span>Add Experience</span>
@@ -1125,7 +1125,7 @@ export default function ProfilePage() {
                   setEditIndex(null);
                   setModalType("education");
                 }}
-                className="h-7 px-2.5 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
+                className="h-7 px-2.5 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
               >
                 <Plus className="w-3 h-3 text-zinc-400" />
                 <span>Add</span>
@@ -1164,7 +1164,7 @@ export default function ProfilePage() {
                         <button
                           type="button"
                           onClick={() => handleEditEducationOpen(i)}
-                          className="h-6 w-6 rounded bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-zinc-400 hover:text-white transition-colors flex items-center justify-center"
+                          className="h-6 w-6 rounded bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-zinc-400 hover:text-white transition-colors flex items-center justify-center"
                           title="Edit education"
                         >
                           <Edit3 className="w-2.5 h-2.5" />
@@ -1172,7 +1172,7 @@ export default function ProfilePage() {
                         <button
                           type="button"
                           onClick={() => handleDeleteEducation(i)}
-                          className="h-6 w-6 rounded bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-zinc-400 hover:text-red-400 transition-colors flex items-center justify-center"
+                          className="h-6 w-6 rounded bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-zinc-400 hover:text-red-400 transition-colors flex items-center justify-center"
                           title="Delete education"
                         >
                           <Trash2 className="w-2.5 h-2.5" />
@@ -1201,7 +1201,7 @@ export default function ProfilePage() {
                       setEditIndex(null);
                       setModalType("education");
                     }}
-                    className="mt-3 h-7 px-3 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-white transition-colors inline-flex items-center gap-1.5"
+                    className="mt-3 h-7 px-3 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-white transition-colors inline-flex items-center gap-1.5"
                   >
                     <Plus className="w-3 h-3" />
                     <span>Add Education</span>
@@ -1343,7 +1343,7 @@ export default function ProfilePage() {
                   setSkillForm({ name: "", proficiency: "intermediate", category: "tool" });
                   setModalType("skill");
                 }}
-                className="h-7 px-2.5 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
+                className="h-7 px-2.5 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors inline-flex items-center gap-1.5"
               >
                 <Plus className="w-3 h-3 text-zinc-400" />
                 <span>Add Skill</span>
@@ -1623,7 +1623,7 @@ export default function ProfilePage() {
                   <button
                     type="button"
                     onClick={() => setIsEditProfileOpen(false)}
-                    className="h-8 px-3 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors"
+                    className="h-8 px-3 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors"
                   >
                     Cancel
                   </button>
@@ -1825,7 +1825,7 @@ export default function ProfilePage() {
                     <button
                       type="button"
                       onClick={() => setModalType(null)}
-                      className="h-8 px-3 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors"
+                      className="h-8 px-3 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors"
                     >
                       Cancel
                     </button>
@@ -1923,7 +1923,7 @@ export default function ProfilePage() {
                     <button
                       type="button"
                       onClick={() => setModalType(null)}
-                      className="h-8 px-3 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors"
+                      className="h-8 px-3 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors"
                     >
                       Cancel
                     </button>
@@ -2018,7 +2018,7 @@ export default function ProfilePage() {
                     <button
                       type="button"
                       onClick={() => setModalType(null)}
-                      className="h-8 px-3 rounded-md bg-[#18181b] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors"
+                      className="h-8 px-3 rounded-md bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-[var(--app-border-strong)] text-[12px] font-medium text-zinc-300 hover:text-white transition-colors"
                     >
                       Cancel
                     </button>

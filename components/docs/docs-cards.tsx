@@ -30,7 +30,7 @@ export function DocsCards({
           <Link
             key={s}
             href={`/docs/${s}`}
-            className="group flex flex-col justify-between rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] overflow-hidden transition-colors hover:border-[#383838] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
+            className="group flex flex-col justify-between rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] overflow-hidden transition-colors hover:border-[var(--sx-bd-383838)] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
           >
             {/* Upper visual region */}
             <div className="h-[148px] p-5 sm:p-5.5 flex items-start justify-start bg-[var(--docs-card)] transition-colors group-hover:bg-[var(--docs-card-hover)]">

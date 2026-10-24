@@ -203,7 +203,7 @@ export function Sidebar() {
                         href={href}
                         aria-current={isActive ? "page" : undefined}
                         title={collapsed ? item.label : undefined}
-                        className={cn("app-nav-item", collapsed && "md:justify-center md:px-0", locked && "opacity-60")}
+                        className={cn("app-nav-item", collapsed && "md:justify-center md:px-0", locked && "opacity-60 [html.light_&]:opacity-80")}
                       >
                         <item.icon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
                         <span className={cn("flex-1 truncate text-[13px] leading-5", collapsed && "md:hidden")}>{item.label}</span>
@@ -246,7 +246,7 @@ export function Sidebar() {
         <div className={cn("flex items-center gap-2.5 px-1", collapsed && "md:flex-col md:px-0")}>
           <Link href="/profile" title={collapsed ? `${user?.full_name ?? "Account"} · ${planLabel}` : undefined}
             className={cn("flex min-w-0 flex-1 items-center gap-2.5 rounded-md", collapsed && "md:flex-none")}>
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#2c2c2e] text-[12px] font-semibold text-white">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--sx-bg-2c2c2e)] text-[12px] font-semibold text-white">
               {user?.full_name?.charAt(0)?.toUpperCase() ?? "A"}
             </span>
             <span className={cn("min-w-0", collapsed && "md:hidden")}>

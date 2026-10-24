@@ -17,6 +17,8 @@ export function KiloagentBackground() {
 
     const fontSize = 11; // 10-12px requested
     // 0s, 1s, uppercase letters, symbols ($, #, @, %, &, *)
+    const light = () => document.documentElement.classList.contains("light");   // theme: pale rain on a light page
+    let wasLight = light();
     const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@%&*".split("");
     
     let columns = 0;
@@ -36,7 +38,7 @@ export function KiloagentBackground() {
       }
       
       // Base pure black background #0a0a0a
-      ctx.fillStyle = "#0a0a0a";
+      ctx.fillStyle = light() ? "#f6f6f7" : "#0a0a0a";
       ctx.fillRect(0, 0, width, height);
     };
 
@@ -54,7 +56,9 @@ export function KiloagentBackground() {
 
       // Draw black rectangle with low opacity to fade existing characters out
       // like the matrix code rain trail
-      ctx.fillStyle = "rgba(10, 10, 10, 0.06)";
+      const isLight = light();
+      if (isLight !== wasLight) { wasLight = isLight; ctx.fillStyle = isLight ? "#f6f6f7" : "#0a0a0a"; ctx.fillRect(0, 0, width, height); }
+      ctx.fillStyle = isLight ? "rgba(246, 246, 247, 0.06)" : "rgba(10, 10, 10, 0.06)";
       ctx.fillRect(0, 0, width, height);
 
       ctx.font = `${fontSize}px monospace`;
@@ -65,8 +69,8 @@ export function KiloagentBackground() {
         // Base grey color (brighter for more central visibility)
         const opacity = 0.25 + (Math.random() * 0.35);
         const color = Math.random() < 0.02
-          ? "rgba(180, 185, 180, 0.7)"
-          : `rgba(80, 85, 80, ${opacity})`;
+          ? (isLight ? "rgba(70, 72, 78, 0.55)" : "rgba(180, 185, 180, 0.7)")
+          : (isLight ? `rgba(120, 122, 130, ${opacity * 0.6})` : `rgba(80, 85, 80, ${opacity})`);
 
         // Random flicker / brighter greyish white
         ctx.fillStyle = color;
@@ -92,11 +96,11 @@ export function KiloagentBackground() {
   }, []);
 
   return (
-    <div className="absolute inset-0 z-0 bg-[#060606] overflow-hidden">
+    <div className="absolute inset-0 z-0 bg-[var(--sx-bg-060606)] overflow-hidden">
       <div className="absolute inset-0 z-0 bg-transparent" style={{ pointerEvents: 'none' }}>
         <canvas
           ref={canvasRef}
-          className="w-full h-full mix-blend-screen opacity-100"
+          className="w-full h-full mix-blend-screen [html.light_&]:mix-blend-normal opacity-100"
           style={{
             maskImage: 'radial-gradient(circle at 50% 45%, rgba(0,0,0,1) 15%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0) 70%)',
             WebkitMaskImage: 'radial-gradient(circle at 50% 45%, rgba(0,0,0,1) 15%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0) 70%)'

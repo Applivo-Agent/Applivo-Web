@@ -93,12 +93,12 @@ export default function ResetPasswordPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="New password (min. 8 characters)"
               autoComplete="new-password"
-              className="w-full h-11 px-4 pr-11 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+              className="w-full h-11 px-4 pr-11 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] focus:border-white/30 text-[14px] text-[var(--sx-tx-f5f5f5)] placeholder:text-[var(--sx-tx-71717a)] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
             />
             <button
               type="button"
               onClick={() => setShowPass(!showPass)}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#71717a] hover:text-[#f5f5f5] transition-colors"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--sx-tx-71717a)] hover:text-[var(--sx-tx-f5f5f5)] transition-colors"
               aria-label={showPass ? "Hide password" : "Show password"}
             >
               {showPass ? (
@@ -118,14 +118,14 @@ export default function ResetPasswordPage() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm new password"
               autoComplete="new-password"
-              className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+              className="w-full h-11 px-4 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] focus:border-white/30 text-[14px] text-[var(--sx-tx-f5f5f5)] placeholder:text-[var(--sx-tx-71717a)] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading || !token}
-            className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[#f5f5f5] hover:bg-white text-[#080808] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50 shadow-sm"
+            className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[var(--sx-bg-f5f5f5)] hover:bg-white text-[var(--sx-tx-080808)] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50 shadow-sm"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />

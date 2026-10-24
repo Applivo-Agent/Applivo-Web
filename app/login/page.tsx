@@ -188,7 +188,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 autoComplete="email"
-                className="w-full h-10 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+                className="w-full h-10 px-4 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] focus:border-white/30 text-[14px] text-[var(--sx-tx-f5f5f5)] placeholder:text-[var(--sx-tx-71717a)] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
             </div>
 
@@ -201,12 +201,12 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 autoComplete="current-password"
-                className="w-full h-10 px-4 pr-11 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+                className="w-full h-10 px-4 pr-11 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] focus:border-white/30 text-[14px] text-[var(--sx-tx-f5f5f5)] placeholder:text-[var(--sx-tx-71717a)] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
               <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#71717a] hover:text-[#f5f5f5] transition-colors"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--sx-tx-71717a)] hover:text-[var(--sx-tx-f5f5f5)] transition-colors"
                 aria-label={showPass ? "Hide password" : "Show password"}
               >
                 {showPass ? (
@@ -219,19 +219,19 @@ export default function LoginPage() {
 
             {/* Remember Me & Forgot Password */}
             <div className="flex items-center justify-between text-[13px] pt-0.5">
-              <label className="flex items-center gap-2 cursor-pointer text-[#a1a1aa] hover:text-[#f5f5f5] select-none">
+              <label className="flex items-center gap-2 cursor-pointer text-[var(--sx-tx-a1a1aa)] hover:text-[var(--sx-tx-f5f5f5)] select-none">
                 <input
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-[#2b2b2b] bg-[#19191b] text-white focus:ring-0 focus:ring-offset-0 cursor-pointer accent-white"
+                  className="w-4 h-4 rounded border-[var(--sx-bd-2b2b2b)] bg-[var(--sx-bg-19191b)] text-white focus:ring-0 focus:ring-offset-0 cursor-pointer accent-white"
                 />
                 <span>Remember for 30 days</span>
               </label>
 
               <Link
                 href="/forgot-password"
-                className="text-[#a1a1aa] hover:text-[#f5f5f5] transition-colors"
+                className="text-[var(--sx-tx-a1a1aa)] hover:text-[var(--sx-tx-f5f5f5)] transition-colors"
               >
                 Forgot password?
               </Link>
@@ -241,7 +241,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-10 flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-[#ededed] text-[#0a0a0a] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50 shadow-sm"
+              className="w-full h-10 flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-[var(--sx-bg-ededed)] text-[var(--sx-tx-0a0a0a)] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50 shadow-sm"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -275,14 +275,14 @@ export default function LoginPage() {
                   setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
                 }
                 placeholder="000000"
-                className="w-full h-11 px-3.5 rounded-xl bg-[#19191b] border border-[#2b2b2b] text-center text-xl font-mono tracking-[0.35em] text-[#f5f5f5] focus:outline-none focus:border-white/30 transition-colors"
+                className="w-full h-11 px-3.5 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] text-center text-xl font-mono tracking-[0.35em] text-[var(--sx-tx-f5f5f5)] focus:outline-none focus:border-white/30 transition-colors"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading || otp.length < 6}
-              className="w-full h-10 flex items-center justify-center gap-2 rounded-xl bg-[#f5f5f5] hover:bg-white text-[#080808] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50"
+              className="w-full h-10 flex items-center justify-center gap-2 rounded-xl bg-[var(--sx-bg-f5f5f5)] hover:bg-white text-[var(--sx-tx-080808)] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -295,7 +295,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setStep("login")}
-                className="inline-flex items-center gap-1.5 text-xs text-[#a1a1aa] hover:text-[#f5f5f5] transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs text-[var(--sx-tx-a1a1aa)] hover:text-[var(--sx-tx-f5f5f5)] transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Back to sign in

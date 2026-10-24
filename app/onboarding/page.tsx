@@ -490,12 +490,12 @@ export default function OnboardingPage() {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-background animated-gradient grid-pattern flex items-center justify-center px-4 py-12">
+    <div className="public-flat min-h-screen bg-background animated-gradient grid-pattern flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-2xl">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-lg bg-[#0E0F14] border border-[#1C1C24] overflow-hidden flex items-center justify-center shadow-lg relative">
+            <div className="w-10 h-10 rounded-lg bg-[var(--sx-bg-0e0f14)] border border-[var(--sx-bd-1c1c24)] overflow-hidden flex items-center justify-center shadow-lg relative">
               <Image src="/logo.png" alt="Applivo" fill sizes="40px" priority className="absolute inset-0 scale-[1.5] object-contain" />
             </div>
             <span className="text-xl font-bold font-display gradient-text">Applivo</span>
@@ -680,7 +680,7 @@ export default function OnboardingPage() {
                   <h2 className="text-lg font-semibold">Skills</h2>
                   <p className="text-xs text-muted-foreground">Add the skills you actually want Applivo to optimize for.</p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-[#232327] p-5 shadow-lg shadow-black/20">
+                <div className="rounded-2xl border border-white/10 bg-[var(--sx-bg-232327)] p-5 shadow-lg shadow-black/20">
                   <div className="mb-4 flex flex-wrap items-center gap-2">
                     <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white">
                       {selectedSkills.length} selected
@@ -695,21 +695,21 @@ export default function OnboardingPage() {
 
                   <div className="grid gap-3 md:grid-cols-[minmax(0,1.2fr)_170px_auto_auto] items-end">
                     <div className="space-y-2">
-                      <label className="text-xs font-medium uppercase tracking-[0.18em] text-[#A1A1AA]">Skill name</label>
+                      <label className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--sx-tx-a1a1aa)]">Skill name</label>
                       <input
                         type="text"
                         value={skillDraft.name}
                         onChange={(e) => setSkillDraft({ ...skillDraft, name: e.target.value })}
                         placeholder="Type one skill and press Add"
-                        className="w-full bg-[#0E0E13] border border-[#1C1C24] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-all"
+                        className="w-full bg-[var(--sx-bg-0e0e13)] border border-[var(--sx-bd-1c1c24)] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-all"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-medium uppercase tracking-[0.18em] text-[#A1A1AA]">Category</label>
+                      <label className="text-xs font-medium uppercase tracking-[0.18em] text-[var(--sx-tx-a1a1aa)]">Category</label>
                       <select
                         value={skillDraft.category || "tool"}
                         onChange={(e) => setSkillDraft({ ...skillDraft, category: e.target.value })}
-                        className="w-full bg-[#0E0E13] border border-[#1C1C24] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-all capitalize"
+                        className="w-full bg-[var(--sx-bg-0e0e13)] border border-[var(--sx-bd-1c1c24)] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-white transition-all capitalize"
                       >
                         {SKILL_CATEGORIES.map((category) => (
                           <option key={category} value={category}>
@@ -718,7 +718,7 @@ export default function OnboardingPage() {
                         ))}
                       </select>
                     </div>
-                    <label className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-[#0E0E13] px-4 py-3 text-sm text-white">
+                    <label className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-[var(--sx-bg-0e0e13)] px-4 py-3 text-sm text-white">
                       <input
                         type="checkbox"
                         checked={skillDraft.is_primary}
@@ -737,10 +737,10 @@ export default function OnboardingPage() {
                   </div>
 
                   <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-                    <div className="rounded-xl border border-white/10 bg-[#0E0E13]">
+                    <div className="rounded-xl border border-white/10 bg-[var(--sx-bg-0e0e13)]">
                       <div className="border-b border-white/10 px-4 py-3">
                         <p className="text-sm font-medium text-white">Selected skills</p>
-                        <p className="text-xs text-[#A1A1AA]">Keep only relevant skills to improve matching quality.</p>
+                        <p className="text-xs text-[var(--sx-tx-a1a1aa)]">Keep only relevant skills to improve matching quality.</p>
                       </div>
                       {selectedSkills.length ? (
                         <div className="max-h-64 overflow-y-auto px-2 py-2">
@@ -755,7 +755,7 @@ export default function OnboardingPage() {
                               <div key={`${sk.name}-${i}`} className="flex items-center justify-between gap-2 rounded-lg px-3 py-2 hover:bg-white/5">
                                 <div className="min-w-0">
                                   <p className="truncate text-sm font-medium text-white">{sk.name}</p>
-                                  <div className="mt-1 flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-[#A1A1AA]">
+                                  <div className="mt-1 flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-[var(--sx-tx-a1a1aa)]">
                                     <span>{(sk.category || "tool").replace(/_/g, " ")}</span>
                                     {sk.is_primary && <span className="rounded-full border border-white/15 bg-white/10 px-1.5 py-0.5 text-[9px]">Primary</span>}
                                   </div>
@@ -763,7 +763,7 @@ export default function OnboardingPage() {
                                 <button
                                   type="button"
                                   onClick={() => removeSkill(realIndex)}
-                                  className="rounded-md p-1.5 text-[#A1A1AA] transition-colors hover:bg-red-500/15 hover:text-red-300"
+                                  className="rounded-md p-1.5 text-[var(--sx-tx-a1a1aa)] transition-colors hover:bg-red-500/15 hover:text-red-300"
                                   aria-label={`Remove ${sk.name}`}
                                 >
                                   <X className="w-3.5 h-3.5" />
@@ -774,7 +774,7 @@ export default function OnboardingPage() {
                         </div>
                       ) : (
                         <div className="flex min-h-[160px] items-center justify-center px-4 text-center">
-                          <p className="text-sm text-[#A1A1AA]">No skills yet. Add a few core skills to continue.</p>
+                          <p className="text-sm text-[var(--sx-tx-a1a1aa)]">No skills yet. Add a few core skills to continue.</p>
                         </div>
                       )}
                       {selectedSkills.length > 10 && (
@@ -790,7 +790,7 @@ export default function OnboardingPage() {
                       )}
                     </div>
 
-                    <div className="rounded-xl border border-white/10 bg-[#0E0E13] p-4">
+                    <div className="rounded-xl border border-white/10 bg-[var(--sx-bg-0e0e13)] p-4">
                       <div className="mb-3 flex items-center justify-between gap-3">
                         <p className="text-sm font-medium text-white">Suggested skills</p>
                         <input
@@ -798,7 +798,7 @@ export default function OnboardingPage() {
                           value={skillSearch}
                           onChange={(e) => setSkillSearch(e.target.value)}
                           placeholder="Search"
-                          className="w-40 bg-[#101017] border border-[#1C1C24] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white transition-all"
+                          className="w-40 bg-[var(--sx-bg-101017)] border border-[var(--sx-bd-1c1c24)] rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-white transition-all"
                         />
                       </div>
 
@@ -813,7 +813,7 @@ export default function OnboardingPage() {
                             + {skill}
                           </button>
                         )) : (
-                          <p className="text-sm text-[#A1A1AA]">No suggestions match your search.</p>
+                          <p className="text-sm text-[var(--sx-tx-a1a1aa)]">No suggestions match your search.</p>
                         )}
                       </div>
                     </div>

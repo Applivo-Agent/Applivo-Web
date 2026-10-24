@@ -33,7 +33,7 @@ const testimonials = [
 
 export function TweetMarquee() {
   return (
-    <section className="bg-[#0a0a0a] py-20 md:py-24 relative z-10 border-b border-zinc-900/50 overflow-hidden flex flex-col items-center">
+    <section className="bg-[var(--sx-bg-0a0a0a)] py-20 md:py-24 relative z-10 border-b border-zinc-900/50 overflow-hidden flex flex-col items-center">
       <div className="text-center mb-12 sm:mb-16 px-6">
         <h2 className="k-h2 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight text-white mb-3 leading-[1.2]">
           Our Customers
@@ -43,8 +43,8 @@ export function TweetMarquee() {
 
       <div className="w-full relative flex items-center">
         {/* Gradients to mask edges */}
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[var(--sx-bg-0a0a0a)] to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[var(--sx-bg-0a0a0a)] to-transparent z-10 pointer-events-none" />
         
         <motion.div
           className="flex gap-6 px-6"
@@ -59,7 +59,7 @@ export function TweetMarquee() {
           {[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
             <div 
               key={i} 
-              className="w-[340px] flex-shrink-0 bg-[#0a0a09] border border-white/[0.08] rounded-2xl p-6"
+              className="w-[340px] flex-shrink-0 bg-[var(--sx-bg-0a0a09)] border border-white/[0.08] rounded-2xl p-6"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-white font-medium text-sm">

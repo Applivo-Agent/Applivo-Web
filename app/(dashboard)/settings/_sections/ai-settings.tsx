@@ -382,11 +382,11 @@ export function AISettingsSection() {
                 "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
                 settings.reasoningDepth === opt.id ? "bg-white" : "bg-[var(--app-card)]"
               )}>
-                <Zap className={cn("w-4 h-4", settings.reasoningDepth === opt.id ? "text-black" : "text-[#A1A1AA]")} />
+                <Zap className={cn("w-4 h-4", settings.reasoningDepth === opt.id ? "text-black" : "text-[var(--sx-tx-a1a1aa)]")} />
               </div>
               <div>
                 <p className="text-sm font-bold text-white">{opt.label}</p>
-                <p className="text-xs text-[#A1A1AA] mt-0.5">{opt.description}</p>
+                <p className="text-xs text-[var(--sx-tx-a1a1aa)] mt-0.5">{opt.description}</p>
               </div>
             </button>
           ))}
@@ -412,7 +412,7 @@ export function AISettingsSection() {
               )}
             >
               <p className="text-sm font-bold text-white mb-1">{opt.label}</p>
-              <p className="text-xs text-[#A1A1AA] leading-relaxed">{opt.description}</p>
+              <p className="text-xs text-[var(--sx-tx-a1a1aa)] leading-relaxed">{opt.description}</p>
             </button>
           ))}
         </div>

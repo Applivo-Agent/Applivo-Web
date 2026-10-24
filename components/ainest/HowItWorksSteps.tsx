@@ -35,7 +35,7 @@ function PreviewSidebar({ activeTab }: { activeTab: string }) {
   ];
 
   return (
-    <div className="w-[140px] sm:w-[155px] shrink-0 border-r border-white/[0.08] bg-[#0c0c0e] p-3 flex flex-col justify-between text-xs select-none">
+    <div className="w-[140px] sm:w-[155px] shrink-0 border-r border-white/[0.08] bg-[var(--sx-bg-0c0c0e)] p-3 flex flex-col justify-between text-xs select-none">
       <div className="space-y-3">
         {/* Workspace Brand */}
         <div className="flex items-center gap-2 px-1 py-1">
@@ -126,7 +126,7 @@ function JobDiscoveryPreview() {
   ];
 
   return (
-    <div className="flex h-full w-full bg-[#0c0c0e] text-zinc-300 font-sans select-none overflow-hidden">
+    <div className="flex h-full w-full bg-[var(--sx-bg-0c0c0e)] text-zinc-300 font-sans select-none overflow-hidden">
       <PreviewSidebar activeTab="jobs" />
 
       <div className="flex-1 flex flex-col p-3.5 sm:p-4 text-xs overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -144,11 +144,11 @@ function JobDiscoveryPreview() {
 
         {/* Search & Filter row */}
         <div className="flex items-center gap-2 mb-3">
-          <div className="flex-1 flex items-center gap-2 bg-[#141417] border border-white/[0.07] rounded-lg px-2.5 py-1.5 text-zinc-400 text-[11px]">
+          <div className="flex-1 flex items-center gap-2 bg-[var(--sx-bg-141417)] border border-white/[0.07] rounded-lg px-2.5 py-1.5 text-zinc-400 text-[11px]">
             <Search className="w-3 h-3 text-zinc-500" />
             <span className="text-zinc-500">Filter by role, skills, location...</span>
           </div>
-          <div className="flex items-center gap-1 px-2 py-1.5 bg-[#141417] border border-white/[0.07] rounded-lg text-[10px] text-zinc-300">
+          <div className="flex items-center gap-1 px-2 py-1.5 bg-[var(--sx-bg-141417)] border border-white/[0.07] rounded-lg text-[10px] text-zinc-300">
             <SlidersHorizontal className="w-2.5 h-2.5" />
             <span>&gt; 80% Match</span>
           </div>
@@ -159,7 +159,7 @@ function JobDiscoveryPreview() {
           {sampleJobs.map((job, idx) => (
             <div
               key={idx}
-              className="p-3 rounded-xl bg-[#131316] border border-white/[0.06] hover:border-white/15 transition-all flex items-center justify-between gap-3"
+              className="p-3 rounded-xl bg-[var(--sx-bg-131316)] border border-white/[0.06] hover:border-white/15 transition-all flex items-center justify-between gap-3"
             >
               <div className="space-y-1 min-w-0 flex-1">
                 <div className="flex items-center gap-2">
@@ -211,7 +211,7 @@ function JobDiscoveryPreview() {
 
 function PrepareAndApplyPreview() {
   return (
-    <div className="flex h-full w-full bg-[#0c0c0e] text-zinc-300 font-sans select-none overflow-hidden">
+    <div className="flex h-full w-full bg-[var(--sx-bg-0c0c0e)] text-zinc-300 font-sans select-none overflow-hidden">
       <PreviewSidebar activeTab="assistant" />
 
       <div className="flex-1 flex flex-col p-3.5 sm:p-4 text-xs overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -225,7 +225,7 @@ function PrepareAndApplyPreview() {
         </div>
 
         {/* Selected Job Context Card */}
-        <div className="p-3 rounded-xl bg-[#141417] border border-white/[0.07] mb-3">
+        <div className="p-3 rounded-xl bg-[var(--sx-bg-141417)] border border-white/[0.07] mb-3">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold">
@@ -251,7 +251,7 @@ function PrepareAndApplyPreview() {
             Application Readiness Checklist
           </p>
 
-          <div className="p-2.5 rounded-lg bg-[#121215] border border-white/[0.05] space-y-2 text-[11px]">
+          <div className="p-2.5 rounded-lg bg-[var(--sx-bg-121215)] border border-white/[0.05] space-y-2 text-[11px]">
             <div className="flex items-start gap-2">
               <CheckCircle2 className="w-3.5 h-3.5 text-zinc-300 shrink-0 mt-0.5" />
               <div>
@@ -340,7 +340,7 @@ function TrackProgressPreview() {
   ];
 
   return (
-    <div className="flex h-full w-full bg-[#0c0c0e] text-zinc-300 font-sans select-none overflow-hidden">
+    <div className="flex h-full w-full bg-[var(--sx-bg-0c0c0e)] text-zinc-300 font-sans select-none overflow-hidden">
       <PreviewSidebar activeTab="applications" />
 
       <div className="flex-1 flex flex-col p-3.5 sm:p-4 text-xs overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -364,7 +364,7 @@ function TrackProgressPreview() {
           ].map((stat, i) => (
             <div
               key={i}
-              className="p-2 rounded-lg bg-[#141417] border border-white/[0.06] text-center"
+              className="p-2 rounded-lg bg-[var(--sx-bg-141417)] border border-white/[0.06] text-center"
             >
               <p className="text-white font-bold text-sm leading-tight">{stat.val}</p>
               <p className="text-[9px] text-zinc-400 mt-0.5 truncate">{stat.label}</p>
@@ -378,7 +378,7 @@ function TrackProgressPreview() {
             Active Applications
           </p>
 
-          <div className="divide-y divide-white/[0.04] rounded-lg bg-[#121215] border border-white/[0.05] overflow-hidden">
+          <div className="divide-y divide-white/[0.04] rounded-lg bg-[var(--sx-bg-121215)] border border-white/[0.05] overflow-hidden">
             {trackerItems.map((item, i) => (
               <div
                 key={i}
@@ -485,7 +485,7 @@ export function HowItWorksSteps() {
           {/* ── LEFT COLUMN ────────────────────────────────────────── */}
           <div className="lg:col-span-5 flex flex-col justify-center">
             {/* Step pills */}
-            <div className="inline-flex items-center gap-1 p-1 rounded-full bg-[#141416] border border-white/[0.08] mb-6 w-fit shadow-sm">
+            <div className="inline-flex items-center gap-1 p-1 rounded-full bg-[var(--sx-bg-141416)] border border-white/[0.08] mb-6 w-fit shadow-sm">
               {steps.map((s, i) => (
                 <button
                   key={s.id}
@@ -543,16 +543,16 @@ export function HowItWorksSteps() {
           {/* ── RIGHT COLUMN: APPLIVO PRODUCT PREVIEW ──────────────── */}
           <div className="lg:col-span-7 w-full relative">
             <div
-              className="w-full lg:w-[120%] lg:max-w-none rounded-2xl border border-white/[0.08] bg-[#0d0d10] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.85)] flex flex-col h-[440px] sm:h-[490px] lg:h-[570px] relative lg:-mt-12 lg:translate-x-4 overflow-hidden select-none"
+              className="mockup-fade w-full lg:w-[120%] lg:max-w-none rounded-2xl border border-white/[0.08] bg-[var(--sx-bg-0d0d10)] shadow-[0_20px_50px_-15px_rgba(0,0,0,0.85)] flex flex-col h-[440px] sm:h-[490px] lg:h-[570px] relative lg:-mt-12 lg:translate-x-4 overflow-hidden select-none"
               style={{
                 maskImage: "linear-gradient(to bottom, black 0%, black 70%, transparent 98%)",
                 WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 70%, transparent 98%)",
               }}
             >
               {/* Clean top chrome with Applivo URL */}
-              <div className="h-10 bg-[#121215] border-b border-white/[0.08] px-3.5 flex items-center justify-between shrink-0">
+              <div className="h-10 bg-[var(--sx-bg-121215)] border-b border-white/[0.08] px-3.5 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 bg-[#1b1b1f] border border-white/[0.06] rounded-md px-2.5 py-1 text-[11px] text-zinc-400 min-w-[190px]">
+                  <div className="flex items-center gap-1.5 bg-[var(--sx-bg-1b1b1f)] border border-white/[0.06] rounded-md px-2.5 py-1 text-[11px] text-zinc-400 min-w-[190px]">
                     <Lock className="w-3 h-3 text-zinc-500" />
                     <span>https://app.applivo.in</span>
                   </div>
@@ -582,7 +582,7 @@ export function HowItWorksSteps() {
 
               {/* Bottom dissolve overlay for rich gradual blend into page background */}
               <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#080808] via-[#080808]/75 to-transparent z-20"
+                className="mockup-dissolve pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[var(--sx-bg-080808)] via-[color-mix(in_srgb,var(--sx-bg-080808)_75%,transparent)] to-transparent z-20"
                 aria-hidden="true"
               />
             </div>

@@ -117,7 +117,7 @@ export function GitHubSyncModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[620px] bg-[#121215] border border-zinc-800 text-white p-6 shadow-2xl max-h-[85vh] flex flex-col">
+      <DialogContent className="sm:max-w-[620px] bg-[var(--sx-bg-121215)] border border-zinc-800 text-white p-6 shadow-2xl max-h-[85vh] flex flex-col">
         <DialogHeader className="space-y-1.5 shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center p-1.5 shrink-0">

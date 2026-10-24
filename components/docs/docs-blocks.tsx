@@ -159,7 +159,7 @@ export function RelatedList({ slugs }: { slugs: string[] }) {
           <li key={a!.slug}>
             <Link
               href={`/docs/${a!.slug}`}
-              className="block rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-5 transition-colors hover:border-[#383838] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
+              className="block rounded-xl border border-[var(--docs-border)] bg-[var(--docs-card)] p-5 transition-colors hover:border-[var(--sx-bd-383838)] hover:bg-[var(--docs-card-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/40"
             >
               <span className="block text-[15px] font-medium text-[var(--docs-text)]">{a!.title}</span>
               <span className="mt-1.5 block text-[13.5px] leading-relaxed text-[var(--docs-secondary)] line-clamp-2">

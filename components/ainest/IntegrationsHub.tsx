@@ -115,7 +115,7 @@ export function IntegrationsHub() {
   };
 
   return (
-    <section className="bg-[#0a0a0a] text-white py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 relative z-10 selection:bg-white/20">
+    <section className="bg-[var(--sx-bg-0a0a0a)] text-white py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 relative z-10 selection:bg-white/20">
       <div className="max-w-[1200px] mx-auto">
 
         {/* ─── SECTION INTRODUCTION (MATCHING LANDING PAGE TYPOGRAPHY) ─── */}
@@ -124,7 +124,7 @@ export function IntegrationsHub() {
           <div className="max-w-2xl">
             {/* Main Section Heading */}
             <h2 className="k-h2 text-[26px] sm:text-[28px] md:text-[32px] font-semibold tracking-tight leading-[1.2]">
-              <span className="text-[#a1a1a1] block">Works with your</span>
+              <span className="text-[var(--sx-tx-a1a1a1)] block">Works with your</span>
               <span className="text-white font-semibold block">Entire Career Stack</span>
             </h2>
 
@@ -142,7 +142,7 @@ export function IntegrationsHub() {
                 setReqService("");
                 setShowRequestModal(true);
               }}
-              className="inline-flex items-center justify-center h-[30px] px-3.5 rounded-full text-[12px] font-medium text-white bg-[#18181b] hover:bg-zinc-800 border border-white/10 hover:border-white/20 transition-all duration-200 active:scale-95 shadow-sm"
+              className="inline-flex items-center justify-center h-[30px] px-3.5 rounded-full text-[12px] font-medium text-white bg-[var(--sx-bg-18181b)] hover:bg-zinc-800 border border-white/10 hover:border-white/20 transition-all duration-200 active:scale-95 shadow-sm"
             >
               Request integration
             </button>
@@ -196,7 +196,7 @@ export function IntegrationsHub() {
                         : "bg-white/[0.04] text-zinc-400 hover:text-white hover:bg-white/[0.08] border border-white/[0.05]"
                     }`}
                   >
-                    {cat} <span className={isActive ? "text-zinc-600 ml-1 text-[11px]" : "text-zinc-500 ml-1 text-[11px]"}>{count}</span>
+                    {cat} <span className={isActive ? "text-zinc-600 [html.light_&]:text-black ml-1 text-[11px]" : "text-zinc-500 ml-1 text-[11px]"}>{count}</span>
                   </button>
                 );
               })}
@@ -210,7 +210,7 @@ export function IntegrationsHub() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search integrations…"
-                className="w-full bg-[#121212] border border-white/[0.08] focus:border-white/30 rounded-full pl-9 pr-8 py-1.5 text-xs text-white placeholder-zinc-500 outline-none transition duration-200"
+                className="w-full bg-[var(--sx-bg-121212)] border border-white/[0.08] focus:border-white/30 rounded-full pl-9 pr-8 py-1.5 text-xs text-white placeholder-zinc-500 outline-none transition duration-200"
               />
               {searchQuery && (
                 <button
@@ -241,7 +241,7 @@ export function IntegrationsHub() {
                   >
                     <Link
                       href={docTarget}
-                      className="group relative h-full rounded-[16px] sm:rounded-[18px] bg-[#121212] hover:bg-[#151515] border border-white/[0.08] hover:border-white/[0.2] p-5 sm:p-5.5 flex flex-col justify-between transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.35)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.55)] cursor-pointer block hover:-translate-y-0.5"
+                      className="group relative h-full rounded-[16px] sm:rounded-[18px] bg-[var(--sx-bg-121212)] hover:bg-[var(--sx-bg-151515)] border border-white/[0.08] hover:border-white/[0.2] p-5 sm:p-5.5 flex flex-col justify-between transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.35)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.55)] cursor-pointer block hover:-translate-y-0.5"
                     >
                       {/* Card Content: Official Logo, Link Badge, Title & Description */}
                       <div>
@@ -279,7 +279,7 @@ export function IntegrationsHub() {
           </div>
         ) : (
           /* Empty Search State */
-          <div className="rounded-[20px] bg-[#121212] border border-white/[0.08] p-10 text-center my-6">
+          <div className="rounded-[20px] bg-[var(--sx-bg-121212)] border border-white/[0.08] p-10 text-center my-6">
             <AlertCircle className="w-8 h-8 text-zinc-500 mx-auto mb-2.5" />
             <h3 className="text-base font-semibold text-white mb-1">No integrations found</h3>
             <p className="text-xs text-zinc-400 max-w-sm mx-auto mb-5">
@@ -313,7 +313,7 @@ export function IntegrationsHub() {
               exit={{ opacity: 0, scale: 0.96, y: 12 }}
               transition={{ duration: 0.2 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-lg my-auto rounded-[22px] bg-[#141414] border border-white/[0.12] p-5 sm:p-6 text-white shadow-2xl max-h-[90vh] flex flex-col"
+              className="relative w-full max-w-lg my-auto rounded-[22px] bg-[var(--sx-bg-141414)] border border-white/[0.12] p-5 sm:p-6 text-white shadow-2xl max-h-[90vh] flex flex-col"
               role="dialog"
               aria-modal="true"
               aria-labelledby="request-modal-title"
@@ -364,7 +364,7 @@ export function IntegrationsHub() {
                         value={reqService}
                         onChange={(e) => setReqService(e.target.value)}
                         placeholder="e.g. Workable, USAJOBS"
-                        className="w-full bg-[#1c1c1f] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none transition"
+                        className="w-full bg-[var(--sx-bg-1c1c1f)] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none transition"
                       />
                     </div>
 
@@ -373,7 +373,7 @@ export function IntegrationsHub() {
                       <select
                         value={reqCategory}
                         onChange={(e) => setReqCategory(e.target.value)}
-                        className="w-full bg-[#1c1c1f] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white outline-none transition cursor-pointer"
+                        className="w-full bg-[var(--sx-bg-1c1c1f)] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white outline-none transition cursor-pointer"
                       >
                         <option value="Job Sources">Job Source (Job Board / ATS)</option>
                         <option value="Connected Services">Connected Service (Calendar / Mail / App)</option>
@@ -394,7 +394,7 @@ export function IntegrationsHub() {
                         value={reqUrl}
                         onChange={(e) => setReqUrl(e.target.value)}
                         placeholder="https://example.com"
-                        className="w-full bg-[#1c1c1f] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none transition"
+                        className="w-full bg-[var(--sx-bg-1c1c1f)] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none transition"
                       />
                     </div>
 
@@ -407,7 +407,7 @@ export function IntegrationsHub() {
                         value={reqEmail}
                         onChange={(e) => setReqEmail(e.target.value)}
                         placeholder="you@domain.com"
-                        className="w-full bg-[#1c1c1f] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none transition"
+                        className="w-full bg-[var(--sx-bg-1c1c1f)] border border-white/10 focus:border-white/30 rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 outline-none transition"
                       />
                     </div>
                   </div>
@@ -422,7 +422,7 @@ export function IntegrationsHub() {
                       value={reqUseCase}
                       onChange={(e) => setReqUseCase(e.target.value)}
                       placeholder="What should Applivo do with this integration? (e.g. sync interview rounds, import portfolio)"
-                      className="w-full bg-[#1c1c1f] border border-white/10 focus:border-white/30 rounded-xl p-2.5 text-xs text-white placeholder-zinc-500 outline-none transition resize-none"
+                      className="w-full bg-[var(--sx-bg-1c1c1f)] border border-white/10 focus:border-white/30 rounded-xl p-2.5 text-xs text-white placeholder-zinc-500 outline-none transition resize-none"
                     />
                   </div>
 

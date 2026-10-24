@@ -10,6 +10,7 @@ import { LumiPanel } from "@/components/lumi-panel";
 import { useQuery } from "@tanstack/react-query";
 import { settingsV2Api } from "@/lib/api";
 import { applyDensity, applyMotionPref, applyTimezone } from "@/lib/prefs";
+import { useAccountThemeSync } from "@/lib/theme-client";
 
 interface ShellState {
   collapsed: boolean;
@@ -111,6 +112,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const savedTimezone: string | undefined = savedSettings?.data?.timezone;
   useEffect(() => { applyDensity(savedDensity); }, [savedDensity]);
   useEffect(() => { applyTimezone(savedTimezone); }, [savedTimezone]);
+  useAccountThemeSync(savedSettings?.data?.theme);
 
   useEffect(() => {                                   // "Smooth transitions" preference -> <html data-motion>
     applyMotionPref();

@@ -131,7 +131,7 @@ export default function ResumesPage() {
                 )}
               </div>
              <div className="flex justify-end gap-2.5 mt-5">
-                <button onClick={() => setUploadOpen(false)} disabled={isUploading} className="h-8 px-3.5 bg-[#171717] hover:bg-[var(--app-card)] text-white border border-[var(--app-border-strong)] rounded-md text-[13px] font-medium transition-colors">Cancel</button>
+                <button onClick={() => setUploadOpen(false)} disabled={isUploading} className="h-8 px-3.5 bg-[var(--sx-bg-171717)] hover:bg-[var(--app-card)] text-white border border-[var(--app-border-strong)] rounded-md text-[13px] font-medium transition-colors">Cancel</button>
                 <button onClick={handleUpload} disabled={!file || isUploading} className="h-8 px-3.5 bg-white text-black rounded-lg text-[13px] font-semibold hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
                      {isUploading ? <div className="w-3.5 h-3.5 border-2 border-black/30 border-t-black rounded-full animate-spin" /> : "Upload Resume"}
                 </button>
@@ -170,7 +170,7 @@ export default function ResumesPage() {
                   <div className="flex items-center gap-2 mt-auto pt-2.5 border-t border-[var(--app-border-strong)]">
                     {!res.is_default && (
                       <>
-                        <button onClick={() => setDefault.mutate(res.id)} className="flex-1 h-8 px-3 bg-[#171717] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-white hover:bg-[var(--app-card)] transition-colors">
+                        <button onClick={() => setDefault.mutate(res.id)} className="flex-1 h-8 px-3 bg-[var(--sx-bg-171717)] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-white hover:bg-[var(--app-card)] transition-colors">
                           Set Primary
                         </button>
                         <button 
@@ -179,14 +179,14 @@ export default function ResumesPage() {
                               deleteMut.mutate(res.id);
                             }
                           }}
-                          className="h-8 w-8 flex items-center justify-center bg-[#171717] border border-[var(--app-border-strong)] rounded-md text-zinc-400 hover:text-red-400 hover:bg-[var(--app-card)] transition-colors"
+                          className="h-8 w-8 flex items-center justify-center bg-[var(--sx-bg-171717)] border border-[var(--app-border-strong)] rounded-md text-zinc-400 hover:text-red-400 hover:bg-[var(--app-card)] transition-colors"
                           title="Delete Resume"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </>
                     )}
-                    <button onClick={() => downloadResume(res.id, `${res.name || 'resume'}.pdf`)} className={cn("h-8 px-3 bg-[#171717] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-white hover:bg-[var(--app-card)] transition-colors flex items-center justify-center gap-1.5", res.is_default ? "flex-1" : "")}>
+                    <button onClick={() => downloadResume(res.id, `${res.name || 'resume'}.pdf`)} className={cn("h-8 px-3 bg-[var(--sx-bg-171717)] border border-[var(--app-border-strong)] rounded-md text-[12px] font-medium text-white hover:bg-[var(--app-card)] transition-colors flex items-center justify-center gap-1.5", res.is_default ? "flex-1" : "")}>
                       <Download className="w-3.5 h-3.5" /> <span>Download</span>
                     </button>
                   </div>
@@ -227,7 +227,7 @@ export default function ResumesPage() {
                     key={tpl.name} 
                     whileHover={!isLocked ? { y: -2 } : {}}
                     className={cn(
-                      "relative group rounded-lg overflow-hidden border transition-all cursor-pointer flex flex-col h-full bg-[var(--app-card)]", 
+                      "relative group rounded-lg overflow-hidden border transition-all cursor-pointer flex flex-col h-full bg-[var(--app-card)]",
                       isSelected ? "border-white/40" : "border-[var(--app-border-strong)] hover:border-white/20"
                     )} 
                     onClick={() => !isLocked && selectTemplate.mutate(tpl.name)}

@@ -157,7 +157,7 @@ function DockIcon({
       initial={false}
       animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 4 }}
       transition={{ duration: 0.14, ease: "easeOut" }}
-      className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-8 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/[0.12] bg-[#1a1a1e]/95 backdrop-blur-md px-2.5 py-1 text-[11px] font-medium leading-none tracking-tight text-zinc-200 shadow-[0_8px_24px_-6px_rgba(0,0,0,0.9)]"
+      className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-8 -translate-x-1/2 whitespace-nowrap rounded-md border border-white/[0.12] bg-[color-mix(in_srgb,var(--sx-bg-1a1a1e)_95%,transparent)] backdrop-blur-md px-2.5 py-1 text-[11px] font-medium leading-none tracking-tight text-zinc-200 shadow-[0_8px_24px_-6px_rgba(0,0,0,0.9)]"
     >
       {item.label}
     </motion.span>
@@ -237,7 +237,7 @@ export function AppDock({ items, className, ariaLabel = "Applivo workflow apps" 
         {/* Stationary translucent dock pill matching Lori's dock-panel */}
         <nav
           aria-label={ariaLabel}
-          className="relative rounded-[1.35rem] sm:rounded-[1.65rem] border border-white/[0.12] bg-[#141416]/85 backdrop-blur-xl px-2.5 pb-2 pt-2.5 sm:px-3.5 sm:pb-2.5 sm:pt-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_4px_-2px_rgba(0,0,0,0.5),0_24px_48px_-20px_rgba(0,0,0,0.85)]"
+          className="relative rounded-[1.35rem] sm:rounded-[1.65rem] border border-white/[0.12] bg-[color-mix(in_srgb,var(--sx-bg-141416)_85%,transparent)] backdrop-blur-xl px-2.5 pb-2 pt-2.5 sm:px-3.5 sm:pb-2.5 sm:pt-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_2px_4px_-2px_rgba(0,0,0,0.5),0_24px_48px_-20px_rgba(0,0,0,0.85)]"
         >
           {/* Animation layer: allows tiles to rise above the surface */}
           <ul

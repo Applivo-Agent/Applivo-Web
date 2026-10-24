@@ -197,7 +197,7 @@ export default function RegisterPage() {
       Already have an account?{" "}
       <Link
         href={"/login" + nextQuery(nextUrl)}
-        className="text-[#f5f5f5] hover:underline font-medium transition-colors"
+        className="text-[var(--sx-tx-f5f5f5)] hover:underline font-medium transition-colors"
       >
         Log in
       </Link>
@@ -240,7 +240,7 @@ export default function RegisterPage() {
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 placeholder="Email address"
                 autoComplete="email"
-                className="w-full h-10 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+                className="w-full h-10 px-4 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] focus:border-white/30 text-[14px] text-[var(--sx-tx-f5f5f5)] placeholder:text-[var(--sx-tx-71717a)] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
             </div>
 
@@ -254,26 +254,26 @@ export default function RegisterPage() {
                 }
                 placeholder="Referral Code (optional)"
                 autoComplete="off"
-                className="w-full h-10 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+                className="w-full h-10 px-4 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] focus:border-white/30 text-[14px] text-[var(--sx-tx-f5f5f5)] placeholder:text-[var(--sx-tx-71717a)] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
             </div>
 
             {/* Terms checkbox */}
             <div className="pt-0.5">
-              <label className="flex items-start gap-2.5 cursor-pointer text-[12.5px] text-[#a1a1aa] leading-normal select-none">
+              <label className="flex items-start gap-2.5 cursor-pointer text-[12.5px] text-[var(--sx-tx-a1a1aa)] leading-normal select-none">
                 <input
                   type="checkbox"
                   required
                   checked={agreedToTerms}
                   onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="w-4 h-4 mt-0.5 rounded border-[#2b2b2b] bg-[#19191b] text-white focus:ring-0 focus:ring-offset-0 cursor-pointer accent-white shrink-0"
+                  className="w-4 h-4 mt-0.5 rounded border-[var(--sx-bd-2b2b2b)] bg-[var(--sx-bg-19191b)] text-white focus:ring-0 focus:ring-offset-0 cursor-pointer accent-white shrink-0"
                 />
                 <span>
                   By clicking &quot;Next&quot;, I agree to the{" "}
                   <Link
                     href="/docs/terms-of-use"
                     target="_blank"
-                    className="text-[#f5f5f5] hover:underline font-medium"
+                    className="text-[var(--sx-tx-f5f5f5)] hover:underline font-medium"
                   >
                     Terms of Service
                   </Link>{" "}
@@ -281,7 +281,7 @@ export default function RegisterPage() {
                   <Link
                     href="/docs/privacy-policy"
                     target="_blank"
-                    className="text-[#f5f5f5] hover:underline font-medium"
+                    className="text-[var(--sx-tx-f5f5f5)] hover:underline font-medium"
                   >
                     Privacy Policy
                   </Link>
@@ -293,7 +293,7 @@ export default function RegisterPage() {
             {/* Primary Action Button: "Next" */}
             <button
               type="submit"
-              className="w-full h-10 flex items-center justify-center rounded-xl bg-white hover:bg-[#ededed] text-[#0a0a0a] text-[14px] font-semibold transition-all active:scale-[0.99] shadow-sm"
+              className="w-full h-10 flex items-center justify-center rounded-xl bg-white hover:bg-[var(--sx-bg-ededed)] text-[var(--sx-tx-0a0a0a)] text-[14px] font-semibold transition-all active:scale-[0.99] shadow-sm"
             >
               Next
             </button>
@@ -326,7 +326,7 @@ export default function RegisterPage() {
                 }
                 placeholder="Full name"
                 autoComplete="name"
-                className="w-full h-10 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+                className="w-full h-10 px-4 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] focus:border-white/30 text-[14px] text-[var(--sx-tx-f5f5f5)] placeholder:text-[var(--sx-tx-71717a)] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
             </div>
 
@@ -340,12 +340,12 @@ export default function RegisterPage() {
                 }
                 placeholder="Password (min. 8 characters)"
                 autoComplete="new-password"
-                className="w-full h-10 px-4 pr-11 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+                className="w-full h-10 px-4 pr-11 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] focus:border-white/30 text-[14px] text-[var(--sx-tx-f5f5f5)] placeholder:text-[var(--sx-tx-71717a)] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
               <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#71717a] hover:text-[#f5f5f5] transition-colors"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--sx-tx-71717a)] hover:text-[var(--sx-tx-f5f5f5)] transition-colors"
                 aria-label={showPass ? "Hide password" : "Show password"}
               >
                 {showPass ? (
@@ -366,14 +366,14 @@ export default function RegisterPage() {
                 }
                 placeholder="Confirm password"
                 autoComplete="new-password"
-                className="w-full h-10 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+                className="w-full h-10 px-4 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] focus:border-white/30 text-[14px] text-[var(--sx-tx-f5f5f5)] placeholder:text-[var(--sx-tx-71717a)] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-10 flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-[#ededed] text-[#0a0a0a] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50 shadow-sm"
+              className="w-full h-10 flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-[var(--sx-bg-ededed)] text-[var(--sx-tx-0a0a0a)] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50 shadow-sm"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -386,7 +386,7 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setStep("initial")}
-                className="inline-flex items-center gap-1.5 text-[12.5px] text-[#a1a1aa] hover:text-[#f5f5f5] transition-colors"
+                className="inline-flex items-center gap-1.5 text-[12.5px] text-[var(--sx-tx-a1a1aa)] hover:text-[var(--sx-tx-f5f5f5)] transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Back to email
@@ -409,14 +409,14 @@ export default function RegisterPage() {
                   setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
                 }
                 placeholder="000000"
-                className="w-full h-11 px-3.5 rounded-xl bg-[#19191b] border border-[#2b2b2b] text-center text-xl font-mono tracking-[0.35em] text-[#f5f5f5] focus:outline-none focus:border-white/30 transition-colors"
+                className="w-full h-11 px-3.5 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] text-center text-xl font-mono tracking-[0.35em] text-[var(--sx-tx-f5f5f5)] focus:outline-none focus:border-white/30 transition-colors"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading || otp.length < 6}
-              className="w-full h-10 flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-[#ededed] text-[#0a0a0a] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50"
+              className="w-full h-10 flex items-center justify-center gap-2 rounded-xl bg-white hover:bg-[var(--sx-bg-ededed)] text-[var(--sx-tx-0a0a0a)] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -429,7 +429,7 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => setStep("details")}
-                className="inline-flex items-center gap-1.5 text-[12.5px] text-[#a1a1aa] hover:text-[#f5f5f5] transition-colors"
+                className="inline-flex items-center gap-1.5 text-[12.5px] text-[var(--sx-tx-a1a1aa)] hover:text-[var(--sx-tx-f5f5f5)] transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Back

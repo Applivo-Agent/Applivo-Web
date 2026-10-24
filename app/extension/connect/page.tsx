@@ -81,33 +81,33 @@ export default function ExtensionConnectPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-black px-4">
-      <div className="w-full max-w-[380px] rounded-[2rem] border border-white/[0.07] bg-[#242424]/95 p-8 text-center space-y-5">
-        <div className="mx-auto w-12 h-12 rounded-xl border border-white/10 bg-[#111115] flex items-center justify-center">
+      <div className="w-full max-w-[380px] rounded-[2rem] border border-white/[0.07] bg-[color-mix(in_srgb,var(--sx-bg-242424)_95%,transparent)] p-8 text-center space-y-5">
+        <div className="mx-auto w-12 h-12 rounded-xl border border-white/10 bg-[var(--sx-bg-111115)] flex items-center justify-center">
           <Puzzle className="w-5 h-5 text-white" aria-hidden />
         </div>
         <h1 className="text-xl font-bold text-white">Connect the Applivo extension</h1>
 
         {(phase === "checking" || phase === "redirecting") && (
-          <p role="status" className="flex items-center justify-center gap-2 text-sm text-[#A1A1AA]">
+          <p role="status" className="flex items-center justify-center gap-2 text-sm text-[var(--sx-tx-a1a1aa)]">
             <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
             {phase === "redirecting" ? "Taking you to the next step…" : "Checking your account…"}
           </p>
         )}
 
         {phase === "needs_extension" && (
-          <p className="text-sm text-[#A1A1AA]">
+          <p className="text-sm text-[var(--sx-tx-a1a1aa)]">
             We couldn&apos;t find the Applivo extension in this browser. Install it from the Chrome Web Store, then reload this page.
           </p>
         )}
 
         {phase === "pairing" && (
-          <p role="status" className="flex items-center justify-center gap-2 text-sm text-[#A1A1AA]">
+          <p role="status" className="flex items-center justify-center gap-2 text-sm text-[var(--sx-tx-a1a1aa)]">
             <Loader2 className="w-4 h-4 animate-spin" aria-hidden /> Connecting securely…
           </p>
         )}
 
         {phase === "approve" && (
-          <p role="status" className="text-sm text-[#A1A1AA]">
+          <p role="status" className="text-sm text-[var(--sx-tx-a1a1aa)]">
             Approve the connection in the Applivo extension window that just opened.
           </p>
         )}

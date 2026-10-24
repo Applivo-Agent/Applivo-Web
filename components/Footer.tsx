@@ -59,10 +59,10 @@ export function Footer({ showCta = false, className = "" }: FooterProps) {
   }, []);
 
   return (
-    <div className={`w-full bg-[#0a0a0a] text-white ${className}`}>
+    <div className={`w-full bg-[var(--sx-bg-0a0a0a)] text-white ${className}`}>
       {/* ── FINAL CTA SECTION (KILO-INSPIRED) ──────────────── */}
       {showCta && (
-        <section className="relative w-full py-20 md:py-28 px-5 md:px-8 overflow-hidden bg-[#0a0a0a] border-t border-white/[0.04]">
+        <section className="relative w-full py-20 md:py-28 px-5 md:px-8 overflow-hidden bg-[var(--sx-bg-0a0a0a)] border-t border-white/[0.04]">
           {/* Subtle ambient lighting consistent with landing page */}
           <div
             className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_65%)] pointer-events-none"
@@ -89,7 +89,7 @@ export function Footer({ showCta = false, className = "" }: FooterProps) {
       )}
 
       {/* ── FOUR-COLUMN FOOTER & WATERMARK ──────────────────── */}
-      <footer className="relative border-t border-white/[0.06] pt-14 md:pt-18 pb-8 px-5 md:px-8 overflow-hidden">
+      <footer className="site-footer relative border-t border-white/[0.06] pt-14 md:pt-18 pb-8 px-5 md:px-8 overflow-hidden">
         <div className="max-w-[1200px] mx-auto w-full">
           {/* Four Navigation Columns */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 pb-14 md:pb-20">
@@ -132,7 +132,7 @@ export function Footer({ showCta = false, className = "" }: FooterProps) {
           >
             <div className="flex items-center justify-center gap-4 sm:gap-6 md:gap-8 opacity-40 transition-opacity">
               {/* Emblem Box */}
-              <div className="w-[52px] h-[52px] sm:w-[80px] sm:h-[80px] md:w-[110px] md:h-[110px] bg-gradient-to-br from-[#2a2a2a] to-[#141414] rounded-2xl md:rounded-3xl flex items-center justify-center border border-white/[0.08] shadow-[inset_0_2px_10px_rgba(255,255,255,0.03)]">
+              <div className="w-[52px] h-[52px] sm:w-[80px] sm:h-[80px] md:w-[110px] md:h-[110px] bg-gradient-to-br from-[var(--sx-bg-2a2a2a)] to-[var(--sx-bg-141414)] rounded-2xl md:rounded-3xl flex items-center justify-center border border-white/[0.08] shadow-[inset_0_2px_10px_rgba(255,255,255,0.03)]">
                 <Image
                   src="/logo.png"
                   alt="Applivo Logo"
@@ -144,7 +144,7 @@ export function Footer({ showCta = false, className = "" }: FooterProps) {
               </div>
 
               {/* Massive Wordmark with subtle fade */}
-              <span className="text-[60px] sm:text-[96px] md:text-[130px] lg:text-[160px] font-extrabold tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-b from-white/40 via-white/20 to-white/5">
+              <span className="footer-wordmark text-[60px] sm:text-[96px] md:text-[130px] lg:text-[160px] font-extrabold tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-b from-white/40 via-white/20 to-white/5">
                 Applivo
               </span>
             </div>

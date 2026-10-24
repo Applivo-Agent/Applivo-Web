@@ -13,9 +13,9 @@ type DateRange = 7 | 30 | 90;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // Neutral palette. One warm highlight for the primary series; everything else is grey.
-const WARM = "#d4a15a";
-const GREY_HI = "#a1a1aa";
-const GREY_LO = "#6b6b73";
+const WARM = "var(--cc-d4a15a)";
+const GREY_HI = "rgb(var(--tw-zinc-400))";
+const GREY_LO = "var(--cc-6b6b73)";
 /** Previous-period comparisons need a baseline this large before a percentage means anything. */
 const MIN_BASELINE = 5;
 
@@ -221,10 +221,10 @@ export default function AnalyticsPage() {
                 <div className="h-48" role="img" aria-label={`Daily applications, responses and interviews for the last ${days} days`}>
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={activity} margin={{ top: 6, right: 8, left: -24, bottom: 0 }}>
-                      <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
-                      <XAxis dataKey="name" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} interval="preserveStartEnd" minTickGap={32} />
-                      <YAxis allowDecimals={false} tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} />
-                      <Tooltip content={<ChartTip />} cursor={{ stroke: "rgba(255,255,255,0.12)" }} />
+                      <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
+                      <XAxis dataKey="name" tick={{ fill: "var(--chart-axis)", fontSize: 11 }} axisLine={false} tickLine={false} interval="preserveStartEnd" minTickGap={32} />
+                      <YAxis allowDecimals={false} tick={{ fill: "var(--chart-axis)", fontSize: 11 }} axisLine={false} tickLine={false} />
+                      <Tooltip content={<ChartTip />} cursor={{ stroke: "var(--chart-cursor)" }} />
                       <Line isAnimationActive={false} type="linear" dataKey="applied" name="Applications" stroke={WARM} strokeWidth={1.5} dot={false} activeDot={{ r: 3 }} />
                       <Line isAnimationActive={false} type="linear" dataKey="responses" name="Responses" stroke={GREY_HI} strokeWidth={1.25} dot={false} />
                       <Line isAnimationActive={false} type="linear" dataKey="interviews" name="Interviews" stroke={GREY_LO} strokeWidth={1.25} strokeDasharray="4 3" dot={false} />

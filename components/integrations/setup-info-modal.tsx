@@ -28,7 +28,7 @@ export function SetupInfoModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-[#121215] border border-zinc-800 text-white p-6 shadow-2xl">
+      <DialogContent className="sm:max-w-[500px] bg-[var(--sx-bg-121215)] border border-zinc-800 text-white p-6 shadow-2xl">
         <DialogHeader className="space-y-2">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shrink-0">

@@ -19,7 +19,7 @@ export default function PricingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5] selection:bg-white/20 flex flex-col justify-between">
+    <div className="min-h-screen bg-[var(--sx-bg-0a0a0a)] text-[var(--sx-tx-f5f5f5)] selection:bg-white/20 flex flex-col justify-between">
       <NavBar />
 
       <main className="pt-16 sm:pt-20 md:pt-24 pb-14 px-4 sm:px-6 relative z-10 flex flex-col items-center flex-1">
@@ -31,14 +31,14 @@ export default function PricingPage() {
 
         {/* ─── 1. PAGE HEADER (RECORD-INSPIRED CENTERED LAYOUT) ─── */}
         <div className="text-center mb-10 sm:mb-12 md:mb-14 relative z-10 max-w-2xl mx-auto px-4">
-          <span className="text-[11px] sm:text-[11.5px] font-medium text-[#71717A] uppercase tracking-[0.15em] block mb-3">
+          <span className="text-[11px] sm:text-[11.5px] font-medium text-[var(--sx-tx-71717a)] uppercase tracking-[0.15em] block mb-3">
             PRICING
           </span>
           <h1 className="text-[32px] sm:text-[36px] md:text-[38px] font-semibold tracking-tight mb-3 leading-[1.2]">
-            <span className="text-[#a1a1a1] block">Simple plans.</span>
+            <span className="text-[var(--sx-tx-a1a1a1)] block">Simple plans.</span>
             <span className="text-white font-semibold block">Serious progress.</span>
           </h1>
-          <p className="text-[13.5px] sm:text-[14px] text-[#A1A1AA] leading-[1.6] max-w-lg mx-auto">
+          <p className="text-[13.5px] sm:text-[14px] text-[var(--sx-tx-a1a1aa)] leading-[1.6] max-w-lg mx-auto">
             Choose the right plan for your job search and unlock the tools you need to move forward.
           </p>
         </div>
@@ -58,10 +58,10 @@ export default function PricingPage() {
         {/* ─── 4. FREQUENTLY ASKED QUESTIONS (COMPACT ACCORDION) ─── */}
         <div className="w-full max-w-[760px] relative z-10 mb-6">
           <div className="text-center mb-5">
-            <h2 className="text-[18px] sm:text-[20px] font-semibold text-[#F5F5F5] tracking-tight mb-1">
+            <h2 className="text-[18px] sm:text-[20px] font-semibold text-[var(--sx-tx-f5f5f5)] tracking-tight mb-1">
               Frequently asked questions
             </h2>
-            <p className="text-[12px] sm:text-[12.5px] text-[#A1A1AA]">
+            <p className="text-[12px] sm:text-[12.5px] text-[var(--sx-tx-a1a1aa)]">
               Common questions about trial periods, limits, and billing.
             </p>
           </div>
@@ -72,19 +72,19 @@ export default function PricingPage() {
               return (
                 <div
                   key={index}
-                  className="rounded-xl bg-[#141414] border border-[#292929] overflow-hidden transition-colors hover:border-[#383838]"
+                  className="rounded-xl bg-[var(--sx-bg-141414)] border border-[var(--sx-bd-292929)] overflow-hidden transition-colors hover:border-[var(--sx-bd-383838)]"
                 >
                   <button
                     onClick={() => setOpenFaq(isOpen ? null : index)}
                     className="w-full px-4 py-3 text-left flex items-center justify-between gap-3.5"
                     aria-expanded={isOpen}
                   >
-                    <span className="text-[12.5px] sm:text-[13px] font-medium text-[#F5F5F5]">
+                    <span className="text-[12.5px] sm:text-[13px] font-medium text-[var(--sx-tx-f5f5f5)]">
                       {faq.question}
                     </span>
                     <ChevronDown
-                      className={`w-3.5 h-3.5 text-[#A1A1AA] shrink-0 transition-transform duration-200 ${
-                        isOpen ? "rotate-180 text-[#F5F5F5]" : ""
+                      className={`w-3.5 h-3.5 text-[var(--sx-tx-a1a1aa)] shrink-0 transition-transform duration-200 ${
+                        isOpen ? "rotate-180 text-[var(--sx-tx-f5f5f5)]" : ""
                       }`}
                     />
                   </button>
@@ -97,7 +97,7 @@ export default function PricingPage() {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.16 }}
                       >
-                        <div className="px-4 pb-3 pt-0 text-[11.5px] sm:text-[12px] text-[#A1A1AA] leading-relaxed border-t border-[#242424]">
+                        <div className="px-4 pb-3 pt-0 text-[11.5px] sm:text-[12px] text-[var(--sx-tx-a1a1aa)] leading-relaxed border-t border-[var(--sx-bd-242424)]">
                           {faq.answer}
                         </div>
                       </motion.div>

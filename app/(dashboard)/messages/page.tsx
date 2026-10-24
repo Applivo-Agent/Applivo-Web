@@ -87,7 +87,7 @@ function renderMessageContent(text: string) {
           href={part}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#EDEDED] underline decoration-[#525252] underline-offset-2 hover:decoration-[#EDEDED] transition-colors break-all"
+          className="text-[var(--sx-tx-ededed)] underline decoration-[#525252] underline-offset-2 hover:decoration-[#EDEDED] transition-colors break-all"
         >
           {part}
         </a>
@@ -279,20 +279,20 @@ export default function MessagesPage() {
   return (
     <div className="flex flex-col min-h-0 space-y-4">
       {/* ── Page Header ─────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#262626]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--sx-bd-262626)]">
         <div />
 
         <div className="flex items-center gap-3">
-          <span className="text-[12px] text-[#929292]">
+          <span className="text-[12px] text-[var(--sx-tx-929292)]">
             {syncStatusLabel}
           </span>
 
           <button
             onClick={handleSync}
             disabled={syncing}
-            className="h-7 px-3 bg-[#181818] hover:bg-[#202020] border border-[#262626] text-[#EDEDED] rounded text-[12px] font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-1.5 shrink-0"
+            className="h-7 px-3 bg-[var(--sx-bg-181818)] hover:bg-[var(--sx-bg-202020)] border border-[var(--sx-bd-262626)] text-[var(--sx-tx-ededed)] rounded text-[12px] font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-1.5 shrink-0"
           >
-            <RefreshCw className={`w-3 h-3 text-[#929292] ${syncing ? "animate-spin" : ""}`} />
+            <RefreshCw className={`w-3 h-3 text-[var(--sx-tx-929292)] ${syncing ? "animate-spin" : ""}`} />
             <span>{syncing ? "Syncing..." : "Sync messages"}</span>
           </button>
         </div>
@@ -300,9 +300,9 @@ export default function MessagesPage() {
 
       {/* ── Error Banner (if sync or connection issue) ────────────────────── */}
       {syncError && (
-        <div className="flex items-center justify-between gap-3 p-3 bg-[#151111] border border-[#332222] rounded text-[12px] text-[#D4A5A5]">
+        <div className="flex items-center justify-between gap-3 p-3 bg-[var(--sx-bg-151111)] border border-[var(--sx-bd-332222)] rounded text-[12px] text-[var(--sx-tx-d4a5a5)]">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-3.5 h-3.5 text-[#D4A5A5] shrink-0" />
+            <AlertCircle className="w-3.5 h-3.5 text-[var(--sx-tx-d4a5a5)] shrink-0" />
             <span>
               {syncError === "internshala_tab_missing"
                 ? "No active Internshala tab detected. Please open Internshala in your Chrome browser."
@@ -321,7 +321,7 @@ export default function MessagesPage() {
                 href="https://internshala.com/chat"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 px-2 py-0.5 bg-[#241717] hover:bg-[#2F1D1D] border border-[#3D2626] rounded text-[11px] font-medium text-[#EDEDED] transition-colors"
+                className="flex items-center gap-1 px-2 py-0.5 bg-[var(--sx-bg-241717)] hover:bg-[var(--sx-bg-2f1d1d)] border border-[var(--sx-bd-3d2626)] rounded text-[11px] font-medium text-[var(--sx-tx-ededed)] transition-colors"
               >
                 <span>Open Internshala</span>
                 <ExternalLink className="w-2.5 h-2.5" />
@@ -329,7 +329,7 @@ export default function MessagesPage() {
             )}
             <button
               onClick={() => setSyncError(null)}
-              className="text-[#929292] hover:text-[#EDEDED] p-1"
+              className="text-[var(--sx-tx-929292)] hover:text-[var(--sx-tx-ededed)] p-1"
               aria-label="Dismiss message"
             >
               <X className="w-3.5 h-3.5" />
@@ -339,28 +339,28 @@ export default function MessagesPage() {
       )}
 
       {/* ── Two-Column Inbox ────────────────────────────────────────────── */}
-      <div className="bg-[var(--app-card)] border border-[#262626] rounded-lg overflow-hidden flex flex-1 h-[calc(100vh-200px)] min-h-[560px]">
+      <div className="bg-[var(--app-card)] border border-[var(--sx-bd-262626)] rounded-lg overflow-hidden flex flex-1 h-[calc(100vh-200px)] min-h-[560px]">
         {/* Left Panel — Conversation List */}
         <div
           className={`${
             mobileDetailView ? "hidden md:flex" : "flex"
-          } w-full md:w-[350px] lg:w-[360px] flex-col border-r border-[#262626] shrink-0 bg-[var(--app-card)]`}
+          } w-full md:w-[350px] lg:w-[360px] flex-col border-r border-[var(--sx-bd-262626)] shrink-0 bg-[var(--app-card)]`}
         >
           {/* Search & Filters */}
-          <div className="p-3 border-b border-[#262626] space-y-2.5 bg-[var(--app-card)]">
+          <div className="p-3 border-b border-[var(--sx-bd-262626)] space-y-2.5 bg-[var(--app-card)]">
             <div className="relative">
-              <Search className="w-3.5 h-3.5 text-[#737373] absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Search className="w-3.5 h-3.5 text-[var(--sx-tx-737373)] absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Search conversations..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full h-8 pl-8 pr-7 bg-[#151515] border border-[#262626] rounded text-[12px] text-[#EDEDED] placeholder-[#737373] focus:outline-none focus:border-[#404040] transition-colors"
+                className="w-full h-8 pl-8 pr-7 bg-[var(--sx-bg-151515)] border border-[var(--sx-bd-262626)] rounded text-[12px] text-[var(--sx-tx-ededed)] placeholder-[#737373] focus:outline-none focus:border-[var(--sx-bd-404040)] transition-colors"
               />
               {search && (
                 <button
                   onClick={() => setSearch("")}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[#737373] hover:text-[#EDEDED]"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--sx-tx-737373)] hover:text-[var(--sx-tx-ededed)]"
                   aria-label="Clear search"
                 >
                   <X className="w-3 h-3" />
@@ -374,38 +374,38 @@ export default function MessagesPage() {
                 onClick={() => setFilter("all")}
                 className={`px-2.5 py-1 text-[12px] font-medium rounded transition-colors ${
                   filter === "all"
-                    ? "bg-[#1F1F1F] text-[#EDEDED]"
-                    : "text-[#929292] hover:text-[#EDEDED]"
+                    ? "bg-[var(--sx-bg-1f1f1f)] text-[var(--sx-tx-ededed)]"
+                    : "text-[var(--sx-tx-929292)] hover:text-[var(--sx-tx-ededed)]"
                 }`}
               >
-                All {conversations.length > 0 && <span className="ml-1 text-[11px] text-[#737373]">{conversations.length}</span>}
+                All {conversations.length > 0 && <span className="ml-1 text-[11px] text-[var(--sx-tx-737373)]">{conversations.length}</span>}
               </button>
               <button
                 onClick={() => setFilter("unread")}
                 className={`px-2.5 py-1 text-[12px] font-medium rounded transition-colors ${
                   filter === "unread"
-                    ? "bg-[#1F1F1F] text-[#EDEDED]"
-                    : "text-[#929292] hover:text-[#EDEDED]"
+                    ? "bg-[var(--sx-bg-1f1f1f)] text-[var(--sx-tx-ededed)]"
+                    : "text-[var(--sx-tx-929292)] hover:text-[var(--sx-tx-ededed)]"
                 }`}
               >
-                Unread {stats.unread_count > 0 && <span className="ml-1 text-[11px] text-[#737373]">{stats.unread_count}</span>}
+                Unread {stats.unread_count > 0 && <span className="ml-1 text-[11px] text-[var(--sx-tx-737373)]">{stats.unread_count}</span>}
               </button>
             </div>
           </div>
 
           {/* Vertically Scrollable Real Conversation List */}
-          <div className="flex-1 overflow-y-auto divide-y divide-[#1C1C1C]">
+          <div className="flex-1 overflow-y-auto divide-y divide-[var(--sx-bd-1c1c1c)]">
             {loading ? (
               <div className="flex flex-col items-center justify-center py-20 gap-2">
-                <Loader2 className="w-5 h-5 animate-spin text-[#737373]" />
-                <p className="text-[12px] text-[#737373]">Loading conversations...</p>
+                <Loader2 className="w-5 h-5 animate-spin text-[var(--sx-tx-737373)]" />
+                <p className="text-[12px] text-[var(--sx-tx-737373)]">Loading conversations...</p>
               </div>
             ) : filteredConversations.length === 0 ? (
               <div className="p-6 text-center space-y-2.5">
-                <p className="text-[13px] font-medium text-[#EDEDED]">
+                <p className="text-[13px] font-medium text-[var(--sx-tx-ededed)]">
                   {conversations.length === 0 ? "No conversations yet" : "No matching conversations"}
                 </p>
-                <p className="text-[12px] text-[#737373] leading-relaxed">
+                <p className="text-[12px] text-[var(--sx-tx-737373)] leading-relaxed">
                   {conversations.length === 0
                     ? "Connect your account and sync recruiter messages to get started."
                     : "Try adjusting your search query or switching filters."}
@@ -415,9 +415,9 @@ export default function MessagesPage() {
                     <button
                       onClick={handleSync}
                       disabled={syncing}
-                      className="inline-flex items-center justify-center gap-1.5 h-7 px-3 bg-[#181818] hover:bg-[#202020] border border-[#262626] rounded text-[12px] font-medium text-[#EDEDED] transition-colors disabled:opacity-50"
+                      className="inline-flex items-center justify-center gap-1.5 h-7 px-3 bg-[var(--sx-bg-181818)] hover:bg-[var(--sx-bg-202020)] border border-[var(--sx-bd-262626)] rounded text-[12px] font-medium text-[var(--sx-tx-ededed)] transition-colors disabled:opacity-50"
                     >
-                      <RefreshCw className={`w-3 h-3 text-[#929292] ${syncing ? "animate-spin" : ""}`} />
+                      <RefreshCw className={`w-3 h-3 text-[var(--sx-tx-929292)] ${syncing ? "animate-spin" : ""}`} />
                       <span>{syncing ? "Sync messages" : "Sync messages"}</span>
                     </button>
                   </div>
@@ -434,27 +434,27 @@ export default function MessagesPage() {
                     onClick={() => handleSelectConversation(conv)}
                     className={`w-full text-left px-3.5 py-3 transition-colors flex flex-col gap-1 border-l-2 ${
                       isSelected
-                        ? "bg-[#1A1A1A] border-l-[#EDEDED]"
+                        ? "bg-[var(--sx-bg-1a1a1a)] border-l-[#EDEDED]"
                         : isUnread
-                        ? "bg-[#141414] hover:bg-[#181818] border-l-transparent"
-                        : "bg-transparent hover:bg-[#161616] border-l-transparent"
+                        ? "bg-[var(--sx-bg-141414)] hover:bg-[var(--sx-bg-181818)] border-l-transparent"
+                        : "bg-transparent hover:bg-[var(--sx-bg-161616)] border-l-transparent"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span
                         className={`text-[13px] truncate ${
-                          isUnread ? "font-semibold text-[#EDEDED]" : "font-normal text-[#B5B5B5]"
+                          isUnread ? "font-semibold text-[var(--sx-tx-ededed)]" : "font-normal text-[var(--sx-tx-b5b5b5)]"
                         }`}
                       >
                         {conv.sender_name}
                       </span>
-                      <span className="text-[11px] text-[#737373] shrink-0 font-normal">
+                      <span className="text-[11px] text-[var(--sx-tx-737373)] shrink-0 font-normal">
                         {formatRelativeTime(conv.received_at)}
                       </span>
                     </div>
 
                     {(conv.company || conv.job_title) && (
-                      <div className="text-[12px] text-[#929292] truncate">
+                      <div className="text-[12px] text-[var(--sx-tx-929292)] truncate">
                         {conv.job_title && conv.company
                           ? `${conv.job_title} · ${conv.company}`
                           : conv.company || conv.job_title}
@@ -463,7 +463,7 @@ export default function MessagesPage() {
 
                     <p
                       className={`text-[12px] line-clamp-1 leading-normal ${
-                        isUnread ? "text-[#D4D4D4]" : "text-[#737373]"
+                        isUnread ? "text-[var(--sx-tx-d4d4d4)]" : "text-[var(--sx-tx-737373)]"
                       }`}
                     >
                       {conv.preview || "No message preview"}
@@ -479,27 +479,27 @@ export default function MessagesPage() {
         <div
           className={`${
             mobileDetailView ? "flex" : "hidden md:flex"
-          } flex-1 flex-col bg-[#0E0E0E] min-w-0`}
+          } flex-1 flex-col bg-[var(--sx-bg-0e0e0e)] min-w-0`}
         >
           {selectedConversation ? (
             <>
               {/* Selected Conversation Header */}
-              <div className="px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#262626] flex items-center justify-between gap-3 bg-[var(--app-card)] shrink-0">
+              <div className="px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[var(--sx-bd-262626)] flex items-center justify-between gap-3 bg-[var(--app-card)] shrink-0">
                 <div className="flex items-center gap-3 min-w-0">
                   <button
                     onClick={() => setMobileDetailView(false)}
-                    className="md:hidden p-1 rounded hover:bg-[#1A1A1A] text-[#929292] hover:text-[#EDEDED]"
+                    className="md:hidden p-1 rounded hover:bg-[var(--sx-bg-1a1a1a)] text-[var(--sx-tx-929292)] hover:text-[var(--sx-tx-ededed)]"
                     aria-label="Back to conversations"
                   >
                     <ArrowLeft className="w-4 h-4" />
                   </button>
 
                   <div className="min-w-0">
-                    <h2 className="text-[15px] font-semibold text-[#EDEDED] truncate">
+                    <h2 className="text-[15px] font-semibold text-[var(--sx-tx-ededed)] truncate">
                       {selectedConversation.sender_name}
                     </h2>
                     {(selectedConversation.company || selectedConversation.job_title) && (
-                      <p className="text-[12px] text-[#929292] truncate mt-0.5">
+                      <p className="text-[12px] text-[var(--sx-tx-929292)] truncate mt-0.5">
                         {selectedConversation.job_title && selectedConversation.company
                           ? `${selectedConversation.job_title} · ${selectedConversation.company}`
                           : selectedConversation.company || selectedConversation.job_title}
@@ -511,7 +511,7 @@ export default function MessagesPage() {
                 <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={() => handleToggleStatus(selectedConversation)}
-                    className="h-7 px-2.5 rounded bg-[#181818] hover:bg-[#202020] border border-[#262626] text-[12px] font-medium text-[#929292] hover:text-[#EDEDED] transition-colors inline-flex items-center gap-1.5"
+                    className="h-7 px-2.5 rounded bg-[var(--sx-bg-181818)] hover:bg-[var(--sx-bg-202020)] border border-[var(--sx-bd-262626)] text-[12px] font-medium text-[var(--sx-tx-929292)] hover:text-[var(--sx-tx-ededed)] transition-colors inline-flex items-center gap-1.5"
                     title={selectedConversation.status === "unread" ? "Mark as read" : "Mark as unread"}
                   >
                     <CheckCheck className="w-3.5 h-3.5" />
@@ -527,16 +527,16 @@ export default function MessagesPage() {
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="h-7 px-2.5 rounded bg-[#181818] hover:bg-[#202020] border border-[#262626] text-[12px] font-medium text-[#EDEDED] transition-colors inline-flex items-center gap-1.5"
+                    className="h-7 px-2.5 rounded bg-[var(--sx-bg-181818)] hover:bg-[var(--sx-bg-202020)] border border-[var(--sx-bd-262626)] text-[12px] font-medium text-[var(--sx-tx-ededed)] transition-colors inline-flex items-center gap-1.5"
                   >
                     <span>Open in source</span>
-                    <ExternalLink className="w-3 h-3 text-[#929292]" />
+                    <ExternalLink className="w-3 h-3 text-[var(--sx-tx-929292)]" />
                   </a>
                 </div>
               </div>
 
               {/* Message History Chronological List */}
-              <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#0E0E0E]">
+              <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-[var(--sx-bg-0e0e0e)]">
                 {selectedConversation.messages && selectedConversation.messages.length > 0 ? (
                   selectedConversation.messages.map((m, idx) => {
                     const isCandidate = m.sender === "candidate";
@@ -549,21 +549,21 @@ export default function MessagesPage() {
                         <div
                           className={`max-w-[85%] sm:max-w-[75%] rounded-md p-3.5 text-[13px] leading-relaxed border ${
                             isCandidate
-                              ? "bg-[#181818] border-[#2B2B2B]"
-                              : "bg-[#141414] border-[#222222]"
+                              ? "bg-[var(--sx-bg-181818)] border-[var(--sx-bd-2b2b2b)]"
+                              : "bg-[var(--sx-bg-141414)] border-[var(--sx-bd-222222)]"
                           }`}
                         >
                           <div className="flex items-center justify-between gap-4 mb-1.5 text-[11px]">
-                            <span className="font-medium text-[#EDEDED]">
+                            <span className="font-medium text-[var(--sx-tx-ededed)]">
                               {m.sender_name || (isCandidate ? "You" : selectedConversation.sender_name)}
                             </span>
                             {m.timestamp && (
-                              <span className="text-[#737373] font-normal">
+                              <span className="text-[var(--sx-tx-737373)] font-normal">
                                 {formatRelativeTime(m.timestamp)}
                               </span>
                             )}
                           </div>
-                          <div className="text-[#D4D4D4] whitespace-pre-wrap break-words leading-relaxed">
+                          <div className="text-[var(--sx-tx-d4d4d4)] whitespace-pre-wrap break-words leading-relaxed">
                             {renderMessageContent(m.text)}
                           </div>
                         </div>
@@ -572,7 +572,7 @@ export default function MessagesPage() {
                   })
                 ) : (
                   <div className="flex flex-col items-center justify-center py-20 text-center">
-                    <p className="text-[13px] text-[#737373]">
+                    <p className="text-[13px] text-[var(--sx-tx-737373)]">
                       No message history available for this conversation.
                     </p>
                   </div>
@@ -582,7 +582,7 @@ export default function MessagesPage() {
           ) : (
             /* Quiet Empty State when no conversation selected */
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-              <p className="text-[13px] text-[#737373]">Select a conversation to read messages.</p>
+              <p className="text-[13px] text-[var(--sx-tx-737373)]">Select a conversation to read messages.</p>
             </div>
           )}
         </div>

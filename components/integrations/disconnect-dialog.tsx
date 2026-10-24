@@ -32,7 +32,7 @@ export function DisconnectDialog({
 }: DisconnectDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[460px] bg-[#121215] border border-zinc-800 text-white p-6 shadow-2xl">
+      <DialogContent className="sm:max-w-[460px] bg-[var(--sx-bg-121215)] border border-zinc-800 text-white p-6 shadow-2xl">
         <DialogHeader className="space-y-3">
           <div className="w-10 h-10 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
             <AlertTriangle className="w-5 h-5" />

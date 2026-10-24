@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
@@ -19,9 +20,10 @@ export function AuthLayout({
   footer,
 }: AuthLayoutProps) {
   return (
-    <main className="min-h-screen w-full max-w-full flex flex-col items-center justify-center bg-[#080808] px-4 py-8 relative overflow-x-hidden overflow-y-auto select-none">
+    <main className="public-flat min-h-screen w-full max-w-full flex flex-col items-center justify-center bg-[var(--sx-bg-080808)] px-4 py-8 relative overflow-x-hidden overflow-y-auto select-none">
+      <div className="absolute right-4 top-4 z-30"><ThemeToggle /></div>
       {/* ── BACKGROUND LAYER SYSTEM: MONOCHROME SOFT PLANETARY HORIZON & GLOW ── */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none select-none z-0 bg-[#080808]">
+      <div className="auth-bg fixed inset-0 overflow-hidden pointer-events-none select-none z-0 bg-[var(--sx-bg-080808)]">
         {/* Layer 1: Restrained ambient grayscale glow centered behind auth card */}
         <div
           className="absolute pointer-events-none"
@@ -100,7 +102,7 @@ export function AuthLayout({
 
           {/* Dark planetary body below the horizon (solid #080808 occlusion) */}
           <div
-            className="absolute inset-0 bg-[#080808] pointer-events-none"
+            className="absolute inset-0 bg-[var(--sx-bg-080808)] pointer-events-none"
             style={{
               borderRadius: "50% 50% 0 0 / 100% 100% 0 0",
               marginTop: "1.5px",
@@ -111,30 +113,27 @@ export function AuthLayout({
 
       {/* ── CENTERED AUTH PANEL (430px desktop width, 16px radius, #111111 surface, 24–32px padding) ── */}
       <div className="w-full max-w-[380px] relative z-10">
-        <div className="rounded-2xl bg-[#111111] border border-[#232326] p-5 sm:p-6 shadow-[0_24px_60px_rgba(0,0,0,0.95)]">
+        <div className="rounded-2xl bg-[var(--sx-bg-111111)] border border-[var(--sx-bd-232326)] p-5 sm:p-6 shadow-[0_24px_60px_rgba(0,0,0,0.95)]">
           {/* Logo & Header */}
           <div className="flex flex-col items-center text-center mb-4">
             <Link
               href="/"
               className="inline-flex items-center justify-center mb-3 group transition-transform hover:scale-[1.03] active:scale-[0.98]"
             >
-              <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/10 bg-[#161618] flex items-center justify-center shadow-md p-1.5">
-                <Image
-                  src="/applivo-logo.png"
-                  alt="Applivo"
-                  width={40}
-                  height={40}
-                  className="w-full h-full object-contain"
-                  priority
-                  unoptimized
-                />
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Applivo"
+                width={44}
+                height={44}
+                className="h-11 w-11 object-contain"
+                priority
+              />
             </Link>
 
-            <h1 className="text-[20px] font-semibold text-[#f5f5f5] tracking-tight">
+            <h1 className="text-[20px] font-semibold text-[var(--sx-tx-f5f5f5)] tracking-tight">
               {heading}
             </h1>
-            <p className="text-[13px] text-[#a1a1aa] mt-1 leading-normal max-w-[320px]">
+            <p className="text-[13px] text-[var(--sx-tx-a1a1aa)] mt-1 leading-normal max-w-[320px]">
               {supportingText}
             </p>
           </div>
@@ -152,7 +151,7 @@ export function AuthLayout({
 
           {/* Footer */}
           {footer && (
-            <div className="mt-4 pt-3 border-t border-white/[0.06] text-center text-[13px] text-[#a1a1aa]">
+            <div className="mt-4 pt-3 border-t border-white/[0.06] text-center text-[13px] text-[var(--sx-tx-a1a1aa)]">
               {footer}
             </div>
           )}
@@ -214,7 +213,7 @@ export function SocialButtons({
         type="button"
         onClick={onGoogleClick}
         disabled={googleLoading || appleLoading}
-        className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[#18181b] hover:bg-[#202024] border border-[#2b2b2b] text-[#f5f5f5] text-[13.5px] font-medium transition-all active:scale-[0.99] disabled:opacity-50"
+        className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[var(--sx-bg-18181b)] hover:bg-[var(--sx-bg-202024)] border border-[var(--sx-bd-2b2b2b)] text-[var(--sx-tx-f5f5f5)] text-[13.5px] font-medium transition-all active:scale-[0.99] disabled:opacity-50"
       >
         <GoogleIcon className="w-4 h-4 shrink-0" />
         <span>Google</span>
@@ -224,9 +223,9 @@ export function SocialButtons({
         type="button"
         onClick={onAppleClick}
         disabled={appleLoading || googleLoading}
-        className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[#18181b] hover:bg-[#202024] border border-[#2b2b2b] text-[#f5f5f5] text-[13.5px] font-medium transition-all active:scale-[0.99] disabled:opacity-50"
+        className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[var(--sx-bg-18181b)] hover:bg-[var(--sx-bg-202024)] border border-[var(--sx-bd-2b2b2b)] text-[var(--sx-tx-f5f5f5)] text-[13.5px] font-medium transition-all active:scale-[0.99] disabled:opacity-50"
       >
-        <AppleIcon className="w-4 h-4 text-[#f5f5f5] shrink-0" />
+        <AppleIcon className="w-4 h-4 text-[var(--sx-tx-f5f5f5)] shrink-0" />
         <span>Apple</span>
       </button>
     </div>
@@ -240,7 +239,7 @@ export function AuthDivider({ text = "OR SIGN IN WITH" }: { text?: string }) {
         <div className="w-full border-t border-white/[0.08]" />
       </div>
       <div className="relative flex justify-center text-[11px] font-medium tracking-wider">
-        <span className="bg-[#111111] px-3 text-[#71717a] uppercase">{text}</span>
+        <span className="bg-[var(--sx-bg-111111)] px-3 text-[var(--sx-tx-71717a)] uppercase">{text}</span>
       </div>
     </div>
   );

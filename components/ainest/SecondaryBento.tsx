@@ -23,7 +23,7 @@ function LumiAgentGraphic() {
           alt="Introducing Lumi"
           width={1024}
           height={576}
-          className="w-full max-w-[450px] h-auto object-contain drop-shadow-[0_16px_36px_rgba(0,0,0,0.85)]"
+          className="w-full max-w-[450px] h-auto object-contain drop-shadow-[0_16px_36px_rgba(0,0,0,0.85)] [html.light_&]:drop-shadow-none [html.light_&]:invert [html.light_&]:hue-rotate-180 [html.light_&]:brightness-[1.12] [html.light_&]:contrast-[1.08] [html.light_&]:mix-blend-multiply"
           priority
         />
       </motion.div>
@@ -45,7 +45,7 @@ function VaultGraphic() {
           alt="Custom Knowledge Base"
           width={1024}
           height={576}
-          className="w-full max-w-[450px] h-auto object-contain drop-shadow-[0_16px_36px_rgba(0,0,0,0.85)]"
+          className="w-full max-w-[450px] h-auto object-contain drop-shadow-[0_16px_36px_rgba(0,0,0,0.85)] [html.light_&]:drop-shadow-none [html.light_&]:invert [html.light_&]:hue-rotate-180 [html.light_&]:brightness-[1.12] [html.light_&]:contrast-[1.08] [html.light_&]:mix-blend-multiply"
           priority
         />
       </motion.div>
@@ -65,7 +65,7 @@ function CursorsGraphic() {
         <motion.div
           animate={{ scale: [1, 1.02, 1] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="w-[54px] h-[66px] rounded-[14px] bg-[#1C1C1F] border border-white/[0.12] shadow-[0_12px_28px_rgba(0,0,0,0.6)] flex items-center justify-center z-20 relative"
+          className="w-[54px] h-[66px] rounded-[14px] bg-[var(--sx-bg-1c1c1f)] border border-white/[0.12] shadow-[0_12px_28px_rgba(0,0,0,0.6)] flex items-center justify-center z-20 relative"
         >
           <FileText className="w-6 h-6 text-white/90" strokeWidth={1.6} />
         </motion.div>
@@ -113,7 +113,7 @@ function CursorsGraphic() {
 function RadarGraphic() {
   return (
     <div className="w-full flex justify-center items-center h-[130px] relative overflow-hidden select-none pointer-events-none">
-      <div className="relative w-[116px] h-[116px] rounded-full border border-white/[0.1] bg-[#161619] flex items-center justify-center shadow-[inset_0_0_24px_rgba(0,0,0,0.8)]">
+      <div className="relative w-[116px] h-[116px] rounded-full border border-white/[0.1] bg-[var(--sx-bg-161619)] flex items-center justify-center shadow-[inset_0_0_24px_rgba(0,0,0,0.8)]">
         {/* Inner concentric ring */}
         <div className="absolute w-[68px] h-[68px] rounded-full border border-white/[0.08]" />
 
@@ -129,7 +129,7 @@ function RadarGraphic() {
         />
 
         {/* Center Live Waveform Node */}
-        <div className="w-8 h-8 rounded-full bg-[#202024] border border-white/20 flex items-center justify-center z-10 shadow-lg">
+        <div className="w-8 h-8 rounded-full bg-[var(--sx-bg-202024)] border border-white/20 flex items-center justify-center z-10 shadow-lg">
           <Activity className="w-3.5 h-3.5 text-white" strokeWidth={2.2} />
         </div>
 
@@ -176,7 +176,7 @@ function LockGraphic() {
           alt="Enterprise Security Lock"
           width={100}
           height={100}
-          className="w-[96px] h-[96px] object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)]"
+          className="w-[96px] h-[96px] object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.85)] [html.light_&]:drop-shadow-[0_8px_14px_rgba(0,0,0,0.3)]"
         />
       </motion.div>
     </div>
@@ -195,11 +195,11 @@ export function SecondaryBento() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}
-          className="rounded-[24px] bg-[#121212] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.4)] hover:border-white/[0.16] transition-colors duration-300"
+          className="rounded-[24px] bg-[var(--sx-bg-121212)] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.4)] hover:border-white/[0.16] transition-colors duration-300"
         >
           {/* Header Row on Top with Lumi Logo */}
           <div className="flex items-center gap-2.5 px-6 py-3.5 border-b border-white/[0.08]">
-            <div className="w-[18px] h-[18px] rounded-[5px] overflow-hidden border border-white/20 shrink-0 bg-[#18181B] flex items-center justify-center">
+            <div className="w-[18px] h-[18px] rounded-[5px] overflow-hidden border border-white/20 shrink-0 bg-[var(--sx-bg-18181b)] flex items-center justify-center">
               <Image
                 src="/lumi-logo.png"
                 alt="Lumi"
@@ -209,7 +209,7 @@ export function SecondaryBento() {
                 unoptimized
               />
             </div>
-            <span className="text-[#e5e5e5] font-semibold text-[13.5px] sm:text-[14px] tracking-tight">Introducing Lumi</span>
+            <span className="text-[var(--sx-tx-e5e5e5)] font-semibold text-[13.5px] sm:text-[14px] tracking-tight">Introducing Lumi</span>
           </div>
 
           {/* Visual Canvas with Lumi Graphic */}
@@ -234,12 +234,12 @@ export function SecondaryBento() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1], delay: 0.1 }}
-          className="rounded-[24px] bg-[#121212] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.4)] hover:border-white/[0.16] transition-colors duration-300"
+          className="rounded-[24px] bg-[var(--sx-bg-121212)] border border-white/[0.08] overflow-hidden flex flex-col h-full shadow-[0_0_80px_rgba(0,0,0,0.4)] hover:border-white/[0.16] transition-colors duration-300"
         >
           {/* Header Row */}
           <div className="flex items-center gap-2.5 px-6 py-3.5 border-b border-white/[0.08]">
             <Settings className="w-4 h-4 text-zinc-400" strokeWidth={1.8} />
-            <span className="text-[#e5e5e5] font-semibold text-[13.5px] sm:text-[14px] tracking-tight">Custom Knowledge Base</span>
+            <span className="text-[var(--sx-tx-e5e5e5)] font-semibold text-[13.5px] sm:text-[14px] tracking-tight">Custom Knowledge Base</span>
           </div>
 
           {/* Visual Canvas */}
@@ -267,7 +267,7 @@ export function SecondaryBento() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6, ease: [0.215, 0.61, 0.355, 1] }}
-          className="rounded-[22px] bg-[#121212] border border-white/[0.08] hover:border-white/[0.16] overflow-hidden flex flex-col h-[300px] sm:h-[310px] p-6 sm:p-6.5 shadow-[0_0_50px_rgba(0,0,0,0.2)] transition-colors duration-300 justify-between group"
+          className="rounded-[22px] bg-[var(--sx-bg-121212)] border border-white/[0.08] hover:border-white/[0.16] overflow-hidden flex flex-col h-[300px] sm:h-[310px] p-6 sm:p-6.5 shadow-[0_0_50px_rgba(0,0,0,0.2)] transition-colors duration-300 justify-between group"
         >
           <div className="flex-1 flex flex-col justify-center">
             <CursorsGraphic />
@@ -288,7 +288,7 @@ export function SecondaryBento() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6, ease: [0.215, 0.61, 0.355, 1], delay: 0.1 }}
-          className="rounded-[22px] bg-[#121212] border border-white/[0.08] hover:border-white/[0.16] overflow-hidden flex flex-col h-[300px] sm:h-[310px] p-6 sm:p-6.5 shadow-[0_0_50px_rgba(0,0,0,0.2)] transition-colors duration-300 justify-between group"
+          className="rounded-[22px] bg-[var(--sx-bg-121212)] border border-white/[0.08] hover:border-white/[0.16] overflow-hidden flex flex-col h-[300px] sm:h-[310px] p-6 sm:p-6.5 shadow-[0_0_50px_rgba(0,0,0,0.2)] transition-colors duration-300 justify-between group"
         >
           <div className="flex-1 flex flex-col justify-center">
             <RadarGraphic />
@@ -309,7 +309,7 @@ export function SecondaryBento() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6, ease: [0.215, 0.61, 0.355, 1], delay: 0.2 }}
-          className="rounded-[22px] bg-[#121212] border border-white/[0.08] hover:border-white/[0.16] overflow-hidden flex flex-col h-[300px] sm:h-[310px] p-6 sm:p-6.5 shadow-[0_0_50px_rgba(0,0,0,0.2)] transition-colors duration-300 justify-between group"
+          className="rounded-[22px] bg-[var(--sx-bg-121212)] border border-white/[0.08] hover:border-white/[0.16] overflow-hidden flex flex-col h-[300px] sm:h-[310px] p-6 sm:p-6.5 shadow-[0_0_50px_rgba(0,0,0,0.2)] transition-colors duration-300 justify-between group"
         >
           <div className="flex-1 flex flex-col justify-center">
             <LockGraphic />

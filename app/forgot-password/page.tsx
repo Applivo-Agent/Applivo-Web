@@ -61,14 +61,14 @@ export default function ForgotPasswordPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email address"
               autoComplete="email"
-              className="w-full h-11 px-4 rounded-xl bg-[#19191b] border border-[#2b2b2b] focus:border-white/30 text-[14px] text-[#f5f5f5] placeholder:text-[#71717a] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
+              className="w-full h-11 px-4 rounded-xl bg-[var(--sx-bg-19191b)] border border-[var(--sx-bd-2b2b2b)] focus:border-white/30 text-[14px] text-[var(--sx-tx-f5f5f5)] placeholder:text-[var(--sx-tx-71717a)] outline-none focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 transition-colors"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[#f5f5f5] hover:bg-white text-[#080808] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50 shadow-sm"
+            className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[var(--sx-bg-f5f5f5)] hover:bg-white text-[var(--sx-tx-080808)] text-[14px] font-semibold transition-all active:scale-[0.99] disabled:opacity-50 shadow-sm"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -87,14 +87,14 @@ export default function ForgotPasswordPage() {
             <button
               type="button"
               onClick={() => setSubmitted(false)}
-              className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[#18181b] hover:bg-[#202024] border border-[#2b2b2b] text-[#f5f5f5] text-[13.5px] font-medium transition-colors"
+              className="w-full h-11 flex items-center justify-center gap-2 rounded-xl bg-[var(--sx-bg-18181b)] hover:bg-[var(--sx-bg-202024)] border border-[var(--sx-bd-2b2b2b)] text-[var(--sx-tx-f5f5f5)] text-[13.5px] font-medium transition-colors"
             >
               Didn&apos;t get an email? Try again
             </button>
 
             <Link
               href="/login"
-              className="inline-flex items-center justify-center gap-1.5 text-[12.5px] text-[#a1a1aa] hover:text-[#f5f5f5] pt-2 transition-colors"
+              className="inline-flex items-center justify-center gap-1.5 text-[12.5px] text-[var(--sx-tx-a1a1aa)] hover:text-[var(--sx-tx-f5f5f5)] pt-2 transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Return to login
